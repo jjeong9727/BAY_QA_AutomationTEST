@@ -26,7 +26,7 @@ jobs:
       
       - name: Run Playwright tests and generate result.json
         run: |
-          npx playwright test --reporter=json > cripts/result.json
+          npx playwright test --reporter=json > scripts/result.json
 
       - name: Parse test results → summary.json
         run: python parse_results.py
