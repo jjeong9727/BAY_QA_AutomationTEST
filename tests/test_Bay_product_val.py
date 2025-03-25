@@ -4,15 +4,6 @@ import requests
 from playwright.sync_api import Page
 from config import URLS, Account
 
-# Slack Webhook
-SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-# SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
-
-def send_slack_message(message: str):
-    payload = {"text": message}
-    response = requests.post(SLACK_WEBHOOK_URL, json=payload)
-    assert response.status_code == 200, "❌ Slack 메시지 전송 실패"
-
 def test_duplicate_product_name(browser):
     EXISTING_NAME_KOR = "등록테스트_중복확인"
     EXISTING_NAME_ENG = "TestProduct_Duplicate"
@@ -82,10 +73,8 @@ def test_duplicate_product_name(browser):
         assert alert.is_visible(), f"[FAIL][제품등록] 중복 제품명 경고 미표시: {EXISTING_NAME_KOR}"
         msg = f"[PASS][제품등록] Validation 제품명 중복 테스트 ('{EXISTING_NAME_KOR}')"
         print(msg)
-        send_slack_message(msg)
 
     except Exception as e:
         fail_msg = f"[FAIL][제품등록] Validation 제품병 중복 테스트 실패)\n에러: {str(e)}"
         print(fail_msg)
-        send_slack_message(fail_msg)
         raise

@@ -4,16 +4,6 @@ import requests
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
-# SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
-
-
-def send_slack_message(message):
-    """✅ Slack으로 메시지 전송"""
-    payload = {"text": message}
-    response = requests.post(SLACK_WEBHOOK_URL, json=payload)
-    assert response.status_code == 200, "❌ Slack 메시지 전송 실패!"
-
 @pytest.fixture(scope="function")
 def browser():
     with sync_playwright() as p:
@@ -131,7 +121,6 @@ def test_stock_inflow(browser):
 
     message = f"[PASS][입고테스트] {display_product_name} 기존 재고 {initial_stock} + 입고 {stock_change}개 완료! 현재 재고 {displayed_stock}"
     print(message)
-    send_slack_message(message)
 
 
 def test_stock_outflow(browser):
@@ -186,11 +175,9 @@ def test_stock_outflow(browser):
 
     message = f"[PASS][출고테스트] {display_product_name} 기존 재고 {initial_stock} - 출고 {stock_change}개 완료! 현재 재고 {displayed_stock}"
     print(message)
-    send_slack_message(message)
 
     safety_stock = 10
     if displayed_stock <= safety_stock:
         
         warning_msg = f"[⚠️경고] {display_product_name} 현재 재고({displayed_stock})가 안전 재고({safety_stock})보다 적습니다. ⚠️발주 필요⚠️"
         print(warning_msg)
-        send_slack_message(warning_msg)

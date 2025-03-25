@@ -4,16 +4,6 @@ import random
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
-SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-# SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
-
-
-def send_slack_message(message):
-    """Slack으로 메시지 전송"""
-    payload = {"text": message}
-    response = requests.post(SLACK_WEBHOOK_URL, json=payload)
-    assert response.status_code == 200, "❌ Slack 메시지 전송 실패!"
-
 @pytest.fixture(scope="function")
 def browser():
     with sync_playwright() as p:

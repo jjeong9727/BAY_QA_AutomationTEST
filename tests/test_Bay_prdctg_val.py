@@ -4,13 +4,6 @@ from playwright.sync_api import Page
 from config import URLS, Account
 import requests
 
-SLACK_WEBHOOK_URL = URLS["slack_PV"]
-
-def send_slack_message(message):
-    payload = {"text": message}
-    response = requests.post(SLACK_WEBHOOK_URL, json=payload)
-    assert response.status_code == 200, "❌ Slack 메시지 전송 실패!"
-
 class TestProductCategoryValidation:
 
     def login(self, page: Page):
@@ -30,11 +23,9 @@ class TestProductCategoryValidation:
             assert alert.is_visible(), f"[FAIL][제품관리] {fail_context} 중복 경고 미표시"
             msg = f"[PASS][제품등록] Validation {fail_context} 중복 테스트"
             print(msg)
-            send_slack_message(msg)
         except Exception as e:
             fail_msg = f"[FAIL][제품등록] Validation {fail_context} 중복 테스트 실패\n에러: {str(e)}"
             print(fail_msg)
-            send_slack_message(fail_msg)
             raise
 
     def test_duplicate_type_name(self, browser):

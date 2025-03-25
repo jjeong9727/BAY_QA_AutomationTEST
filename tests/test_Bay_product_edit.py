@@ -4,15 +4,6 @@ import random
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
-SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-# SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
-
-def send_slack_message(message):
-    payload = {"text": message}
-    response = requests.post(SLACK_WEBHOOK_URL, json=payload)
-    assert response.status_code == 200, "❌ Slack 메시지 전송 실패!"
-
-
 def select_random_products(page, min_count=1, max_count=3):
     rows = page.locator("table tbody tr").all()
     candidates = []
@@ -58,7 +49,6 @@ def test_bulk_edit_products(browser):
 
     selected = select_random_products(page)
     if not selected:
-        send_slack_message("[SKIP][제품관리] 일괄 수정 대상 제품이 없습니다.")
         return
 
     page.get_by_text("일괄 수정", exact=True).click()
@@ -84,16 +74,13 @@ def test_bulk_edit_products(browser):
             edited_kor = original.splitlines()[0] + "_수정됨"
             if not page.locator(f"text={edited_kor}").is_visible():
                 all_passed = False
-                send_slack_message(f"[FAIL][제품관리] 일괄 수정 실패: '{edited_kor}' 항목이 리스트에 존재하지 않음")
                 print(f"❌ 수정 실패: {edited_kor}")
 
         if all_passed:
             msg = f"[PASS][제품관리] {len(selected)}개 제품 일괄 수정 테스트"
             print(msg)
-            send_slack_message(msg)
 
     except Exception as e:
         error_msg = f"[FAIL][제품관리] 일괄 수정 중 예외 발생\n에러 내용: {str(e)}"
         print(error_msg)
-        send_slack_message(error_msg)
         raise

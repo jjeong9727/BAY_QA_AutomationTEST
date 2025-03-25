@@ -8,18 +8,11 @@ from datetime import datetime
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
-# ✅ Slack Webhook 설정
-SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-# SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
+
 
 # ✅ 실행 카운트를 저장할 파일 경로
 COUNT_FILE = "run_count.txt"
 
-def send_slack_message(message):
-    """ Slack으로 메시지 전송"""
-    payload = {"text": message}
-    response = requests.post(SLACK_WEBHOOK_URL, json=payload)
-    assert response.status_code == 200, "❌ Slack 메시지 전송 실패!"
 
 def get_run_count():
     """ 실행 횟수를 불러오고 증가시키는 함수"""
@@ -162,12 +155,10 @@ def test_register_product(browser):
 
         message = f"[Pass][제품관리] 1개 제품 등록 테스트"
         print(message)
-        send_slack_message(message)
 
     except Exception as e:
         error_message = f"❌ 제품 등록 실패! 오류: {str(e)}"
         print(error_message)
-        send_slack_message(error_message)
         raise
 
 # 여러 제품 등록 테스트
@@ -267,13 +258,11 @@ def test_register_multiple_products(browser):
         # Slack 알림 전송
         message = f"[PASS][제품관리] {num_products}개 제품 등록 테스트"
         print(message)
-        send_slack_message(message)
 
 
     except Exception as e:
         error_message = f"❌ 제품 등록 실패! 오류: {str(e)}"
         print(error_message)
-        send_slack_message(error_message)
         raise
 
 

@@ -6,14 +6,7 @@ from datetime import datetime
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
-# ✅ Slack Webhook 설정
-SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-# SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
 
-def send_slack_message(message):
-    payload = {"text": message}
-    response = requests.post(SLACK_WEBHOOK_URL, json=payload)
-    assert response.status_code == 200, "❌ Slack 메시지 전송 실패!"
 
 
 @pytest.fixture(scope="function")
@@ -53,18 +46,15 @@ def delete_product_and_verify(page, row_index: int):
             product_display_name = product_name.splitlines()[0]
             msg = f"[PASS][제품관리] 제품 삭제 테스트 (삭제된 제품: '{product_display_name}')"
             print(msg)
-            send_slack_message(msg)
         else:
             product_display_name = product_name.splitlines()[0]
             fail_msg = f"[FAIL][제품관리] 제품 '{product_display_name}' 삭제 실패 (리스트에 존재)"
             print(fail_msg)
-            send_slack_message(fail_msg)
             assert False, fail_msg
 
     except Exception as e:
         error_msg = f"[FAIL][제품관리] 제품 '{product_name}' 삭제 중 예외 발생\n에러 내용: {str(e)}"
         print(error_msg)
-        send_slack_message(error_msg)
         raise  # 에러 재발생 시켜서 테스트 실패 처리
 # 단일 제품 선택 후 삭제
 def test_delete_product(browser):
@@ -89,7 +79,6 @@ def test_delete_product(browser):
 
     if not target_rows:
         print("삭제할 등록테스트 제품이 없습니다.")
-        send_slack_message("[SKIP][제품관리] 삭제할 '등록테스트' 제품이 없어 테스트를 건너뜁니다.")
         return
 
     # 랜덤으로 하나 선택해서 삭제
@@ -121,7 +110,6 @@ def test_bulk_delete_products(browser):
 
     if len(target_rows) < 1:
         print("삭제할 등록테스트 제품이 없습니다.")
-        send_slack_message("[SKIP][제품관리] 삭제할 '등록테스트' 제품이 없어 테스트를 건너뜁니다.")
         return
 
     num_to_select = min(random.randint(1, 3), len(target_rows))
@@ -152,17 +140,14 @@ def test_bulk_delete_products(browser):
         if not failed:
             msg = f"[PASS][제품관리] 제품 {len(selected_product_names)}개 일괄 삭제 성공: {selected_product_names}"
             print(msg)
-            send_slack_message(msg)
         else:
             fail_msg = f"[FAIL][제품관리] 일부 제품 삭제 실패: {failed}"
             print(fail_msg)
-            send_slack_message(fail_msg)
             assert False, fail_msg
 
     except Exception as e:
         error_msg = f"[FAIL][제품관리] 일괄 삭제 중 예외 발생\n에러 내용: {str(e)}"
         print(error_msg)
-        send_slack_message(error_msg)
         raise
 
 
@@ -352,7 +337,6 @@ def test_bulk_delete_products(browser):
 #     assert error_locator.is_visible() 
 
 #     success_msg = "[PASS][제품관리] 제품명 중복 등록 불가 테스트"
-#     send_slack_message(success_msg)
 
 
 
