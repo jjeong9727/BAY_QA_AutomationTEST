@@ -9,10 +9,7 @@ jobs:
   qa-test:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./scripts  # 모든 파이썬 스크립트가 있는 위치
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
