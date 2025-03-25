@@ -2,6 +2,8 @@ import json
 import os
 import requests
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
 
 # 환경 변수에서 Slack Webhook과 Jira URL 가져오기
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
