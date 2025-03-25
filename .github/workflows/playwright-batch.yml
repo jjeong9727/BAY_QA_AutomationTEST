@@ -29,14 +29,14 @@ jobs:
           python scripts/run_tests_and_generate_json.py
 
       - name: Register Jira issues
-        run: python create_jira.py
+        run: python scripts/create_jira.py
         env:
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_URL: ${{ secrets.JIRA_URL }}
 
       - name: Send Slack notification
-        run: python send_slack.py
+        run: python scripts/send_slack.py
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           JIRA_URL: ${{ secrets.JIRA_URL }}
