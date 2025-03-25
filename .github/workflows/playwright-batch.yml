@@ -21,7 +21,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install -r ../requirements.txt
+          pip install -r /requirements.txt
 
       - name: Set up Node.js (for Playwright)
         uses: actions/setup-node@v4
@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Playwright tests and generate result.json
         run: |
-          npx playwright test --reporter=json > ../result.json
+          npx playwright test --reporter=json > cripts/result.json
 
       - name: Parse test results → summary.json
         run: python parse_results.py
