@@ -4,8 +4,8 @@ import random
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
-# SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
+SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
+# SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
 
 def send_slack_message(message):
     payload = {"text": message}

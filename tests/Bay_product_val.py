@@ -5,8 +5,8 @@ from playwright.sync_api import Page
 from config import URLS, Account
 
 # Slack Webhook
-# SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
-SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
+SLACK_WEBHOOK_URL = URLS["slack_PV"] #private
+# SLACK_WEBHOOK_URL = URLS["slack_CH"] #3명
 
 def send_slack_message(message: str):
     payload = {"text": message}
