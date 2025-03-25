@@ -23,16 +23,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Set up Node.js (for Playwright)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Playwright and dependencies
-        run: |
-          npm install
-          npx playwright install --with-deps
-
+      
       - name: Run Playwright tests and generate result.json
         run: |
           npx playwright test --reporter=json > cripts/result.json
