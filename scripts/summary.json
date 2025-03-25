@@ -1,0 +1,14 @@
+[
+  {
+    "name": "[제품등록] Validation 중복 테스트",
+    "file": "tests/Bay_prdctg_val.py",
+    "status": "passed"
+  },
+  {
+    "name": "[재고출고] 수량 차감 오류",
+    "file": "tests/Bay_stock.py",
+    "status": "failed",
+    "message": "Expected inventory to decrease by 5",
+    "stack": "Traceback (most recent call last): ..."
+  }
+]
