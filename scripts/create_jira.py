@@ -15,10 +15,25 @@ def create_issue(summary, description):
         "fields": {
             "project": { "key": PROJECT_KEY },
             "summary": summary,
-            "description": description,
+            "description": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": description
+                            }
+                        ]
+                    }
+                ]
+            },
             "issuetype": { "name": "Bug" }
         }
     }
+
     response = requests.post(
         url,
         json=payload,
