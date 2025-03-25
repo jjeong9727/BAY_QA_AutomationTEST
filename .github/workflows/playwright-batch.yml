@@ -28,9 +28,6 @@ jobs:
         run: |
           python scripts/run_tests_and_generate_json.py
 
-      - name: Parse test results → summary.json
-        run: python parse_results.py
-
       - name: Register Jira issues
         run: python create_jira.py
         env:
