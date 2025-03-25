@@ -63,7 +63,7 @@ def main():
     changed = False
     for t in tests:
         if t["status"] == "failed" and "jira_key" not in t:
-            summary = f"[TEST FAIL] {t['name']}"
+            summary = t["name"]
             description = f"*파일:* {t['file']}\n\n*에러 메시지:*\n{t.get('message', '')}\n\n*스택 트레이스:*\n{t.get('stack', '')}"
             issue_key = create_issue(summary, description)
             if issue_key:

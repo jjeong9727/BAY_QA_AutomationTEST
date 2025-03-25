@@ -1,6 +1,73 @@
 import json
 import os
 
+# ✅ 전체 이름 고정 매핑
+full_name_mapping = {
+    "test_login_success": "로그인 성공",
+    "test_login_wrong_password": "잘못된 비밀번호",
+    "test_login_empty_fields": "빈 입력값 검증",
+    "test_register_product": "단일 제품 등록",
+    "test_register_multiple_products": "여러 제품 등록",
+    "test_duplicate_product_name": "제품명 중복 등록"
+}
+
+# ✅ 단어 매핑
+word_mapping = {
+    "login": "로그인",
+    "wrong": "잘못된",
+    "password": "비밀번호",
+    "empty": "빈",
+    "fields": "입력값",
+    "duplicate": "중복",
+    "type": "구분",
+    "category": "종류",
+    "maker": "제조사",
+    "add": "추가",
+    "register": "등록",
+    "bulk": "일괄",
+    "delete": "삭제",
+    "edit": "수정",
+    "product": "제품",
+    "products": "제품",
+    "stock": "재고",
+    "inflow": "입고",
+    "outflow": "출고"
+}
+
+# ✅ 테스트 파일명 기반 메뉴 매핑
+menu_mapping = {
+    "test_Bay_login.py": "로그인",
+    "test_Bay_delivery.py": "배송",
+    "test_Bay_prdctg.py": "카테고리",
+    "test_Bay_prdctg_val.py": "카테고리",
+    "test_Bay_product.pt": "제품관리",
+    "test_Bay_product_delete.py": "제품관리",
+    "test_Bay_product_edit.py": "제품관리",
+    "test_Bay_product.val.py": "제품관리",
+    "test_Bay_stock.py": "재고관리"
+}
+
+# ✅ name 생성 함수
+def prettify_name(raw_name: str, file: str, status: str) -> str:
+    filename = os.path.basename(file)
+    menu = menu_mapping.get(filename, "기타")
+
+    # 1. 고정 매핑 우선
+    if raw_name in full_name_mapping:
+        label = full_name_mapping[raw_name]
+    else:
+        words = raw_name.replace("test_", "").split("_")
+        pretty_words = [word_mapping.get(w, w) for w in words]
+        label = " ".join(pretty_words)
+
+    # 2. 포맷 구성
+    name = f"[자동화][{menu}] {label}"
+    if status == "failed":
+        name += " 테스트 실패"
+
+    return name
+
+# ✅ 요약 파일 생성
 def extract_results(report_path="result.json", output_path="scripts/summary.json"):
     with open(report_path, "r", encoding="utf-8") as f:
         report = json.load(f)
@@ -8,7 +75,7 @@ def extract_results(report_path="result.json", output_path="scripts/summary.json
     summary = []
 
     for test in report.get("tests", []):
-        name = test.get("nodeid", "").split("::")[-1]
+        raw_name = test.get("nodeid", "").split("::")[-1]
         file = test.get("nodeid", "").split("::")[0]
         status = test.get("outcome", "")
         message = ""
@@ -24,7 +91,7 @@ def extract_results(report_path="result.json", output_path="scripts/summary.json
                 stack = longrepr
 
         summary.append({
-            "name": name,
+            "name": prettify_name(raw_name, file, status),
             "file": file,
             "status": status,
             "message": message,
