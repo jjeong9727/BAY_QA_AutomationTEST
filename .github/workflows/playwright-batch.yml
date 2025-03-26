@@ -3,7 +3,7 @@ name: Run QA Tests and Send Report
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0,12 * * *"  # 하루 2회 (UTC 기준, KST 오전 9시/오후 9시)
+    # - cron: "0 0,12 * * *"  # 하루 2회 (UTC 기준, KST 오전 9시/오후 9시)
 
 jobs:
   qa-test:
