@@ -19,7 +19,7 @@ def test_login_success(page):
 
     # 아이디, 비밀번호 입력 후 로그인 버튼 클릭
     page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
-    page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
+    page.fill("data-testid=input_pw", Account["wrongpw"])  # 비밀번호 입력
     page.click("data-testid=btn_login", timeout=50000)  # 로그인 버튼 클릭
 
     try:
