@@ -27,15 +27,6 @@ def get_run_count():
 
     return count
 
-@pytest.fixture(scope="function")
-def browser():
-    """ Playwright 브라우저 실행 및 종료"""
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        yield browser
-        browser.close()
-
-
 
 COUNT_FILE="Daily_count.json"
 def get_daily_count():

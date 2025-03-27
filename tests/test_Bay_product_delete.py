@@ -9,14 +9,6 @@ from config import URLS, Account
 
 
 
-@pytest.fixture(scope="function")
-def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        yield browser
-        browser.close()
-
-
 def check_delete(page, product_name: str) -> bool:
     rows = page.locator("table tbody tr").all()
     for row in rows:

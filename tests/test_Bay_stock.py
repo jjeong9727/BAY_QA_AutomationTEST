@@ -3,13 +3,8 @@ import random
 import requests
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
+from datetime import datetime
 
-@pytest.fixture(scope="function")
-def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        yield browser
-        browser.close()
 
 class StockManager:
     """제품 선택 및 재고 관리 클래스"""
@@ -33,9 +28,9 @@ class StockManager:
             if len(columns) < 6:
                 raise Exception("선택된 행에서 제품명 또는 재고량을 찾을 수 없음!")
 
-            self.original_product_name = columns[4].strip()
+            self.original_product_name = columns[1].strip()
             self.display_product_name = self.original_product_name.split("\n")[0]  # UI에서 선택할 첫 번째 줄
-            stock_value = columns[5].strip()
+            stock_value = columns[2].strip()
 
             if not stock_value.isdigit():
                 raise Exception(f"[{self.original_product_name}]의 재고 값이 숫자가 아님: {stock_value}")
@@ -61,9 +56,9 @@ class StockManager:
                 if len(columns) < 6:
                     continue
 
-                row_product_name = columns[4].strip()
+                row_product_name = columns[1].strip()
                 if self.original_product_name in row_product_name:  # 원본 제품명 비교
-                    stock_value = columns[5].strip()
+                    stock_value = columns[2].strip()
                     return int(stock_value) if stock_value.isdigit() else None
 
             return None  # 제품을 찾지 못한 경우
@@ -178,6 +173,39 @@ def test_stock_outflow(browser):
 
     safety_stock = 10
     if displayed_stock <= safety_stock:
-        
-        warning_msg = f"[⚠️경고] {display_product_name} 현재 재고({displayed_stock})가 안전 재고({safety_stock})보다 적습니다. ⚠️발주 필요⚠️"
-        print(warning_msg)
+        print(f"{display_product_name} 현재 재고({displayed_stock})가 안전 재고({safety_stock})보다 작음 → 자동 발주 확인 진행")
+
+        verify_auto_order(page, display_product_name)
+
+
+def verify_auto_order(page, product_name):
+    page.goto(URLS["bay_orderList"])
+    page.wait_for_url(URLS["bay_orderList"], timeout=60000)
+
+    assert page.url == URLS["bay_orderList"]
+    success_message = "[Pass] 발주내역으로 이동 확인"
+    print(success_message)
+
+    # today_str = datetime.today().strftime("%Y.%m.%d")
+    # tables = page.locator("section").all()
+
+    # for table in tables:
+    #     date_header = table.locator("h4").inner_text()
+    #     if today_str not in date_header:
+    #         continue
+
+    #     rows = table.locator("table tbody tr").all()
+    #     for row in rows:
+    #         columns = row.locator("td").all_inner_texts()
+    #         if len(columns) < 3:
+    #             continue
+
+    #         status = columns[0].strip()
+    #         name = columns[2].strip()
+
+    #         if product_name in name and status == "발주 요청":
+    #             print(f"[PASS][자동발주 확인] {product_name} → 상태: {status}")
+    #             return
+
+    # print(f"[FAIL][자동발주 확인 실패] {product_name} 상태: '발주 요청'인 항목이 오늘 날짜에 없음")
+    # assert False, f"[자동발주 실패] {product_name} 상태가 '발주 요청'으로 등록되지 않음"

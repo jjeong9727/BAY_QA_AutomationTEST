@@ -4,12 +4,6 @@ import random
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
-@pytest.fixture(scope="function")
-def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        yield browser
-        browser.close()
 
 # 🔔테스트 아이디 부여 필요🔔
 def test_add_categories(browser):

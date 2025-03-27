@@ -4,22 +4,15 @@ from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
 
-@pytest.fixture(scope="function")
-def browser():
-    """✅ Playwright 브라우저 실행 및 종료"""
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        yield browser
-        browser.close()
-
 # 정상 로그인 테스트
-def test_login_success(page):
+def test_login_success(browser):
     """아이디/비밀번호로 로그인 테스트 및 Slack 알림 전송"""
+    page = browser.new_page()
     page.goto(URLS["bay_login"])  # 테스트 대상 URL
 
     # 아이디, 비밀번호 입력 후 로그인 버튼 클릭
     page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
-    page.fill("data-testid=input_pw", Account["wrongpw"])  # 비밀번호 입력
+    page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
     page.click("data-testid=btn_login", timeout=50000)  # 로그인 버튼 클릭
 
     try:
@@ -39,7 +32,7 @@ def test_login_success(page):
 
 
 # 아이디/비밀번호 불일치 테스트(🔔테스트 아이디 부여 필요🔔)
-# def test_login_wrong_password(page):
+# def test_login_wrong_password(browser):
 #     page.goto(URLS["bay_login"])
 
 #     page.fill("data-testid=input_id", Account["testid"])
@@ -54,7 +47,7 @@ def test_login_success(page):
 #     success_msg = "[PASS] 비밀번호 불일치 테스트"
 
 # 아이디/비밀번호 미입력 테스트(🔔테스트 아이디 부여 필요🔔)
-# def test_login_empty_fields(page):
+# def test_login_empty_fields(browser):
 #     page.goto(URLS["bay_login"])
         
 #     page.click("data-testid=btn_login")  # 빈 값으로 로그인 버튼 클릭

@@ -28,13 +28,6 @@ def select_random_products(page, min_count=1, max_count=3):
     return selected
 
 
-@pytest.fixture(scope="function")
-def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        yield browser
-        browser.close()
-
 
 def test_bulk_edit_products(browser):
     page = browser.new_page()
