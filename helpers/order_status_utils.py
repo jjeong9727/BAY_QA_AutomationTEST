@@ -67,7 +67,7 @@ def check_order_status(browser, status_name, expected):
                     tracking_btn.click()
                 popup = popup_info.value
                 popup.wait_for_load_state()
-                assert "https://www.naver.com" in popup.url
+                assert "https://www.google.com" in popup.url
                 popup.close()
 
             if receive_btn.is_enabled():

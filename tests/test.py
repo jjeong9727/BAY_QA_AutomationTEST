@@ -1,178 +1,165 @@
 import pytest
-import random
 import requests
+import random
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 
 
-
-class StockManager:
-    """제품 선택 및 재고 관리 클래스"""
-    
-    def __init__(self, page):
-        self.page = page
-        self.original_product_name = 0
-        self.display_product_name = 0
-        self.initial_stock = 0
-
-    def select_random_product(self):
-        """테이블에서 랜덤으로 제품을 선택하고, 원본 제품명과 재고량 저장"""
-        try:
-            rows = self.page.locator("table tbody tr").all()
-            if not rows:
-                raise Exception("제품 목록이 비어 있음!")
-
-            random_row = random.choice(rows)
-            columns = random_row.locator("td").all_inner_texts()
-
-            if len(columns) < 6:
-                raise Exception("선택된 행에서 제품명 또는 재고량을 찾을 수 없음!")
-
-            self.original_product_name = columns[4].strip()
-            self.display_product_name = self.original_product_name.split("\n")[0]  # UI에서 선택할 첫 번째 줄
-            stock_value = columns[5].strip()
-
-            if not stock_value.isdigit():
-                raise Exception(f"[{self.original_product_name}]의 재고 값이 숫자가 아님: {stock_value}")
-
-            self.initial_stock = int(stock_value)
-
-            return self.original_product_name, self.display_product_name, self.initial_stock
-
-        except Exception as e:
-            print(f"제품 선택 중 오류 발생: {str(e)}")
-            return None, None, None
-
-    def get_current_stock(self):
-        """선택된 제품명의 현재 재고량을 반환"""
-        if not self.original_product_name:
-            print("오류: 저장된 제품명이 없음")
-            return 0
-
-        try:
-            rows = self.page.locator("table tbody tr").all()
-            for row in rows:
-                columns = row.locator("td").all_inner_texts()
-                if len(columns) < 6:
-                    continue
-
-                row_product_name = columns[4].strip()
-                if self.original_product_name in row_product_name:  # 원본 제품명 비교
-                    stock_value = columns[5].strip()
-                    return int(stock_value) if stock_value.isdigit() else None
-
-            return None  # 제품을 찾지 못한 경우
-
-        except Exception as e:
-            print(f"재고 검색 중 오류 발생: {str(e)}")
-            return None
-
-def test_stock_inflow(browser):
-    """재고 입고 테스트"""
+def test_edit_single_product(browser):
     page = browser.new_page()
     page.goto(URLS["bay_login"])
-
     page.fill("data-testid=input_id", Account["testid"])
     page.fill("data-testid=input_pw", Account["testpw"])
     page.click("data-testid=btn_login")
     page.wait_for_url(URLS["bay_home"], timeout=60000)
 
-    page.goto(URLS["bay_prdList"])
-    page.wait_for_url(URLS["bay_prdList"], timeout=60000)
+    base_url = URLS["bay_prdList"]
+    product_found = False
+    current_page = 1
 
-    # StockManager 인스턴스 생성 후 제품 선택
-    stock_manager = StockManager(page)
-    original_product_name, display_product_name, initial_stock = stock_manager.select_random_product()
-    
-    stock_change = random.randint(1, 10)
-    print(f"선택한 제품명: {original_product_name} (UI 선택용: {display_product_name}) / 재고: {initial_stock}")
+    # 1. 페이지를 순회하며 "등록테스트" 제품을 찾기
+    while not product_found:
+        page.goto(f"{base_url}?page={current_page}")
+        page.wait_for_timeout(1000)
 
+        rows = page.locator("table tbody tr")
+        for i in range(rows.count()):
+            name_cell = rows.nth(i).locator("td:nth-child(5)")
+            name_text = name_cell.inner_text().strip()
+
+            if name_text.startswith("등록테스트"):
+                # 수정 버튼 클릭
+                edit_btn = rows.nth(i).locator("button:has-text('수정')")
+                edit_btn.click()
+                product_found = True
+                target_name = name_text
+                target_page = current_page
+                break
+
+        if not product_found:
+            if rows.count() == 0:
+                break  # 더 이상 페이지 없음
+            current_page += 1
+
+    assert product_found, "❌ 수정할 등록테스트 제품을 찾을 수 없습니다."
+
+    # 2. 수정 화면에서 값 변경
+    page.wait_for_timeout(1000)
+
+    # 기존 구분값 가져오기
+    page.click("data-testid=drop_type_trigger")
+    page.wait_for_timeout(500)
+    type_options = page.locator("data-testid=drop_type_item").all_inner_texts()
+    current_type = page.locator("data-testid=drop_type_trigger").inner_text().strip()
+
+    new_type = None
+    for opt in type_options:
+        if opt != current_type:
+            new_type = opt
+            break
+
+    assert new_type, "❌ 다른 구분값을 찾을 수 없습니다."
+    page.locator("data-testid=drop_type_item", has_text=new_type).click()
+
+    # 제품명 수정
+    new_name = target_name + "_수정됨"
+    page.fill("data-testid=input_prdname_kor", new_name)
+
+    # 저장
+    page.click("data-testid=btn-save")
+    page.wait_for_url(URLS["bay_prdList"], timeout=10000)
+    page.wait_for_timeout(1000)
+
+    # 3. 제품 리스트 페이지에서 변경된 값 확인 (해당 페이지로 이동)
+    page.goto(f"{base_url}?page={target_page}")
+    page.wait_for_timeout(1000)
+    assert page.locator(f"text={new_name}").is_visible(), f"❌ 제품명 수정 미확인: {new_name}"
+
+    # 4. 재고관리 페이지에서 제품명 확인
     page.goto(URLS["bay_stock"])
-    page.wait_for_url(URLS["bay_stock"], timeout=60000)
-    page.click("data-testid=btn_stockAdd")
-    page.wait_for_url(URLS["bay_stockAdd"], timeout=60000)
+    page.wait_for_timeout(2000)
+    assert page.locator("table tbody td:nth-child(5)", has_text=new_name).is_visible(), f"❌ 재고 목록에 수정된 제품명 없음: {new_name}"
 
-    page.locator("data-testid=drop_status").click()
-    page.get_by_role("option", name="입고", exact=True).click()
-
-    # 🔹 제품 선택 시 `get_by_role("option")`을 사용하여 정확한 제품 선택
-    page.locator("data-testid=drop_prdname").click()
-    page.get_by_role("option", name=display_product_name, exact=True).click()
-
-    page.fill("data-testid=input_quantity", str(stock_change))
-    page.click("data-testid=btn_save")
-    page.wait_for_url(URLS["bay_stock"], timeout=60000)
-
-    expected_stock = initial_stock + stock_change
-
-    # StockManager 클래스를 사용하여 재고 확인
-
-    page.goto(URLS["bay_prdList"])
-    displayed_stock = stock_manager.get_current_stock()
-
-    assert expected_stock == displayed_stock, f"재고 불일치: 예상 {expected_stock}, 표시된 {displayed_stock}"
-
-    print(f"{original_product_name} - 입고 {stock_change}개 완료! 현재 재고: {displayed_stock}")
-
-    message = f"[PASS][입고테스트] {display_product_name} 기존 재고 {initial_stock} + 입고 {stock_change}개 완료! 현재 재고 {displayed_stock}"
-    print(message)
+    print(f"[PASS][제품관리] 제품명/구분 수정 확인됨: {new_name}")
 
 
-def test_stock_outflow(browser):
-    """재고 출고 테스트"""
+
+def test_edit_bulk_products(browser):
     page = browser.new_page()
     page.goto(URLS["bay_login"])
-
     page.fill("data-testid=input_id", Account["testid"])
     page.fill("data-testid=input_pw", Account["testpw"])
     page.click("data-testid=btn_login")
     page.wait_for_url(URLS["bay_home"], timeout=60000)
 
+    # 1. 제품 검색 (등록테스트)
     page.goto(URLS["bay_prdList"])
-    page.wait_for_url(URLS["bay_prdList"], timeout=60000)
+    page.fill("input[placeholder='제품명 검색']", "등록테스트")
+    page.click("data-testid=btn_search")
+    page.wait_for_timeout(1000)
 
-    # StockManager 인스턴스 생성 후 제품 선택
-    stock_manager = StockManager(page)
-    original_product_name, display_product_name, initial_stock = stock_manager.select_random_product()
-    
-    stock_change = random.randint(1, initial_stock) if initial_stock > 0 else 0
-    if stock_change == 0:
-        print(f"[재고 불가] {original_product_name}의 현재 재고 수량이 0 입니다.")
-        return
-    print(f"출고할 제품명: {original_product_name} (UI 선택용: {display_product_name}) / 재고: {initial_stock}")
+    rows = page.locator("table tbody tr")
+    row_count = rows.count()
 
-    page.goto(URLS["bay_stock"])
-    page.wait_for_url(URLS["bay_stock"], timeout=60000)
-    page.click("data-testid=btn_stockAdd")
-    page.wait_for_url(URLS["bay_stockAdd"], timeout=60000)
+    assert row_count >= 2, "❌ 검색 결과가 2개 이상 존재하지 않습니다."
 
-    page.locator("data-testid=drop_status").click()
-    page.get_by_role("option", name="출고", exact=True).click()
+    # 2. 2개 이상 랜덤 선택
+    indices = random.sample(range(row_count), k=random.randint(2, min(3, row_count)))
+    selected_names = []
+    page_index_map = {}
 
-    # 🔹 제품 선택 시 정확한 제품 선택
-    page.locator("data-testid=drop_prdname").click()
-    page.get_by_role("option", name=display_product_name, exact=True).click()
+    for idx in indices:
+        row = rows.nth(idx)
+        checkbox = row.locator("td:nth-child(1) input[type=checkbox]")
+        checkbox.click()
+        name = row.locator("td:nth-child(5)").inner_text().strip()
+        selected_names.append(name)
+        page_index_map[name] = 1  # 검색이므로 모두 첫 페이지로 가정
 
-    page.fill("data-testid=input_quantity", str(stock_change))
+    # 3. 일괄 수정 버튼 클릭
+    page.click("data-testid=btn_edit_bulk")
+    page.wait_for_timeout(2000)
+
+    # 4. 수정 화면에서 각 제품의 구분/제품명 수정 (폼 구조)
+    product_sections = page.locator("div[class*='product-edit-box']")  # 각 제품별 개별 섹션
+    updated_names = []
+
+    for i in range(product_sections.count()):
+        section = product_sections.nth(i)
+
+        # 기존 제품명
+        origin_name = section.locator("[data-testid=input_prdname_kor]").input_value()
+        new_name = origin_name + "_수정됨"
+
+        # 구분 변경
+        section.locator("[data-testid=drop_type_trigger]").click()
+        page.wait_for_timeout(300)
+        options = page.locator("[data-testid=drop_type_item]").all_inner_texts()
+        current = section.locator("[data-testid=drop_type_trigger]").inner_text()
+        for opt in options:
+            if opt != current:
+                page.locator("[data-testid=drop_type_item]", has_text=opt).click()
+                break
+
+        # 제품명 수정
+        section.locator("[data-testid=input_prdname_kor]").fill(new_name)
+        updated_names.append(new_name)
+
+    # 저장
     page.click("data-testid=btn_save")
-    page.wait_for_url(URLS["bay_stock"], timeout=60000)
+    page.wait_for_url(URLS["bay_prdList"], timeout=10000)
+    page.wait_for_timeout(1000)
 
-    expected_stock = initial_stock - stock_change
+    # 5. 제품 관리 페이지에서 수정된 제품명 확인
+    for name in updated_names:
+        page.goto(f"{URLS['bay_prdList']}?page=1")
+        page.wait_for_timeout(1000)
+        assert page.locator(f"text={name}").is_visible(), f"❌ 제품 관리 페이지에서 수정 확인 실패: {name}"
 
-    # StockManager 클래스를 사용하여 재고 확인
+    # 6. 재고 관리 페이지에서 제품명 확인
+    page.goto(URLS["bay_stock"])
+    page.wait_for_timeout(2000)
+    for name in updated_names:
+        assert page.locator("table tbody td:nth-child(5)", has_text=name).is_visible(), f"❌ 재고 목록에 수정된 제품명 없음: {name}"
 
-    page.goto(URLS["bay_prdList"])
-    displayed_stock = stock_manager.get_current_stock()
-
-    assert expected_stock == displayed_stock, f"재고 불일치: 예상 {expected_stock}, 표시된 {displayed_stock}"
-
-    print(f"{display_product_name} - 출고 {stock_change}개 완료! 현재 재고: {displayed_stock}")
-
-    message = f"[PASS][출고테스트] {display_product_name} 기존 재고 {initial_stock} - 출고 {stock_change}개 완료! 현재 재고 {displayed_stock}"
-    print(message)
-
-    safety_stock = 10
-    if displayed_stock <= safety_stock:
-        
-        warning_msg = f"[⚠️경고] {display_product_name} 현재 재고({displayed_stock})가 안전 재고({safety_stock})보다 적습니다. ⚠️발주 필요⚠️"
-        print(warning_msg)
+    print(f"[PASS][제품관리] {len(updated_names)}개 제품 일괄 수정 확인 완료")

@@ -1,0 +1,86 @@
+import json
+import os
+from datetime import datetime
+from helpers.order_status_utils import get_daily_count
+from config import URLS
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PRODUCT_FILE_PATH = os.path.join(BASE_DIR, "..", "product_name.json")
+
+def generate_product_names():
+    now = datetime.now()
+    cnt = get_daily_count()
+    date = now.strftime("%m%d_%H%M")
+    count = f"{cnt:02d}"
+    prdname_kor = f"등록테스트_{date}_{count}"
+    prdname_eng = f"TestProduct_{date}_{count}"
+    return prdname_kor, prdname_eng
+
+def append_product_name(supplier: str, type_name: str):
+    prdname_kor, prdname_eng = generate_product_names()
+
+    try:
+        with open(PRODUCT_FILE_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            if not isinstance(data, list):
+                data = []
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = []
+
+    data.append({
+        "kor": prdname_kor,
+        "eng": prdname_eng,
+        "supplier": supplier,
+        "type": type_name
+    })
+
+    with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+    return prdname_kor, prdname_eng
+
+def get_all_product_names():
+    try:
+        with open(PRODUCT_FILE_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+def get_latest_product_name():
+    all_names = get_all_product_names()
+    if not all_names:
+        raise ValueError("❌ 저장된 제품명이 없습니다.")
+    return all_names[-1]
+
+def remove_product_name_by_kor(kor_name: str):
+    data = get_all_product_names()
+    updated = [item for item in data if item["kor"] != kor_name]
+    with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(updated, f, ensure_ascii=False, indent=2)
+
+def is_product_exist(page, product_name: str) -> bool:
+    page.goto(URLS["bay_prdList"]) 
+    page.fill("input[placeholder='제품명 검색']", product_name)
+    page.click("data-testid=btn_search")
+    page.wait_for_timeout(1000)
+
+    rows = page.locator("table tbody tr")
+    for i in range(rows.count()):
+        row = rows.nth(i)
+        name = row.locator("td:nth-child(5)").inner_text().strip()
+        if product_name in name:
+            return True
+    return False
+
+def sync_product_names_with_server(page):
+    product_list = get_all_product_names()
+    valid_list = []
+
+    for item in product_list:
+        if is_product_exist(page, item["kor"]):
+            valid_list.append(item)
+        else:
+            print(f"[삭제됨] 서버에 없는 제품명 제거: {item['kor']}")
+            remove_product_name_by_kor(item["kor"])  # JSON에서 제거
+
+    return valid_list
