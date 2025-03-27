@@ -117,8 +117,8 @@ def test_stock_inflow(browser):
 
     message = f"[PASS][입고테스트] {display_product_name} 기존 재고 {initial_stock} + 입고 {stock_change}개 완료! 현재 재고 {displayed_stock}"
     print(message)
-    
-    update_product_flag(product_name, undeletable=True)
+
+    update_product_flag(original_product_name, undeletable=True)
 
 
 def test_stock_outflow(browser):
@@ -189,26 +189,4 @@ def verify_auto_order(page, product_name):
     success_message = "[Pass] 발주내역으로 이동 확인"
     print(success_message)
 
-    # today_str = datetime.today().strftime("%Y.%m.%d")
-    # tables = page.locator("section").all()
-
-    # for table in tables:
-    #     date_header = table.locator("h4").inner_text()
-    #     if today_str not in date_header:
-    #         continue
-
-    #     rows = table.locator("table tbody tr").all()
-    #     for row in rows:
-    #         columns = row.locator("td").all_inner_texts()
-    #         if len(columns) < 3:
-    #             continue
-
-    #         status = columns[0].strip()
-    #         name = columns[2].strip()
-
-    #         if product_name in name and status == "발주 요청":
-    #             print(f"[PASS][자동발주 확인] {product_name} → 상태: {status}")
-    #             return
-
-    # print(f"[FAIL][자동발주 확인 실패] {product_name} 상태: '발주 요청'인 항목이 오늘 날짜에 없음")
-    # assert False, f"[자동발주 실패] {product_name} 상태가 '발주 요청'으로 등록되지 않음"
+   
