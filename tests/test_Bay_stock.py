@@ -4,6 +4,7 @@ import requests
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 from datetime import datetime
+from helpers.product_utils import update_product_flag
 
 
 class StockManager:
@@ -116,6 +117,8 @@ def test_stock_inflow(browser):
 
     message = f"[PASS][입고테스트] {display_product_name} 기존 재고 {initial_stock} + 입고 {stock_change}개 완료! 현재 재고 {displayed_stock}"
     print(message)
+    
+    update_product_flag(product_name, undeletable=True)
 
 
 def test_stock_outflow(browser):

@@ -3,7 +3,7 @@ import random
 import requests
 from playwright.sync_api import Page
 from config import URLS, Account
-from helpers.product_utils import get_latest_product_name
+from helpers.product_utils import get_latest_product_name, load_saved_product_names
 
 def test_duplicate_product_name(browser):
     from helpers.product_utils import get_latest_product_name
@@ -71,3 +71,50 @@ def test_duplicate_product_name(browser):
     except Exception as e:
         print(f"❌ 중복 테스트 실패: {str(e)}")
         raise
+
+
+
+def test_delete_restricted_products(browser):
+    page = browser.new_page()
+    page.goto(URLS["bay_login"])
+    page.fill("data-testid=input_id", Account["testid"])
+    page.fill("data-testid=input_pw", Account["testpw"])
+    page.click("data-testid=btn_login")
+    page.wait_for_url(URLS["bay_home"])
+
+    page.goto(URLS["bay_prdList"])
+    page.wait_for_timeout(1000)
+
+    products = load_saved_product_names()
+    undeletables = [p["kor"] for p in products if p.get("undeletable") is True]
+
+    if not undeletables:
+        print("❗ 삭제 제한 제품이 없습니다.")
+        return
+
+    for name in undeletables:
+        # 검색 후 삭제 시도
+        page.fill("input[placeholder='제품명 검색']", name)
+        page.click("data-testid=btn_search")
+        page.wait_for_timeout(1000)
+
+        row = page.locator(f"table tbody tr:has(td:text-is('{name}'))")
+        if row.count() == 0:
+            print(f"[SKIP] 제품이 존재하지 않음 (이미 삭제됨): {name}")
+            continue
+
+        delete_btn = row.locator("td:nth-child(9) button").nth(1)
+        delete_btn.click()
+
+        try:
+            # 삭제 alert 확인 버튼 클릭
+            page.locator("data-testid=btn_del").click()
+            page.wait_for_timeout(1500)
+
+            # 삭제 제한 alert 메시지 확인 (예: 'alert_using' 텍스트 포함)
+            assert page.locator("[role='alert']", has_text="삭제할 수 없습니다").is_visible(), f"❌ 삭제 제한 경고 미표시: {name}"
+            print(f"[PASS][제한삭제] 삭제 제한 정상 확인: {name}")
+
+        except Exception as e:
+            print(f"[FAIL][제한삭제] 삭제 제한 실패 또는 메시지 미확인: {name}\n에러: {str(e)}")
+            raise
