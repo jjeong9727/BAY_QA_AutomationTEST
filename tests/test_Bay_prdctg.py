@@ -1,66 +1,50 @@
 import pytest
 import requests
 import random
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import Page
 from config import URLS, Account
 
 
-# 🔔테스트 아이디 부여 필요🔔
-def test_add_categories(browser):
-    page = browser.new_page()
-    page.goto(URLS["login"])
+def generate_name(prefix):
+    return f"{prefix}{random.randint(1000, 9999)}"
 
-    # 로그인
+def login_and_go_to_add_page(page: Page):
+    page.goto(URLS["bay_login"])
     page.fill("data-testid=input_id", Account["testid"])
     page.fill("data-testid=input_pw", Account["testpw"])
     page.click("data-testid=btn_login")
-    page.wait_for_url(URLS["bay_home"], timeout=60000)
+    page.wait_for_url(URLS["bay_home"])
+    page.goto(URLS["bay_category"])
+    page.wait_for_url(URLS["bay_category"])
 
-    # 제품 등록 페이지로 이동
-    page.goto(URLS["bay_prdAdd"])
-    page.wait_for_url(URLS["bay_prdAdd"], timeout=60000)
+@pytest.mark.parametrize("tab,testid_kor,testid_eng,require_eng", [
+    ("tab_type", "input_kor", "input_eng", True),     # 구분
+    ("tab_category", "input_kor", "input_eng", True), # 종류
+    ("tab_maker", "input_kor", "input_eng", False),   # 제조사
+])
+def test_register_category_each(browser, tab, testid_kor, testid_eng, require_eng):
+    page: Page = browser.new_page()
+    login_and_go_to_add_page(page)
 
-    # 테스트용 구분/종류/제조사 이름 생성
-    name_type = f"구분{random.randint(1000, 9999)}"
-    name_ctg = f"종류{random.randint(1000, 9999)}"
-    name_maker = f"제조사{random.randint(1000, 9999)}"
+    page.click(f"data-testid={tab}")
+    page.click("data-testid=btn_add")
 
-    #구분 추가
-    page.click("data-testid=btn_typeadd")
-    empty_type_inputs = page.locator("data-testid=input_type").all()
-    for input_box in empty_type_inputs:
-        if input_box.input_value().strip() == "":
-            input_box.fill(name_type)
-            break
+    name_kr = generate_name("자동화등록_한글")
+    page.locator(f"data-testid={testid_kor}").last.fill(name_kr)
 
-    page.click("data-testid=btn_save")
-    page.wait_for_url(URLS["bay_prdList"], timeout=60000)
-    print(f"구분 추가 완료: {name_type}")
-
-    #종류 추가
-    page.goto(URLS["bay_prdAdd"])
-    page.wait_for_url(URLS["bay_prdAdd"], timeout=60000)
-    page.click("data-testid=btn_ctgadd")
-    empty_ctg_inputs = page.locator("data-testid=input_ctg").all()
-    for input_box in empty_ctg_inputs:
-        if input_box.input_value().strip() == "":
-            input_box.fill(name_ctg)
-            break
+    if require_eng:
+        name_en = generate_name("Auto_ENG")
+        page.locator(f"data-testid={testid_eng}").last.fill(name_en)
 
     page.click("data-testid=btn_save")
-    page.wait_for_url(URLS["bay_prdList"], timeout=60000)
-    print(f"종류 추가 완료: {name_ctg}")
+    page.wait_for_timeout(1500)
 
-    #제조사 추가
-    page.goto(URLS["bay_prdAdd"])
-    page.wait_for_url(URLS["bay_prdAdd"], timeout=60000)
-    page.click("data-testid=btn_makeradd")
-    empty_maker_inputs = page.locator("data-testid=input_maker").all()
-    for input_box in empty_maker_inputs:
-        if input_box.input_value().strip() == "":
-            input_box.fill(name_maker)
-            break
-
-    page.click("data-testid=btn_save")
-    page.wait_for_url(URLS["bay_prdList"], timeout=60000)
-    print(f"제조사 추가 완료: {name_maker}")
+    try:
+        assert page.locator(f"text={name_kr}").is_visible(), f"❌ 등록 항목 미노출: {name_kr}"
+        msg = f"[PASS][카테고리] {tab} 등록 후 리스트 노출 확인 성공 ({name_kr})"
+        print(msg)
+    except Exception as e:
+        fail_msg = f"[FAIL][카테고리] {tab} 등록 후 리스트 미노출\n에러: {str(e)}"
+        print(fail_msg)
+        raise
+    

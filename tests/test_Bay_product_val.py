@@ -1,6 +1,6 @@
 import pytest
 import random
-import requests
+import json
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import get_latest_product_name, load_saved_product_names
