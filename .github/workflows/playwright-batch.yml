@@ -1,7 +1,7 @@
-name: Run QA Tests and Send Report
+name: BAY QA Tests
 
 on:
-  # workflow_dispatch:
+  workflow_dispatch:
   # schedule:
   #   - cron: "0 0,12 * * *"  # 하루 2회 (UTC 기준, KST 오전 9시/오후 9시)
 
