@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from datetime import datetime
+from zoneinfo import ZoneInfo  # Python 3.9 이상에서 지원
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -15,7 +16,8 @@ def send_slack_message(text):
         print("Slack 전송 실패:", response.text)
 
 def main():
-    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    # 한국 시간으로 현재 시각
+    now = datetime.now(ZoneInfo("Asia/Seoul")).strftime("%Y-%m-%d %H:%M")
     summary_path = os.path.join("scripts", "summary.json")
 
     try:
@@ -30,7 +32,6 @@ def main():
     passed_tests = [t for t in all_tests if t["status"] == "passed"]
     failed_tests = [t for t in all_tests if t["status"] == "failed"]
 
-    # 테스트가 전혀 실행되지 않았을 때
     if total_tests == 0:
         send_slack_message(f"⚠️ [{now}] 테스트가 실행되지 않았습니다. summary.json에 테스트 결과가 없습니다.")
         return
