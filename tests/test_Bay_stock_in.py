@@ -1,6 +1,7 @@
 import random
 from config import URLS, Account
 from helpers.stock_utils import StockManager
+from helpers.product_utils import update_product_flag
 
 
 def test_stock_inflow(browser):
@@ -22,3 +23,6 @@ def test_stock_inflow(browser):
     expected = stock_manager.initial_stock + inflow_qty
     assert updated == expected, f"[FAIL] 입고 후 재고 오류: {expected} != {updated}"
     print(f"[PASS] 입고 확인: {stock_manager.display_product_name} → {updated}")
+
+    update_product_flag(stock_manager.original_product_name, stock=1)
+ 

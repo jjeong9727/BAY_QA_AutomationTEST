@@ -3,10 +3,12 @@ import os
 from datetime import datetime
 from helpers.order_status_utils import get_daily_count
 from config import URLS
+from pathlib import Path
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PRODUCT_FILE_PATH = os.path.join(BASE_DIR, "..", "product_name.json")
 
+# 제품명 생성 함수
 def generate_product_names():
     now = datetime.now()
     cnt = get_daily_count()
@@ -16,6 +18,7 @@ def generate_product_names():
     prdname_eng = f"TestProduct_{date}_{count}"
     return prdname_kor, prdname_eng
 
+# 제품 등록 후 json 파일에 제품 정보 업로드
 def append_product_name(
     prdname_kor: str,
     prdname_eng: str,
@@ -25,7 +28,9 @@ def append_product_name(
     category: str,
     maker: str,
     safety: int = 0,
-    auto_order : int =0
+    auto_order : int =0,
+    order_flag : int = 0,
+    stock_qty : int =0
 ):
     
     try:
@@ -47,8 +52,8 @@ def append_product_name(
         "maker": maker,
         "safety" : safety,
         "auto_order": auto_order,
-        "order_flag" : 0,
-        "stock_qty" : 0
+        "order_flag" : order_flag,
+        "stock_qty" : stock_qty
     })
 
     with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
@@ -56,7 +61,7 @@ def append_product_name(
 
     return prdname_kor, prdname_eng
 
-
+# json에 저장된 제품정보 모두 불러오기
 def get_all_product_names():
     try:
         with open(PRODUCT_FILE_PATH, "r", encoding="utf-8") as f:
@@ -64,18 +69,46 @@ def get_all_product_names():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
+#json 파일에 최근 등록된 제품 정보 불러오기
 def get_latest_product_name():
     all_names = get_all_product_names()
     if not all_names:
         raise ValueError("❌ 저장된 제품명이 없습니다.")
     return all_names[-1]
 
+#json 파일 내 제품 삭제
 def remove_product_name_by_kor(kor_name: str):
     data = get_all_product_names()
     updated = [item for item in data if item["kor"] != kor_name]
     with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
         json.dump(updated, f, ensure_ascii=False, indent=2)
 
+# 제품 등록 이후 해당 제품명 리스트 찾기
+def verify_products_in_list(page, product_names: list[str], url: str, search_placeholder: str, table_column_index: int):
+    page.goto(url)
+    page.wait_for_timeout(1000)
+
+    for name in product_names:
+        page.fill(f"input[placeholder='{search_placeholder}']", name)
+        page.click("data-testid=btn_search")
+        page.wait_for_timeout(1000)
+
+        rows = page.locator("table tbody tr")
+        found = False
+        for i in range(rows.count()):
+            row = rows.nth(i)
+            cell_text = row.locator(f"td:nth-child({table_column_index})").inner_text().strip()
+            if name in cell_text:
+                print(f"[PASS] {name} → '{url}'에서 확인됨")
+                found = True
+                break
+
+        if not found:
+            raise AssertionError(f"[FAIL] {name} → '{url}'에서 확인되지 않음")
+
+
+
+# 검색 동작으로 제품명 찾기
 def is_product_exist(page, product_name: str) -> bool:
     page.goto(URLS["bay_prdList"]) 
     page.fill("input[placeholder='제품명 검색']", product_name)
@@ -89,7 +122,7 @@ def is_product_exist(page, product_name: str) -> bool:
         if product_name in name:
             return True
     return False
-
+# 실제 등록된 리스트와 json 파일 비교 하여 업데이트
 def sync_product_names_with_server(page):
     product_list = get_all_product_names()
     valid_list = []
@@ -103,7 +136,7 @@ def sync_product_names_with_server(page):
 
     return valid_list
 
-
+# 제품 수정 후 json 파일 업데이트
 def update_product_flag(name_kor: str, **flags):
     path = "product_name.json"
     if not os.path.exists(path):
@@ -127,7 +160,7 @@ def load_saved_product_names():
         return []
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
-
+# 수정 후 수정 값 확인 (검색 포함)
 def verify_product_update(page, product_names):
     for name in product_names:
         page.goto(URLS["bay_prdList"])
@@ -149,7 +182,7 @@ def verify_product_update(page, product_names):
     print(f"[PASS] 수정된 {len(product_names)}개 제품 확인 완료")
 
 
-
+# 특정 제품의 현 재고량 찾기
 def get_product_stock(page, product_name):
     from config import URLS
     page.goto(URLS["bay_stock"])
@@ -167,6 +200,7 @@ def get_product_stock(page, product_name):
 
     raise Exception(f"❌ 재고관리에서 제품 '{product_name}'을 찾을 수 없음")
 
+# 업체 중복값 확인을 위한 정보 불러오기
 def is_duplicate_supplier_from_product_file(manager: str, contact: str) -> bool:
     try:
         with open(PRODUCT_FILE_PATH, "r", encoding="utf-8") as f:
@@ -182,7 +216,7 @@ def is_duplicate_supplier_from_product_file(manager: str, contact: str) -> bool:
         ):
             return True
     return False
-
+# 등록한 업체 정보 값 찾기(페이지네이션 포함)
 def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: str) -> bool:
     # 검색
     page.fill("input[placeholder='업체명 검색']", supplier)
@@ -206,3 +240,11 @@ def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: 
             break
 
     return False
+# 출고 테스트를 위한 제품 0 아닌 제품 찾기
+def get_outflow_target_products():
+    with open("product_name.json", "r", encoding="utf-8") as f:
+        products = json.load(f)
+
+    # stock 값이 0이 아닌 제품만 필터링
+    eligible = [p for p in products if p.get("stock", 0) != 0]
+    return eligible

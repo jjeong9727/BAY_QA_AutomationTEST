@@ -1,5 +1,5 @@
 
-base_url = "http://10.190.250.52:5174"
+base_url = "http://192.168.0.10:5174"
 
 URLS = {
     "bay_login": f"{base_url}/login",

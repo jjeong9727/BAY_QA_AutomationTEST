@@ -1,14 +1,9 @@
 from playwright.sync_api._generated import Browser
-import pytest
-import requests
-import os
 import random
-import time
-import json
 from datetime import datetime 
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
-from helpers.product_utils import append_product_name, generate_product_names
+from helpers.product_utils import append_product_name, generate_product_names, verify_product_in_list
 
 # 제품 1개 등록 테스트
 def test_register_product(browser: Browser):
@@ -101,6 +96,12 @@ def test_register_product(browser: Browser):
     )
 
     print(f"[PASS] 제품 등록 및 저장 완료: {prdname_kor} / {selected_manager}")
+     # 제품 등록 확인: 제품 리스트
+    verify_product_in_list(page, prdname_kor, URLS["bay_prdList"], "제품명 검색", 5)
+
+    # 제품 등록 확인: 재고 리스트
+    verify_product_in_list(page, prdname_kor, URLS["bay_stock"], "제품명 검색", 5)
+
 
 
 # 여러 개 제품 등록 테스트
@@ -191,5 +192,12 @@ def test_register_multiple_products(browser: Browser):
     page.click("data-testid=btn-save")
     page.wait_for_url(URLS["bay_prdList"], timeout=10000)
     print(f"[PASS][제품관리] {num_products}개 제품 등록 및 저장 완료")
+    
+    # 제품 등록 확인: 제품 리스트
+    verify_product_in_list(page, prdname_kor, URLS["bay_prdList"], "제품명 검색", 5)
+
+    # 제품 등록 확인: 재고 리스트
+    verify_product_in_list(page, prdname_kor, URLS["bay_stock"], "제품명 검색", 5)
+
 
     
