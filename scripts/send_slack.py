@@ -21,7 +21,8 @@ def main():
 
     try:
         with open(summary_path, "r", encoding="utf-8") as f:
-            all_tests = json.load(f)
+            data = json.load(f)
+            all_tests = data.get("tests", [])  # ✅ 리스트 추출
     except FileNotFoundError:
         send_slack_message(f"⚠️ [{now}] summary.json 파일이 존재하지 않습니다.")
         return
@@ -31,13 +32,11 @@ def main():
 
     message = f"📢 [{now}] 테스트 결과 요약\n"
 
-    # 성공 테스트 목록
     if passed_tests:
         message += f"\n🟩 성공 테스트 목록:\n"
         for i, test in enumerate(passed_tests, 1):
             message += f"{i}. {test['name']}\n"
 
-    # 실패 테스트 목록
     if failed_tests:
         message += f"\n🟥 실패 테스트 목록:\n"
         for i, test in enumerate(failed_tests, 1):
