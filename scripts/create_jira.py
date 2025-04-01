@@ -55,7 +55,8 @@ def main():
 
     try:
         with open(summary_path, "r", encoding="utf-8") as f:
-            tests = json.load(f)
+            data = json.load(f)  # 전체 summary.json 구조 로딩
+            tests = data.get("tests", [])  # 실제 테스트 리스트 추출
     except FileNotFoundError:
         print("❗ summary.json 파일이 존재하지 않습니다.")
         return
@@ -71,8 +72,9 @@ def main():
                 changed = True
 
     if changed:
+        data["tests"] = tests  # 수정된 리스트 다시 넣기
         with open(summary_path, "w", encoding="utf-8") as f:
-            json.dump(tests, f, indent=2, ensure_ascii=False)
+            json.dump(data, f, indent=2, ensure_ascii=False)
         print("💾 summary.json에 Jira 키 저장 완료")
 
 if __name__ == "__main__":
