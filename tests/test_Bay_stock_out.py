@@ -80,7 +80,7 @@ def test_stock_outflow(browser):
     page.wait_for_url(URLS["bay_stock"], timeout=10000)
 
     # 출고 후 재고 확인
-    updated_stock = get_current_stock(page, product_name)
+    updated_stock = manager.get_current_stock(page, product_name)
     expected_stock = current_stock - stock_out_qty
     assert updated_stock == expected_stock, f"[FAIL] 출고 후 재고 불일치: 예상={expected_stock}, 실제={updated_stock}"
     print(f"[PASS] 출고 완료 → {product_name} / 현재 재고: {updated_stock}")
