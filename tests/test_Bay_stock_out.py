@@ -2,8 +2,7 @@ import random
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import update_product_flag, get_all_product_names
-from helpers.stock_utils import get_current_stock
-
+from helpers.stock_utils import StockManager
 
 def get_outflow_target_products():
     """stock 값이 1 이상인 제품만 필터링"""
@@ -49,8 +48,11 @@ def test_stock_outflow(browser):
     product_data = random.choice(products)
     product_name = product_data["kor"]
     safety = product_data.get("safety", 0)
+    
+    manager = StockManager(page)
+    manager.load_product_from_json()
 
-    current_stock = get_current_stock(page, product_name)
+    current_stock = manager.get_current_stock()
 
     max_outflow = current_stock - 1
     min_outflow = current_stock - safety + 1
