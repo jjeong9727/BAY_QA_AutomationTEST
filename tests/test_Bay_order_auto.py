@@ -81,7 +81,7 @@ def test_stock_outflow(browser):
 
     stock_manager = StockManager(page)
     stock_manager.load_product_from_json()
-    stock_manager.search_product_by_name()a
+    stock_manager.search_product_by_name()
     outflow_qty = stock_manager.initial_stock if stock_manager.initial_stock > 0 else 1
     stock_manager.perform_outflow(outflow_qty)
 

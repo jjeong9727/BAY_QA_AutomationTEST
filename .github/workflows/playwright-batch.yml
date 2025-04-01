@@ -19,6 +19,11 @@ jobs:
         with:
           python-version: '3.10'
 
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+      
+
       - name: Install Python dependencies
         run: |
           pip install -r requirements.txt
@@ -41,3 +46,5 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           JIRA_URL: ${{ secrets.JIRA_URL }}
+
+

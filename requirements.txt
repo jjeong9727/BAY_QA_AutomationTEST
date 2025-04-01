@@ -3,3 +3,4 @@ python-dotenv
 playwright
 pytest
 pytest-json-report
+pytest-html
