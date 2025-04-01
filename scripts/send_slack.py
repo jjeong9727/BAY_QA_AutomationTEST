@@ -16,21 +16,27 @@ def send_slack_message(text):
 
 def main():
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
-
     summary_path = os.path.join("scripts", "summary.json")
 
     try:
         with open(summary_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-            all_tests = data.get("tests", [])  # ✅ 리스트 추출
-    except FileNotFoundError:
-        send_slack_message(f"⚠️ [{now}] summary.json 파일이 존재하지 않습니다.")
+            all_tests = data.get("tests", [])
+    except (FileNotFoundError, json.JSONDecodeError):
+        send_slack_message(f"❗ [{now}] summary.json 파일이 없거나 파싱에 실패했습니다.")
         return
 
+    total_tests = len(all_tests)
     passed_tests = [t for t in all_tests if t["status"] == "passed"]
     failed_tests = [t for t in all_tests if t["status"] == "failed"]
 
+    # 테스트가 전혀 실행되지 않았을 때
+    if total_tests == 0:
+        send_slack_message(f"⚠️ [{now}] 테스트가 실행되지 않았습니다. summary.json에 테스트 결과가 없습니다.")
+        return
+
     message = f"📢 [{now}] 테스트 결과 요약\n"
+    message += f"총 테스트 수: {total_tests}개\n"
 
     if passed_tests:
         message += f"\n🟩 성공 테스트 목록:\n"
