@@ -1,5 +1,5 @@
 from config import URLS, Account
-from helpers.product_utils import get_product_stock, update_product_flag
+from helpers.common_utils import get_product_stock, update_product_flag
 
 def check_order_status(browser, status_name, expected):
     page = browser.new_page()

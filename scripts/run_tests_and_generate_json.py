@@ -1,6 +1,7 @@
 import subprocess
 
 def run_tests_and_generate_summary():
+    print("🚀 테스트 실행 시작...")
     result = subprocess.run([
         "pytest",
         "tests/",

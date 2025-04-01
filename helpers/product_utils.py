@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime
-from helpers.order_status_utils import get_daily_count
+from helpers.common_utils import get_daily_count
 from config import URLS
 from pathlib import Path
 
