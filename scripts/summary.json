@@ -1,9 +1,0 @@
-[
-  {
-    "name": "[QA][로그인] 로그인 성공",
-    "file": "test_Bay_login.py",
-    "status": "passed",
-    "message": "",
-    "stack": ""
-  }
-]
