@@ -16,38 +16,40 @@ def send_slack_message(text):
         print("Slack 전송 실패:", response.text)
 
 def main():
-    # 한국 시간으로 현재 시각
-    now = datetime.now(ZoneInfo("Asia/Seoul")).strftime("%Y-%m-%d %H:%M")
+    # 한국 시간 기준
+    seoul_time = datetime.now(ZoneInfo("Asia/Seoul")).strftime("%Y-%m-%d %H:%M")
     summary_path = os.path.join("scripts", "summary.json")
 
     try:
         with open(summary_path, "r", encoding="utf-8") as f:
             data = json.load(f)
             all_tests = data.get("tests", [])
-    except (FileNotFoundError, json.JSONDecodeError):
-        send_slack_message(f"❗ [{now}] summary.json 파일이 없거나 파싱에 실패했습니다.")
+    except FileNotFoundError:
+        send_slack_message(f"❗ [{seoul_time}] summary.json 파일이 없습니다.")
+        return
+    except json.JSONDecodeError as e:
+        send_slack_message(f"❗ [{seoul_time}] summary.json 파싱 오류: {e}")
         return
 
-    total_tests = len(all_tests)
-    passed_tests = [t for t in all_tests if t["status"] == "passed"]
-    failed_tests = [t for t in all_tests if t["status"] == "failed"]
-
-    if total_tests == 0:
-        send_slack_message(f"⚠️ [{now}] 테스트가 실행되지 않았습니다. summary.json에 테스트 결과가 없습니다.")
+    if not all_tests:
+        send_slack_message(f"⚠️ [{seoul_time}] 테스트가 실행되지 않았습니다. summary.json의 테스트 항목이 비어 있습니다.")
         return
 
-    message = f"📢 [{now}] 테스트 결과 요약\n"
-    message += f"총 테스트 수: {total_tests}개\n"
+    passed_tests = [t for t in all_tests if t.get("status") == "passed"]
+    failed_tests = [t for t in all_tests if t.get("status") == "failed"]
+
+    message = f"📢 [{seoul_time}] 테스트 결과 요약\n"
+    message += f"총 테스트 수: {len(all_tests)}개\n"
 
     if passed_tests:
-        message += f"\n🟩 성공 테스트 목록:\n"
+        message += "\n🟩 성공 테스트 목록:\n"
         for i, test in enumerate(passed_tests, 1):
-            message += f"{i}. {test['name']}\n"
+            message += f"{i}. {test.get('name', '이름 없음')}\n"
 
     if failed_tests:
-        message += f"\n🟥 실패 테스트 목록:\n"
+        message += "\n🟥 실패 테스트 목록:\n"
         for i, test in enumerate(failed_tests, 1):
-            line = f"{i}. {test['name']}"
+            line = f"{i}. {test.get('name', '이름 없음')}"
             if "jira_key" in test:
                 line += f"\n   → {JIRA_URL}/browse/{test['jira_key']}"
             else:

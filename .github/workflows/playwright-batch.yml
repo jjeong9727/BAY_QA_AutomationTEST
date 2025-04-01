@@ -32,7 +32,9 @@ jobs:
           python -m playwright install --with-deps
 
       
-      - name: Run Playwright tests and generate result.json
+      - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           python scripts/run_tests_and_generate_json.py
 

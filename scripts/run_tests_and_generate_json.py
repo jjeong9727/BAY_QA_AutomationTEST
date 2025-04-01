@@ -1,4 +1,7 @@
 import subprocess
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 def run_tests_and_generate_summary():
     print("🚀 테스트 실행 시작...")
