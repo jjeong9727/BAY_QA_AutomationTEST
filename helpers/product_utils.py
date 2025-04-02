@@ -4,9 +4,12 @@ from datetime import datetime
 from helpers.common_utils import get_daily_count
 from config import URLS
 from pathlib import Path
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+from pathlib import Path
+
+PRODUCT_FILE_PATH = Path("product_name.json")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PRODUCT_FILE_PATH = os.path.join(BASE_DIR, "..", "product_name.json")
 
 # 제품명 생성 함수
 def generate_product_names():
@@ -22,13 +25,13 @@ def generate_product_names():
 def append_product_name(
     prdname_kor: str,
     prdname_eng: str,
-    manager: str,
-    contact: str,
+    # manager: str,
+    # contact: str,
     type_name: str,
     category: str,
     maker: str,
-    safety: int = 0,
-    auto_order : int =0,
+    # safety: int = 0,
+    # auto_order : int =0,
     order_flag : int = 0,
     stock_qty : int =0
 ):
@@ -45,13 +48,13 @@ def append_product_name(
         "kor": prdname_kor,
         "eng": prdname_eng,
         "supplier": "자동화 업체명",
-        "manager": manager,
-        "contact": contact,
+        # "manager": manager,
+        # "contact": contact,
         "type": type_name,
         "category": category,
         "maker": maker,
-        "safety" : safety,
-        "auto_order": auto_order,
+        # "safety" : safety,
+        # "auto_order": auto_order,
         "order_flag" : order_flag,
         "stock_qty" : stock_qty
     })
@@ -77,11 +80,27 @@ def get_latest_product_name():
     return all_names[-1]
 
 #json 파일 내 제품 삭제
-def remove_product_name_by_kor(kor_name: str):
-    data = get_all_product_names()
-    updated = [item for item in data if item["kor"] != kor_name]
-    with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
-        json.dump(updated, f, ensure_ascii=False, indent=2)
+def remove_products_from_json(deleted_names: list):
+    """
+    주어진 제품명 목록을 기반으로 JSON 파일에서 해당 제품들을 제거합니다.
+
+    Args:
+        deleted_names (list): 삭제할 제품명의 리스트.
+    """
+    try:
+        with open(PRODUCT_FILE_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        # 삭제할 제품명을 가진 항목 필터링
+        updated_data = [item for item in data if item.get("kor") not in deleted_names]
+
+        with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
+            json.dump(updated_data, f, ensure_ascii=False, indent=2)
+        
+
+    except Exception as e:
+        print(f"[ERROR] JSON 파일 업데이트 중 오류 발생: {e}")
+
 
 # 제품 등록 이후 해당 제품명 리스트 찾기
 def verify_products_in_list(page, product_names: list[str], url: str, search_placeholder: str, table_column_index: int):
@@ -108,20 +127,47 @@ def verify_products_in_list(page, product_names: list[str], url: str, search_pla
 
 
 
-# 검색 동작으로 제품명 찾기
-def is_product_exist(page, product_name: str) -> bool:
-    page.goto(URLS["bay_prdList"]) 
-    page.fill("input[placeholder='제품명 검색']", product_name)
-    page.click("data-testid=btn_search")
-    page.wait_for_timeout(1000)
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
-    rows = page.locator("table tbody tr")
-    for i in range(rows.count()):
-        row = rows.nth(i)
-        name = row.locator("td:nth-child(5)").inner_text().strip()
-        if product_name in name:
-            return True
-    return False
+def is_product_exist(page, product_names) -> bool:
+    if isinstance(product_names, str):
+        product_names = [product_names]
+
+    all_exist = True
+
+    for name in product_names:
+        try:
+            page.goto(URLS["bay_prdList"])
+            page.fill("input[placeholder='제품명 검색']", name)
+            page.locator("button:has-text('검색')").click()
+
+            # 검색 결과 로딩 대기
+            page.locator("table tbody tr").first.wait_for(timeout=5000)
+
+            rows = page.locator("table tbody tr")
+            found = False
+            for i in range(rows.count()):
+                row_name = rows.nth(i).locator("td:nth-child(5)").inner_text().strip()
+                if name in row_name:
+                    print(f"[PASS] '{name}' found in 제품 리스트")
+                    found = True
+                    break
+
+            if not found:
+                print(f"[FAIL] '{name}' not found in 제품 리스트")
+                all_exist = False
+
+        except PlaywrightTimeoutError:
+            print(f"[FAIL] Timeout while searching for '{name}'")
+            all_exist = False
+
+    return all_exist
+
+
+
+
+
+
 # 실제 등록된 리스트와 json 파일 비교 하여 업데이트
 def sync_product_names_with_server(page):
     product_list = get_all_product_names()
@@ -132,7 +178,7 @@ def sync_product_names_with_server(page):
             valid_list.append(item)
         else:
             print(f"[삭제됨] 서버에 없는 제품명 제거: {item['kor']}")
-            remove_product_name_by_kor(item["kor"])  # JSON에서 제거
+            remove_products_from_json(item["kor"])  # JSON에서 제거
 
     return valid_list
 

@@ -52,13 +52,28 @@ class StockManager:
         self.page.click("data-testid=btn_stockAdd")
         self.page.wait_for_url(URLS["bay_stockAdd"])
 
-        self.page.locator("data-testid=drop_status").click()
-        self.page.get_by_role("option", name="입고", exact=True).click()
-        self.page.locator("data-testid=drop_prdname").click()
-        self.page.get_by_role("option", name=self.display_product_name, exact=True).click()
-        self.page.fill("data-testid=input_quantity", str(quantity))
-        self.page.click("data-testid=btn_save")
+        # self.page.locator("data-testid=drop_status").click()
+        # self.page.get_by_role("option", name="입고", exact=True).click()
+        # self.page.locator("data-testid=drop_prdname").click()
+        # self.page.get_by_role("option", name=self.display_product_name, exact=True).click()
+        # self.page.fill("data-testid=input_quantity", str(quantity))
+        # self.page.click("data-testid=btn_save")
+        
+        self.page.locator("text=상태 선택").click
+        self.page.locator("text=입고").click
+        self.page.locator("text=제품명 선택").click
+        self.page.locator("text=마그네슘 정제").click
+        self.page.locator('[placeholder="0"]').last.fill("10")
+        
+        self.page.locator("text=저장").click
+
+        
+        
         self.page.wait_for_url(URLS["bay_stock"])
+        
+
+
+
 
     def perform_outflow(self, quantity: int):
         self.page.goto(URLS["bay_stock"])

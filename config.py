@@ -6,7 +6,7 @@ URLS = {
     "bay_home": f"{base_url}/notice", 
     "bay_prdList": f"{base_url}/legacy/products",
     "bay_prdAdd": f"{base_url}/products/add",
-    "bay_stock": f"{base_url}/stock",
+    "bay_stock": f"{base_url}/legacy/stock",
     "bay_stockAdd": f"{base_url}/stock/add",
     "bay_login": f"{base_url}/login",
     "bay_delv" : f"{base_url}/deliveries",

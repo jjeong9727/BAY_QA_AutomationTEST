@@ -1,15 +1,52 @@
 [
-    {
-      "kor": "등록테스트_0328_1105_01",
-      "eng": "TestProduct_0328_1105_01",
-      "contact": "010-6275-4153",
-      "manager": "담당자1234",
-      "supplier": "자동화 업체명",
-      "type": "구분A",
-      "category": "종류A",
-      "maker": "제조사A",
-      "stock": 0,
-      "auto_order": 0,
-      "order_flag" : 0
-    }
-  ]
+  {
+    "kor": "등록테스트_0402_1339_05",
+    "eng": "TestProduct_0402_1339_05",
+    "supplier": "자동화 업체명",
+    "type": "undefined",
+    "category": "undefined",
+    "maker": "undefined",
+    "order_flag": 0,
+    "stock_qty": 0
+  },
+  {
+    "kor": "등록테스트_0402_1423_05",
+    "eng": "TestProduct_0402_1423_05",
+    "supplier": "자동화 업체명",
+    "type": "undefined",
+    "category": "undefined",
+    "maker": "undefined",
+    "order_flag": 0,
+    "stock_qty": 0
+  },
+  {
+    "kor": "등록테스트_0402_1424_05",
+    "eng": "TestProduct_0402_1424_05",
+    "supplier": "자동화 업체명",
+    "type": "undefined",
+    "category": "undefined",
+    "maker": "undefined",
+    "order_flag": 0,
+    "stock_qty": 0
+  },
+  {
+    "kor": "등록테스트_0402_1433_05",
+    "eng": "TestProduct_0402_1433_05",
+    "supplier": "자동화 업체명",
+    "type": "undefined",
+    "category": "undefined",
+    "maker": "undefined",
+    "order_flag": 0,
+    "stock_qty": 0
+  },
+  {
+    "kor": "등록테스트_0402_1434_05",
+    "eng": "TestProduct_0402_1434_05",
+    "supplier": "자동화 업체명",
+    "type": "undefined",
+    "category": "undefined",
+    "maker": "undefined",
+    "order_flag": 0,
+    "stock_qty": 0
+  }
+]
