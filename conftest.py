@@ -17,8 +17,8 @@ def send_slack_message(message):
 def browser():
     """✅ Playwright 브라우저 실행 및 종료"""
     with sync_playwright() as p:
-        # browser = p.chromium.launch(headless=False)
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
+        # browser = p.chromium.launch(headless=True)
         yield browser
         browser.close()
 

@@ -2,11 +2,11 @@ import json
 import os
 import requests
 from datetime import datetime
-from zoneinfo import ZoneInfo  # Python 3.9 이상에서 지원
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
+
 load_dotenv()
 
-# 환경 변수에서 Slack Webhook과 Jira URL 가져오기
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 JIRA_URL = os.getenv("JIRA_URL")
 
@@ -23,7 +23,16 @@ def main():
     try:
         with open(summary_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-            all_tests = data.get("tests", [])
+
+        # summary.json 구조가 리스트인지 딕셔너리인지 확인
+        if isinstance(data, list):
+            all_tests = data  # summary.json이 리스트일 경우
+        elif isinstance(data, dict):
+            all_tests = data.get("tests", [])  # summary.json이 딕셔너리일 경우
+        else:
+            send_slack_message(f"❗ [{seoul_time}] summary.json 파일 형식 오류.")
+            return
+
     except FileNotFoundError:
         send_slack_message(f"❗ [{seoul_time}] summary.json 파일이 없습니다.")
         return
@@ -32,9 +41,10 @@ def main():
         return
 
     if not all_tests:
-        send_slack_message(f"⚠️ [{seoul_time}] 테스트가 실행되지 않았습니다. summary.json의 테스트 항목이 비어 있습니다.")
+        send_slack_message(f"⚠️ [{seoul_time}] 테스트가 실행되지 않았습니다.")
         return
 
+    # 성공한 테스트와 실패한 테스트를 분리
     passed_tests = [t for t in all_tests if t.get("status") == "passed"]
     failed_tests = [t for t in all_tests if t.get("status") == "failed"]
 
@@ -51,7 +61,7 @@ def main():
         for i, test in enumerate(failed_tests, 1):
             line = f"{i}. {test.get('name', '이름 없음')}"
             if "jira_key" in test:
-                line += f"\n   → {JIRA_URL}/browse/{test['jira_key']}"
+                line += f"\n   → [등록된 이슈] {JIRA_URL}/browse/{test['jira_key']}"
             else:
                 line += "\n   → Jira 등록 실패"
             message += line + "\n"

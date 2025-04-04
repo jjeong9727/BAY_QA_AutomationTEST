@@ -22,8 +22,11 @@ class StockManager:
         self.display_product_name = products[0]["kor"]
 
     def search_product_by_name(self):
-        self.page.fill("data-testid=input_search", self.display_product_name)
-        self.page.click("data-testid=btn_search")
+        # self.page.fill("data-testid=input_search", self.display_product_name)
+        # self.page.click("data-testid=btn_search")
+        self.page.goto(URLS["bay_prdList"])
+        self.page.fill("input[placeholder='제품명 검색']", self.display_product_name)    
+        self.page.locator("button:has-text('검색')").click()
         self.page.wait_for_timeout(1000)
         rows = self.page.locator("table tbody tr").all()
         for row in rows:
@@ -36,8 +39,10 @@ class StockManager:
 
     def get_current_stock(self):
         self.page.goto(URLS["bay_prdList"])
-        self.page.fill("data-testid=input_search", self.display_product_name)
-        self.page.click("data-testid=btn_search")
+        # self.page.fill("data-testid=input_search", self.display_product_name)
+        # self.page.click("data-testid=btn_search")
+        self.page.fill("input[placeholder='제품명 검색']", self.display_product_name)    
+        self.page.locator("button:has-text('검색')").click()
         self.page.wait_for_timeout(1000)
         rows = self.page.locator("table tbody tr").all()
         for row in rows:
@@ -59,17 +64,24 @@ class StockManager:
         # self.page.fill("data-testid=input_quantity", str(quantity))
         # self.page.click("data-testid=btn_save")
         
-        self.page.locator("text=상태 선택").click
-        self.page.locator("text=입고").click
-        self.page.locator("text=제품명 선택").click
-        self.page.locator("text=마그네슘 정제").click
+        self.page.locator("text=상태 선택").click()
+        self.page.locator("text=입고").click()
+        self.page.locator("text=제품명 선택").click()
+        self.page.locator("text=마그네슘 정제").click()
         self.page.locator('[placeholder="0"]').last.fill("10")
         
-        self.page.locator("text=저장").click
+        try:
+            self.page.locator("text=저장").click()  # 저장 버튼 클릭
+            # 페이지가 변경되었는지 확인 (예: 재고 목록으로 돌아갔다면 성공)
+            self.page.wait_for_url(URLS["bay_stock"], timeout=5000)  # 5초 내로 페이지 전환 대기
+            print("[PASS] 저장 버튼 클릭 성공")
+        except Exception as e:
+            print(f"[ERROR] 저장 버튼 클릭 실패: {e}")
+            raise AssertionError("[ERROR] 저장 버튼 클릭 실패")  # 실패 시 명확한 에러 메시지 제공
+
+        self.page.wait_for_url(URLS["bay_stock"])
 
         
-        
-        self.page.wait_for_url(URLS["bay_stock"])
         
 
 

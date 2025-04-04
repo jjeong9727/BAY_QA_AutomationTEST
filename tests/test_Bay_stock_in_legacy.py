@@ -11,13 +11,14 @@ def test_stock_inflow(browser):
     page.fill("data-testid=input_pw", Account["testpw"])
     page.click("data-testid=btn_login")
     page.wait_for_url(URLS["bay_home"])
+    page.goto(URLS["bay_stock"])
 
     stock_manager = StockManager(page)
     stock_manager.load_product_from_json()
     stock_manager.search_product_by_name()
 
     inflow_qty = random.randint(1, 10)
-    stock_manager.perform_inflow_legacy(inflow_qty)
+    stock_manager.perform_inflow(inflow_qty)
 
     updated = stock_manager.get_current_stock()
     expected = stock_manager.initial_stock + inflow_qty
