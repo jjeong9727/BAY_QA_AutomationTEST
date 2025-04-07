@@ -45,6 +45,7 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_URL: ${{ secrets.JIRA_URL }}
           JIRA_PROJECTKEY : ${{ secrets.JIRA_PROJECTKEY}}
+          ASSIGNEE_USERNAME : ${{ secrets.ASSIGNEE_USERNAME}}
 
       - name: Send Slack notification
         run: python scripts/send_slack.py

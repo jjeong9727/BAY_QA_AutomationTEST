@@ -1,5 +1,6 @@
 import requests
 from playwright.sync_api import Page, sync_playwright
+from config import URLS, Account
 
 def get_order_url_from_api(order_id: str) -> str:
     # 내부 API 호출하여 발주 수락 URL을 받아옴
@@ -7,31 +8,26 @@ def get_order_url_from_api(order_id: str) -> str:
     response = requests.get(api_url)
     
     if response.status_code == 200:
-        order_url = response.json().get('url')  # API에서 URL을 반환한다고 가정
+        order_url = response.json().get('url') 
         return order_url
     else:
         raise Exception(f"API 호출 실패: {response.status_code}")
 
 def test_order_acceptance_with_url(page: Page, order_url: str):
-    # 3. 발송된 URL 진입
-    page.goto(order_url)  # 받아온 URL로 진입
+    page.goto(order_url) 
 
-    # 4. 본인 인증 후 발주 수락
-    page.fill("input[data-testid='input_name']", "홍길동")
-    page.fill("input[data-testid='input_contact']", "010-1234-5678")
-    page.click("button[data-testid='btn_confirm']")  # 인증 버튼 클릭
-    page.click("button[data-testid='btn_accept']")  # 수락 버튼 클릭
-
-    # 5. 발주 내역 화면으로 이동해서 "발주 진행" 상태 확인
-    page.goto("URL_OF_ORDER_HISTORY_PAGE")
-    
-    # 발주 상태 확인
+    page.fill("input[data-testid='input_name']", "권정의")
+    page.fill("input[data-testid='input_contact']", "01062754153")
+    page.click("button[data-testid='btn_confirm']")  
+    page.click("button[data-testid='btn_accept']")  
+   
+    page.goto(URLS["bay_orderList"])
     page.wait_for_selector("h1")
     page_content = page.inner_text("h1")
 
     assert "발주 진행" in page_content, "발주 진행 상태가 아닙니다."
 
-# Playwright 실행 예시
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=False)
     page = browser.new_page()
