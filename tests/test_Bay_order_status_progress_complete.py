@@ -4,6 +4,7 @@ from helpers.order_status_data import order_status_map
 from helpers.order_status_utils import check_order_status_by_order_id, get_order_id_from_order_list, filter_products_by_delivery_status
 from helpers.save_test_result import save_test_result  
 from playwright.sync_api import Page, sync_playwright
+from config import URLS
 
 def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int):
     try:
