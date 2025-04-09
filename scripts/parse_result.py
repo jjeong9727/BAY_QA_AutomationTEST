@@ -21,7 +21,7 @@ word_mapping = {
     "fields": "입력값",
     "duplicate": "중복",
     "type": "구분",
-    "category": "종류",
+    "group": "종류",
     "maker": "제조사",
     "add": "추가",
     "register": "등록",

@@ -28,12 +28,13 @@ def append_product_name(
     # manager: str,
     # contact: str,
     type_name: str,
-    category: str,
+    group: str,
     maker: str,
     # safety: int = 0,
     # auto_order : int =0,
     order_flag : int = 0,
-    stock_qty : int =0
+    stock_qty : int =0,
+    delivery_status : int=0 # 1: 발주 요청, 2: 발주 진행, 3: 배송 진행, 4: 수령 완료(운송장O), 5: 발주 취소, 6: 발주 실패, 7: 수령 완료(운송장X)
 ):
     
     try:
@@ -51,12 +52,13 @@ def append_product_name(
         # "manager": manager,
         # "contact": contact,
         "type": type_name,
-        "category": category,
+        "group": group,
         "maker": maker,
         # "safety" : safety,
         # "auto_order": auto_order,
         "order_flag" : order_flag,
-        "stock_qty" : stock_qty
+        "stock_qty" : stock_qty,
+        "delivery_status" : delivery_status
     })
 
     with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
@@ -183,7 +185,8 @@ def sync_product_names_with_server(page):
     return valid_list
 
 # 제품 수정 후 json 파일 업데이트
-def update_product_flag(name_kor: str, **flags):
+def update_product_flag(name_kor: str, stock: int = None, **flags):
+    """제품의 상태와 재고 업데이트"""
     path = "product_name.json"
     if not os.path.exists(path):
         return
@@ -193,11 +196,17 @@ def update_product_flag(name_kor: str, **flags):
 
     for product in products:
         if product.get("kor") == name_kor:
-            product.update(flags)
+            if stock is not None:
+                product["stock-qty"] = stock  # 입고 후 재고 수량 업데이트
+            product["order_flag"] = 1  # 자동 발주 후 order_flag를 1로 업데이트
+            product["delivery_status"] = 1  # 자동 발주 후 delivery_status를 1로 업데이트
+            product.update(flags)  # 다른 플래그 업데이트
             break
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(products, f, ensure_ascii=False, indent=2)
+
+
 
 # 저장된 제품명 목록 불러오기
 def load_saved_product_names():

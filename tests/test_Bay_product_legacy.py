@@ -31,13 +31,13 @@ def test_register_product(browser: Browser):
     selected_type_element.click()
 
     # 종류 선택
-    page.click("data-testid=drop_category_trigger")
+    page.click("data-testid=drop_group_trigger")
     page.wait_for_timeout(1000)
-    category_items = page.locator("data-testid=drop_category_item")
-    category_index = random.randint(0, category_items.count() - 1)
-    selected_category_element = category_items.nth(category_index)
-    selected_category = selected_category_element.get_attribute("data-value").strip()
-    selected_category_element.click()
+    group_items = page.locator("data-testid=drop_group_item")
+    group_index = random.randint(0, group_items.count() - 1)
+    selected_group_element = group_items.nth(group_index)
+    selected_group = selected_group_element.get_attribute("data-value").strip()
+    selected_group_element.click()
 
     # 제조사 선택
     page.click("data-testid=drop_maker_trigger")
@@ -92,7 +92,7 @@ def test_register_product(browser: Browser):
         # manager=selected_manager,
         # contact=selected_contact,
         type_name=selected_type,
-        category=selected_category,
+        group=selected_group,
         maker=selected_maker,
         # safety=safety,
         # auto_order=auto_order
@@ -149,16 +149,16 @@ def test_register_product(browser: Browser):
 #         print(f"[LOG] 구분 선택 완료 - {round(time.time() - type_start, 2)}초")
 
 #         # --- 종류 선택 ---
-#         category_start = time.time()
-#         page.locator("data-testid=drop_category_trigger").nth(idx).click()
-#         page.locator("data-testid=drop_category_item").first.wait_for(state="visible", timeout=5000)
+#         group_start = time.time()
+#         page.locator("data-testid=drop_group_trigger").nth(idx).click()
+#         page.locator("data-testid=drop_group_item").first.wait_for(state="visible", timeout=5000)
 
-#         category_items = page.locator("data-testid=drop_category_item")
-#         category_count = category_items.count()
-#         category_index = random.randint(0, category_count - 1)
-#         selected_category = category_items.nth(category_index).get_attribute("data-value").strip()
-#         category_items.nth(category_index).click()
-#         print(f"[LOG] 종류 선택 완료 - {round(time.time() - category_start, 2)}초")
+#         group_items = page.locator("data-testid=drop_group_item")
+#         group_count = group_items.count()
+#         group_index = random.randint(0, group_count - 1)
+#         selected_group = group_items.nth(group_index).get_attribute("data-value").strip()
+#         group_items.nth(group_index).click()
+#         print(f"[LOG] 종류 선택 완료 - {round(time.time() - group_start, 2)}초")
 
 #         # --- 제조사 선택 ---
 #         maker_start = time.time()

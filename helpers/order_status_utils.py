@@ -1,129 +1,80 @@
-from config import URLS, Account
-from helpers.common_utils import get_product_stock, update_product_flag
+import json
+from playwright.sync_api import Page
 
-def check_order_status(browser, status_name, expected):
-    page = browser.new_page()
-    page.goto(URLS["bay_login"])
-    page.fill("data-testid=input_id", Account["testid"])
-    page.fill("data-testid=input_pw", Account["testpw"])
-    page.click("data-testid=btn_login")
-    page.wait_for_url(URLS["bay_home"], timeout=60000)
+def load_products_from_json():
+    with open("product_name.json", "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    page.goto(URLS["bay_orderList"])
-    page.wait_for_url(URLS["bay_orderList"], timeout=60000)
+def filter_products_by_delivery_status(delivery_status: int):
+    # 제품 파일에서 배송 상태에 맞는 제품만 필터링하여 반환
+    products = load_products_from_json()
+    filtered_products = [product for product in products if product.get("delivery_status") == delivery_status]
+    return filtered_products
 
-    page.locator("data-testid=drop_status").click()
-    options = page.locator("[data-testid^=drop_status_item]").all()
-    for option in options:
-        if option.inner_text().strip() == status_name:
-            option.click()
+def get_product_by_name(product_name: str):
+    # 제품명으로 특정 제품을 찾음
+    products = load_products_from_json()
+    for product in products:
+        if product["kor"] == product_name:
+            return product
+    return None
+
+def get_order_id_from_order_list(page: Page, product_name: str):
+    # 발주 내역에서 제품명을 검색하여 해당 행의 order_id를 가져옴
+    page.locator("data-testid=input_search").fill(product_name)  # 제품명 검색
+    page.click("data-testid=btn_search")  # 검색 버튼 클릭
+    page.wait_for_timeout(2000)  # 검색 결과 대기
+
+    # 검색 결과에서 order_id 가져오기
+    rows = page.locator("table tbody tr").all()
+    for row in rows:
+        # 해당 행에서 제품명이 일치하는지 확인
+        row_product_name = row.locator("td").nth(1).inner_text().strip()  # 제품명 열
+        if row_product_name == product_name:
+            # 제품명이 일치하면 해당 행에서 order_id 추출
+            order_id = row.locator("[data-testid=order_id]").inner_text().strip()
+            return order_id
+
+    # 만약 해당 제품이 없으면 None 반환
+    return None
+
+def update_product_delivery_status(product_name: str, new_status: int):
+    products = load_products_from_json()
+    for product in products:
+        if product["kor"] == product_name:
+            product["delivery_status"] = new_status
             break
+    
+    # 변경된 데이터를 다시 product_name.json에 저장
+    with open("product_name.json", "w", encoding="utf-8") as f:
+        json.dump(products, f, ensure_ascii=False, indent=2)
 
-    page.click("data-testid=btn_search")
-    page.wait_for_timeout(2000)
-
+def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, expected: dict):
+    # 각 order_id에 대해 상태를 확인
     tables = page.locator("section").all()
     found = False
-
+    
     for table in tables:
         rows = table.locator("table tbody tr").all()
         for row in rows:
             status = row.locator("td").nth(0).inner_text().strip()
-            if status != status_name:
-                continue
-
-            found = True
-            product_name = row.locator("td").nth(1).inner_text().strip()
-            order_qty_text = row.locator("td").nth(3).inner_text().strip()
-            order_qty = int(order_qty_text) if order_qty_text.isdigit() else 0
-
-            resend_btn = row.locator("[data-testid=btn_resend]")
-            tracking_cell = row.locator("td").nth(8)
-            tracking_btn = row.locator("[data-testid=btn_tracking]")
-            receive_btn = row.locator("[data-testid=btn_receive]")
-            cancel_btn = row.locator("[data-testid=btn_cancel]")
-
-            try:
-                if "resend_enabled" in expected:
-                    assert resend_btn.is_enabled() == expected["resend_enabled"]
-            except Exception as e:
-                print(f"[ERROR] 재발송 버튼 상태 확인 실패: {product_name}\n{e}")
-
-            try:
-                if "tracking_text" in expected:
-                    assert expected["tracking_text"] in tracking_cell.inner_text().strip()
-                if "tracking_button" in expected:
-                    assert tracking_btn.is_visible()
-            except Exception as e:
-                print(f"[ERROR] 배송조회 요소 확인 실패: {product_name}\n{e}")
-
-            try:
-                if "receive_enabled" in expected:
-                    assert receive_btn.is_enabled() == expected["receive_enabled"]
-                if "receive_done_text" in expected:
-                    assert expected["receive_done_text"] in receive_btn.inner_text().strip()
-            except Exception as e:
-                print(f"[ERROR] 수령확정 버튼 상태 확인 실패: {product_name}\n{e}")
-
-            try:
-                if "cancel_enabled" in expected:
-                    assert cancel_btn.is_enabled() == expected["cancel_enabled"]
-            except Exception as e:
-                print(f"[ERROR] 취소 버튼 상태 확인 실패: {product_name}\n{e}")
-
-            try:
-                if resend_btn.is_enabled():
-                    resend_btn.click()
-                    page.locator("[data-testid=btn_confirm]").click()
-            except Exception as e:
-                print(f"[ERROR] 재발송 처리 실패: {product_name}\n{e}")
-
-            try:
-                if tracking_btn.is_visible():
-                    with page.expect_popup() as popup_info:
-                        tracking_btn.click()
-                    popup = popup_info.value
-                    popup.wait_for_load_state()
-                    assert "https://www.google.com" in popup.url # 테스트용 구글 주소 (추후 변동 예정) 링크 생성 방법? 문의 후 테스트 방법 확정 필요요
-                    popup.close()
-            except Exception as e:
-                print(f"[ERROR] 배송조회 처리 실패: {product_name}\n{e}")
-
-            try:
-                if receive_btn.is_enabled():
-                    before_stock = get_product_stock(page, product_name)
-                    receive_btn.click()
-                    page.locator("[data-testid=btn_confirm]").click()
-                    page.wait_for_timeout(1000)
-
-                    updated_btn_text = row.locator("[data-testid=btn_receive]").inner_text().strip()
-                    assert "수령 완료" in updated_btn_text
-
-                    after_stock = get_product_stock(page, product_name)
-                    expected_stock = before_stock + order_qty
-
-                    assert after_stock == expected_stock, (
-                        f"[FAIL] 자동 입고 실패 : 예상 {expected_stock}, 실제 {after_stock}"
-                    )
-
-                    update_product_flag(product_name, order_flag=False)
-                    print(f"[PASS] 수령 확정 후 자동 입고 확인 완료 : {product_name} (입고 {order_qty}개)")
-            except Exception as e:
-                print(f"[ERROR] 수령확정 처리 실패: {product_name}\n{e}")
-
-            try:
-                if cancel_btn.is_enabled():
-                    cancel_btn.click()
-                    page.locator("[data-testid=btn_confirm]").click()
-                    page.wait_for_timeout(1000)
-
-                    updated_status = row.locator("td").nth(0).inner_text().strip()
-                    assert updated_status == "발주 취소"
-            except Exception as e:
-                print(f"[ERROR] 취소 처리 실패: {product_name}\n{e}")
-
-            break
+            if status == status_name:
+                current_order_id = row.locator("[data-testid=order_id]").inner_text().strip()
+                if current_order_id == order_id:
+                    found = True
+                    # 상태별 조건 확인
+                    for key, value in expected.items():
+                        if key == "resend_enabled":
+                            assert row.locator("[data-testid=btn_resend]").is_enabled() == value
+                        if key == "tracking_text":
+                            assert value in row.locator("td").nth(8).inner_text().strip()
+                        if key == "receive_enabled":
+                            assert row.locator("[data-testid=btn_receive]").is_enabled() == value
+                        if key == "cancel_enabled":
+                            assert row.locator("[data-testid=btn_cancel]").is_enabled() == value
+                    break
         if found:
             break
 
-    assert found, f"상태 '{status_name}' 행을 찾을 수 없음"
+    if not found:
+        raise AssertionError(f"발주 내역을 찾을 수 없습니다: {status_name}, {order_id}")

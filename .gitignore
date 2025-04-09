@@ -1,2 +1,5 @@
 .env
 screenshot/
+tests/test.py
+test.py
+update_jira_issue.py
