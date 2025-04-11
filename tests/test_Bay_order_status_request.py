@@ -24,10 +24,20 @@ def update_product_status_in_json(product_name: str, delivery_status: int):
         save_test_result("update_product_status_in_json", error_message, status="ERROR")
         raise
 
-def test_order_acceptance_and_update_status(page: Page, product_name: str):
+def test_order_acceptance(page: Page, product_name: str):
+    page.goto(URLS["bay_login"])
+
+
+
+
+
+
+
     try:
         # 발주 내역 화면으로 이동하여 제품명 검색 후 order_id 가져오기
         page.goto(URLS["bay_orderList"])
+        page.click("data-testid=drop_status_trigger")
+        page.locator("data-testid=drop_status_item").nth(1).click() 
         page.fill("data-testid=input_search", product_name)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
@@ -83,11 +93,11 @@ def test_order_acceptance_and_update_status(page: Page, product_name: str):
         update_product_status_in_json(product_name, 2)  # delivery_status를 2로 업데이트 (발주 수락)
 
     except Exception as e:
-        error_message = f"❌ Error in test_order_acceptance_and_update_status: {str(e)}"
+        error_message = f"❌ Error in test_order_acceptance: {str(e)}"
         print(error_message)
 
         # 실패한 테스트 결과를 저장
-        save_test_result("test_order_acceptance_and_update_status", error_message, status="FAIL")
+        save_test_result("test_order_acceptance", error_message, status="FAIL")
         raise  # Reraise the exception to maintain test flow
 
 def main():
@@ -108,7 +118,7 @@ def main():
         for target_product in selected_products:
             product_name = target_product['product_name']
             print(f"테스트 중: {product_name}")
-            test_order_acceptance_and_update_status(page, product_name)
+            test_order_acceptance(page, product_name)
 
         browser.close()
 

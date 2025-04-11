@@ -24,7 +24,7 @@ def update_product_status_in_json(product_name: str, delivery_status: int):
         save_test_result("update_product_status_in_json", error_message, status="ERROR")
         raise
 
-def test_order_delivery_and_update_status(page: Page):
+def test_order_delivery(page: Page):
     try:
         # product.json에서 delivery_status가 2인 제품들 찾기
         with open('product_name.json', 'r', encoding='utf-8') as f:
@@ -102,11 +102,11 @@ def test_order_delivery_and_update_status(page: Page):
         update_product_status_in_json(product_name, 3)  # delivery_status를 3으로 업데이트 (배송 진행)
 
     except Exception as e:
-        error_message = f"❌ Error in test_order_delivery_and_update_status: {str(e)}"
+        error_message = f"❌ Error in test_order_delivery: {str(e)}"
         print(error_message)
         
         # 실패한 테스트 결과를 저장
-        save_test_result("test_order_delivery_and_update_status", error_message, status="FAIL")
+        save_test_result("test_order_delivery", error_message, status="FAIL")
         raise  # Reraise the exception to maintain test flow
 
 def main():
@@ -115,7 +115,7 @@ def main():
         page = browser.new_page()
 
         # 배송 진행 상태로 업데이트 작업을 하나의 함수에서 처리
-        test_order_delivery_and_update_status(page)
+        test_order_delivery(page)
         
         browser.close()
 

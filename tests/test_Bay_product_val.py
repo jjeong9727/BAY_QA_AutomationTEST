@@ -8,11 +8,10 @@ from helpers.save_test_result import save_test_result
 
 def test_duplicate_product_name(browser):
     try:
+        
         item = get_latest_product_name()
         prdname_kor = item["kor"]
         prdname_eng = item["eng"]
-        supplier = item["supplier"]
-        type_name = item["type"]
 
         page = browser.new_page()
         page.goto(URLS["bay_login"])
@@ -25,44 +24,52 @@ def test_duplicate_product_name(browser):
         page.wait_for_url(URLS["bay_prdAdd"], timeout=60000)
 
         # 구분 선택
-        page.click("data-testid=drop_type_trigger")
+        page.locator("data-testid=drop_type_trigger").last.click()
         page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_type_item", has_text=type_name).click()
+        type_items = page.locator("data-testid=drop_type_item")
+        type_index = random.randint(0, type_items.count() - 1)
+        selected_type = type_items.nth(type_index).inner_text().strip()
+        type_items.nth(type_index).click()
 
-        # 종류 선택 (랜덤)
-        page.click("data-testid=drop_group_trigger")
+        # 종류 선택
+        page.locator("data-testid=drop_group_trigger").last.click()
         page.wait_for_timeout(1000)
-        group_options = page.locator("data-testid=drop_group_item").all_inner_texts()
-        page.locator("data-testid=drop_group_item").nth(random.randint(0, len(group_options)-1)).click()
-
-        # 제조사 선택 (랜덤)
-        page.click("data-testid=drop_maker_trigger")
-        page.wait_for_timeout(1000)
-        maker_options = page.locator("data-testid=drop_maker_item").all_inner_texts()
-        page.locator("data-testid=drop_maker_item").nth(random.randint(0, len(maker_options)-1)).click()
-
-        # 공급업체 선택
-        page.click("data-testid=drop_supplier")
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_supplier_item", has_text=supplier).click()
-
-        # 업체 연락처 선택
-        page.click("data-testid=drop_contact")
-        page.wait_for_timeout(1000)
-        contact_options = page.locator("data-testid=drop_contact_item").all_inner_texts()
-        page.locator("data-testid=drop_contact_item").nth(random.randint(0, len(contact_options)-1)).click()
-
-        # 제품명 입력
+        group_items = page.locator("data-testid=drop_group_item")
+        group_index = random.randint(0, group_items.count() - 1)
+        selected_group = group_items.nth(group_index).inner_text().strip()
+        group_items.nth(group_index).click()
+        
+        # 제품명 생성 및 입력
         page.fill("data-testid=input_prdname_kor", prdname_kor)
         page.fill("data-testid=input_prdname_eng", prdname_eng)
 
-        # 단가 / 재고 입력
-        page.fill("data-testid=input_price", "1234")
-        page.fill("data-testid=input_stk_safe", "10")
-        page.fill("data-testid=input_stk_qty", "20")
+        prdnames=[]
+        prdnames.append(prdname_kor)
 
-        page.click("data-testid=btn-save")
-        page.wait_for_timeout(2000)
+        # 제조사 선택
+        page.locator("data-testid=drop_maker_trigger").last.click()
+        page.wait_for_timeout(1000)
+        maker_items = page.locator("data-testid=drop_maker_item")
+        maker_index = random.randint(0, maker_items.count() - 1)
+        selected_maker = maker_items.nth(maker_index).inner_text().strip()
+        maker_items.nth(maker_index).click()
+
+        page.locator("data-testid=input_price").last.fill(str(random.randint(1000, 10000)))
+        safety = 5
+        page.locator("data-testid=input_stk_safe").last.fill(str(safety))
+        auto_order = 10
+        page.locator("data-testid=input_stk_qty").last.fill(str(auto_order))
+
+        # 업체 선택
+        page.locator("data-testid=drop_supplier_trigger").last.click()
+        page.wait_for_timeout(1000)
+        supplier_items = page.locator("data-testid=drop_supplier_item")
+        automation_supplier = supplier_items.locator("text=자동화업체")  # 자동화 테스트 안정성을 위해 지정
+        automation_supplier.click()
+
+        # page.click("data-testid=btn-save")
+        page.locator("button:has-text('완료')").click()
+        page.wait_for_timeout(500)
         alert = page.locator("data-testid=alert_duplicate")
         assert alert.is_visible(), "❌ 중복 경고 메시지가 표시되지 않음"
         print(f"[PASS][제품관리] 중복 제품명 등록 방지 확인됨: {prdname_kor}")
@@ -74,50 +81,3 @@ def test_duplicate_product_name(browser):
         raise
 
 
-def test_delete_restricted_products(browser):
-    try:
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"])
-
-        page.goto(URLS["bay_prdList"])
-        page.wait_for_timeout(1000)
-
-        products = load_saved_product_names()
-        undeletables = [p["kor"] for p in products if p.get("undeletable") is True]
-
-        if not undeletables:
-            print("❗ 삭제 제한 제품이 없습니다.")
-            save_test_result("test_delete_restricted_products", "❌ 삭제 제한 제품이 없습니다.", status="FAIL")
-            return
-
-        for name in undeletables:
-            # 검색 후 삭제 시도
-            page.fill("input[placeholder='제품명 검색']", name)
-            page.click("data-testid=btn_search")
-            page.wait_for_timeout(1000)
-
-            row = page.locator(f"table tbody tr:has(td:text-is('{name}'))")
-            if row.count() == 0:
-                print(f"[SKIP] 제품이 존재하지 않음 (이미 삭제됨): {name}")
-                continue
-
-            delete_btn = row.locator("td:nth-child(9) button").nth(1)
-            delete_btn.click()
-
-            # 삭제 alert 확인 버튼 클릭
-            page.locator("data-testid=btn_del").click()
-            page.wait_for_timeout(1500)
-
-            # 삭제 제한 alert 메시지 확인 (예: 'alert_using' 텍스트 포함)
-            assert page.locator("[role='alert']", has_text="삭제할 수 없습니다").is_visible(), f"❌ 삭제 제한 경고 미표시: {name}"
-            print(f"[PASS][제한삭제] 삭제 제한 정상 확인: {name}")
-            save_test_result("test_delete_restricted_products", f"[PASS] 삭제 제한 정상 확인: {name}", status="PASS")
-
-    except Exception as e:
-        print(f"[FAIL][제한삭제] 삭제 제한 실패 또는 메시지 미확인\n에러: {str(e)}")
-        save_test_result("test_delete_restricted_products", f"[FAIL] 삭제 제한 실패 또는 메시지 미확인\n에러: {str(e)}", status="FAIL")
-        raise

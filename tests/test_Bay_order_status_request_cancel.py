@@ -24,7 +24,7 @@ def update_product_status_in_json(product_name: str, delivery_status: int):
         save_test_result("update_product_status_in_json", error_message, status="ERROR")
         raise
 
-def test_order_acceptance_and_update_status(page: Page):
+def test_order_cancel(page: Page):
     try:
         # delivery_status가 1인 제품들 필터링
         eligible_products = filter_products_by_delivery_status(1)
@@ -48,14 +48,10 @@ def test_order_acceptance_and_update_status(page: Page):
         if not order_id:
             raise ValueError(f"Order ID for product {product_name} not found")
 
-        # 확인할 상태에 대한 기대값을 설정
-        expected_status_conditions = order_status_map["발주 취소"]  # 발주 취소 상태 조건을 설정
-
-        # order_id를 사용하여 order status 확인
-        check_order_status_by_order_id(page, "발주 취소", order_id, expected_status_conditions)
 
 
-        # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭
+
+        # 취소 버튼을 누르고 수령확인 버튼 클릭
         page.click("button[data-testid='btn_cancel']")  # 취소 버튼 클릭
         page.click("button[data-testid='btn_confirm']")  # 확인 버튼 클릭
 
@@ -76,13 +72,19 @@ def test_order_acceptance_and_update_status(page: Page):
 
         # 발주 진행 상태 확인 후 delivery_status 값을 5로 업데이트 (발주 취소 상태)
         update_product_status_in_json(product_name, 5, 0)  # delivery_status를 5로 업데이트 (발주 취소), order_flag=0
+         
+        # 확인할 상태에 대한 기대값을 설정
+        expected_status_conditions = order_status_map["발주 취소"]  # 발주 취소 상태 조건을 설정
+
+        # order_id를 사용하여 order status 확인
+        check_order_status_by_order_id(page, "발주 취소", order_id, expected_status_conditions)
 
     except Exception as e:
-        error_message = f"❌ Error in test_order_acceptance_and_update_status: {str(e)}"
+        error_message = f"❌ Error in test_order_cancel: {str(e)}"
         print(error_message)
 
         # 실패한 테스트 결과를 저장
-        save_test_result("test_order_acceptance_and_update_status", error_message, status="FAIL")
+        save_test_result("test_order_cancel", error_message, status="FAIL")
         raise  # Reraise the exception to maintain test flow
 
 def main():
@@ -91,7 +93,7 @@ def main():
         page = browser.new_page()
 
         # 발주 수락과 상태 업데이트 작업을 하나의 함수에서 처리
-        test_order_acceptance_and_update_status(page)
+        test_order_cancel(page)
         
         browser.close()
 

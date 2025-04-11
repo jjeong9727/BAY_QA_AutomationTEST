@@ -25,7 +25,7 @@ def update_product_status_in_json(product_name: str, delivery_status: int, order
         save_test_result("update_product_status_in_json", error_message, status="ERROR")
         raise
 
-def test_order_receive_and_inventory_check(page: Page):
+def test_order_receive_from_delivery(page: Page):
     try:
         # product.json에서 delivery_status가 3인 제품들 찾기
         with open('product_name.json', 'r', encoding='utf-8') as f:
@@ -102,9 +102,9 @@ def test_order_receive_and_inventory_check(page: Page):
         print(f"[PASS] 현 재고량 확인 완료 → 예상: {expected_stock}, 실제: {current_stock}")
 
     except Exception as e:
-        error_message = f"❌ Error in test_order_receive_and_inventory_check: {str(e)}"
+        error_message = f"❌ Error in test_order_receive_from_delivery: {str(e)}"
         print(error_message)
         
         # 실패한 테스트 결과를 저장
-        save_test_result("test_order_receive_and_inventory_check", error_message, status="FAIL")
+        save_test_result("test_order_receive_from_delivery", error_message, status="FAIL")
         raise

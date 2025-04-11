@@ -40,9 +40,29 @@ def update_product_flag(product_name, flag):
     # 실제 제품 상태 업데이트 로직
     print(f"[공통] 제품 플래그 업데이트: {product_name} → {flag}")
 
+import os
+from datetime import datetime
+
+# 카운트를 저장할 파일 경로
+COUNT_FILE_PATH = "daily_count.json"
+
 def get_daily_count():
-    # 날짜별 발주 횟수 등 집계
-    return 5  # 예시 값
+    # 현재 날짜를 가져와서 날짜 포맷을 설정
+    today = datetime.now().strftime("%Y-%m-%d")
 
-
-
+    # 파일에 저장된 날짜가 오늘인지 확인
+    if os.path.exists(COUNT_FILE_PATH):
+        with open(COUNT_FILE_PATH, "r") as file:
+            last_date, count = file.read().split(",")
+            # 날짜가 같으면 카운트를 증가시키고 반환
+            if last_date == today:
+                count = str(int(count) + 1)  # 카운트 증가
+                with open(COUNT_FILE_PATH, "w") as file:
+                    file.write(f"{today},{count}")
+                return int(count)
+    
+    # 만약 파일이 없거나 날짜가 다르면 카운트 초기화
+    with open(COUNT_FILE_PATH, "w") as file:
+        file.write(f"{today},1")  # 오늘 날짜와 1부터 시작하는 카운트 저장
+    
+    return 1  # 처음 카운트가 1부터 시작

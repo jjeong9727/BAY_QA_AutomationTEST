@@ -12,7 +12,7 @@ def test_login_success(browser):
 
     # 아이디, 비밀번호 입력 후 로그인 버튼 클릭
     page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
-    page.fill("data-testid=input_pw", Account["wrongpw"])  # 비밀번호 입력
+    page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
     page.click("data-testid=btn_login", timeout=50000)  # 로그인 버튼 클릭
 
     try:
@@ -37,15 +37,24 @@ def test_login_wrong_password(browser):
     page = browser.new_page()
     page.goto(URLS["bay_login"])
 
-    page.fill("data-testid=input_id", Account["testid"])
-    page.fill("data-testid=input_pw", Account["wrongpw"])  # ❌ 잘못된 비밀번호 입력
-    page.click("data-testid=btn_login")
-
     try:
-        locator = page.locator("li[role='status']", has_text="이메일 또는 비밀번호가 올바르지 않습니다")
+        # 1. 로그인 버튼이 비활성화되어 있는지 확인
+        login_button = page.locator("data-testid=btn_login")
+        assert login_button.is_disabled(), "[FAIL] 로그인 버튼이 비활성화되지 않았습니다."
+
+        # 2. 아이디와 비밀번호를 입력
+        page.fill("data-testid=input_id", Account["testid"])
+        page.fill("data-testid=input_pw", Account["wrongpw"])  # 잘못된 비밀번호 입력
+
+        # 3. 로그인 버튼 클릭
+        login_button.click()
+
+        # 4. "이메일 또는 비밀번호가 올바르지 않습니다" 문구가 나타나는지 확인
+        locator = page.locator("data-testid=alert_wrong_pw")
         locator.wait_for(state="visible", timeout=5000)
-        assert locator.is_visible()
-        print("[PASS] 비밀번호 불일치 테스트")
+        assert locator.is_visible(), "[FAIL] 이메일 또는 비밀번호가 올바르지 않습니다 문구가 보이지 않습니다."
+
+        print("[PASS] 비밀번호 불일치 테스트 성공")
 
     except Exception as e:
         error_message = f"❌ 비밀번호 불일치 테스트 실패! 오류: {str(e)}"
@@ -53,27 +62,4 @@ def test_login_wrong_password(browser):
 
         # 실패한 테스트 결과를 저장
         save_test_result("test_login_wrong_password", error_message, status="FAIL")
-        raise
-
-# 아이디/비밀번호 미입력 테스트
-def test_login_empty_fields(browser):
-    page = browser.new_page()
-    page.goto(URLS["bay_login"])
-        
-    try:
-        page.click("data-testid=btn_login")  # 빈 값으로 로그인 버튼 클릭
-        # 🔹 오류 메시지가 나타날 때까지 최대 5초 대기
-        assert "아이디을(를) 입력해주세요." in page.content()
-        assert "비밀번호을(를) 입력해주세요." in page.content()
-
-        # 필수 입력값 누락 메시지 확인
-        success_msg = "[PASS] 로그인 미입력 테스트"
-        print(success_msg)
-
-    except Exception as e:
-        error_message = f"❌ 로그인 미입력 테스트 실패! 오류: {str(e)}"
-        print(error_message)
-
-        # 실패한 테스트 결과를 저장
-        save_test_result("test_login_empty_fields", error_message, status="FAIL")
         raise

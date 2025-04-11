@@ -69,8 +69,8 @@ def test_duplicate_category_names(browser):
     try_duplicate_registration(page, "tab_type", name_kr, name_en2)
 
     # 종류
-    # register_category(page, "tab_category", name_kr, name_en1)
-    try_duplicate_registration(page, "tab_category", name_kr, name_en2)
+    # register_category(page, "tab_group", name_kr, name_en1)
+    try_duplicate_registration(page, "tab_group", name_kr, name_en2)
 
     # 제조사
     # register_category(page, "tab_maker", name_kr, name_en1)

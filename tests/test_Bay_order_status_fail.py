@@ -4,7 +4,7 @@ from helpers.order_status_utils import check_order_status_by_order_id, get_order
 from helpers.save_test_result import save_test_result  
 from playwright.sync_api import Page
 
-def test_order_status_발주실패(page: Page):
+def test_order_status_fail(page: Page):
     status_name = "발주 실패"
     expected = order_status_map["발주 실패"]
     

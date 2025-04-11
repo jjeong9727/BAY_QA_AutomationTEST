@@ -25,7 +25,7 @@ def update_product_status_in_json(product_name: str, delivery_status: int, order
         save_test_result("update_product_status_in_json", error_message, status="ERROR")
         raise
 
-def test_order_receive_and_inventory_check(page: Page):
+def test_order_receive_from_progress(page: Page):
     try:
         # product.json에서 delivery_status가 2인 제품들 찾기
         with open('product_name.json', 'r', encoding='utf-8') as f:
@@ -122,7 +122,7 @@ def test_order_receive_and_inventory_check(page: Page):
         print(error_message)
         
         # 실패한 테스트 결과를 저장
-        save_test_result("test_order_receive_and_inventory_check", error_message, status="FAIL")
+        save_test_result("test_order_receive_from_progress", error_message, status="FAIL")
         raise  # Reraise the exception to maintain test flow
 
 def main():
@@ -131,7 +131,7 @@ def main():
         page = browser.new_page()
 
         # 수령 확인 후 재고량 체크 작업을 하나의 함수에서 처리
-        test_order_receive_and_inventory_check(page)
+        test_order_receive_from_progress(page)
         
         browser.close()
 

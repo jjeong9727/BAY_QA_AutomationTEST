@@ -17,7 +17,7 @@ def get_undeletable_products():
         save_test_result("get_undeletable_products", error_message, status="ERROR")
         raise
 
-def test_cannot_delete_product_with_order(browser):
+def test_delete_product_validation(browser):
     page = browser.new_page()
     page.goto(URLS["bay_login"])
     page.fill("data-testid=input_id", Account["testid"])
@@ -29,20 +29,20 @@ def test_cannot_delete_product_with_order(browser):
         undeletable_names = get_undeletable_products()
         if not undeletable_names:
             fail_msg = "❌ order_flag = 1인 제품이 없습니다."
-            save_test_result("test_cannot_delete_product_with_order", fail_msg, status="FAIL")
+            save_test_result("test_delete_product_validation", fail_msg, status="FAIL")
             print(fail_msg)
             return
 
         target_name = undeletable_names[0]
         page.goto(URLS["bay_prdList"])
-        page.fill("input[placeholder='제품명 검색']", target_name)
+        page.fill("data-testid=input_search']", target_name)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
         rows = page.locator("table tbody tr")
         if rows.count() == 0:
             fail_msg = f"❌ 제품 '{target_name}' 을(를) 찾을 수 없습니다."
-            save_test_result("test_cannot_delete_product_with_order", fail_msg, status="FAIL")
+            save_test_result("test_delete_product_validation", fail_msg, status="FAIL")
             print(fail_msg)
             return
 
@@ -57,10 +57,10 @@ def test_cannot_delete_product_with_order(browser):
         assert alert.is_visible(), f"[FAIL] 삭제 불가 Alert 미표시 - 제품: {target_name}"
         success_msg = f"[PASS][제품관리] order_flag=1 제품 삭제 불가 Alert 정상 노출: {target_name}"
         print(success_msg)
-        save_test_result("test_cannot_delete_product_with_order", success_msg, status="PASS")
+        save_test_result("test_delete_product_validation", success_msg, status="PASS")
 
     except Exception as e:
         fail_msg = f"[FAIL] 삭제 불가 테스트 실패\n에러 내용: {str(e)}"
-        save_test_result("test_cannot_delete_product_with_order", fail_msg, status="FAIL")
+        save_test_result("test_delete_product_validation", fail_msg, status="FAIL")
         print(fail_msg)
         raise

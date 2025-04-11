@@ -1,51 +1,51 @@
-import json
-import re
+from playwright.sync_api import sync_playwright
+# from helpers.order_status_utils import get_order_id_from_order_list
+from config import URLS, Account
 
-# 정규 표현식으로 에러 메시지 및 스택 트레이스를 추출
-def extract_message_and_stack(longrepr: str):
-    # 오류 메시지 추출: ": " 뒤로부터 "E" 앞까지
-    error_message_pattern = r"(?<=: ).*(?=\nE)"
-    stack_trace_pattern = r"(playwright.*(?:\n.*)+)"  # Playwright 오류 메시지부터 그 이후 줄까지 추출
+def get_order_id_from_order_list(page, product_name):
+    # 제품명을 기준으로 해당 <td>를 찾음
+    print("제품 찾는 중...")
+    first_table = page.locator("table").first  # 첫 번째 테이블만 선택
+    rows = first_table.locator("tbody tr").all()  # 첫 번째 테이블의 모든 행을 가져옴
 
-    # 메시지 추출
-    message = re.search(error_message_pattern, longrepr)
-    stack = re.search(stack_trace_pattern, longrepr)
+    for row in rows:
+        # 해당 행에서 제품명이 일치하는지 확인
+        row_product_name = row.locator("td").nth(1).locator("p").inner_text().strip()  # p 태그의 텍스트를 추출
+        print(f"검색된 제품명: {row_product_name}")
 
-    if message:
-        message = message.group(0).strip()
-    else:
-        message = "No error message available."
+        # 제품명이 일치하는지 비교
+        if row_product_name == product_name:
+            # 제품명이 일치하면 해당 행에서 order_id 추출
+            order_id = row.locator("td[data-testid='order']").get_attribute('data-orderid')  # data-orderid를 정확히 지정
+            print(f"찾은 order_id: {order_id}")
+            return order_id
 
-    if stack:
-        stack = stack.group(0).strip()
-    else:
-        stack = "No stack trace available."
+    # 만약 해당 제품이 없으면 None 반환
+    return None
 
-    return message, stack
 
-# 테스트 결과 출력 함수
-def parse_longrepr_and_print(test):
-    # longrepr을 가져오기
-    longrepr = test.get("longrepr", "")
+# Playwright 실행 예시
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+    page.goto(URLS["bay_login"])  # 실제 테스트할 페이지 URL로 변경
+    page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
+    page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
+    page.click("data-testid=btn_login", timeout=30000)  # 로그인 버튼 클릭
+    page.wait_for_timeout(3000)
+    page.goto(URLS["bay_orderList"])
+
+
+    product_name = "제품 50"  # 테스트할 제품
+
+    page.fill("data-testid=input_search", product_name)
+    page.click("data-testid=btn_search")
+    page.wait_for_timeout(3000)
+    orderid = get_order_id_from_order_list(page, product_name)
     
-    # 파일명 출력
-    file = test.get("file", "Unknown file")
-    
-    if isinstance(longrepr, str):
-        message, stack = extract_message_and_stack(longrepr)
-        
-        # 파일명과 추출된 오류 메시지 및 스택 트레이스를 출력
-        print(f"Test file: {file}")
-        print(f"Error message: {message}")
-        print(f"Stack trace: {stack}")
-        print("-" * 50)
+    if orderid:
+        print(f"찾은 제품의 orderid: {orderid}")
+    else:
+        print("제품을 찾을 수 없습니다.")
 
-# 테스트 데이터 예시 (file 키 추가)
-test_data = {
-    "name": "tests/test_Bay_stock_in_legacy.py::test_stock_inflow",
-    "file": "tests/test_Bay_stock_in_legacy.py",  # 파일명 추가
-    "longrepr": "browser = <Browser type=<BrowserType name=chromium executable_path=C:\\Users\\kjeon\\AppData\\Local\\ms-playwright\\chromium-1155\\chrome-win\\chrome.exe> version=133.0.6943.16>\n\n    def test_stock_inflow(browser):\n        page = browser.new_page()\n>       page.goto(URLS[\"bay_login\"])\n\ntests\\test_Bay_stock_in_legacy.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:9018: in goto\n    self._sync(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_page.py:551: in goto\n    return await self._main_frame.goto(**locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:145: in goto\n    await self._channel.send(\"goto\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x0000029893BBB770>, cb = <function Channel.send.<locals>.<lambda> at 0x0000029893C86340>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TargetClosedError: Page.goto: Target page, context or browser has been closed\nE           Call log:\nE             - navigating to \"http://192.168.0.10:5174/login\", waiting until \"load\"\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TargetClosedError"
-}
-
-# 테스트 결과 출력
-parse_longrepr_and_print(test_data)
+    browser.close()

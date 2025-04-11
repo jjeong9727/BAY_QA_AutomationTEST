@@ -5,6 +5,7 @@ from pathlib import Path
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.save_test_result import save_test_result  
+from helpers.product_utils import remove_products_from_json
 
 PRODUCT_FILE_PATH = Path("product_name.json")
 
@@ -39,7 +40,7 @@ def check_delete(page, product_name: str) -> bool:
         rows = page.locator("table tbody tr").all()
         for row in rows:
             columns = row.locator("td").all_inner_texts()
-            if len(columns) >= 5 and product_name in columns[4]:
+            if len(columns) >= 5 and product_name in columns[3]:
                 return False
         return True
     except Exception as e:
@@ -49,13 +50,14 @@ def check_delete(page, product_name: str) -> bool:
 
 def delete_product_and_verify(page: Page, row_index: int):
     try:
-        product_name = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(5)").inner_text().strip()
+        product_name = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(4)").inner_text().strip()
         product_display_name = product_name.splitlines()[0]
 
-        delete_button = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(9) button").nth(1)
+        delete_button = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(11) button").nth(1)  # 0부터 시작하므로 1은 두 번째 버튼
         delete_button.click()
 
-        page.locator("div[role=alertdialog]").get_by_text("삭제", exact=True).click()
+
+        page.click("data-testid=btn_del")
         page.wait_for_timeout(2000)
         page.reload()
 
@@ -94,7 +96,7 @@ def test_delete_product(browser):
         target_name = random.choice(deletable_names)
 
         page.goto(URLS["bay_prdList"])
-        page.fill("input[placeholder='제품명 검색']", target_name)
+        page.fill("data-testid=input_search", target_name)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -106,6 +108,10 @@ def test_delete_product(browser):
             return
 
         delete_product_and_verify(page, row_index=0)
+
+        remove_products_from_json(target_name)
+
+
     except Exception as e:
         fail_msg = f"[FAIL][제품관리] 제품 삭제 중 예외 발생\n에러 내용: {str(e)}"
         save_test_result("test_delete_product", fail_msg, status="FAIL")
@@ -134,7 +140,7 @@ def test_bulk_delete_products(browser):
         selected_product_names = []
 
         for name in selected_names:
-            page.fill("input[placeholder='제품명 검색']", name)
+            page.fill("data-testid=input_search", name)
             page.click("data-testid=btn_search")
             page.wait_for_timeout(500)
 
@@ -149,9 +155,8 @@ def test_bulk_delete_products(browser):
             print(msg)
             return
 
-        page.get_by_text("일괄 삭제", exact=True).click()
-        alert_popup = page.locator("div[role=alertdialog]")  
-        alert_popup.get_by_text("삭제", exact=True).click()
+        page.click("data-testid=btn_del_bulk")
+        page.click("data-testid=btn_del")
         page.wait_for_timeout(2000)
         page.reload()
 
@@ -161,6 +166,8 @@ def test_bulk_delete_products(browser):
             msg = f"[PASS][제품관리] 제품 {len(selected_product_names)}개 일괄 삭제 성공: {selected_product_names}"
             save_test_result("test_bulk_delete_products", msg, status="PASS")
             print(msg)
+
+            remove_products_from_json(selected_names)
         else:
             fail_msg = f"[FAIL][제품관리] 일부 제품 삭제 실패: {failed}"
             save_test_result("test_bulk_delete_products", fail_msg, status="FAIL")

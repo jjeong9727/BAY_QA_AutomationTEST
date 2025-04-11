@@ -44,9 +44,10 @@ def main():
         send_slack_message(f"⚠️ [{seoul_time}] 테스트가 실행되지 않았습니다.")
         return
 
-    # 성공한 테스트와 실패한 테스트를 분리
+    # 성공한 테스트, 실패한 테스트, 스킵된 테스트를 분리
     passed_tests = [t for t in all_tests if t.get("status") == "passed"]
     failed_tests = [t for t in all_tests if t.get("status") == "failed"]
+    skipped_tests = [t for t in all_tests if t.get("status") == "skipped"]
 
     message = f"📢 [{seoul_time}] 테스트 결과 요약\n"
     message += f"총 테스트 수: {len(all_tests)}개\n"
@@ -65,7 +66,13 @@ def main():
             else:
                 line += "\n   → Jira 등록 실패"
             message += line + "\n"
-    else:
+
+    if skipped_tests:
+        message += "\n🟨 스킵된 테스트 목록:\n"
+        for i, test in enumerate(skipped_tests, 1):
+            message += f"{i}. {test.get('name', '이름 없음')}\n"
+
+    if not failed_tests and not skipped_tests:
         message += "\n🎉 모든 테스트가 통과했습니다!"
 
     send_slack_message(message)

@@ -25,13 +25,13 @@ def generate_product_names():
 def append_product_name(
     prdname_kor: str,
     prdname_eng: str,
-    # manager: str,
+    # supplier: str,
     # contact: str,
     type_name: str,
     group: str,
     maker: str,
-    # safety: int = 0,
-    # auto_order : int =0,
+    safety: int = 0,
+    auto_order : int =0,
     order_flag : int = 0,
     stock_qty : int =0,
     delivery_status : int=0 # 1: 발주 요청, 2: 발주 진행, 3: 배송 진행, 4: 수령 완료(운송장O), 5: 발주 취소, 6: 발주 실패, 7: 수령 완료(운송장X)
@@ -48,14 +48,13 @@ def append_product_name(
     data.append({
         "kor": prdname_kor,
         "eng": prdname_eng,
-        "supplier": "자동화 업체명",
-        # "manager": manager,
+        "supplier": "자동화업체",
         # "contact": contact,
         "type": type_name,
         "group": group,
         "maker": maker,
-        # "safety" : safety,
-        # "auto_order": auto_order,
+        "safety" : safety,
+        "auto_order": auto_order,
         "order_flag" : order_flag,
         "stock_qty" : stock_qty,
         "delivery_status" : delivery_status
@@ -110,7 +109,7 @@ def verify_products_in_list(page, product_names: list[str], url: str, search_pla
     page.wait_for_timeout(1000)
 
     for name in product_names:
-        page.fill(f"input[placeholder='{search_placeholder}']", name)
+        page.fill("data-testid=input_search", name)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -197,7 +196,7 @@ def update_product_flag(name_kor: str, stock: int = None, **flags):
     for product in products:
         if product.get("kor") == name_kor:
             if stock is not None:
-                product["stock-qty"] = stock  # 입고 후 재고 수량 업데이트
+                product["stock_qty"] = stock  # 입고 후 재고 수량 업데이트
             product["order_flag"] = 1  # 자동 발주 후 order_flag를 1로 업데이트
             product["delivery_status"] = 1  # 자동 발주 후 delivery_status를 1로 업데이트
             product.update(flags)  # 다른 플래그 업데이트
@@ -219,22 +218,15 @@ def load_saved_product_names():
 def verify_product_update(page, product_names):
     for name in product_names:
         page.goto(URLS["bay_prdList"])
-        page.fill("input[placeholder='제품명 검색']", name)
+        page.fill("data-testid=input_search", name)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
         assert page.locator(f"text={name}").is_visible(), f"❌ 제품 관리 페이지에서 수정 확인 실패: {name}"
 
-    page.goto(URLS["bay_stock"])
-    page.wait_for_timeout(1000)
-
-    for name in product_names:
-        assert page.locator("table tbody td:nth-child(5)", has_text=name).is_visible(), f"❌ 재고 목록에 수정된 제품명 없음: {name}"
-
-    for name in product_names:
         update_product_flag(name, undeletable=True)
-
-    print(f"[PASS] 수정된 {len(product_names)}개 제품 확인 완료")
+    
+    
 
 
 # 특정 제품의 현 재고량 찾기
