@@ -10,5 +10,149 @@
     "status": "FAIL",
     "message": "조건에 맞는 제품이 2개 미만입니다.",
     "timestamp": "2025-04-14 14:45:07"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "❌ Error in test_delete_category_each: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"data-testid=btn_confirm\")\n",
+    "timestamp": "2025-04-14 15:37:40"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "❌ Error in test_delete_category_each: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"data-testid=btn_confirm\")\n",
+    "timestamp": "2025-04-14 15:38:14"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "❌ Error in test_delete_category_each: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"data-testid=btn_confirm\")\n",
+    "timestamp": "2025-04-14 15:38:49"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button[data-testid='btn_delete']\").first\n  -     - locator resolved to <button type=\"button\" data-testid=\"btn_delete\" class=\"inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors text-Button_L_Bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-300 disabled:text-white text-black h-[20px] w-[20px]\">…</button>\n  -   - attempting click action\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -     - waiting 20ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 100ms\n  -     57 × waiting for element to be visible, enabled and stable\n  -        - element is visible, enabled and stable\n  -        - scrolling into view if needed\n  -        - done scrolling\n  -        - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -      - retrying click action\n  -        - waiting 500ms\n",
+    "timestamp": "2025-04-14 15:44:18"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button[data-testid='btn_delete']\").first\n  -     - locator resolved to <button type=\"button\" data-testid=\"btn_delete\" class=\"inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors text-Button_L_Bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-300 disabled:text-white text-black h-[20px] w-[20px]\">…</button>\n  -   - attempting click action\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -     - waiting 20ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 100ms\n  -     56 × waiting for element to be visible, enabled and stable\n  -        - element is visible, enabled and stable\n  -        - scrolling into view if needed\n  -        - done scrolling\n  -        - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -      - retrying click action\n  -        - waiting 500ms\n  -     - waiting for element to be visible, enabled and stable\n",
+    "timestamp": "2025-04-14 15:44:50"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "SKIP",
+    "message": "[SKIP] 삭제 불가 - 사용 중: 자동화등록_한글2623_수정",
+    "timestamp": "2025-04-14 15:44:54"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button[data-testid='btn_delete']\").nth(12)\n  -     - locator resolved to <button type=\"button\" data-testid=\"btn_delete\" class=\"inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors text-Button_L_Bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-300 disabled:text-white text-black h-[20px] w-[20px]\">…</button>\n  -   - attempting click action\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -     - waiting 20ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 100ms\n  -     58 × waiting for element to be visible, enabled and stable\n  -        - element is visible, enabled and stable\n  -        - scrolling into view if needed\n  -        - done scrolling\n  -        - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -      - retrying click action\n  -        - waiting 500ms\n",
+    "timestamp": "2025-04-14 15:47:47"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "PASS",
+    "message": "[PASS] tab_category 항목 삭제 완료: 자동화등록_한글7657",
+    "timestamp": "2025-04-14 15:47:51"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button[data-testid='btn_delete']\").nth(12)\n  -     - locator resolved to <button type=\"button\" data-testid=\"btn_delete\" class=\"inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors text-Button_L_Bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-300 disabled:text-white text-black h-[20px] w-[20px]\">…</button>\n  -   - attempting click action\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -     - waiting 20ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 100ms\n  -     57 × waiting for element to be visible, enabled and stable\n  -        - element is visible, enabled and stable\n  -        - scrolling into view if needed\n  -        - done scrolling\n  -        - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -      - retrying click action\n  -        - waiting 500ms\n",
+    "timestamp": "2025-04-14 15:48:24"
+  },
+  {
+    "test_name": "test_register_category_each",
+    "status": "PASS",
+    "message": "[PASS][카테고리] tab_type 등록 후 리스트 노출 확인 성공 (자동화등록_한글8875)",
+    "timestamp": "2025-04-14 15:48:38"
+  },
+  {
+    "test_name": "test_register_category_each",
+    "status": "PASS",
+    "message": "[PASS][카테고리] tab_category 등록 후 리스트 노출 확인 성공 (자동화등록_한글8631)",
+    "timestamp": "2025-04-14 15:48:44"
+  },
+  {
+    "test_name": "test_register_category_each",
+    "status": "PASS",
+    "message": "[PASS][카테고리] tab_maker 등록 후 리스트 노출 확인 성공 (자동화등록_한글7267)",
+    "timestamp": "2025-04-14 15:48:49"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "PASS",
+    "message": "[PASS] tab_type 항목 삭제 완료: 자동화등록_한글8875",
+    "timestamp": "2025-04-14 15:49:00"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "PASS",
+    "message": "[PASS] tab_category 항목 삭제 완료: 자동화등록_한글8631",
+    "timestamp": "2025-04-14 15:49:05"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"button[data-testid='btn_delete']\").nth(12)\n  -     - locator resolved to <button type=\"button\" data-testid=\"btn_delete\" class=\"inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors text-Button_L_Bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-300 disabled:text-white text-black h-[20px] w-[20px]\">…</button>\n  -   - attempting click action\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -     - waiting 20ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 100ms\n  -     56 × waiting for element to be visible, enabled and stable\n  -        - element is visible, enabled and stable\n  -        - scrolling into view if needed\n  -        - done scrolling\n  -        - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -      - retrying click action\n  -        - waiting 500ms\n",
+    "timestamp": "2025-04-14 15:49:37"
+  },
+  {
+    "test_name": "test_register_category_each",
+    "status": "PASS",
+    "message": "[PASS][카테고리] tab_type 등록 후 리스트 노출 확인 성공 (자동화등록_한글9411)",
+    "timestamp": "2025-04-14 15:51:24"
+  },
+  {
+    "test_name": "test_register_category_each",
+    "status": "PASS",
+    "message": "[PASS][카테고리] tab_category 등록 후 리스트 노출 확인 성공 (자동화등록_한글5738)",
+    "timestamp": "2025-04-14 15:51:31"
+  },
+  {
+    "test_name": "test_register_category_each",
+    "status": "PASS",
+    "message": "[PASS][카테고리] tab_maker 등록 후 리스트 노출 확인 성공 (자동화등록_한글9722)",
+    "timestamp": "2025-04-14 15:51:38"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "PASS",
+    "message": "[PASS] tab_type 항목 삭제 완료: 자동화등록_한글9411",
+    "timestamp": "2025-04-14 15:51:50"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "Locator.click: Target page, context or browser has been closed\nCall log:\n  - waiting for locator(\"button[data-testid='btn_delete']\").nth(12)\n  -     - locator resolved to <button type=\"button\" data-testid=\"btn_delete\" class=\"inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors text-Button_L_Bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-300 disabled:text-white text-black h-[20px] w-[20px]\">…</button>\n  -   - attempting click action\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -     - waiting 20ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 100ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 500ms\n  -     - waiting for element to be visible, enabled and stable\n  -   - element was detached from the DOM, retrying\n",
+    "timestamp": "2025-04-14 15:52:04"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "FAIL",
+    "message": "Locator.click: Target page, context or browser has been closed\nCall log:\n  - waiting for locator(\"button[data-testid='btn_delete']\").nth(12)\n  -     - locator resolved to <button type=\"button\" data-testid=\"btn_delete\" class=\"inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors text-Button_L_Bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-300 disabled:text-white text-black h-[20px] w-[20px]\">…</button>\n  -   - attempting click action\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -     - waiting 20ms\n  -     2 × waiting for element to be visible, enabled and stable\n  -       - element is visible, enabled and stable\n  -       - scrolling into view if needed\n  -       - done scrolling\n  -       - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" class=\"fixed inset-0 flex items-center justify-center z-50\">…</div> subtree intercepts pointer events\n  -     - retrying click action\n  -       - waiting 100ms\n",
+    "timestamp": "2025-04-14 15:52:09"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "PASS",
+    "message": "[PASS] tab_type 항목 삭제 완료: 자동화등록_한글9688",
+    "timestamp": "2025-04-14 15:55:10"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "PASS",
+    "message": "[PASS] tab_category 항목 삭제 완료: 자동화등록_한글5738",
+    "timestamp": "2025-04-14 15:55:16"
+  },
+  {
+    "test_name": "test_delete_category_each",
+    "status": "PASS",
+    "message": "[PASS] tab_maker 항목 삭제 완료: 자동화등록_한글9722",
+    "timestamp": "2025-04-14 15:55:23"
   }
 ]
