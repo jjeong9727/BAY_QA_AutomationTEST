@@ -5,9 +5,7 @@ from datetime import datetime
 # 결과를 저장할 파일 경로
 TEST_RESULTS_FILE = 'test_results.json'
 
-# 테스트 결과 저장 함수
 def save_test_result(test_name, message, status="FAIL"):
-    # 결과를 저장할 데이터
     result_data = {
         "test_name": test_name,
         "status": status,
@@ -22,9 +20,7 @@ def save_test_result(test_name, message, status="FAIL"):
     else:
         results = []
 
-    # 새로운 결과 추가
     results.append(result_data)
 
-    # 결과 파일에 저장
     with open(TEST_RESULTS_FILE, 'w', encoding='utf-8') as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
