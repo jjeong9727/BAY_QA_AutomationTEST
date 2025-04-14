@@ -88,8 +88,8 @@ def build_slack_message():
                 link = f"{JIRA_BASE_URL}/browse/{issue_key}"
                 lines.append(f"{idx}. {name} \n — 이미 등록된 이슈: <{link}|{issue_key}>")
             else:
-                msg = r["message"].strip().replace("\n", f"\n{EMOJI_ARROW} ")
-                lines.append(f"{idx}. {name} \n{EMOJI_ARROW} {msg}")
+                msg = r["message"].strip().split("\n")[0]  # 첫 줄만 추출
+                lines.append(f"{idx}. {name} {EMOJI_FAIL}\n{EMOJI_ARROW} {msg}")
 
     if skipped:
         lines.append(f"\n🟨 *스킵된 테스트 목록:*")
