@@ -23,6 +23,7 @@ def test_login_success(browser):
         assert page.url == URLS["bay_home"], "❌ 로그인 후 올바른 페이지로 이동하지 않음!"
         success_message = "[Pass] 정상 로그인 테스트"
         print(success_message)
+        save_test_result("test_login_success",f"[PASS] 로그인 테스트 성공" , status="PASS")
 
     except Exception as e:
         error_message = f"❌ 로그인 실패! 오류: {str(e)}"
@@ -55,6 +56,7 @@ def test_login_wrong_password(browser):
         assert locator.is_visible(), "[FAIL] 이메일 또는 비밀번호가 올바르지 않습니다 문구가 보이지 않습니다."
 
         print("[PASS] 비밀번호 불일치 테스트 성공")
+        save_test_result("test_login_success",f"[PASS] 로그인 테스트 성공", status="PASS")
 
     except Exception as e:
         error_message = f"❌ 비밀번호 불일치 테스트 실패! 오류: {str(e)}"

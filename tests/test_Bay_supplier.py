@@ -9,7 +9,7 @@ from helpers.save_test_result import save_test_result
 def test_register_supplier(browser):
     try:
         page = browser.new_page()
-        page.goto(URLS["login"])
+        page.goto(URLS["bay_login"])
         page.fill("data-testid=input_id", Account["testid"])
         page.fill("data-testid=input_pw", Account["testpw"])
         page.click("data-testid=btn_login")

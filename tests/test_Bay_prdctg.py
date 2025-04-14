@@ -25,7 +25,7 @@ def login_and_go_to_add_page(page: Page):
 
 @pytest.mark.parametrize("tab,testid_kor,testid_eng,require_eng", [
     ("tab_type", "input_kor", "input_eng", True),     # 구분
-    ("tab_group", "input_kor", "input_eng", True), # 종류
+    ("tab_category", "input_kor", "input_eng", True), # 종류
     ("tab_maker", "input_kor", "input_eng", False),   # 제조사
 ])
 def test_register_category_each(browser, tab, testid_kor, testid_eng, require_eng):

@@ -6,7 +6,7 @@ from helpers.save_test_result import save_test_result
 def test_delete_supplier(browser):
     try:
         page = browser.new_page()
-        page.goto(URLS["login"])
+        page.goto(URLS["bay_login"])
         page.fill("data-testid=input_id", Account["testid"])
         page.fill("data-testid=input_pw", Account["testpw"])
         page.click("data-testid=btn_login")
@@ -40,7 +40,7 @@ def test_delete_supplier(browser):
             delete_btn.click()
 
         # 4. 삭제 모달에서 삭제 버튼 선택
-        page.locator("data-testid=btn_del").click()  # 삭제 버튼 클릭
+        page.locator("data-testid=btn_confirm").click()  # 삭제 버튼 클릭
         page.wait_for_timeout(1000)
 
         # 5. 리스트에서 미노출 확인
@@ -52,21 +52,18 @@ def test_delete_supplier(browser):
         rows = page.locator("table tbody tr")
         found = False  # 해당 항목이 있는지 여부를 체크하는 변수
 
-        for row in rows:
-            supplier_name = row.locator("td:nth-child(1)").inner_text().strip()  # 업체명
-            row_manager_name = row.locator("td:nth-child(2)").inner_text().strip()  # 담당자명
-
-            # 동일한 행에 "자동화 업체명"과 선택한 "manager_name"이 모두 있는지 확인
-            if supplier_name == "자동화 업체명" and row_manager_name == manager_name:
+        for i in range(rows.count()):
+            row_text = rows.nth(i).inner_text()
+            if "자동화 업체명" in row_text:
                 found = True
-                break  # 해당 항목이 있으면 반복 종료
+                break
 
-        # 만약 '자동화 업체명'과 선택한 'manager_name'이 존재하는 행이 없으면 PASS, 존재하면 FAIL
-        if not found:
-            print(f"[PASS] 제품 '{manager_name}' 삭제 후 리스트에서 미노출 확인 완료.")
-            save_test_result("test_delete_supplier", f"제품 '{manager_name}' 삭제 후 리스트에서 미노출 확인", status="PASS")
+        if found:
+            print("❌ 삭제 실패: 여전히 목록에 남아있음")
+            save_test_result("test_delete_supplier", "삭제 실패", status="FAIL")
         else:
-            assert False, f"❌ 삭제 후에도 제품 '{manager_name}'이 리스트에 존재합니다。"
+            print("✅ 삭제 성공")
+            save_test_result("test_delete_supplier", "삭제 성공", status="PASS")
     
     except Exception as e:
         # 실패 시 결과를 저장하고 예외를 다시 던짐

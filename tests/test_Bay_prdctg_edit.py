@@ -3,6 +3,7 @@ import random
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.save_test_result import save_test_result 
+from helpers.product_utils import update_product_name
 
 
 def generate_name(prefix):
@@ -21,6 +22,7 @@ def login_and_go_to_add_page(page: Page):
         page.wait_for_url(URLS["bay_home"])
         print("Navigating to category page...")
         page.goto(URLS["bay_category"])
+        page.wait_for_timeout(3000)
         page.wait_for_url(URLS["bay_category"])
         print("Category page loaded.")
     except Exception as e:
@@ -31,7 +33,7 @@ def login_and_go_to_add_page(page: Page):
 
 @pytest.mark.parametrize("tab,testid_kor,testid_eng,require_eng", [
     ("tab_type", "input_kor", "input_eng", True),     # 구분
-    ("tab_group", "input_kor", "input_eng", True), # 종류
+    ("tab_category", "input_kor", "input_eng", True), # 종류
     ("tab_maker", "input_kor", "input_eng", False),   # 제조사
 ])
 def test_edit_category_each(browser, tab, testid_kor, testid_eng, require_eng):
@@ -84,6 +86,7 @@ def test_edit_category_each(browser, tab, testid_kor, testid_eng, require_eng):
             msg = f"[PASS][카테고리] {tab} 항목 수정 성공 ({new_value})"
             print(msg)
             save_test_result("test_edit_category_each", msg, status="PASS")
+            update_product_name(item_value_to_edit, new_value)
         else:
             error_message = "❌ '자동화등록' 항목을 찾을 수 없습니다."
             print(error_message)

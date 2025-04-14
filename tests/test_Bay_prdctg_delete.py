@@ -22,7 +22,7 @@ def login_and_go_to_add_page(page: Page):
 
 @pytest.mark.parametrize("tab,testid_kor,testid_eng,require_eng", [
     ("tab_type", "input_kor", "input_eng", True),     # 구분
-    ("tab_group", "input_kor", "input_eng", True), # 종류
+    ("tab_category", "input_kor", "input_eng", True), # 종류
     ("tab_maker", "input_kor", "input_eng", False),   # 제조사
 ])
 def test_delete_category_each(browser, tab, testid_kor, testid_eng, require_eng):
@@ -48,11 +48,12 @@ def test_delete_category_each(browser, tab, testid_kor, testid_eng, require_eng)
                 break
 
         if item_to_delete:
-            # 해당 항목의 행 번호(row_index)를 확인하고, 삭제 버튼 클릭
-            delete_button = page.locator(f"div:nth-of-type({row_index + 1}) button[data-testid='btn_delete']")
-            
-            delete_button.wait_for(state="visible")  # 버튼이 visible 될 때까지 대기
-            delete_button.click()  # 삭제 버튼 클릭
+            # 해당 항목의 행 번호(row_index)를 기준으로 삭제 버튼 리스트 중 해당 위치 클릭
+            delete_buttons = page.locator("button[data-testid='btn_delete']")
+            target_button = delete_buttons.nth(row_index)
+
+            target_button.wait_for(state="visible")
+            target_button.click()
 
             page.locator("data-testid=btn_confirm").click()  # 삭제 확인 버튼 클릭
             page.wait_for_timeout(1500)

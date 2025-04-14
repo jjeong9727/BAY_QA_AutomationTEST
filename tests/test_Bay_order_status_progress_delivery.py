@@ -59,8 +59,8 @@ def test_order_delivery(page: Page):
         check_order_status_by_order_id(page, "발주 진행", order_id, expected_status_conditions)
         
         # 기존 URL에 order_id 값을 추가하여 진입
-        order_url = f"{URLS['base_order_url']}/{order_id}"
-        page.goto(order_url)
+        tracking_url = f"{URLS['base_order_url']}/{order_id}/delivery"
+        page.goto(tracking_url)
 
         # 사용자 정보 입력 후 본인 인증
         page.fill("input[data-testid='input_name']", "권정의")

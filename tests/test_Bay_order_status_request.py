@@ -28,11 +28,6 @@ def test_order_acceptance(page: Page, product_name: str):
     page.goto(URLS["bay_login"])
 
 
-
-
-
-
-
     try:
         # 발주 내역 화면으로 이동하여 제품명 검색 후 order_id 가져오기
         page.goto(URLS["bay_orderList"])
@@ -55,7 +50,9 @@ def test_order_acceptance(page: Page, product_name: str):
         check_order_status_by_order_id(page, "발주 요청", order_id, expected_status_conditions)
 
         # 기존 URL에 order_id 값을 추가하여 진입
-        order_url = f"{URLS['base_order_url']}/{order_id}"
+        order_url = f"{URLS['base_accept_url']}/{order_id}/accept" #수락 화면
+        # tracking_url = f"{URLS['base_accept_url']}/{order_id}/delivery" #수락 화면
+        
         page.goto(order_url)
 
         # 사용자 정보 입력 후 발주 수락

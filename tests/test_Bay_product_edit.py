@@ -70,6 +70,13 @@ def test_edit_bulk_products(browser):
         # page.click("data-testid=btn_save")
         page.locator("button:has-text('완료')").click()
         page.wait_for_timeout(1000)
+        try:
+            confirm_btn = page.locator("data-testid=btn_confirm")
+            if confirm_btn.is_visible():
+                confirm_btn.click()
+                page.wait_for_timeout(500)
+        except:
+            pass
 
         # 6. 제품관리 에서 수정값 검증
         verify_product_update(page, updated_names)

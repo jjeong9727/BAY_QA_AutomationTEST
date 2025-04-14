@@ -1,9 +1,0 @@
-[
-  {
-    "name": "tests/test_Bay_login.py::test_login_success - failed",
-    "file": "tests/test_Bay_login.py",
-    "status": "failed",
-    "message": "",
-    "stack": ""
-  }
-]

@@ -35,6 +35,16 @@ full_name_mapping = {
     "test_register_supplier" : "업체 등록 확인"
 }
 
+# 카테고리 매핑 추가
+category_prefix = {
+    "login": "로그인",
+    "order": "발주관리",
+    "category": "카테고리",
+    "product": "제품관리",
+    "stock": "재고관리",
+    "supplier": "업체관리"
+}
+
 
 def extract_message_and_stack(longrepr):
     # longrepr이 문자열인 경우
@@ -63,29 +73,28 @@ def extract_results(report_path="test_results.json", output_path="scripts/summar
         report = json.load(f)
 
     summary = []
-    tests = report.get("report", {}).get("tests", [])
 
-    for test in tests:
-        raw_name = test.get("name", "").split("::")[-1]
-        file = test.get("name", "").split("::")[0]
-        status = test.get("outcome", "")
-        message = ""
+    # report는 리스트 구조
+    if not isinstance(report, list):
+        raise ValueError("❌ 예상하지 못한 JSON 구조입니다. 리스트가 아닙니다.")
+
+    for test in report:
+        raw_name = test.get("test_name", "")
+        status = test.get("status", "")
+        message = test.get("message", "")
         stack = ""
 
-        # 실패한 테스트에 대해 에러 메시지와 스택 트레이스를 추가
-        if status == "failed":
-            longrepr = test.get("longrepr", "")
-            
-            if isinstance(longrepr, str):
-                message, stack = extract_message_and_stack(longrepr)
+        # 에러 메시지 분해 (선택)
+        if status.lower() == "fail" and isinstance(message, str):
+            message, stack = extract_message_and_stack(message)
 
-            summary.append({
-                "name": prettify_name(raw_name, file, status),
-                "file": file,
-                "status": status,
-                "message": message,
-                "stack": stack
-            })
+        summary.append({
+            "name": prettify_name(raw_name, status),
+            "file": "",  # file 필드가 없으므로 빈 값으로 유지
+            "status": status,
+            "message": message,
+            "stack": stack
+        })
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
@@ -93,9 +102,22 @@ def extract_results(report_path="test_results.json", output_path="scripts/summar
     print("✅ summary.json 생성 완료")
 
 
-def prettify_name(raw_name, file, status):
-    """테스트 이름을 예쁘게 포맷팅하는 함수"""
-    return f"{file}::{raw_name} - {status}"
+
+
+
+
+def prettify_name(raw_name, status=None):
+    # 예쁜 이름 매핑 (없으면 함수명 그대로 사용)
+    readable = full_name_mapping.get(raw_name, raw_name)
+
+    # 카테고리 키 추출 (ex: test_stock_outflow → stock)
+    match = re.match(r"test_([a-z]+)", raw_name)
+    category_key = match.group(1) if match else "etc"
+    category = category_prefix.get(category_key, "기타")
+
+    return f"[자동화][{category}] {readable} 테스트 실패"
+
+
 
 if __name__ == "__main__":
     extract_results()

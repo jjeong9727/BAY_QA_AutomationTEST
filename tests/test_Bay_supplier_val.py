@@ -6,7 +6,7 @@ import random
 def test_register_supplier_duplicate(browser):
     try:
         page = browser.new_page()
-        page.goto(URLS["login"])
+        page.goto(URLS["bay_login"])
         page.fill("data-testid=input_id", Account["testid"])
         page.fill("data-testid=input_pw", Account["testpw"])
         page.click("data-testid=btn_login")
@@ -15,19 +15,9 @@ def test_register_supplier_duplicate(browser):
         page.goto(URLS["bay_supplier"])
         page.wait_for_url(URLS["bay_supplier"], timeout=60000)
 
-        # 1. 리스트에서 랜덤으로 업체 선택
-        rows = page.locator("table tbody tr")  # 테이블에서 모든 행을 가져옴
-        row_count = rows.count()
-        
-        if row_count == 0:
-            print("❌ 업체 리스트가 비어있습니다.")
-            return
-
-        random_index = random.randint(0, row_count - 1)  # 랜덤 인덱스 생성
-        selected_row = rows.nth(random_index)  # 랜덤으로 선택된 행
-        supplier_name = selected_row.locator("td:nth-child(1)").inner_text().strip()  # 업체명
-        manager_name = selected_row.locator("td:nth-child(2)").inner_text().strip()  # 담당자
-        contact_info = selected_row.locator("td:nth-child(3)").inner_text().strip()  # 연락처
+        supplier_name = "중복테스트"
+        manager_name = "중복테스트"
+        contact_info = "01012345678"
         
         print(f"선택된 업체: {supplier_name}, 담당자: {manager_name}, 연락처: {contact_info}")
 

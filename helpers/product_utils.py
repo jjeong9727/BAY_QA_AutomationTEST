@@ -148,7 +148,7 @@ def is_product_exist(page, product_names) -> bool:
             rows = page.locator("table tbody tr")
             found = False
             for i in range(rows.count()):
-                row_name = rows.nth(i).locator("td:nth-child(5)").inner_text().strip()
+                row_name = rows.nth(i).locator("td:nth-child(4)").inner_text().strip()
                 if name in row_name:
                     print(f"[PASS] '{name}' found in 제품 리스트")
                     found = True
@@ -182,6 +182,28 @@ def sync_product_names_with_server(page):
             remove_products_from_json(item["kor"])  # JSON에서 제거
 
     return valid_list
+
+#제품명 변경 후 json 파일 업데이트
+def update_product_name(old_kor: str, new_kor: str):
+    path = "product_name.json"
+    if not os.path.exists(path):
+        return
+
+    with open(path, "r", encoding="utf-8") as f:
+        products = json.load(f)
+
+    for product in products:
+        if product.get("kor") == old_kor:
+            product["kor"] = new_kor
+            break
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(products, f, ensure_ascii=False, indent=2)
+
+    print(f"[INFO] 제품명 업데이트 완료: {old_kor} → {new_kor}")
+
+
+
 
 # 제품 수정 후 json 파일 업데이트
 def update_product_flag(name_kor: str, stock: int = None, **flags):
