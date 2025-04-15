@@ -1,6 +1,5 @@
 from playwright.sync_api import Page
 from config import URLS, Account
-from helpers.save_test_result import save_test_result 
 import random
 
 def test_register_supplier_duplicate(browser):
@@ -33,8 +32,6 @@ def test_register_supplier_duplicate(browser):
         assert page.locator("data-testid=alert_duplicate").is_visible(), "❌ 중복 알림 문구가 표시되지 않음"
         print(f"[PASS] 중복 등록 시 알림 문구 노출 확인: {supplier_name} / {manager_name}")
 
-        save_test_result("test_register_supplier_duplicate", f"중복 등록 알림 문구 확인: {supplier_name} / {manager_name}", status="PASS")
 
     except Exception as e:
-        save_test_result("test_register_supplier_duplicate", f"중복 등록 실패: {str(e)}", status="FAIL")
         raise

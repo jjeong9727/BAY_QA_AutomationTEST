@@ -4,7 +4,6 @@ from datetime import datetime
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 from helpers.product_utils import append_product_name, generate_product_names, verify_products_in_list
-from helpers.save_test_result import save_test_result  
 
 
 def test_register_multiple_products(browser: Browser):
@@ -121,9 +120,8 @@ def test_register_multiple_products(browser: Browser):
         verify_products_in_list(page, prdnames, URLS["bay_prdList"], "제품명 검색", 4)
         verify_products_in_list(page, prdnames, URLS["bay_stock"], "제품명 검색", 4)
 
-        save_test_result("test_register_multiple_products", f"[PASS] {num_products}개 제품 등록 및 저장 완료", status="PASS")
+        
 
     except Exception as e:
         print(f"[FAIL] 여러 개 제품 등록 실패: {str(e)}")
-        save_test_result("test_register_multiple_products", f"[FAIL] 여러 개 제품 등록 실패: {str(e)}", status="FAIL")
         raise

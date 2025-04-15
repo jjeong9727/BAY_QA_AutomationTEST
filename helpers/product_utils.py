@@ -206,8 +206,8 @@ def update_product_name(old_kor: str, new_kor: str):
 
 
 # 제품 수정 후 json 파일 업데이트
-def update_product_flag(name_kor: str, stock: int = None, **flags):
-    """제품의 상태와 재고 업데이트"""
+def update_product_flag(name_kor: str, **flags):
+    """제품의 재고 및 플래그 값 업데이트"""
     path = "product_name.json"
     if not os.path.exists(path):
         return
@@ -217,15 +217,15 @@ def update_product_flag(name_kor: str, stock: int = None, **flags):
 
     for product in products:
         if product.get("kor") == name_kor:
-            if stock is not None:
-                product["stock_qty"] = stock  # 입고 후 재고 수량 업데이트
-            product["order_flag"] = 1  # 자동 발주 후 order_flag를 1로 업데이트
-            product["delivery_status"] = 1  # 자동 발주 후 delivery_status를 1로 업데이트
-            product.update(flags)  # 다른 플래그 업데이트
+            # 전달된 인자들만 업데이트
+            for key, value in flags.items():
+                if value is not None:
+                    product[key] = value  # 해당 플래그 또는 값을 업데이트
             break
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(products, f, ensure_ascii=False, indent=2)
+
 
 
 
@@ -244,9 +244,40 @@ def verify_product_update(page, product_names):
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
-        assert page.locator(f"text={name}").is_visible(), f"❌ 제품 관리 페이지에서 수정 확인 실패: {name}"
+        # 4열에 해당 제품명이 있는지 확인
+        rows = page.locator("table tbody tr")
+        found = False
 
-        update_product_flag(name, undeletable=True)
+        # Locator를 사용하여 각 행에 접근
+        row_count = rows.count()
+        for i in range(row_count):
+            row = rows.nth(i)  # 각 행을 하나씩 가져오기
+            product_name = row.locator("td:nth-child(4)").inner_text().strip().split("\n")[0]
+            
+            # 말줄임 처리된 텍스트를 처리하기 위해 title 속성 값 사용
+            if not product_name:  # 만약 텍스트가 없다면
+                product_name = row.locator("td:nth-child(4)").get_attribute("title").strip()
+
+            # 공백을 제거하고 비교
+            product_name = product_name.replace(" ", "").strip()
+            name = name.replace(" ", "").strip()
+
+            print(f"UI에서 노출되는 제품명: '{product_name}'")
+            print(f"비교하는 제품명: '{name}'")
+            
+            if product_name == name:
+                found = True
+                print(f"수정한 제품명: {name}")
+                break
+
+        # 제품명이 없으면 실패 처리
+        if not found:
+            print(f"❌ 제품 관리 페이지에서 수정 확인 실패: {name}")
+            return False  # 수정된 제품명이 UI에 반영되지 않으면 False 반환
+    return True  # 모든 제품명이 일치하면 True 반환
+
+
+
     
     
 

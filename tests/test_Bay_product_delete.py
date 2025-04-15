@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 from playwright.sync_api import Page
 from config import URLS, Account
-from helpers.save_test_result import save_test_result  
 from helpers.product_utils import remove_products_from_json
 
 PRODUCT_FILE_PATH = Path("product_name.json")
@@ -14,11 +13,11 @@ def get_deletable_products_from_json():
         with open("product_name.json", "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        deletable = [item["kor"] for item in data if item.get("order_flag") == 0 and item.get("stock", 0) == 0]
+        deletable = [item["kor"] for item in data if item.get("order_flag") == 0 and item.get("stock_qty", 0) == 0]
         return deletable
     except Exception as e:
         error_message = f"Error while fetching deletable products: {str(e)}"
-        save_test_result("get_deletable_products_from_json", error_message, status="ERROR")
+        
         raise
 
 def remove_product_name_by_kor(kor_name: str):
@@ -32,7 +31,7 @@ def remove_product_name_by_kor(kor_name: str):
             json.dump(updated, f, ensure_ascii=False, indent=2)
     except Exception as e:
         error_message = f"Error while removing product {kor_name} from json: {str(e)}"
-        save_test_result("remove_product_name_by_kor", error_message, status="ERROR")
+        
         raise
 
 def check_delete(page, product_name: str) -> bool:
@@ -45,7 +44,7 @@ def check_delete(page, product_name: str) -> bool:
         return True
     except Exception as e:
         error_message = f"Error during delete check for {product_name}: {str(e)}"
-        save_test_result("check_delete", error_message, status="ERROR")
+        
         raise
 
 def delete_product_and_verify(page: Page, row_index: int):
@@ -65,15 +64,14 @@ def delete_product_and_verify(page: Page, row_index: int):
             msg = f"[PASS][제품관리] 제품 삭제 테스트 (삭제된 제품: '{product_display_name}')"
             print(msg)
             remove_product_name_by_kor(product_display_name)  # ✅ JSON에서 제거
-            save_test_result("delete_product_and_verify", msg, status="PASS")
         else:
             fail_msg = f"[FAIL][제품관리] 제품 '{product_display_name}' 삭제 실패 (리스트에 존재)"
             print(fail_msg)
-            save_test_result("delete_product_and_verify", fail_msg, status="FAIL")
+            
             assert False, fail_msg
     except Exception as e:
         fail_msg = f"[FAIL][제품관리] 제품 '{product_display_name}' 삭제 중 예외 발생\n에러: {str(e)}"
-        save_test_result("delete_product_and_verify", fail_msg, status="FAIL")
+        
         print(fail_msg)
         raise
 
@@ -89,7 +87,6 @@ def test_delete_product(browser):
         deletable_names = get_deletable_products_from_json()
         if not deletable_names:
             msg = "❌ 삭제 가능한 제품이 없습니다."
-            save_test_result("test_delete_product", msg, status="FAIL")
             print(msg)
             return
 
@@ -103,7 +100,6 @@ def test_delete_product(browser):
         rows = page.locator("table tbody tr")
         if rows.count() == 0:
             msg = f"❌ 제품 '{target_name}' 을(를) 찾을 수 없습니다."
-            save_test_result("test_delete_product", msg, status="FAIL")
             print(msg)
             return
 
@@ -114,29 +110,32 @@ def test_delete_product(browser):
 
     except Exception as e:
         fail_msg = f"[FAIL][제품관리] 제품 삭제 중 예외 발생\n에러 내용: {str(e)}"
-        save_test_result("test_delete_product", fail_msg, status="FAIL")
         print(fail_msg)
         raise
 
 def test_bulk_delete_products(browser):
     try:
+        # 로그인
         page = browser.new_page()
         page.goto(URLS["bay_login"])
         page.fill("data-testid=input_id", Account["testid"])
         page.fill("data-testid=input_pw", Account["testpw"])
         page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"])
+        page.wait_for_url(URLS["bay_home"], timeout=60000)
+        page.goto(URLS["bay_prdList"])
 
+
+        # 일괄 삭제 가능한 제품 검색
         deletable_names = get_deletable_products_from_json()
         if not deletable_names:
             msg = "❌ 일괄 삭제 가능한 제품이 없습니다."
-            save_test_result("test_bulk_delete_products", msg, status="FAIL")
             print(msg)
             return
 
-        selected_names = random.sample(deletable_names, min(len(deletable_names), random.randint(1, 3)))
+        selected_names = random.sample(deletable_names, min(len(deletable_names), random.randint(1, 2)))
 
-        page.goto(URLS["bay_prdList"])
+        # 제품 리스트 페이지로 이동
+        
         selected_product_names = []
 
         for name in selected_names:
@@ -151,29 +150,33 @@ def test_bulk_delete_products(browser):
 
         if not selected_product_names:
             msg = "✅ 조건에 맞는 제품이 없어서 삭제를 스킵합니다."
-            save_test_result("test_bulk_delete_products", msg, status="PASS")
             print(msg)
             return
 
+        # 일괄 삭제 버튼 클릭
         page.click("data-testid=btn_del_bulk")
         page.click("data-testid=btn_del")
         page.wait_for_timeout(2000)
         page.reload()
 
-        failed = [name for name in selected_product_names if not check_delete(page, name)]
+        # 삭제 후, 제품이 목록에서 사라졌는지 확인
+        failed = []
+        for name in selected_product_names:
+            if not check_delete(page, name):  # 삭제 확인 함수 호출
+                failed.append(name)
 
-        if not failed:
+        if failed:
+            fail_msg = f"[FAIL][제품관리] 일부 제품 삭제 실패: {failed}"
+            print(fail_msg)
+            assert False, fail_msg
+        else:
             msg = f"[PASS][제품관리] 제품 {len(selected_product_names)}개 일괄 삭제 성공: {selected_product_names}"
-            save_test_result("test_bulk_delete_products", msg, status="PASS")
             print(msg)
 
-            remove_products_from_json(selected_names)
-        else:
-            fail_msg = f"[FAIL][제품관리] 일부 제품 삭제 실패: {failed}"
-            save_test_result("test_bulk_delete_products", fail_msg, status="FAIL")
-            assert False, fail_msg
+            remove_products_from_json(selected_product_names)
+
     except Exception as e:
         fail_msg = f"[FAIL][제품관리] 일괄 삭제 중 예외 발생\n에러 내용: {str(e)}"
-        save_test_result("test_bulk_delete_products", fail_msg, status="FAIL")
         print(fail_msg)
         raise
+

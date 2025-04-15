@@ -2,7 +2,6 @@ import random
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import  find_supplier_in_paginated_list
-from helpers.save_test_result import save_test_result  
 
 
 
@@ -33,8 +32,6 @@ def test_register_supplier(browser):
         assert found, f"❌ 등록된 업체 정보가 리스트에서 확인되지 않음: {supplier}, {manager}, {contact}"
         print(f"[PASS] 업체 등록 및 리스트 확인 완료: {manager} ({contact})")
 
-        save_test_result("test_register_supplier", f"업체 등록 및 리스트 확인 완료: {manager} ({contact})", status="PASS")
 
     except Exception as e:
-        save_test_result("test_register_supplier", f"업체 등록 실패: {str(e)}", status="FAIL")
         raise

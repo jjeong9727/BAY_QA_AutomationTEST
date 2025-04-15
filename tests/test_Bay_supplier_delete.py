@@ -1,7 +1,6 @@
 import random
 from playwright.sync_api import Page
 from config import URLS, Account
-from helpers.save_test_result import save_test_result
 
 def test_delete_supplier(browser):
     try:
@@ -25,7 +24,6 @@ def test_delete_supplier(browser):
 
         if row_count == 0:
             print("❌ 검색 결과가 없습니다.")
-            save_test_result("test_delete_supplier", "검색 결과가 없습니다.", status="FAIL")
             return
 
         # 2. 검색 결과 리스트에서 랜덤으로 하나 선택
@@ -60,13 +58,10 @@ def test_delete_supplier(browser):
 
         if found:
             print("❌ 삭제 실패: 여전히 목록에 남아있음")
-            save_test_result("test_delete_supplier", "삭제 실패", status="FAIL")
         else:
             print("✅ 삭제 성공")
-            save_test_result("test_delete_supplier", "삭제 성공", status="PASS")
     
     except Exception as e:
         # 실패 시 결과를 저장하고 예외를 다시 던짐
         fail_msg = f"제품 삭제 실패: {str(e)}"
-        save_test_result("test_delete_supplier", fail_msg, status="FAIL")
         raise

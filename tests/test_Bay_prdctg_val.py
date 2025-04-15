@@ -1,7 +1,6 @@
 import pytest
 from playwright.sync_api import Page
 from config import URLS, Account
-from helpers.save_test_result import save_test_result  
 
 
 def register_category(page: Page, tab_testid: str, name_kr: str, name_en: str):
@@ -14,7 +13,6 @@ def register_category(page: Page, tab_testid: str, name_kr: str, name_en: str):
         page.click("data-testid=btn_save")
     except Exception as e:
         error_message = f"Error in register_category: {str(e)}"
-        save_test_result("register_category", error_message, status="ERROR")
         raise
 
 
@@ -38,10 +36,8 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         assert page.locator("data-testid=alert_duplicate").is_visible(), "❌ 중복 알림 문구가 표시되지 않음"
         print(f"[PASS] 중복 등록 시 알림 문구 확인")
 
-        save_test_result("test_register_supplier_duplicate", f"중복 등록 알림 문구 확인", status="PASS")
 
     except Exception as e:
-        save_test_result("test_register_supplier_duplicate", f"중복 등록 실패: {str(e)}", status="FAIL")
         raise
 
 

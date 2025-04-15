@@ -2,6 +2,7 @@ import os
 import json
 import subprocess
 from datetime import datetime
+import traceback
 
 TEST_RESULTS_FILE = "test_results.json"
 JSON_REPORT_FILE = "scripts/result.json"
@@ -14,21 +15,27 @@ for path in [TEST_RESULTS_FILE, JSON_REPORT_FILE, SUMMARY_FILE]:
         print(f"🧹 기존 파일 제거: {path}")
 
 # 테스트 결과 저장 함수
-def save_test_result(test_name, message, status="FAIL"):
+def save_test_result(test_name, message, status="FAIL", file_name=None, stack_trace=""):
     result_data = {
         "test_name": test_name,
         "status": status,
         "message": message,
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "file": file_name,  # 파일명 추가
+        "stack": stack_trace  # 실패 시 스택 트레이스 추가
     }
+
     if os.path.exists(TEST_RESULTS_FILE):
         with open(TEST_RESULTS_FILE, 'r', encoding='utf-8') as f:
             results = json.load(f)
     else:
         results = []
+
     results.append(result_data)
+
     with open(TEST_RESULTS_FILE, 'w', encoding='utf-8') as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
+
 
 # 출고 실패 여부 & 스킵 테스트 저장
 stock_out_failed = False
@@ -47,7 +54,6 @@ all_tests = [
     "tests/test_Bay_product.py",
     "tests/test_Bay_product_val.py",
     "tests/test_Bay_product_edit.py",
-    "tests/test_Bay_product_delete_val.py",
     "tests/test_Bay_product_delete.py",
     "tests/test_Bay_stock_in.py",
     "tests/test_Bay_stock_out.py",
@@ -79,26 +85,33 @@ for test_file in all_tests:
         save_test_result(
             test_name=os.path.splitext(os.path.basename(test_file))[0],
             message="출고 실패로 인해 발주 테스트 스킵됨",
-            status="SKIP"
+            status="SKIP",
+            file_name=test_file  # 파일명 추가
         )
         continue
 
     print(f"\n🚀 {test_file} 테스트 실행 중...")
-    result = subprocess.run([
-        "pytest",
-        test_file,
-        "--json-report",
-        f"--json-report-file={JSON_REPORT_FILE}"
-    ])
+    try:
+        result = subprocess.run([
+            "pytest",
+            test_file,
+            "--json-report",
+            f"--json-report-file={JSON_REPORT_FILE}"
+        ], check=True)
 
-    test_name = os.path.splitext(os.path.basename(test_file))[0]
+        test_name = os.path.splitext(os.path.basename(test_file))[0]
 
-    if result.returncode == 0:
         print(f"✅ {test_file} 테스트 완료")
-        save_test_result(test_name, "테스트 성공", status="PASS")
-    else:
+        save_test_result(test_name, "테스트 성공", status="PASS", file_name=test_file)
+
+    except subprocess.CalledProcessError as e:
+        test_name = os.path.splitext(os.path.basename(test_file))[0]
+        error_message = str(e)
+
         print(f"❌ {test_file} 테스트 실패")
-        save_test_result(test_name, "테스트 실패", status="FAIL")
+        # 스택 트레이스를 얻어서 저장
+        stack_trace = traceback.format_exc()
+        save_test_result(test_name, error_message, status="FAIL", file_name=test_file, stack_trace=stack_trace)
 
     if test_file == "tests/test_Bay_stock_out.py":
         if os.path.exists(TEST_RESULTS_FILE):

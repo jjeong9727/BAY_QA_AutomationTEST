@@ -4,8 +4,6 @@ import json
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import get_latest_product_name, load_saved_product_names
-from helpers.save_test_result import save_test_result 
-
 def test_duplicate_product_name(browser):
     try:
         
@@ -73,11 +71,9 @@ def test_duplicate_product_name(browser):
         alert = page.locator("data-testid=alert_duplicate")
         assert alert.is_visible(), "❌ 중복 경고 메시지가 표시되지 않음"
         print(f"[PASS][제품관리] 중복 제품명 등록 방지 확인됨: {prdname_kor}")
-        save_test_result("test_duplicate_product_name", f"[PASS] 중복 등록 방지 확인: {prdname_kor}", status="PASS")
 
     except Exception as e:
         print(f"❌ 중복 테스트 실패: {str(e)}")
-        save_test_result("test_duplicate_product_name", f"[FAIL] 중복 테스트 실패: {str(e)}", status="FAIL")
         raise
 
 

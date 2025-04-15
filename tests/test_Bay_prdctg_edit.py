@@ -2,7 +2,6 @@ import pytest
 import random
 from playwright.sync_api import Page
 from config import URLS, Account
-from helpers.save_test_result import save_test_result 
 from helpers.product_utils import update_product_name
 
 
@@ -27,7 +26,6 @@ def login_and_go_to_add_page(page: Page):
         print("Category page loaded.")
     except Exception as e:
         error_message = f"Error during login and navigation: {str(e)}"
-        save_test_result("login_and_go_to_add_page", error_message, status="ERROR")
         raise
 
 
@@ -85,15 +83,12 @@ def test_edit_category_each(browser, tab, testid_kor, testid_eng, require_eng):
 
             msg = f"[PASS][카테고리] {tab} 항목 수정 성공 ({new_value})"
             print(msg)
-            save_test_result("test_edit_category_each", msg, status="PASS")
             update_product_name(item_value_to_edit, new_value)
         else:
             error_message = "❌ '자동화등록' 항목을 찾을 수 없습니다."
             print(error_message)
-            save_test_result("test_edit_category_each", error_message, status="FAIL")
 
     except Exception as e:
         error_message = f"❌ Error in test_edit_category_each: {str(e)}"
         print(error_message)
-        save_test_result("test_edit_category_each", error_message, status="FAIL")
         raise

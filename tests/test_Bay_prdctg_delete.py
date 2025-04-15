@@ -1,7 +1,6 @@
 import pytest
 from playwright.sync_api import Page
 from config import URLS, Account
-from helpers.save_test_result import save_test_result
 
 def login_and_go_to_add_page(page: Page):
     page.goto(URLS["bay_login"])
@@ -52,17 +51,14 @@ def test_delete_category_each(browser, tab, testid_kor, testid_eng, require_eng)
                 confirm_btn.click()
                 page.wait_for_timeout(1000)
                 print(f"[PASS] 삭제 완료: {item_value_to_delete}")
-                save_test_result("test_delete_category_each", f"[PASS] {tab} 항목 삭제 완료: {item_value_to_delete}", status="PASS")
             else:
                 alert_using = page.locator("data-testid=alert_using")
                 if alert_using.is_visible(timeout=2000):
                     print(f"[INFO] 삭제 불가: 사용 중인 항목 ({item_value_to_delete})")
-                    save_test_result("test_delete_category_each", f"[SKIP] 삭제 불가 - 사용 중: {item_value_to_delete}", status="SKIP")
                 else:
                     raise Exception("❌ 삭제 확인 버튼과 삭제 불가 알림 둘 다 표시되지 않음")
         else:
             raise Exception("❌ 삭제 대상 항목을 찾을 수 없습니다.")
 
     except Exception as e:
-        save_test_result("test_delete_category_each", str(e), status="FAIL")
         raise
