@@ -68,8 +68,8 @@ def test_order_delivery(page: Page):
         page.goto(tracking_url)
 
         # 본인 인증
-        page.fill("input[data-testid='input_name']", "김사라")
-        page.fill("input[data-testid='input_contact']", "01098796020")
+        page.fill("input[data-testid='input_name']", "권정의")
+        page.fill("input[data-testid='input_contact']", "01062754153")
         page.click("button[data-testid='btn_confirm']")
         page.wait_for_timeout(1000)
 
@@ -89,8 +89,9 @@ def test_order_delivery(page: Page):
 
 
         page.fill("input[data-testid='input_tracking']", "1234567890")
-        page.click("button[data-testid='btn_confirm']")
-        page.wait_for_timeout(5000)
+        page.wait_for_timeout(2000)
+        page.locator("button[data-testid='btn_confirm']").last.click()
+        page.wait_for_timeout(3000)
 
         # 상태 확인: 배송 진행
         page.goto(URLS["bay_orderList"])

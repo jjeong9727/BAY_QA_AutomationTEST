@@ -1,74 +1,191 @@
 [
   {
+    "test_name": "test_Bay_login",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:45:08",
+    "file": "tests/test_Bay_login.py",
+    "stack": "",
+    "duration": "5.23초"
+  },
+  {
+    "test_name": "test_Bay_supplier",
+    "status": "FAIL",
+    "message": "============================= 1 failed in 33.92s ==============================",
+    "timestamp": "2025-04-16 16:45:44",
+    "file": "tests/test_Bay_supplier.py",
+    "stack": "",
+    "duration": "35.34초"
+  },
+  {
+    "test_name": "test_Bay_supplier_val",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:45:48",
+    "file": "tests/test_Bay_supplier_val.py",
+    "stack": "",
+    "duration": "4.49초"
+  },
+  {
+    "test_name": "test_Bay_supplier_delete",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:45:56",
+    "file": "tests/test_Bay_supplier_delete.py",
+    "stack": "",
+    "duration": "7.27초"
+  },
+  {
+    "test_name": "test_Bay_prdctg",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:46:13",
+    "file": "tests/test_Bay_prdctg.py",
+    "stack": "",
+    "duration": "17.87초"
+  },
+  {
+    "test_name": "test_Bay_prdctg_val",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:46:26",
+    "file": "tests/test_Bay_prdctg_val.py",
+    "stack": "",
+    "duration": "12.94초"
+  },
+  {
+    "test_name": "test_Bay_prdctg_edit",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:46:57",
+    "file": "tests/test_Bay_prdctg_edit.py",
+    "stack": "",
+    "duration": "30.79초"
+  },
+  {
+    "test_name": "test_Bay_prdctg_delete",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:47:14",
+    "file": "tests/test_Bay_prdctg_delete.py",
+    "stack": "",
+    "duration": "16.74초"
+  },
+  {
+    "test_name": "test_Bay_product",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:48:09",
+    "file": "tests/test_Bay_product.py",
+    "stack": "",
+    "duration": "54.87초"
+  },
+  {
+    "test_name": "test_Bay_product_val",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:48:18",
+    "file": "tests/test_Bay_product_val.py",
+    "stack": "",
+    "duration": "9.33초"
+  },
+  {
+    "test_name": "test_Bay_product_edit",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:48:30",
+    "file": "tests/test_Bay_product_edit.py",
+    "stack": "",
+    "duration": "12.19초"
+  },
+  {
+    "test_name": "test_Bay_product_delete",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:48:44",
+    "file": "tests/test_Bay_product_delete.py",
+    "stack": "",
+    "duration": "13.80초"
+  },
+  {
     "test_name": "test_Bay_stock_in",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-04-15 18:53:57",
+    "timestamp": "2025-04-16 16:49:07",
     "file": "tests/test_Bay_stock_in.py",
-    "stack": ""
+    "stack": "",
+    "duration": "23.01초"
   },
   {
     "test_name": "test_Bay_stock_out",
-    "status": "FAIL",
-    "message": "Command '['pytest', 'tests/test_Bay_stock_out.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.",
-    "timestamp": "2025-04-15 18:54:40",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:49:38",
     "file": "tests/test_Bay_stock_out.py",
-    "stack": "Traceback (most recent call last):\n  File \"C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\자동화\\scripts\\run_tests_and_generate_json.py\", line 95, in <module>\n    result = subprocess.run([\n        \"pytest\",\n    ...<2 lines>...\n        f\"--json-report-file={JSON_REPORT_FILE}\"\n    ], check=True)\n  File \"C:\\Users\\kjeon\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 579, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['pytest', 'tests/test_Bay_stock_out.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.\n"
+    "stack": "",
+    "duration": "31.29초"
   },
   {
     "test_name": "test_Bay_order_status_request_cancel",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-04-15 18:54:48",
+    "timestamp": "2025-04-16 16:49:47",
     "file": "tests/test_Bay_order_status_request_cancel.py",
-    "stack": ""
+    "stack": "",
+    "duration": "8.70초"
   },
   {
     "test_name": "test_Bay_order_status_request",
-    "status": "FAIL",
-    "message": "Command '['pytest', 'tests/test_Bay_order_status_request.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.",
-    "timestamp": "2025-04-15 18:54:51",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:50:00",
     "file": "tests/test_Bay_order_status_request.py",
-    "stack": "Traceback (most recent call last):\n  File \"C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\자동화\\scripts\\run_tests_and_generate_json.py\", line 95, in <module>\n    result = subprocess.run([\n        \"pytest\",\n    ...<2 lines>...\n        f\"--json-report-file={JSON_REPORT_FILE}\"\n    ], check=True)\n  File \"C:\\Users\\kjeon\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 579, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['pytest', 'tests/test_Bay_order_status_request.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.\n"
+    "stack": "",
+    "duration": "12.66초"
   },
   {
     "test_name": "test_Bay_order_status_progress_delivery",
-    "status": "FAIL",
-    "message": "Command '['pytest', 'tests/test_Bay_order_status_progress_delivery.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.",
-    "timestamp": "2025-04-15 18:54:53",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:50:13",
     "file": "tests/test_Bay_order_status_progress_delivery.py",
-    "stack": "Traceback (most recent call last):\n  File \"C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\자동화\\scripts\\run_tests_and_generate_json.py\", line 95, in <module>\n    result = subprocess.run([\n        \"pytest\",\n    ...<2 lines>...\n        f\"--json-report-file={JSON_REPORT_FILE}\"\n    ], check=True)\n  File \"C:\\Users\\kjeon\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 579, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['pytest', 'tests/test_Bay_order_status_progress_delivery.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.\n"
+    "stack": "",
+    "duration": "13.25초"
   },
   {
     "test_name": "test_Bay_order_status_progress_complete",
-    "status": "FAIL",
-    "message": "Command '['pytest', 'tests/test_Bay_order_status_progress_complete.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.",
-    "timestamp": "2025-04-15 18:54:55",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:50:21",
     "file": "tests/test_Bay_order_status_progress_complete.py",
-    "stack": "Traceback (most recent call last):\n  File \"C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\자동화\\scripts\\run_tests_and_generate_json.py\", line 95, in <module>\n    result = subprocess.run([\n        \"pytest\",\n    ...<2 lines>...\n        f\"--json-report-file={JSON_REPORT_FILE}\"\n    ], check=True)\n  File \"C:\\Users\\kjeon\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 579, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['pytest', 'tests/test_Bay_order_status_progress_complete.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.\n"
+    "stack": "",
+    "duration": "7.76초"
   },
   {
     "test_name": "test_Bay_order_status_delivery",
-    "status": "FAIL",
-    "message": "Command '['pytest', 'tests/test_Bay_order_status_delivery.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.",
-    "timestamp": "2025-04-15 18:54:58",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:50:28",
     "file": "tests/test_Bay_order_status_delivery.py",
-    "stack": "Traceback (most recent call last):\n  File \"C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\자동화\\scripts\\run_tests_and_generate_json.py\", line 95, in <module>\n    result = subprocess.run([\n        \"pytest\",\n    ...<2 lines>...\n        f\"--json-report-file={JSON_REPORT_FILE}\"\n    ], check=True)\n  File \"C:\\Users\\kjeon\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 579, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['pytest', 'tests/test_Bay_order_status_delivery.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.\n"
+    "stack": "",
+    "duration": "6.95초"
   },
   {
     "test_name": "test_Bay_order_status_complete",
-    "status": "FAIL",
-    "message": "Command '['pytest', 'tests/test_Bay_order_status_complete.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.",
-    "timestamp": "2025-04-15 18:55:01",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-04-16 16:50:37",
     "file": "tests/test_Bay_order_status_complete.py",
-    "stack": "Traceback (most recent call last):\n  File \"C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\자동화\\scripts\\run_tests_and_generate_json.py\", line 95, in <module>\n    result = subprocess.run([\n        \"pytest\",\n    ...<2 lines>...\n        f\"--json-report-file={JSON_REPORT_FILE}\"\n    ], check=True)\n  File \"C:\\Users\\kjeon\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 579, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['pytest', 'tests/test_Bay_order_status_complete.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.\n"
+    "stack": "",
+    "duration": "8.78초"
   },
   {
     "test_name": "test_Bay_order_status_fail",
     "status": "FAIL",
-    "message": "Command '['pytest', 'tests/test_Bay_order_status_fail.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.",
-    "timestamp": "2025-04-15 18:55:06",
+    "message": "============================== 1 failed in 1.01s ==============================",
+    "timestamp": "2025-04-16 16:50:39",
     "file": "tests/test_Bay_order_status_fail.py",
-    "stack": "Traceback (most recent call last):\n  File \"C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\자동화\\scripts\\run_tests_and_generate_json.py\", line 95, in <module>\n    result = subprocess.run([\n        \"pytest\",\n    ...<2 lines>...\n        f\"--json-report-file={JSON_REPORT_FILE}\"\n    ], check=True)\n  File \"C:\\Users\\kjeon\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 579, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['pytest', 'tests/test_Bay_order_status_fail.py', '--json-report', '--json-report-file=scripts/result.json']' returned non-zero exit status 1.\n"
+    "stack": "",
+    "duration": "2.62초"
   }
 ]

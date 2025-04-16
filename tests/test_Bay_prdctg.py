@@ -42,7 +42,7 @@ def test_register_category_each(browser, tab, testid_kor, testid_eng, require_en
             page.locator(f"data-testid={testid_eng}").last.fill(name_en)
 
         page.click("data-testid=btn_save")
-        page.wait_for_timeout(1500)
+        page.wait_for_timeout(3000)
 
         # 스크롤을 끝까지 내려서 확인
         page.evaluate('window.scrollTo(0, document.body.scrollHeight)')

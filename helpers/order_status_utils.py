@@ -50,34 +50,42 @@ def update_product_delivery_status(product_name: str, new_status: int):
         json.dump(products, f, ensure_ascii=False, indent=2)
 
 def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, expected: dict):
-    # 각 history 항목에 대해 상태를 확인
-    histories = page.locator("[data-testid='history']").all()  # history 요소들 가져오기
+    histories = page.locator("[data-testid='history']").all()
     found = False
     
     for history in histories:
-        # 각 history 하위의 첫 번째 테이블 찾기
         table = history.locator("table")
-        rows = table.locator("tbody tr").all()  # 테이블 내 모든 행 찾기
+        rows = table.locator("tbody tr").all()
         
         for row in rows:
-            status = row.locator("td").nth(0).inner_text().strip()  # 첫 번째 열의 상태 확인
-            order_data_id = row.locator("td[data-testid='order']").get_attribute('data-orderid')  # 두 번째 열에서 주문 ID 찾기
+            status = row.locator("td").nth(0).inner_text().strip()
+            order_data_id = row.locator("td[data-testid='order']").get_attribute('data-orderid')
 
-            # 디버깅 메시지, 필요시 삭제 가능
             print(f"상태: {status}")
             print(f"주문 ID: {order_data_id}")
             
             if status == status_name and order_data_id == order_id:
                 found = True
-                # 상태별 조건 확인
                 for key, value in expected.items():
                     if key == "resend_enabled":
-                        # 'disabled' 속성 확인
                         resend_button = row.locator("[data-testid=btn_resend]")
                         disabled = resend_button.get_attribute("disabled")
-                        assert (disabled is None) == value  # 'disabled'가 없으면 활성화, 있으면 비활성화
+                        assert (disabled is None) == value
                     if key == "tracking_text":
-                        assert value in row.locator("td").nth(7).inner_text().strip()
+                        td_tracking = row.locator("td").nth(7)
+                        text = td_tracking.text_content().strip()
+                        print(f"[디버깅] 운송장 텍스트: '{text}'")
+                        assert value in text, f"운송장 칸에 '{value}'가 없음. 실제 값: '{text}'"
+
+                    if key == "tracking_enabled":
+                        td_tracking = row.locator("td").nth(7)
+                        tracking_button = td_tracking.locator("[data-testid=btn_tracking]")
+                        if tracking_button.count() > 0:
+                            disabled = tracking_button.get_attribute("disabled")
+                            assert (disabled is None) == value, f"트래킹 버튼 활성화 기대값: {value}, 실제: {'활성' if disabled is None else '비활성'}"
+                        else:
+                            # 버튼이 없으면 비활성 상태여야 함
+                            assert not value, "트래킹 버튼이 없지만 활성화를 기대하고 있습니다."
                     if key == "receive_enabled":
                         receive_button = row.locator("[data-testid=btn_receive]")
                         disabled = receive_button.get_attribute("disabled")
@@ -93,4 +101,5 @@ def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, 
 
     if not found:
         raise AssertionError(f"발주 내역을 찾을 수 없습니다: {status_name}, {order_id}")
+
 

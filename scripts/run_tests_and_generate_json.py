@@ -2,7 +2,6 @@ import os
 import json
 import subprocess
 from datetime import datetime
-import traceback
 
 TEST_RESULTS_FILE = "test_results.json"
 JSON_REPORT_FILE = "scripts/result.json"
@@ -12,17 +11,18 @@ SUMMARY_FILE = "scripts/summary.json"
 for path in [TEST_RESULTS_FILE, JSON_REPORT_FILE, SUMMARY_FILE]:
     if os.path.exists(path):
         os.remove(path)
-        print(f"🧹 기존 파일 제거: {path}")
+        print(f"🪩 기존 파일 제거: {path}")
 
 # 테스트 결과 저장 함수
-def save_test_result(test_name, message, status="FAIL", file_name=None, stack_trace=""):
+def save_test_result(test_name, message, status="FAIL", file_name=None, stack_trace="", duration=None):
     result_data = {
         "test_name": test_name,
         "status": status,
         "message": message,
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "file": file_name,  # 파일명 추가
-        "stack": stack_trace  # 실패 시 스택 트레이스 추가
+        "file": file_name,
+        "stack": stack_trace,
+        "duration": duration
     }
 
     if os.path.exists(TEST_RESULTS_FILE):
@@ -35,7 +35,6 @@ def save_test_result(test_name, message, status="FAIL", file_name=None, stack_tr
 
     with open(TEST_RESULTS_FILE, 'w', encoding='utf-8') as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
-
 
 # 출고 실패 여부 & 스킵 테스트 저장
 stock_out_failed = False
@@ -79,54 +78,77 @@ order_tests = {
 
 # 테스트 실행
 for test_file in all_tests:
+    test_name = os.path.splitext(os.path.basename(test_file))[0]
+
     if stock_out_failed and test_file in order_tests:
         print(f"⏭️ 출고 실패로 발주 관련 테스트 스킵: {test_file}")
         skipped_tests.append(test_file)
         save_test_result(
-            test_name=os.path.splitext(os.path.basename(test_file))[0],
+            test_name=test_name,
             message="출고 실패로 인해 발주 테스트 스킵됨",
             status="SKIP",
-            file_name=test_file  # 파일명 추가
+            file_name=test_file
         )
         continue
 
     print(f"\n🚀 {test_file} 테스트 실행 중...")
+    start_time = datetime.now()
     try:
-        result = subprocess.run([
-            "pytest",
-            test_file,
-            "--json-report",
-            f"--json-report-file={JSON_REPORT_FILE}"
-        ], check=True)
-
-        test_name = os.path.splitext(os.path.basename(test_file))[0]
-
+        result = subprocess.run(
+            ["pytest", test_file, "--json-report"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        duration = (datetime.now() - start_time).total_seconds()
         print(f"✅ {test_file} 테스트 완료")
-        save_test_result(test_name, "테스트 성공", status="PASS", file_name=test_file)
+        save_test_result(
+            test_name=test_name,
+            message="테스트 성공",
+            status="PASS",
+            file_name=test_file,
+            duration=f"{duration:.2f}초"
+        )
 
     except subprocess.CalledProcessError as e:
-        test_name = os.path.splitext(os.path.basename(test_file))[0]
-        error_message = str(e)
+        duration = (datetime.now() - start_time).total_seconds()
+        full_output = e.stderr or e.stdout or ""
+        error_lines = full_output.strip().splitlines()
+        parsed_message = error_lines[-1] if error_lines else "에러 메시지를 확인할 수 없습니다."
+
+        # 스택 트레이스 요약 추출
+        stack_summary = ""
+        for line in error_lines:
+            if "File " in line and ", line " in line:
+                stack_summary = line.strip()
+                break
 
         print(f"❌ {test_file} 테스트 실패")
-        # 스택 트레이스를 얻어서 저장
-        stack_trace = traceback.format_exc()
-        save_test_result(test_name, error_message, status="FAIL", file_name=test_file, stack_trace=stack_trace)
+        save_test_result(
+            test_name=test_name,
+            message=parsed_message,
+            status="FAIL",
+            file_name=test_file,
+            stack_trace=stack_summary,
+            duration=f"{duration:.2f}초"
+        )
 
     if test_file == "tests/test_Bay_stock_out.py":
         if os.path.exists(TEST_RESULTS_FILE):
             with open(TEST_RESULTS_FILE, "r", encoding="utf-8") as f:
                 results = json.load(f)
             for r in results:
-                if r["test_name"] == "test_stock_outflow" and r["status"] == "FAIL":
+                if r["test_name"] == "test_Bay_stock_out" and r["status"] == "FAIL":
                     stock_out_failed = True
                     print("⚠️ 출고 테스트 실패 감지 → 발주 테스트 스킵 모드 활성화")
                     break
 
-# 테스트 완료 후 처리
 print("\n🎯 모든 테스트 완료")
 
 if skipped_tests:
     print(f"\n📝 스킵된 테스트: {len(skipped_tests)}개")
     for s in skipped_tests:
         print("•", s)
+
+print("\n📤 슬랙 메시지 전송 중...")
+subprocess.run(["python", "scripts/send_slack.py"])

@@ -1,13 +1,13 @@
 import pytest
 import requests
+from dotenv import load_dotenv
 import os
-import base64
-import datetime
 from playwright.sync_api import sync_playwright
 
-# 🔹 Slack Webhook URL (설정한 Webhook URL을 여기에 입력)
-SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
+load_dotenv()
 
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
+    
 def send_slack_message(message):
     """Slack으로 메시지 전송"""
     payload = {"text": message}

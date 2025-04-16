@@ -2,22 +2,20 @@ import os
 import json
 import requests
 from datetime import datetime, timedelta, timezone
-from collections import defaultdict
 from dotenv import load_dotenv
 
 # 환경 변수 로드
 load_dotenv()
 
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
-RESULT_FILE = "test_result.json"
+RESULT_FILE = "test_results.json"
 
 # 시간 포맷 (KST)
 KST = timezone(timedelta(hours=9))
 now = datetime.now(KST)
 seoul_time = now.strftime("%Y-%m-%d %H:%M:%S")
 
-
-# 테스트 파일명 -> 한글 매핑 딕셔너리
+# 테스트 파일명 → 한글 매핑
 test_file_to_korean = {
     "test_Bay_login": "로그인 확인",
     "test_Bay_order_status_request_cancel": "발주 취소 상태 확인",
@@ -25,8 +23,7 @@ test_file_to_korean = {
     "test_Bay_order_status_progress_delivery": "발주 진행 상태에서 운송장 등록 확인",
     "test_Bay_order_status_progress_complete": "발주 진행 상태에서 수령 확인",
     "test_Bay_order_status_delivery": "배송 진행 상태 확인",
-    "test_Bay_order_status_complete_bf": "수령 완료 상태 확인",
-    "test_Bay_order_status_complete_af": "수령 완료 상태 확인",
+    "test_Bay_order_status_complete": "수령 완료 상태 확인",
     "test_Bay_order_status_fail": "발주 실패 상태 확인",
     "test_Bay_prdctg": "카테고리 등록 확인",
     "test_Bay_prdctg_delete": "카테고리 삭제 확인",
@@ -47,11 +44,25 @@ def load_test_results(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
+def format_duration(total_seconds):
+    minutes = int(total_seconds // 60)
+    seconds = int(total_seconds % 60)
+    return f"{minutes}분 {seconds}초"
+
+def get_total_duration_from_results(results):
+    total = 0.0
+    for r in results:
+        try:
+            duration = float(r.get("duration", "0").replace("초", ""))
+            total += duration
+        except:
+            continue
+    return format_duration(total)
+
 def build_slack_message(test_results):
     success_count = 0
     fail_count = 0
     skip_count = 0
-
     detail_lines = []
 
     for idx, result in enumerate(test_results, 1):
@@ -71,15 +82,14 @@ def build_slack_message(test_results):
             skip_count += 1
             detail_lines.append(f"{idx}. [SKIP] {korean_name}")
 
+    total_time = get_total_duration_from_results(test_results)
+
     slack_message = f":package: *자동화 테스트 결과* ({seoul_time})\n"
-    slack_message += f"총 수행 테스트 파일 수: {len(test_results)} | 성공: {success_count} | 실패: {fail_count} | 스킵: {skip_count}\n\n"
+    slack_message += f"총 수행 테스트 파일 수: {len(test_results)} | 성공: {success_count} | 실패: {fail_count} | 스킵: {skip_count}\n"
+    slack_message += f":stopwatch: 전체 수행 시간: {total_time}\n\n"
     slack_message += "\n".join(detail_lines)
 
     return slack_message
-
-
-
-
 
 def send_slack_message(message):
     payload = {
@@ -89,8 +99,8 @@ def send_slack_message(message):
     if response.status_code != 200:
         raise Exception(f"Error sending message to Slack: {response.status_code}, {response.text}")
 
-test_results = load_test_results('test_results.json')
-slack_message = build_slack_message(test_results)
-send_slack_message(slack_message)
-
-print("슬랙 알림이 전송되었습니다.")
+if __name__ == "__main__":
+    test_results = load_test_results(RESULT_FILE)
+    slack_message = build_slack_message(test_results)
+    send_slack_message(slack_message)
+    print("✅ 슬랙 알림이 전송되었습니다.")

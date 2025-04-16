@@ -39,7 +39,6 @@ def test_order_receive_from_progress(page: Page):
         target_product = random.choice(eligible_products)
         product_name = target_product['kor']
         previous_stock = target_product.get('stock_qty', 0)
-        stock_inflow = target_product.get('stock_inflow', 0)
 
         # 로그인 및 발주 내역 검색
         page.goto(URLS["bay_login"])
@@ -59,13 +58,15 @@ def test_order_receive_from_progress(page: Page):
             raise ValueError(f"{product_name} 제품의 order ID를 찾을 수 없습니다.")
 
         # 상태 확인: 배송 진행
-        expected_status_conditions = order_status_map["배송 진행"]
-        check_order_status_by_order_id(page, "배송 진행", order_id, expected_status_conditions)
+        expected_status_conditions = order_status_map["발주 진행"]
+        check_order_status_by_order_id(page, "발주 진행", order_id, expected_status_conditions)
 
         # 수령확정 처리
-        page.click("button[data-testid='btn_receive']")
-        page.click("button[data-testid='btn_confirm']")
-        page.wait_for_timeout(1000)
+        page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
+        stock_inflow = int(page.locator('[data-testid="input_quantity"]').input_value())#입고 수량 저장
+        print(stock_inflow)
+
+        page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
 
         # 수령 상태 확인
         page.click("data-testid=btn_search")
@@ -77,7 +78,7 @@ def test_order_receive_from_progress(page: Page):
             columns = row.locator("td").all_inner_texts()
             if product_name in columns[1]:
                 status = columns[0].strip()
-                assert status == "수령 완료", f"[FAIL] {product_name} 상태가 '수령 완료'가 아님 → 현재 상태: {status}"
+                assert status == "수령 확정", f"[FAIL] {product_name} 상태가 '수령 확정'이 아님 → 현재 상태: {status}"
                 print(f"[PASS] 수령 완료 상태 확인 완료 → {product_name} 상태: {status}")
                 found = True
                 break
@@ -89,12 +90,12 @@ def test_order_receive_from_progress(page: Page):
         update_product_status_in_json(product_name, delivery_status=7, order_flag=0)
 
         # 재고 관리 → 재고 확인
-        page.goto(URLS["stock_management"])
+        page.goto(URLS["bay_stock"])
         page.fill("data-testid=input_search", product_name)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
-        current_stock_text = page.locator("td[data-testid='stock_qty']").inner_text()
+        current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()
         current_stock = int(current_stock_text.strip())
 
         expected_stock = previous_stock + stock_inflow
