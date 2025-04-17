@@ -44,8 +44,11 @@ def test_order_acceptance(page: Page):
 
             # 발주 내역 검색
             page.goto(URLS["bay_orderList"])
+            page.wait_for_timeout(500)
             page.click("data-testid=drop_status_trigger")
+            page.wait_for_timeout(500)
             page.click('div[data-testid="drop_status_item"] div[data-value="발주 요청"]')
+            page.wait_for_timeout(500)
             page.fill("data-testid=input_search", product_name)
             page.click("data-testid=btn_search")
             page.wait_for_timeout(1000)

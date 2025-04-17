@@ -112,26 +112,32 @@ for test_file in all_tests:
 
     except subprocess.CalledProcessError as e:
         duration = (datetime.now() - start_time).total_seconds()
-        full_output = e.stderr or e.stdout or ""
-        error_lines = full_output.strip().splitlines()
-        parsed_message = error_lines[-1] if error_lines else "에러 메시지를 확인할 수 없습니다."
+        full_output = e.stderr or e.stdout or "출력 없음"
 
-        # 스택 트레이스 요약 추출
-        stack_summary = ""
-        for line in error_lines:
-            if "File " in line and ", line " in line:
-                stack_summary = line.strip()
+        # 전체 출력 라인으로 나눔
+        error_lines = full_output.strip().splitlines()
+
+        # 메시지 후보: 가장 마지막 줄 또는 AssertionError 등 포함된 줄
+        parsed_message = ""
+        for line in reversed(error_lines):
+            if "Error" in line or "Exception" in line or "Traceback" in line or "Assertion" in line:
+                parsed_message = line.strip()
                 break
+
+        # 예외가 없으면 마지막 줄 사용
+        if not parsed_message and error_lines:
+            parsed_message = error_lines[-1].strip()
 
         print(f"❌ {test_file} 테스트 실패")
         save_test_result(
             test_name=test_name,
-            message=parsed_message,
+            message=parsed_message,  # 깔끔한 에러 메시지만 저장
             status="FAIL",
             file_name=test_file,
-            stack_trace=stack_summary,
+            stack_trace=full_output,  # 전체는 stack_trace에 저장
             duration=f"{duration:.2f}초"
         )
+
 
     if test_file == "tests/test_Bay_stock_out.py":
         if os.path.exists(TEST_RESULTS_FILE):

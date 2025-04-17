@@ -59,8 +59,9 @@ def test_order_cancel(page: Page):
         if not order_id:
             raise ValueError(f"Order ID for product {product_name} not found")
 
-        # 취소 버튼을 누르고 수령확인 버튼 클릭
+        # 취소 버튼
         page.click("button[data-testid='btn_cancel']")  # 취소 버튼 클릭
+        page.wait_for_timeout(500)
         page.click("button[data-testid='btn_confirm']")  # 확인 버튼 클릭
 
         page.wait_for_timeout(3000)
