@@ -110,6 +110,7 @@ def verify_products_in_list(page, product_names: list[str], url: str, search_pla
 
     for name in product_names:
         page.fill("data-testid=input_search", name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -139,8 +140,8 @@ def is_product_exist(page, product_names) -> bool:
     for name in product_names:
         try:
             page.goto(URLS["bay_prdList"])
-            page.fill("input[placeholder='제품명 검색']", name)
-            page.locator("button:has-text('검색')").click()
+            page.fill("data-testid=input_search", name)
+            page.locator("data-testid=btn_search").click()
 
             # 검색 결과 로딩 대기
             page.locator("table tbody tr").first.wait_for(timeout=5000)
@@ -241,6 +242,7 @@ def verify_product_update(page, product_names):
     for name in product_names:
         page.goto(URLS["bay_prdList"])
         page.fill("data-testid=input_search", name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -288,6 +290,7 @@ def get_product_stock(page, product_name):
     page.goto(URLS["bay_stock"])
     page.wait_for_url(URLS["bay_stock"], timeout=10000)
     page.fill("input[placeholder='제품명 검색']", product_name)
+    page.wait_for_timeout(500)
     page.click("data-testid=btn_search")
     page.wait_for_timeout(1000)
 
@@ -320,6 +323,7 @@ def is_duplicate_supplier_from_product_file(manager: str, contact: str) -> bool:
 def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: str) -> bool:
     # 검색
     page.fill("input[placeholder='업체명 검색']", supplier)
+    page.wait_for_timeout(500)
     page.click("data-testid=btn_search")
     page.wait_for_timeout(1000)
 

@@ -67,7 +67,7 @@ def test_duplicate_product_name(browser):
 
         # page.click("data-testid=btn-save")
         page.locator("button:has-text('완료')").click()
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(200)
         alert = page.locator("data-testid=alert_duplicate")
         assert alert.is_visible(), "❌ 중복 경고 메시지가 표시되지 않음"
         print(f"[PASS][제품관리] 중복 제품명 등록 방지 확인됨: {prdname_kor}")

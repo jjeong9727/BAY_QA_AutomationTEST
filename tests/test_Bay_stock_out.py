@@ -70,6 +70,7 @@ def test_stock_outflow(browser):
 
             # 제품명 검색
             page.fill("data-testid=input_search", stock_manager.product_name)
+            page.wait_for_timeout(500)
             page.click("data-testid=btn_search")
 
             # history 항목이 나타날 때까지 대기
@@ -79,6 +80,7 @@ def test_stock_outflow(browser):
                 print("🔁 history 항목이 안 보여서 페이지 새로고침 후 재시도합니다.")
                 page.reload()
                 page.fill("data-testid=input_search", stock_manager.product_name)
+                page.wait_for_timeout(300)
                 page.click("data-testid=btn_search")
                 page.wait_for_selector("data-testid=history", timeout=5000)  # 마지막 시도
 

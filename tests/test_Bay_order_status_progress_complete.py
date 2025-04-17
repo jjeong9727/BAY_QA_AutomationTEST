@@ -49,6 +49,7 @@ def test_order_receive_from_progress(page: Page):
 
         page.goto(URLS["bay_orderList"])
         page.fill("data-testid=input_search", product_name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -92,6 +93,7 @@ def test_order_receive_from_progress(page: Page):
         # 재고 관리 → 재고 확인
         page.goto(URLS["bay_stock"])
         page.fill("data-testid=input_search", product_name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 

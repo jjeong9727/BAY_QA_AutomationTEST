@@ -57,8 +57,9 @@ def delete_product_and_verify(page: Page, row_index: int):
 
 
         page.click("data-testid=btn_del")
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(500)
         page.reload()
+        page.wait_for_timeout(1000)
 
         if check_delete(page, product_name):
             msg = f"[PASS][제품관리] 제품 삭제 테스트 (삭제된 제품: '{product_display_name}')"
@@ -94,6 +95,7 @@ def test_delete_product(browser):
 
         page.goto(URLS["bay_prdList"])
         page.fill("data-testid=input_search", target_name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 

@@ -11,19 +11,16 @@ def generate_name(prefix):
 
 def login_and_go_to_add_page(page: Page):
     try:
-        print("Logging in and going to category page...")
         page.goto(URLS["bay_login"])
-        print(f"Filling credentials: {Account['testid']}")
         page.fill("data-testid=input_id", Account["testid"])
         page.fill("data-testid=input_pw", Account["testpw"])
         page.click("data-testid=btn_login")
-        print("Waiting for home page...")
         page.wait_for_url(URLS["bay_home"])
-        print("Navigating to category page...")
+        
         page.goto(URLS["bay_category"])
         page.wait_for_timeout(3000)
         page.wait_for_url(URLS["bay_category"])
-        print("Category page loaded.")
+        
     except Exception as e:
         error_message = f"Error during login and navigation: {str(e)}"
         raise
@@ -39,14 +36,10 @@ def test_edit_category_each(browser, tab, testid_kor, testid_eng, require_eng):
     
     try:
         login_and_go_to_add_page(page)
-
-        print(f"Clicking on tab: {tab}")
         page.click(f"data-testid={tab}")
-
         page.wait_for_timeout(3000)
 
         # '자동화등록'으로 시작하는 항목 찾기
-        print(f"Searching for items starting with '자동화등록'...")
         name_kr_locator = page.locator(f"input[data-testid='{testid_kor}']")
 
         item_to_edit = None
@@ -57,23 +50,21 @@ def test_edit_category_each(browser, tab, testid_kor, testid_eng, require_eng):
                 item_to_edit = name_kr_locator.nth(i)
                 item_value_to_edit = item_text  # 항목의 값을 저장
                 row_index = i  # 해당 항목이 몇 번째 행인지 저장
-                print(f"Found item to edit: {item_value_to_edit} (Row {row_index + 1})")
+                
                 break
 
         if item_to_edit:
             # 기존 값에 "_수정"을 추가하여 새로운 값으로 수정
             new_value = f"{item_value_to_edit}_수정"
-            print(f"Editing item value to: {new_value}")
+            
             item_to_edit.fill(new_value)  # 새로운 값으로 수정
 
             # 수정 후 저장 버튼 클릭
-            print("Saving the edited value...")
+            
             save_button = page.locator("data-testid=btn_save")  # 저장 버튼 클릭
             save_button.click()
             page.wait_for_timeout(1500)
 
-            # 수정된 값이 페이지에 제대로 반영되었는지 확인
-            print(f"Checking if the edited value '{new_value}' is displayed...")
 
             # 정확한 항목을 선택하여 값을 확인 (wait_for_selector 추가)
             edited_item = page.locator(f"input[data-testid='{testid_kor}']").nth(row_index)

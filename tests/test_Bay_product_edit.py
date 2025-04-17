@@ -42,6 +42,7 @@ def test_edit_bulk_products(browser):
         print("✅ 등록테스트 제품 검색")
         page.goto(URLS["bay_prdList"])
         page.fill("data-testid=input_search", "등록테스트")
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -64,7 +65,6 @@ def test_edit_bulk_products(browser):
             selected_names.append(name)
 
         # 3. 일괄 수정 진행
-        print("✅ 일괄 수정 버튼 클릭")
         page.click("data-testid=btn_edit_bulk")
         page.wait_for_timeout(2000)
 

@@ -51,6 +51,7 @@ def test_order_receive_from_delivery(page: Page):
         # 발주 내역 화면으로 이동하여 제품명 검색 
         page.goto(URLS["bay_orderList"])
         page.fill("data-testid=input_search", product_name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -68,6 +69,7 @@ def test_order_receive_from_delivery(page: Page):
 
         # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭
         page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
+        page.wait_for_timeout(500)
         stock_inflow = int(page.locator('[data-testid="input_quantity"]').input_value())#입고 수량 저장
         print(stock_inflow)
 
@@ -91,6 +93,7 @@ def test_order_receive_from_delivery(page: Page):
         # 재고 관리 화면으로 이동하여 제품명으로 검색
         page.goto(URLS["bay_stock"])
         page.fill("data-testid=input_search", product_name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 

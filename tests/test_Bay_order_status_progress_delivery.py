@@ -51,6 +51,7 @@ def test_order_delivery(page: Page):
         # 발주 내역 검색
         page.goto(URLS["bay_orderList"])
         page.fill("data-testid=input_search", product_name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 

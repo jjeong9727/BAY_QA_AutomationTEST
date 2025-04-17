@@ -16,6 +16,7 @@ def test_delete_supplier(browser):
 
         # 1. "자동화 업체명" 검색
         page.fill("data-testid=input_search", "자동화 업체명")  # 제품명 검색
+        page.wait_for_timeout(400)
         page.click("data-testid=btn_search")  # 검색 버튼 클릭
         page.wait_for_timeout(1000)
 

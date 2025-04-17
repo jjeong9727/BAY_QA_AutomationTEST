@@ -68,6 +68,7 @@ def test_order_acceptance(page: Page):
             page.fill("input[data-testid='input_name']", "권정의")
             page.fill("input[data-testid='input_contact']", "01062754153")
             page.locator("button[data-testid='btn_confirm']").last.click()
+            page.wait_for_timeout(500)
             page.click("button[data-testid='btn_accept']")
             page.wait_for_timeout(500)
 
