@@ -127,7 +127,7 @@
         "auto_order": 10,
         "order_flag": 1,
         "stock_qty": 1,
-        "delivery_status": 1
+        "delivery_status": 2
     },
     {
         "kor": "등록테스트_0417_0939_01",
