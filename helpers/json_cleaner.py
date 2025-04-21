@@ -1,6 +1,6 @@
 import json
 
-def keep_only_order_status_6(file_path="product_name.json"):
+def clean_product_json(file_path="product_name.json"):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)

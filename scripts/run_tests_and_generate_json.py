@@ -2,6 +2,7 @@ import os
 import json
 import subprocess
 from datetime import datetime
+from helpers.json_cleaner import clean_product_json
 
 TEST_RESULTS_FILE = "test_results.json"
 JSON_REPORT_FILE = "scripts/result.json"
@@ -12,6 +13,8 @@ for path in [TEST_RESULTS_FILE, JSON_REPORT_FILE, SUMMARY_FILE]:
     if os.path.exists(path):
         os.remove(path)
         print(f"🪩 기존 파일 제거: {path}")
+
+clean_product_json()
 
 # 테스트 결과 저장 함수
 def save_test_result(test_name, message, status="FAIL", file_name=None, stack_trace="", duration=None):
