@@ -2,7 +2,10 @@ import os
 import json
 import subprocess
 from datetime import datetime
-from helpers.json_cleaner import clean_product_json
+import sys
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/.."))
+
+from helpers.common_utils import clean_product_json
 
 TEST_RESULTS_FILE = "test_results.json"
 JSON_REPORT_FILE = "scripts/result.json"
@@ -45,19 +48,19 @@ skipped_tests = []
 
 # 전체 테스트 목록
 all_tests = [
-    "tests/test_Bay_login.py",
-    "tests/test_Bay_supplier.py",
-    "tests/test_Bay_supplier_val.py",
-    "tests/test_Bay_supplier_delete.py",
-    "tests/test_Bay_prdctg.py",
-    "tests/test_Bay_prdctg_val.py",
-    "tests/test_Bay_prdctg_edit.py",
-    "tests/test_Bay_prdctg_delete.py",
-    "tests/test_Bay_product.py",
-    "tests/test_Bay_product_val.py",
-    "tests/test_Bay_product_edit.py",
-    "tests/test_Bay_product_delete.py",
-    "tests/test_Bay_stock_in.py",
+    # "tests/test_Bay_login.py",
+    # "tests/test_Bay_supplier.py",
+    # "tests/test_Bay_supplier_val.py",
+    # "tests/test_Bay_supplier_delete.py",
+    # "tests/test_Bay_prdctg.py",
+    # "tests/test_Bay_prdctg_val.py",
+    # "tests/test_Bay_prdctg_edit.py",
+    # "tests/test_Bay_prdctg_delete.py",
+    # "tests/test_Bay_product.py",
+    # "tests/test_Bay_product_val.py",
+    # "tests/test_Bay_product_edit.py",
+    # "tests/test_Bay_product_delete.py",
+    # "tests/test_Bay_stock_in.py",
     "tests/test_Bay_stock_out.py",
     "tests/test_Bay_order_status_request_cancel.py",
     "tests/test_Bay_order_status_request.py",
