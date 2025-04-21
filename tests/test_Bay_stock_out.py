@@ -73,19 +73,9 @@ def test_stock_outflow(browser):
             page.wait_for_timeout(5000)
             page.click("data-testid=btn_search")
 
-            # history 항목이 나타날 때까지 대기
-            try:
-                expect(page.locator("data-testid=history")).to_be_visible(timeout=5000)
-            except TimeoutError:
-                print("🔁 history 항목이 안 보여서 페이지 새로고침 후 재시도합니다.")
-                page.reload()
-                expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
-                page.fill("data-testid=input_search", stock_manager.product_name)
-                page.wait_for_timeout(5000)
-                page.click("data-testid=btn_search")
-                expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)  # 마지막 시도
 
-                
+            expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
+   
             # 모든 history 항목을 순차적으로 확인
             history_items = page.locator("data-testid=history").all()  # 모든 history 항목 가져오기
             product_name_to_search = stock_manager.product_name
