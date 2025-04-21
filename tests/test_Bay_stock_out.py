@@ -73,13 +73,14 @@ def test_stock_outflow(browser):
             page.wait_for_timeout(5000)
             page.click("data-testid=btn_search")
 
+            # history 항목을 div 기준으로 확인
+            history_div = page.locator("div[data-testid=history]")
+            expect(history_div).to_be_visible(timeout=8000)
 
-            expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
-   
             # 모든 history 항목을 순차적으로 확인
-            history_items = page.locator("data-testid=history").all()  # 모든 history 항목 가져오기
+            history_items = history_div.all()
             product_name_to_search = stock_manager.product_name
-            found_product = False  # 제품을 찾았는지 여부를 추적
+            found_product = False
 
             # 각 history 항목을 순차적으로 확인
             for history in history_items:
