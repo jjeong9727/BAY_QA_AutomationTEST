@@ -142,6 +142,7 @@ def test_bulk_delete_products(browser):
 
         for name in selected_names:
             page.fill("data-testid=input_search", name)
+            page.wait_for_timeout(500)
             page.click("data-testid=btn_search")
             page.wait_for_timeout(500)
 
@@ -157,10 +158,9 @@ def test_bulk_delete_products(browser):
 
         # 일괄 삭제 버튼 클릭
         page.click("data-testid=btn_del_bulk")
-        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_del").wait_for()
         page.click("data-testid=btn_del")
         page.wait_for_timeout(2000)
-        page.reload()
 
         # 삭제 후, 제품이 목록에서 사라졌는지 확인
         failed = []

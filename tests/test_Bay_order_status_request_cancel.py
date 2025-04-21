@@ -1,6 +1,6 @@
 import json
 import random
-from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import filter_products_by_delivery_status, get_order_id_from_order_list, check_order_status_by_order_id
 from helpers.order_status_data import order_status_map
@@ -49,10 +49,11 @@ def test_order_cancel(page: Page):
         page.wait_for_timeout(1000)
 
         page.goto(URLS["bay_orderList"])
+        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(3000)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
 
         # 검색된 제품의 order_id 값 가져오기
         order_id = get_order_id_from_order_list(page, product_name)
@@ -62,10 +63,10 @@ def test_order_cancel(page: Page):
 
         # 취소 버튼
         page.click("button[data-testid='btn_cancel']")  # 취소 버튼 클릭
-        page.wait_for_timeout(500)
+        expect(page.locator("data-testid=btn_confirm")).to_be_visible(timeout=2000)
         page.click("button[data-testid='btn_confirm']")  # 확인 버튼 클릭
 
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(5000)
 
         # 발주 내역에서 해당 제품을 "발주 취소" 상태인지 확인
         rows = page.locator("table tbody tr")

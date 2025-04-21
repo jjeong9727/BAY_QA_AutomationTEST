@@ -2,7 +2,7 @@ import json
 import random
 from helpers.order_status_data import order_status_map
 from helpers.order_status_utils import check_order_status_by_order_id, get_order_id_from_order_list, filter_products_by_delivery_status
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from config import URLS, Account
 
 
@@ -46,14 +46,15 @@ def test_order_receive_from_delivery(page: Page):
         page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
         page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
         page.click("data-testid=btn_login", timeout=50000)  # 로그인 버튼 클릭
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(2000)
 
         # 발주 내역 화면으로 이동하여 제품명 검색 
         page.goto(URLS["bay_orderList"])
+        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
 
         
         # order_id 추출
@@ -69,11 +70,12 @@ def test_order_receive_from_delivery(page: Page):
 
         # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭
         page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
-        page.wait_for_timeout(500)
+        expect(page.locator("data-testid=input_quantity")).to_be_visible(timeout=5000)
         stock_inflow = int(page.locator('[data-testid="input_quantity"]').input_value())#입고 수량 저장
         print(stock_inflow)
 
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
+        page.wait_for_timeout(2000)
 
         # 발주 내역에서 해당 제품을 "수령 확정" 상태인지 확인
         rows = page.locator("table tbody tr")
@@ -92,10 +94,11 @@ def test_order_receive_from_delivery(page: Page):
 
         # 재고 관리 화면으로 이동하여 제품명으로 검색
         page.goto(URLS["bay_stock"])
+        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(3000)
 
         # 재고 관리 화면에서 해당 제품의 현 재고량 확인
         current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()

@@ -2,38 +2,23 @@ import pytest
 from playwright.sync_api import Page
 from config import URLS, Account
 
-def register_category(page: Page, tab_testid: str, name_kr: str, name_en: str):
-    try:
-        page.click(f"data-testid={tab_testid}")
-        page.wait_for_timeout(300)
-        page.click("data-testid=btn_add")
-        page.wait_for_timeout(300)
-        page.locator("data-testid=input_kor").last.fill(name_kr)
-        page.wait_for_timeout(300)
-        page.locator("data-testid=input_eng").last.fill(name_en)
-        page.wait_for_timeout(300)
-        page.click("data-testid=btn_save")
-    except Exception as e:
-        error_message = f"Error in register_category: {str(e)}"
-        raise
-
 def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_en: str):
     try:
         page.click(f"data-testid={tab_testid}")
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(5000)
 
         if page.locator("data-testid=btn_confirm").is_visible():
             page.click("data-testid=btn_confirm")
-            page.wait_for_timeout(300)    
+            page.wait_for_timeout(3000)    
 
         page.click("data-testid=btn_add")
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(3000)
         page.locator("data-testid=input_kor").last.fill(name_kr)
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(3000)
         page.locator("data-testid=input_eng").last.fill(name_en)
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(3000)
         page.click("data-testid=btn_save")
-        page.wait_for_timeout(500)
+        page.locator("data-testid=alert_duplicate").wait_for(timeout=5000)
 
         assert page.locator("data-testid=alert_duplicate").is_visible(), "❌ 중복 알림 문구가 표시되지 않음"
         print(f"[PASS] 중복 등록 시 알림 문구 확인")
@@ -47,11 +32,10 @@ def test_duplicate_category_names(browser):
     page.fill("data-testid=input_id", Account["testid"])
     page.fill("data-testid=input_pw", Account["testpw"])
     page.click("data-testid=btn_login")
-    page.wait_for_url(URLS["bay_home"], timeout=60000)
+    page.wait_for_url(URLS["bay_home"], timeout=6000)
 
     page.goto(URLS["bay_category"])
-    page.wait_for_timeout(3000)
-    page.wait_for_url(URLS["bay_category"], timeout=60000)
+    page.wait_for_url(URLS["bay_category"], timeout=6000)
 
     name_kr = "중복테스트"
     name_en1 = "DupOne"

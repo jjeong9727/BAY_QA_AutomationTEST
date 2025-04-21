@@ -1,6 +1,6 @@
 import json
 import random
-from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import (
     filter_products_by_delivery_status,
@@ -49,9 +49,9 @@ def test_order_receive_from_progress(page: Page):
 
         page.goto(URLS["bay_orderList"])
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=history")).to_be_visible(timeout=7000)
 
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)
@@ -64,14 +64,13 @@ def test_order_receive_from_progress(page: Page):
 
         # 수령확정 처리
         page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
+        expect(page.locator("data-testid=input_quantity")).to_be_visible(timeout=5000)
         stock_inflow = int(page.locator('[data-testid="input_quantity"]').input_value())#입고 수량 저장
         print(stock_inflow)
-
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
 
         # 수령 상태 확인
-        page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=history")).to_be_visible(timeout=7000)
         rows = page.locator("table tbody tr")
         found = False
         for i in range(rows.count()):
@@ -93,9 +92,9 @@ def test_order_receive_from_progress(page: Page):
         # 재고 관리 → 재고 확인
         page.goto(URLS["bay_stock"])
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
 
         current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()
         current_stock = int(current_stock_text.strip())

@@ -1,5 +1,5 @@
 import random
-from playwright.sync_api import TimeoutError
+from playwright.sync_api import TimeoutError, expect
 from config import URLS, Account
 from helpers.stock_utils import StockManager
 from helpers.product_utils import update_product_flag
@@ -66,23 +66,24 @@ def test_stock_outflow(browser):
 
            # 발주 내역 페이지 이동
             page.goto(URLS["bay_orderList"])
-            page.wait_for_timeout(1000)
+            expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
 
             # 제품명 검색
             page.fill("data-testid=input_search", stock_manager.product_name)
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(5000)
             page.click("data-testid=btn_search")
 
             # history 항목이 나타날 때까지 대기
             try:
-                page.wait_for_selector("data-testid=history", timeout=5000)
+                expect(page.locator("data-testid=history")).to_be_visible(timeout=5000)
             except TimeoutError:
                 print("🔁 history 항목이 안 보여서 페이지 새로고침 후 재시도합니다.")
                 page.reload()
+                expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
                 page.fill("data-testid=input_search", stock_manager.product_name)
-                page.wait_for_timeout(300)
+                page.wait_for_timeout(5000)
                 page.click("data-testid=btn_search")
-                page.wait_for_selector("data-testid=history", timeout=5000)  # 마지막 시도
+                expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)  # 마지막 시도
 
                 
             # 모든 history 항목을 순차적으로 확인

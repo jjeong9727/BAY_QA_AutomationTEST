@@ -1,6 +1,6 @@
 import json
 import random
-from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import Page, sync_playwright, expect 
 from config import URLS, Account
 from helpers.order_status_utils import (
     filter_products_by_delivery_status,
@@ -46,14 +46,16 @@ def test_order_delivery(page: Page):
         page.fill("data-testid=input_id", Account["testid"])
         page.fill("data-testid=input_pw", Account["testpw"])
         page.click("data-testid=btn_login")
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(3000)
 
         # 발주 내역 검색
         page.goto(URLS["bay_orderList"])
+        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(5000)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
 
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)
@@ -67,15 +69,17 @@ def test_order_delivery(page: Page):
         # 배송 URL 진입
         tracking_url = f"{URLS["base_accept_url"]}/{order_id}/delivery"
         page.goto(tracking_url)
+        expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
 
         # 본인 인증
         page.fill("input[data-testid='input_name']", "권정의")
         page.fill("input[data-testid='input_contact']", "01062754153")
         page.click("button[data-testid='btn_confirm']")
-        page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=drop_shipping_trigger")).to_be_visible(timeout=5000)
 
         # 배송사 선택 드롭다운 열기
         page.locator("data-testid=drop_shipping_trigger").click()
+        expect(page.locator("data-testid=drop_shipping_item")).to_be_visible(timeout=5000)
         options = page.locator("div[data-testid='drop_shipping_item'] div[role='option']")
         target = options.nth(1)
         carrier_name = target.inner_text().strip()
@@ -90,15 +94,16 @@ def test_order_delivery(page: Page):
 
 
         page.fill("input[data-testid='input_tracking']", "1234567890")
-        page.wait_for_timeout(2000)
-        page.locator("button[data-testid='btn_confirm']").last.click()
         page.wait_for_timeout(3000)
+        page.locator("button[data-testid='btn_confirm']").last.click()
+        page.wait_for_timeout(4000)
 
         # 상태 확인: 배송 진행
         page.goto(URLS["bay_orderList"])
+        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
         page.fill("data-testid=input_search", product_name)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        expect(page.locator("data-testid=history")).to_be_visible(timeout=7000)
 
         rows = page.locator("table tbody tr")
         found = False
