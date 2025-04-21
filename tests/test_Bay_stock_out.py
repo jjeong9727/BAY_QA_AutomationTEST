@@ -66,7 +66,7 @@ def test_stock_outflow(browser):
 
            # 발주 내역 페이지 이동
             page.goto(URLS["bay_orderList"])
-            expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
+            expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
 
             # 제품명 검색
             page.fill("data-testid=input_search", stock_manager.product_name)
