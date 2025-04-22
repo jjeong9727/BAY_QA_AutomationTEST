@@ -5,6 +5,14 @@ from config import URLS, Account
 from helpers.order_status_utils import filter_products_by_delivery_status, get_order_id_from_order_list, check_order_status_by_order_id
 from helpers.order_status_data import order_status_map
 
+# 발주 진행 상태 코드
+    # 1: 발주 요청
+    # 2: 발주 진행
+    # 3: 배송 진행 
+    # 4: 수령 완료(운송장O) 3 -> 4
+    # 5: 배송 취소
+    # 6: 배송 실패
+    # 7: 수령 완료(운송장X) 2 -> 7
 
 def update_product_status_in_json(product_name: str, delivery_status: int):
     try:
@@ -44,14 +52,14 @@ def test_order_acceptance(page: Page):
 
             # 발주 내역 검색
             page.goto(URLS["bay_orderList"])
-            expect(page.loactor("data-testid=drop_status_trigger")).to_be_visible(timeout=8000)
+            expect(page.locator("data-testid=drop_status_trigger")).to_be_visible(timeout=8000)
             page.click("data-testid=drop_status_trigger")
             expect(page.locator("data-testid=drop_status_item")).to_be_visible(timeout=5000)
             page.click('div[data-testid="drop_status_item"] div[data-value="발주 요청"]')
             page.wait_for_timeout(2000)
             page.fill("data-testid=input_search", product_name)
             page.click("data-testid=btn_search")
-            expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
+            expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
 
             # order_id 추출
             order_id = get_order_id_from_order_list(page, product_name)
@@ -78,7 +86,7 @@ def test_order_acceptance(page: Page):
             expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
             page.fill("data-testid=input_search", product_name)
             page.click("data-testid=btn_search")
-            expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
+            expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
 
             rows = page.locator("table tbody tr")
             found = False

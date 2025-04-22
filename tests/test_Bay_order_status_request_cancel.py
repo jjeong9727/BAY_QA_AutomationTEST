@@ -53,7 +53,7 @@ def test_order_cancel(page: Page):
         page.fill("data-testid=input_search", product_name)
         page.wait_for_timeout(3000)
         page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
+        expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
 
         # 검색된 제품의 order_id 값 가져오기
         order_id = get_order_id_from_order_list(page, product_name)

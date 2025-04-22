@@ -74,12 +74,12 @@ def clean_product_json(file_path="product_name.json"):
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        filtered = [item for item in data if item.get("order_status") == 6]
+        filtered = [item for item in data if item.get("delivery_status") == 6]
 
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(filtered, f, ensure_ascii=False, indent=2)
 
-        print(f"✅ order_status == 6 항목만 유지 완료 (총 {len(filtered)}개)")
+        print(f"✅ delivery_status == 6 항목만 유지 완료 (총 {len(filtered)}개)")
 
     except FileNotFoundError:
         print("⚠️ product_name.json 파일을 찾을 수 없습니다.")

@@ -51,7 +51,7 @@ def test_order_receive_from_progress(page: Page):
         page.fill("data-testid=input_search", product_name)
         page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history")).to_be_visible(timeout=7000)
+        expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
 
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)
@@ -70,7 +70,7 @@ def test_order_receive_from_progress(page: Page):
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
 
         # 수령 상태 확인
-        expect(page.locator("data-testid=history")).to_be_visible(timeout=7000)
+        page.wait_for_timeout(5000) #상태 변경 반영 시간 확보 
         rows = page.locator("table tbody tr")
         found = False
         for i in range(rows.count()):
@@ -94,7 +94,7 @@ def test_order_receive_from_progress(page: Page):
         page.fill("data-testid=input_search", product_name)
         page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
+        page.wait_for_timeout(5000)
 
         current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()
         current_stock = int(current_stock_text.strip())

@@ -54,7 +54,7 @@ def test_order_receive_from_delivery(page: Page):
         page.fill("data-testid=input_search", product_name)
         page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
+        expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
 
         
         # order_id 추출

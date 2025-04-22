@@ -55,7 +55,7 @@ def test_order_delivery(page: Page):
         page.wait_for_timeout(5000)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
-        expect(page.locator("data-testid=history")).to_be_visible(timeout=8000)
+        expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
 
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)
@@ -103,7 +103,7 @@ def test_order_delivery(page: Page):
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
         page.fill("data-testid=input_search", product_name)
         page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history")).to_be_visible(timeout=7000)
+        expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
 
         rows = page.locator("table tbody tr")
         found = False
