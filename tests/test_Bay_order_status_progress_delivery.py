@@ -67,7 +67,7 @@ def test_order_delivery(page: Page):
         check_order_status_by_order_id(page, "발주 진행", order_id, expected_status_conditions)
 
         # 배송 URL 진입
-        tracking_url = f"{URLS["base_accept_url"]}/{order_id}/delivery"
+        tracking_url = f"{URLS['base_accept_url']}/{order_id}/delivery"
         page.goto(tracking_url)
         expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
 
