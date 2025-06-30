@@ -3,6 +3,7 @@ import random
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import update_product_name
+from helpers.common_utils import bay_login
 
 
 def generate_name(prefix):
@@ -11,11 +12,7 @@ def generate_name(prefix):
 
 def login_and_go_to_add_page(page: Page):
     try:
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"])
+        bay_login(page)
         
         page.goto(URLS["bay_category"])
         page.wait_for_timeout(3000)
@@ -31,8 +28,8 @@ def login_and_go_to_add_page(page: Page):
     ("tab_category", "input_kor", "input_eng", True), # 종류
     ("tab_maker", "input_kor", "input_eng", False),   # 제조사
 ])
-def test_edit_category_each(browser, tab, testid_kor, testid_eng, require_eng):
-    page: Page = browser.new_page()
+def test_edit_category_each(page, tab, testid_kor, testid_eng, require_eng):
+
     
     try:
         login_and_go_to_add_page(page)

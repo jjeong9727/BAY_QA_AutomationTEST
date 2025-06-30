@@ -6,6 +6,7 @@ from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import verify_product_update
 from helpers.product_utils import update_product_flag
+from helpers.common_utils import bay_login
 
 PRODUCT_FILE_PATH = Path("product_name.json")
 
@@ -19,16 +20,9 @@ def get_deletable_products():
     
     return deletable_products
 
-def test_edit_bulk_products(browser):
+def test_edit_bulk_products(page):
     try:
-        print("✅ 브라우저 새 페이지 생성")
-        page = browser.new_page()
-        print("✅ 로그인 페이지로 이동")
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"], timeout=60000)
+        bay_login(page)
 
         # 1. 조건에 맞는 제품을 JSON에서 찾아 수정 대상으로 삼음
         products_to_edit = get_deletable_products()
@@ -41,8 +35,9 @@ def test_edit_bulk_products(browser):
         # 2. 등록테스트 제품 검색
         print("✅ 등록테스트 제품 검색")
         page.goto(URLS["bay_prdList"])
+        page.wait_for_timeout(2000)
         page.fill("data-testid=input_search", "등록테스트")
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 

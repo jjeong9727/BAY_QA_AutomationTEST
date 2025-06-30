@@ -5,6 +5,7 @@ from pathlib import Path
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import remove_products_from_json
+from helpers.common_utils import bay_login
 
 PRODUCT_FILE_PATH = Path("product_name.json")
 
@@ -76,14 +77,9 @@ def delete_product_and_verify(page: Page, row_index: int):
         print(fail_msg)
         raise
 
-def test_delete_product(browser):
+def test_delete_product(page):
     try:
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"])
+        bay_login(page)
 
         deletable_names = get_deletable_products_from_json()
         if not deletable_names:
@@ -115,10 +111,10 @@ def test_delete_product(browser):
         print(fail_msg)
         raise
 
-def test_bulk_delete_products(browser):
+def test_bulk_delete_products(page):
     try:
         # 로그인
-        page = browser.new_page()
+
         page.goto(URLS["bay_login"])
         page.fill("data-testid=input_id", Account["testid"])
         page.fill("data-testid=input_pw", Account["testpw"])

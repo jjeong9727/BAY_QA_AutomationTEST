@@ -8,6 +8,7 @@ from helpers.order_status_utils import (
     check_order_status_by_order_id
 )
 from helpers.order_status_data import order_status_map
+from helpers.common_utils import bay_login
 
 
 def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int):
@@ -40,12 +41,7 @@ def test_order_receive_from_progress(page: Page):
         product_name = target_product['kor']
         previous_stock = target_product.get('stock_qty', 0)
 
-        # 로그인 및 발주 내역 검색
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login", timeout=50000)
-        page.wait_for_timeout(1000)
+        bay_login(page)
 
         page.goto(URLS["bay_orderList"])
         page.fill("data-testid=input_search", product_name)
@@ -123,10 +119,10 @@ def test_order_receive_from_progress(page: Page):
 
 def main():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
+        page = p.chromium.launch(headless=False)
+
         test_order_receive_from_progress(page)
-        browser.close()
+        page.close()
 
 
 if __name__ == "__main__":

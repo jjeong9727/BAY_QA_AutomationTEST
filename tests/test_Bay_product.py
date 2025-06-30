@@ -1,19 +1,15 @@
-from playwright.sync_api._generated import Browser
+from playwright.sync_api._generated import page
 import random
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 from config import URLS, Account
 from helpers.product_utils import append_product_name, generate_product_names, verify_products_in_list
+from helpers.common_utils import bay_login
 
 
-def test_register_multiple_products(browser: Browser):
+def test_register_multiple_products(page: page):
     try:
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"], timeout=60000)
+        bay_login(page)
 
         page.goto(URLS["bay_prdAdd"])
         page.wait_for_url(URLS["bay_prdAdd"], timeout=60000)

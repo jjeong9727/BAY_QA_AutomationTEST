@@ -2,18 +2,14 @@ import random
 from playwright.sync_api import Page
 from config import URLS, Account
 from helpers.product_utils import  find_supplier_in_paginated_list
+from helpers.common_utils import bay_login 
 
 
 
-def test_register_supplier(browser):
+def test_register_supplier(page):
     try:
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"], timeout=60000)
-
+        bay_login(page)
+        
         page.goto(URLS["bay_supplier"])
         page.wait_for_url(URLS["bay_supplier"], timeout=60000)
 
@@ -22,13 +18,13 @@ def test_register_supplier(browser):
         contact = "010-1234-5678"
 
         page.click("data-testid=btn_orderadd")
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(1000)
         page.fill("data-testid=input_sup_name", supplier)
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(1000)
         page.fill("data-testid=input_sup_manager", manager)
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(1000)
         page.fill("data-testid=input_sup_contact", contact)
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_confirm")
         page.wait_for_timeout(1000)
 

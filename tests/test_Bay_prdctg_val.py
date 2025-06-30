@@ -1,6 +1,7 @@
 import pytest
 from playwright.sync_api import Page
 from config import URLS, Account
+from helpers.common_utils import bay_login
 
 def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_en: str):
     try:
@@ -26,13 +27,8 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
     except Exception as e:
         raise
 
-def test_duplicate_category_names(browser):
-    page = browser.new_page()
-    page.goto(URLS["bay_login"])
-    page.fill("data-testid=input_id", Account["testid"])
-    page.fill("data-testid=input_pw", Account["testpw"])
-    page.click("data-testid=btn_login")
-    page.wait_for_url(URLS["bay_home"], timeout=6000)
+def test_duplicate_category_names(page):
+    bay_login(page)
 
     page.goto(URLS["bay_category"])
     page.wait_for_url(URLS["bay_category"], timeout=6000)

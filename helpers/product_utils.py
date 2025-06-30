@@ -323,7 +323,7 @@ def is_duplicate_supplier_from_product_file(manager: str, contact: str) -> bool:
 def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: str) -> bool:
     # 검색
     page.fill("input[placeholder='업체명 검색']", supplier)
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     page.click("data-testid=btn_search")
     page.wait_for_timeout(1000)
 

@@ -2,6 +2,7 @@ import random
 from config import URLS, Account
 from helpers.stock_utils import StockManager
 from helpers.product_utils import update_product_flag, sync_product_names_with_server
+from helpers.common_utils import bay_login
 
 
 
@@ -21,14 +22,10 @@ def get_filtered_products(stock_manager, page):
     ]
 
 
-def test_stock_inflow(browser):
+def test_stock_inflow(page):
     try:
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"])
+        bay_login(page)
+        
 
         stock_manager = StockManager(page)
         stock_manager.load_product_from_json()

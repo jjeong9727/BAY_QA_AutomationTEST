@@ -1,6 +1,8 @@
 import json
 import os
 from datetime import datetime
+from config import URLS, Account
+from playwright.sync_api import Page  
 
 # 결과를 저장할 파일 경로
 TEST_RESULTS_FILE = 'test_results.json'
@@ -85,3 +87,13 @@ def clean_product_json(file_path="product_name.json"):
         print("⚠️ product_name.json 파일을 찾을 수 없습니다.")
     except Exception as e:
         print(f"❌ JSON 처리 중 오류 발생: {e}")
+
+def bay_login(page: Page):
+    page.goto(URLS["bay_login"])
+    page.wait_for_timeout(5000)
+    page.fill('[data-testid="input_id"]', Account["testid"])
+    page.wait_for_timeout(1000)
+    page.fill('[data-testid="input_pw"]', Account["testpw"])
+    page.wait_for_timeout(1000)
+    page.click('[data-testid="btn_login"]')
+    page.wait_for_timeout(3000)

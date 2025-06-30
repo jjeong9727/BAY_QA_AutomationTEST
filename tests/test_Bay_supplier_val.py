@@ -1,16 +1,12 @@
 from playwright.sync_api import Page
 from config import URLS, Account
 import random
+from helpers.common_utils import bay_login 
 
-def test_register_supplier_duplicate(browser):
+def test_register_supplier_duplicate(page):
     try:
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"], timeout=60000)
-
+        bay_login(page)
+        
         page.goto(URLS["bay_supplier"])
         page.wait_for_url(URLS["bay_supplier"], timeout=60000)
 

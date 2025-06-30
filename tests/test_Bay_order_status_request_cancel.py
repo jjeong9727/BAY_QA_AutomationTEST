@@ -4,6 +4,7 @@ from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import filter_products_by_delivery_status, get_order_id_from_order_list, check_order_status_by_order_id
 from helpers.order_status_data import order_status_map
+from helpers.common_utils import bay_login
 
 
 def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int):
@@ -42,12 +43,8 @@ def test_order_cancel(page: Page):
         product_name = target_product['kor']
 
         # 발주 내역 화면으로 이동하여 제품명 검색 후 order_id 가져오기
-        page.goto(URLS["bay_login"]) 
-        page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
-        page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
-        page.click("data-testid=btn_login", timeout=50000)  # 로그인 버튼 클릭
-        page.wait_for_timeout(1000)
-
+        bay_login(page)
+        
         page.goto(URLS["bay_orderList"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.fill("data-testid=input_search", product_name)
@@ -100,13 +97,13 @@ def test_order_cancel(page: Page):
 
 def main():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
+        page = p.chromium.launch(headless=False)
+
 
         # 발주 수락과 상태 업데이트 작업을 하나의 함수에서 처리
         test_order_cancel(page)
         
-        browser.close()
+        page.close()
 
 
 if __name__ == "__main__":

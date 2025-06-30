@@ -4,6 +4,7 @@ from helpers.order_status_data import order_status_map
 from helpers.order_status_utils import check_order_status_by_order_id, get_order_id_from_order_list, filter_products_by_delivery_status
 from playwright.sync_api import Page, expect
 from config import URLS, Account
+from helpers.common_utils import bay_login
 
 
 def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int, stock_quantity=int):
@@ -42,11 +43,7 @@ def test_order_receive_from_delivery(page: Page):
         target_product = random.choice(eligible_products)
         product_name = target_product['kor']
 
-        page.goto(URLS["bay_login"]) 
-        page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
-        page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
-        page.click("data-testid=btn_login", timeout=50000)  # 로그인 버튼 클릭
-        page.wait_for_timeout(2000)
+        bay_login(page)
 
         # 발주 내역 화면으로 이동하여 제품명 검색 
         page.goto(URLS["bay_orderList"])

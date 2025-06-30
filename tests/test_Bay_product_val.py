@@ -4,18 +4,14 @@ import json
 from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.product_utils import get_latest_product_name, load_saved_product_names
-def test_duplicate_product_name(browser):
+from helpers.common_utils import bay_login
+def test_duplicate_product_name(page):
     try:
         item = get_latest_product_name()
         prdname_kor = item["kor"]
         prdname_eng = item["eng"]
 
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"], timeout=6000)
+        bay_login(page)
 
         page.goto(URLS["bay_prdAdd"])
         expect(page.locator("data-testid=drop_type_trigger")).to_be_visible(timeout=7000)

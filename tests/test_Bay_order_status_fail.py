@@ -7,6 +7,7 @@ from helpers.order_status_utils import (
 )
 from playwright.sync_api import Page, expect
 from config import URLS, Account
+from helpers.common_utils import bay_login
 
 
 def test_order_status_fail(page: Page):
@@ -23,13 +24,8 @@ def test_order_status_fail(page: Page):
         product = random.choice(filtered_products)
         product_name = product["kor"]
 
-        # 로그인 및 페이지 이동
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login", timeout=5000)
-        page.wait_for_timeout(1000)
-
+        bay_login(page)
+         
         page.goto(URLS["bay_orderList"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
         page.fill("data-testid=input_search", product_name)

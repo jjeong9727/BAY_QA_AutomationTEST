@@ -4,6 +4,7 @@ from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import filter_products_by_delivery_status, get_order_id_from_order_list, check_order_status_by_order_id
 from helpers.order_status_data import order_status_map
+from helpers.common_utils import bay_login
 
 # 발주 진행 상태 코드
     # 1: 발주 요청
@@ -44,11 +45,7 @@ def test_order_acceptance(page: Page):
 
         try:
             # 로그인
-            page.goto(URLS["bay_login"])
-            page.fill("data-testid=input_id", Account["testid"])
-            page.fill("data-testid=input_pw", Account["testpw"])
-            page.click("data-testid=btn_login")
-            page.wait_for_timeout(1000)
+            bay_login(page)
 
             # 발주 내역 검색
             page.goto(URLS["bay_orderList"])
@@ -114,13 +111,13 @@ def test_order_acceptance(page: Page):
 
 def main():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
+        page = p.chromium.launch(headless=False)
+
 
         # 배송 진행 상태로 업데이트 작업을 하나의 함수에서 처리
         test_order_acceptance(page)
 
-        browser.close()
+        page.close()
 
 
 if __name__ == "__main__":

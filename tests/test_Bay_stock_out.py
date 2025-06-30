@@ -3,7 +3,7 @@ from playwright.sync_api import TimeoutError, expect
 from config import URLS, Account
 from helpers.stock_utils import StockManager
 from helpers.product_utils import update_product_flag
-
+from helpers.common_utils import bay_login
 def get_filtered_products(stock_manager):
     """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
     products = stock_manager.get_all_product_names()
@@ -17,14 +17,9 @@ def get_filtered_products(stock_manager):
         print(f"❓ 필터링된 제품 - 이름: {product['kor']}, 재고: {product['stock_qty']}, 안전 재고: {product['safety']}")
     
     return filtered_products
-def test_stock_outflow(browser):
+def test_stock_outflow(page):
     try:
-        page = browser.new_page()
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"])
+        bay_login(page)
 
         stock_manager = StockManager(page)
         stock_manager.load_product_from_json()

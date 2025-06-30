@@ -7,27 +7,33 @@ from playwright.sync_api import sync_playwright
 load_dotenv()
 
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
-    
+
 def send_slack_message(message):
-    """Slack으로 메시지 전송"""
     payload = {"text": message}
     requests.post(SLACK_WEBHOOK_URL, json=payload)
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def browser():
-    """✅ Playwright 브라우저 실행 및 종료"""
     with sync_playwright() as p:
-        # browser = p.chromium.launch(headless=False)
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
         yield browser
         browser.close()
 
 @pytest.fixture(scope="function")
-def page(browser):
-    """✅ Playwright 새 페이지 생성"""
-    page = browser.new_page()
+def context(browser):
+    # ✅ 여기서 viewport 조절
+    context = browser.new_context(
+        viewport={"width": 1500, "height": 960},  # 원하는 사이즈로 조절
+    )
+    yield context
+    context.close()
+
+@pytest.fixture(scope="function")
+def page(context):
+    page = context.new_page()
     yield page
     page.close()
+
 
 
 

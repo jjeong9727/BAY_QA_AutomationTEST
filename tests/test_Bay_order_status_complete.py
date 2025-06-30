@@ -5,6 +5,7 @@ from helpers.order_status_utils import (
     get_order_id_from_order_list,
     check_order_status_by_order_id
 )
+from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 from config import URLS, Account
 
@@ -32,12 +33,7 @@ def run_order_status_check(page: Page, delivery_status: int):
         product = random.choice(filtered_products)
         product_name = product["kor"]
 
-        # 로그인
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_timeout(5000)
+        bay_login(page)
 
         # 발주 내역 검색
         page.goto(URLS["bay_orderList"])
