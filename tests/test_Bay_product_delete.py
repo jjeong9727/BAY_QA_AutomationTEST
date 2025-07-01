@@ -91,7 +91,7 @@ def test_delete_product(page):
 
         page.goto(URLS["bay_prdList"])
         page.fill("data-testid=input_search", target_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
@@ -114,13 +114,7 @@ def test_delete_product(page):
 def test_bulk_delete_products(page):
     try:
         # 로그인
-
-        page.goto(URLS["bay_login"])
-        page.fill("data-testid=input_id", Account["testid"])
-        page.fill("data-testid=input_pw", Account["testpw"])
-        page.click("data-testid=btn_login")
-        page.wait_for_url(URLS["bay_home"], timeout=60000)
-        page.goto(URLS["bay_prdList"])
+        bay_login(page)
 
 
         # 일괄 삭제 가능한 제품 검색
@@ -138,9 +132,9 @@ def test_bulk_delete_products(page):
 
         for name in selected_names:
             page.fill("data-testid=input_search", name)
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
             page.click("data-testid=btn_search")
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
 
             row = page.locator("table tbody tr").nth(0)
             if row.is_visible():
@@ -154,6 +148,7 @@ def test_bulk_delete_products(page):
 
         # 일괄 삭제 버튼 클릭
         page.click("data-testid=btn_del_bulk")
+        page.wait_for_timeout(1000)
         page.locator("data-testid=btn_del").wait_for()
         page.click("data-testid=btn_del")
         page.wait_for_timeout(2000)

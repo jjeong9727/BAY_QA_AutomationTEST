@@ -13,10 +13,10 @@ def test_delete_category_each(page, tab, testid_kor, testid_eng, require_eng):
 
     try:
         bay_login(page)
-        page.goto(URLS)["bay_category"]
-        page.wait_for_timeout(200)
+        page.goto(URLS["bay_category"])
+        page.wait_for_timeout(2000)
         page.click(f"data-testid={tab}")
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
 
         name_kr_locator = page.locator(f"input[data-testid='{testid_kor}']")
         item_to_delete = None
@@ -38,7 +38,7 @@ def test_delete_category_each(page, tab, testid_kor, testid_eng, require_eng):
             target_button = delete_buttons.nth(row_index)
             target_button.wait_for(state="visible")
             target_button.click()
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
 
             confirm_btn = page.locator("data-testid=btn_confirm")
             if confirm_btn.is_visible(timeout=3000):

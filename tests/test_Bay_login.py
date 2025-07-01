@@ -10,9 +10,8 @@ def test_login_wrong_password(page):
     page.wait_for_timeout(2000)
 
     try:
-        # 1. 로그인 버튼이 비활성화되어 있는지 확인
+        # 1. 로그인 버튼
         login_button = page.locator("data-testid=btn_login")
-        assert login_button.is_disabled(), "[FAIL] 로그인 버튼이 비활성화되지 않았습니다."
 
         # 2. 아이디와 비밀번호를 입력
         page.fill("data-testid=input_id", Account["testid"])

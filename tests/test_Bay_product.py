@@ -1,4 +1,4 @@
-from playwright.sync_api._generated import page
+from playwright.sync_api import Page
 import random
 from datetime import datetime
 from playwright.sync_api import sync_playwright
@@ -7,7 +7,7 @@ from helpers.product_utils import append_product_name, generate_product_names, v
 from helpers.common_utils import bay_login
 
 
-def test_register_multiple_products(page: page):
+def test_register_multiple_products(page: Page):
     try:
         bay_login(page)
 

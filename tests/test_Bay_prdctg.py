@@ -12,6 +12,7 @@ def login_and_go_to_add_page(page: Page):
     try:
         bay_login(page)
         page.goto(URLS["bay_category"])
+        page.wait_for_timeout(1000)
         page.wait_for_url(URLS["bay_category"])
         page.wait_for_timeout(1500)
     except Exception as e:
@@ -29,14 +30,17 @@ def test_register_category_each(page, tab, testid_kor, testid_eng, require_eng):
 
     try:
         page.click(f"data-testid={tab}")
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_add")
-        page.wait_for_timeout(300)
+        page.wait_for_timeout(1000)
         name_kr = generate_name("자동화등록_한글")
         page.locator(f"data-testid={testid_kor}").last.fill(name_kr)
+        page.wait_for_timeout(1000)
 
         if require_eng:
             name_en = generate_name("Auto_ENG")
             page.locator(f"data-testid={testid_eng}").last.fill(name_en)
+            page.wait_for_timeout(1000)
 
         page.click("data-testid=btn_save")
         page.wait_for_timeout(3000)

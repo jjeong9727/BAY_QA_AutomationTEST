@@ -12,7 +12,7 @@ def test_delete_supplier(page):
 
         # 1. "자동화 업체명" 검색
         page.fill("data-testid=input_search", "자동화 업체명")  # 제품명 검색
-        page.wait_for_timeout(400)
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_search")  # 검색 버튼 클릭
         page.wait_for_timeout(1000)
 
@@ -33,6 +33,7 @@ def test_delete_supplier(page):
         if manager_name:  # 담당자 이름이 존재하면
             delete_btn = selected_row.locator("td:nth-child(5) button:nth-child(2)")
             delete_btn.click()
+            page.wait_for_timeout(1000)
 
         # 4. 삭제 모달에서 삭제 버튼 선택
         page.locator("data-testid=btn_confirm").click()  # 삭제 버튼 클릭
@@ -40,7 +41,9 @@ def test_delete_supplier(page):
 
         # 5. 리스트에서 미노출 확인
         page.goto(URLS["bay_supplier"])  # 리스트를 새로고침
+        page.wait_for_timeout(1000)
         page.fill("data-testid=input_search", "자동화 업체명")  # "자동화 업체명"으로 검색
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(1000)
 
