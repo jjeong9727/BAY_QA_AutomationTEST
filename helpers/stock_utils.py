@@ -79,6 +79,8 @@ class StockManager:
         self.page.get_by_role("option", name=self.product_name, exact=True).click()
 
         self.page.fill("data-testid=input_qty", str(quantity))
+        memo_input = self.page.get_by_placeholder("최대 30자 입력")
+        memo_input.fill("30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
         self.page.locator("data-testid=btn_save").click()
         self.page.wait_for_timeout(1000)
 
