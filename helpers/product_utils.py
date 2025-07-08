@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 def generate_product_names():
     now = datetime.now()
     cnt = get_daily_count()
-    date = now.strftime("%m%d_%H%M")
+    date = now.strftime("%m%d")
     count = f"{cnt:02d}"
     prdname_kor = f"등록테스트_{date}_{count}"
     prdname_eng = f"TestProduct_{date}_{count}"
@@ -25,8 +25,6 @@ def generate_product_names():
 def append_product_name(
     prdname_kor: str,
     prdname_eng: str,
-    # supplier: str,
-    # contact: str,
     type_name: str,
     group: str,
     maker: str,
@@ -112,7 +110,7 @@ def verify_products_in_list(page, product_names: list[str], url: str, search_pla
         page.fill("data-testid=input_search", name)
         page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(3000)
 
         rows = page.locator("table tbody tr")
         found = False
@@ -141,7 +139,9 @@ def is_product_exist(page, product_names) -> bool:
         try:
             page.goto(URLS["bay_prdList"])
             page.fill("data-testid=input_search", name)
+            page.wait_for_timeout(500)
             page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(1000)
 
             # 검색 결과 로딩 대기
             page.locator("table tbody tr").first.wait_for(timeout=5000)
@@ -149,7 +149,7 @@ def is_product_exist(page, product_names) -> bool:
             rows = page.locator("table tbody tr")
             found = False
             for i in range(rows.count()):
-                row_name = rows.nth(i).locator("td:nth-child(4)").inner_text().strip()
+                row_name = rows.nth(i).locator("td:nth-child(4) div.truncate").first.inner_text().strip()
                 if name in row_name:
                     print(f"[PASS] '{name}' found in 제품 리스트")
                     found = True

@@ -48,6 +48,7 @@ def test_order_receive_from_progress(page: Page):
         page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
         expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
+        page.wait_for_timeout(500)
 
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)
@@ -61,9 +62,11 @@ def test_order_receive_from_progress(page: Page):
         # 수령확정 처리
         page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
         expect(page.locator("data-testid=input_quantity")).to_be_visible(timeout=5000)
+        page.wait_for_timeout(500)
         stock_inflow = int(page.locator('[data-testid="input_quantity"]').input_value())#입고 수량 저장
         print(stock_inflow)
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
+        page.wait_for_timeout(500)
 
         # 수령 상태 확인
         page.wait_for_timeout(5000) #상태 변경 반영 시간 확보 
@@ -88,9 +91,9 @@ def test_order_receive_from_progress(page: Page):
         # 재고 관리 → 재고 확인
         page.goto(URLS["bay_stock"])
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(5000)
+        page.wait_for_timeout(3000)
 
         current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()
         current_stock = int(current_stock_text.strip())

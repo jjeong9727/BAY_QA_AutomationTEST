@@ -28,9 +28,11 @@ def test_order_status_fail(page: Page):
          
         page.goto(URLS["bay_orderList"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
+        page.wait_for_timeout(500)
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_search")
+        page.wait_for_timeout(2000)
         expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
 
         # order_id 가져오기

@@ -6,7 +6,7 @@ from helpers.common_utils import bay_login
 def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_en: str):
     try:
         page.click(f"data-testid={tab_testid}")
-        page.wait_for_timeout(5000)
+        page.wait_for_timeout(2000)
 
         if page.locator("data-testid=btn_confirm").is_visible():
             page.click("data-testid=btn_confirm")
@@ -33,6 +33,7 @@ def test_duplicate_category_names(page):
 
     page.goto(URLS["bay_category"])
     page.wait_for_url(URLS["bay_category"], timeout=6000)
+    page.wait_for_timeout(1500)
 
     name_kr = "중복테스트"
     name_en1 = "DupOne"

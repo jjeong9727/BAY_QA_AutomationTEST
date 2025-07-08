@@ -99,8 +99,10 @@ def test_order_delivery(page: Page):
         page.goto(URLS["bay_orderList"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
         page.fill("data-testid=input_search", product_name)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
+        page.wait_for_timeout(500)
 
         rows = page.locator("table tbody tr")
         found = False

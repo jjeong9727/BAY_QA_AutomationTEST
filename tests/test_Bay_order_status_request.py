@@ -55,8 +55,11 @@ def test_order_acceptance(page: Page):
             page.click('div[data-testid="drop_status_item"] div[data-value="발주 요청"]')
             page.wait_for_timeout(2000)
             page.fill("data-testid=input_search", product_name)
+            page.wait_for_timeout(500)
             page.click("data-testid=btn_search")
-            expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
+            page.wait_for_timeout(3000)
+            expect(page.locator("data-testid=history").first).to_be_visible(timeout=5000)
+            page.wait_for_timeout(500)
 
             # order_id 추출
             order_id = get_order_id_from_order_list(page, product_name)
@@ -82,8 +85,10 @@ def test_order_acceptance(page: Page):
             page.goto(URLS["bay_orderList"])
             expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
             page.fill("data-testid=input_search", product_name)
+            page.wait_for_timeout(500)
             page.click("data-testid=btn_search")
             expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
+            page.wait_for_timeout(1000)
 
             rows = page.locator("table tbody tr")
             found = False

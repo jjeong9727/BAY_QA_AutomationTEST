@@ -61,6 +61,7 @@ def test_order_cancel(page: Page):
         # 취소 버튼
         page.click("button[data-testid='btn_cancel']")  # 취소 버튼 클릭
         expect(page.locator("data-testid=btn_confirm")).to_be_visible(timeout=2000)
+        page.wait_for_timeout(500)
         page.click("button[data-testid='btn_confirm']")  # 확인 버튼 클릭
 
         page.wait_for_timeout(5000)

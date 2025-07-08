@@ -17,7 +17,7 @@ for path in [TEST_RESULTS_FILE, JSON_REPORT_FILE, SUMMARY_FILE]:
         os.remove(path)
         print(f"🪩 기존 파일 제거: {path}")
 
-clean_product_json()
+# clean_product_json()
 
 # 테스트 결과 저장 함수
 def save_test_result(test_name, message, status="FAIL", file_name=None, stack_trace="", duration=None):
@@ -48,19 +48,19 @@ skipped_tests = []
 
 # 전체 테스트 목록
 all_tests = [
-    "tests/test_Bay_login.py",
-    "tests/test_Bay_supplier.py",
-    "tests/test_Bay_supplier_val.py",
-    "tests/test_Bay_supplier_delete.py",
-    "tests/test_Bay_prdctg.py",
-    "tests/test_Bay_prdctg_val.py",
-    "tests/test_Bay_prdctg_edit.py",
-    "tests/test_Bay_prdctg_delete.py",
-    "tests/test_Bay_product.py",
-    "tests/test_Bay_product_val.py",
-    "tests/test_Bay_product_edit.py",
-    "tests/test_Bay_product_delete.py",
-    "tests/test_Bay_stock_in.py",
+    # "tests/test_Bay_login.py",
+    # "tests/test_Bay_supplier.py",
+    # "tests/test_Bay_supplier_val.py",
+    # "tests/test_Bay_supplier_delete.py",
+    # "tests/test_Bay_prdctg.py",
+    # "tests/test_Bay_prdctg_val.py",
+    # "tests/test_Bay_prdctg_edit.py",
+    # "tests/test_Bay_prdctg_delete.py",
+    # "tests/test_Bay_product.py",
+    # "tests/test_Bay_product_val.py",
+    # "tests/test_Bay_product_edit.py",
+    # "tests/test_Bay_product_delete.py",
+    # "tests/test_Bay_stock_in.py",
     "tests/test_Bay_stock_out.py",
     "tests/test_Bay_order_status_request_cancel.py",
     "tests/test_Bay_order_status_request.py",

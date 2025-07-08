@@ -48,10 +48,12 @@ def test_order_receive_from_delivery(page: Page):
         # 발주 내역 화면으로 이동하여 제품명 검색 
         page.goto(URLS["bay_orderList"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
+        page.wait_for_timeout(500)
         page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(500)
         page.click("data-testid=btn_search")
         expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
+        page.wait_for_timeout(2000)
 
         
         # order_id 추출

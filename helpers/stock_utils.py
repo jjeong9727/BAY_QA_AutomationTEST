@@ -42,7 +42,9 @@ class StockManager:
         raise Exception(f"{self.product_name} 제품을 찾을 수 없습니다.")
     def get_current_stock(self):
         self.page.goto(URLS["bay_prdList"])
+        self.page.wait_for_timeout(2000)
         self.page.fill("data-testid=input_search", self.product_name)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=btn_search").click()
         self.page.wait_for_timeout(2000)  # 충분한 대기 시간 추가
 
@@ -77,12 +79,17 @@ class StockManager:
         # 제품명이 정확히 일치하는 옵션 클릭
         self.page.get_by_role("option", name=self.product_name, exact=True).wait_for(state="attached")
         self.page.get_by_role("option", name=self.product_name, exact=True).click()
+        self.page.wait_for_timeout(500)
 
         self.page.fill("data-testid=input_qty", str(quantity))
+        self.page.wait_for_timeout(1000)
         memo_input = self.page.get_by_placeholder("최대 30자 입력")
         memo_input.fill("30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
+        self.page.wait_for_timeout(1000)
         self.page.locator("data-testid=btn_save").click()
         self.page.wait_for_timeout(1000)
+        self.page.locator("data-testid=btn_confirm").click()
+        self.page.wait_for_timeout(3000)
 
 
         
@@ -102,9 +109,15 @@ class StockManager:
         self.page.wait_for_timeout(500)
         self.page.locator("data-testid=drop_prdname_trigger").click()
         self.page.wait_for_timeout(500)
+        self.page.get_by_role("option", name=self.product_name, exact=True).wait_for(state="attached")
         self.page.get_by_role("option", name=self.product_name, exact=True).click()
         self.page.wait_for_timeout(500)
         self.page.fill("data-testid=input_qty", str(quantity))
         self.page.wait_for_timeout(500)
-        self.page.click("data-testid=btn_save")
+        memo_input = self.page.get_by_placeholder("최대 30자 입력")
+        memo_input.fill("30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
         self.page.wait_for_timeout(1000)
+        self.page.locator("data-testid=btn_save").click()
+        self.page.wait_for_timeout(1000)
+        self.page.locator("data-testid=btn_confirm").click()
+        self.page.wait_for_timeout(3000)

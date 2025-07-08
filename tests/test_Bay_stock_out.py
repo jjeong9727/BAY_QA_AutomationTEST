@@ -65,9 +65,9 @@ def test_stock_outflow(page):
 
             # 제품명 검색
             page.fill("data-testid=input_search", stock_manager.product_name)
-            page.wait_for_timeout(5000)
+            page.wait_for_timeout(1000)
             page.click("data-testid=btn_search")
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(5000)
 
             # history 항목이 하나 이상 있는지 확인 (strict 모드 회피)
             history_div = page.locator("div[data-testid=history]")

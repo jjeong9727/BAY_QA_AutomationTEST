@@ -23,7 +23,7 @@ def browser():
 def context(browser):
     # ✅ 여기서 viewport 조절
     context = browser.new_context(
-        viewport={"width": 1500, "height": 960},  # 원하는 사이즈로 조절
+        viewport={"width": 1500, "height": 820},  # 원하는 사이즈로 조절
     )
     yield context
     context.close()

@@ -1,7 +1,5 @@
 from playwright.sync_api import Page
 import random
-from datetime import datetime
-from playwright.sync_api import sync_playwright
 from config import URLS, Account
 from helpers.product_utils import append_product_name, generate_product_names, verify_products_in_list
 from helpers.common_utils import bay_login
@@ -16,6 +14,7 @@ def test_register_multiple_products(page: Page):
 
         num_products = 6
         prdnames = []
+        prd_data = []
 
         for idx in range(num_products):
             # 구분 선택
@@ -78,25 +77,29 @@ def test_register_multiple_products(page: Page):
             auto_input.fill(str(auto_order))
 
             # 업체 선택
+            
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(500)  # 스크롤 애니메이션 대기
             supplier_trigger = page.locator("data-testid=drop_supplier_trigger").last
             supplier_trigger.scroll_into_view_if_needed()
             supplier_trigger.click()
             page.wait_for_timeout(1000)
             supplier_items = page.locator("data-testid=drop_supplier_item")
             automation_supplier = supplier_items.locator("text=자동화업체")
-            automation_supplier.scroll_into_view_if_needed()
             automation_supplier.click()
+            page.wait_for_timeout(1000)
 
-            # JSON 저장
-            append_product_name(
-                prdname_kor=prdname_kor,
-                prdname_eng=prdname_eng,
-                type_name=selected_type,
-                group=selected_group,
-                maker=selected_maker,
-                safety=safety,
-                auto_order=auto_order
-            )
+
+            # 나중에 저장할 데이터 보관
+            prd_data.append({
+                "prdname_kor": prdname_kor,
+                "prdname_eng": prdname_eng,
+                "type_name": selected_type,
+                "group": selected_group,
+                "maker": selected_maker,
+                "safety": safety,
+                "auto_order": auto_order
+            })
 
             if idx < num_products - 1:
                 add_row_button = page.locator("data-testid=btn_addrow")
@@ -104,19 +107,20 @@ def test_register_multiple_products(page: Page):
                 add_row_button.wait_for(state="visible", timeout=5000)
                 add_row_button.click(force=True)
 
-        # 저장 버튼
+        # 저장 버튼 클릭
         save_btn = page.locator("button:has-text('완료')")
         save_btn.scroll_into_view_if_needed()
         save_btn.click()
-
         page.wait_for_timeout(1000)
         print(f"[PASS][제품관리] {num_products}개 제품 등록 및 저장 완료")
 
-        # 제품 등록 확인
+        # JSON 파일에 한 번에 저장
+        for product in prd_data:
+            append_product_name(**product)
+
+        # 등록 확인
         verify_products_in_list(page, prdnames, URLS["bay_prdList"], "제품명 검색", 4)
         verify_products_in_list(page, prdnames, URLS["bay_stock"], "제품명 검색", 4)
-
-        
 
     except Exception as e:
         print(f"[FAIL] 여러 개 제품 등록 실패: {str(e)}")

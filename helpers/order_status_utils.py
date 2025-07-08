@@ -25,14 +25,15 @@ def get_order_id_from_order_list(page: Page, product_name: str):
 
     for row in rows:
         # 해당 행에서 제품명이 일치하는지 확인
-        row_product_name = row.locator("td").nth(1).locator("p").inner_text().strip()  # p 태그의 텍스트를 추출
-        print(f"검색된 제품명: {row_product_name}")
+        row_product_locator = row.locator("td").nth(1).locator("p")
+        row_product_name = row_product_locator.inner_text().strip()
+        print(f"🔍 검색된 제품명: {row_product_name}")
 
         # 제품명이 일치하는지 비교
         if row_product_name == product_name:
             # 제품명이 일치하면 해당 행에서 order_id 추출
-            order_id = row.locator("td[data-testid='order']").get_attribute('data-orderid')  # data-orderid를 정확히 지정
-            print(f"찾은 order_id: {order_id}")
+            order_id = row.locator("td[data-testid='order']").get_attribute('data-orderid')
+            print(f"✅ 찾은 order_id: {order_id}")
             return order_id
 
     # 만약 해당 제품이 없으면 None 반환

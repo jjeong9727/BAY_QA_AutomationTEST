@@ -19,7 +19,7 @@ URLS = {
 
 
 Account = {
-    "testid": "stg@medisolveai.com",
+    "testid": "qaje@medisolveai.com", # 권정의 01062754153
     "testpw": "12341234",
     "wrongpw": "0000"
 
