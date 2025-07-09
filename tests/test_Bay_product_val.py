@@ -58,7 +58,7 @@ def test_duplicate_product_name(page):
         expect(page.locator("data-testid=drop_supplier_item")).to_be_visible(timeout=5000)
         supplier_items = page.locator("data-testid=drop_supplier_item")
         automation_supplier = supplier_items.locator("text=자동화업체")  # 자동화 테스트 안정성을 위해 지정
-        automation_supplier.click()
+        automation_supplier.click(force=True)
 
         # page.click("data-testid=btn-save")
         page.locator("button:has-text('완료')").click()

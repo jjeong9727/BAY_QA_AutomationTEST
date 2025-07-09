@@ -1,74 +1,191 @@
 [
   {
+    "test_name": "test_Bay_login",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:18:10",
+    "file": "tests/test_Bay_login.py",
+    "stack": "",
+    "duration": "21.46초"
+  },
+  {
+    "test_name": "test_Bay_supplier",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:18:34",
+    "file": "tests/test_Bay_supplier.py",
+    "stack": "",
+    "duration": "23.66초"
+  },
+  {
+    "test_name": "test_Bay_supplier_val",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:18:50",
+    "file": "tests/test_Bay_supplier_val.py",
+    "stack": "",
+    "duration": "16.02초"
+  },
+  {
+    "test_name": "test_Bay_supplier_delete",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:19:12",
+    "file": "tests/test_Bay_supplier_delete.py",
+    "stack": "",
+    "duration": "22.34초"
+  },
+  {
+    "test_name": "test_Bay_prdctg",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:20:18",
+    "file": "tests/test_Bay_prdctg.py",
+    "stack": "",
+    "duration": "65.38초"
+  },
+  {
+    "test_name": "test_Bay_prdctg_val",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:21:16",
+    "file": "tests/test_Bay_prdctg_val.py",
+    "stack": "",
+    "duration": "58.27초"
+  },
+  {
+    "test_name": "test_Bay_prdctg_edit",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:22:17",
+    "file": "tests/test_Bay_prdctg_edit.py",
+    "stack": "",
+    "duration": "60.65초"
+  },
+  {
+    "test_name": "test_Bay_prdctg_delete",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:23:10",
+    "file": "tests/test_Bay_prdctg_delete.py",
+    "stack": "",
+    "duration": "53.32초"
+  },
+  {
+    "test_name": "test_Bay_product",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:24:55",
+    "file": "tests/test_Bay_product.py",
+    "stack": "",
+    "duration": "104.57초"
+  },
+  {
+    "test_name": "test_Bay_product_val",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:25:44",
+    "file": "tests/test_Bay_product_val.py",
+    "stack": "",
+    "duration": "48.72초"
+  },
+  {
+    "test_name": "test_Bay_product_edit",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:26:13",
+    "file": "tests/test_Bay_product_edit.py",
+    "stack": "",
+    "duration": "29.19초"
+  },
+  {
+    "test_name": "test_Bay_product_delete",
+    "status": "FAIL",
+    "message": "tests\\test_Bay_product_delete.py:165: AssertionError",
+    "timestamp": "2025-07-09 18:26:50",
+    "file": "tests/test_Bay_product_delete.py",
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_product_delete.py .F                                      [100%]\n\n================================== FAILURES ===================================\n__________________________ test_bulk_delete_products __________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0709_05'>\n\n    def test_bulk_delete_products(page):\n        try:\n            # 로그인\n            bay_login(page)\n    \n    \n            # 일괄 삭제 가능한 제품 검색\n            deletable_names = get_deletable_products_from_json()\n            if not deletable_names:\n                msg = \"\\u274c \\uc77c\\uad04 \\uc0ad\\uc81c \\uac00\\ub2a5\\ud55c \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n            selected_names = random.sample(deletable_names, min(len(deletable_names), random.randint(1, 2)))\n    \n            # 제품 리스트 페이지로 이동\n    \n            selected_product_names = []\n    \n            for name in selected_names:\n                page.fill(\"data-testid=input_search\", name)\n                page.wait_for_timeout(1000)\n                page.click(\"data-testid=btn_search\")\n                page.wait_for_timeout(1000)\n    \n                row = page.locator(\"table tbody tr\").nth(0)\n                if row.is_visible():\n                    row.locator(\"td:nth-child(1)\").click()\n                    selected_product_names.append(name)\n    \n            if not selected_product_names:\n                msg = \"\\u2705 \\uc870\\uac74\\uc5d0 \\ub9de\\ub294 \\uc81c\\ud488\\uc774 \\uc5c6\\uc5b4\\uc11c \\uc0ad\\uc81c\\ub97c \\uc2a4\\ud0b5\\ud569\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n            # 일괄 삭제 버튼 클릭\n            page.click(\"data-testid=btn_del_bulk\")\n            page.wait_for_timeout(1000)\n            page.locator(\"data-testid=btn_del\").wait_for()\n            page.click(\"data-testid=btn_del\")\n            page.wait_for_timeout(2000)\n    \n            # 삭제 후, 제품이 목록에서 사라졌는지 확인\n            failed = []\n            for name in selected_product_names:\n                if not check_delete(page, name):  # 삭제 확인 함수 호출\n                    failed.append(name)\n    \n            if failed:\n                fail_msg = f\"[FAIL][제품관리] 일부 제품 삭제 실패: {failed}\"\n                print(fail_msg)\n>               assert False, fail_msg\nE               AssertionError: [FAIL][제품관리] 일부 제품 삭제 실패: ['등록테스트_0709_05']\nE               assert False\n\ntests\\test_Bay_product_delete.py:165: AssertionError\n---------------------------- Captured stdout call -----------------------------\n[FAIL][제품관리] 일부 제품 삭제 실패: ['등록테스트_0709_05']\n[FAIL][제품관리] 일괄 삭제 중 예외 발생\n에러 내용: [FAIL][제품관리] 일부 제품 삭제 실패: ['등록테스트_0709_05']\nassert False\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_product_delete.py::test_bulk_delete_products - Assertio...\n======================== 1 failed, 1 passed in 35.00s =========================\n",
+    "duration": "36.67초"
+  },
+  {
+    "test_name": "test_Bay_stock_in",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:28:20",
+    "file": "tests/test_Bay_stock_in.py",
+    "stack": "",
+    "duration": "90.62초"
+  },
+  {
     "test_name": "test_Bay_stock_out",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-08 18:31:27",
+    "timestamp": "2025-07-09 18:29:59",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "95.17초"
+    "duration": "98.77초"
   },
   {
     "test_name": "test_Bay_order_status_request_cancel",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-08 18:31:50",
+    "timestamp": "2025-07-09 18:30:47",
     "file": "tests/test_Bay_order_status_request_cancel.py",
     "stack": "",
-    "duration": "23.27초"
+    "duration": "48.34초"
   },
   {
     "test_name": "test_Bay_order_status_request",
-    "status": "FAIL",
-    "message": "tests\\test_Bay_order_status_request.py:64: ValueError",
-    "timestamp": "2025-07-08 18:32:07",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:31:43",
     "file": "tests/test_Bay_order_status_request.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_request.py F                                 [100%]\n\n================================== FAILURES ===================================\n____________________________ test_order_acceptance ____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history'>\n\n    def test_order_acceptance(page: Page):\n        # 발주 요청 상태(1)인 제품 2개 선택\n        eligible_products = filter_products_by_delivery_status(1)\n        if len(eligible_products) < 2:\n            raise ValueError(\"delivery_status가 1인 제품이 2개 미만입니다.\")\n    \n        selected_products = random.sample(eligible_products, 2)\n    \n        for product in selected_products:\n            product_name = product['kor']\n    \n            try:\n                # 로그인\n                bay_login(page)\n    \n                # 발주 내역 검색\n                page.goto(URLS[\"bay_orderList\"])\n                expect(page.locator(\"data-testid=drop_status_trigger\")).to_be_visible(timeout=8000)\n                page.click(\"data-testid=drop_status_trigger\")\n                expect(page.locator(\"data-testid=drop_status_item\")).to_be_visible(timeout=5000)\n                page.click('div[data-testid=\"drop_status_item\"] div[data-value=\"발주 요청\"]')\n                page.wait_for_timeout(2000)\n                page.fill(\"data-testid=input_search\", product_name)\n                page.click(\"data-testid=btn_search\")\n                expect(page.locator(\"data-testid=history\").first).to_be_visible(timeout=8000)\n    \n                # order_id 추출\n                order_id = get_order_id_from_order_list(page, product_name)\n                if not order_id:\n>                   raise ValueError(f\"Order ID for '{product_name}'를 찾을 수 없습니다.\")\nE                   ValueError: Order ID for '등록테스트_0708_51'를 찾을 수 없습니다.\n\ntests\\test_Bay_order_status_request.py:64: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0708_49\\n\\u274c \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0708_51 \\ucc98\\ub9ac \\uc911 \\uc624\\ub958 \\ubc1c\\uc0dd: Order ID for '\\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0708_51'\\ub97c \\ucc3e\\uc744 \\uc218 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_request.py::test_order_acceptance - ValueE...\n============================= 1 failed in 15.68s ==============================\n",
-    "duration": "17.06초"
+    "stack": "",
+    "duration": "55.32초"
   },
   {
     "test_name": "test_Bay_order_status_progress_delivery",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_delivery: No product found with delivery_status 2",
-    "timestamp": "2025-07-08 18:32:11",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:32:14",
     "file": "tests/test_Bay_order_status_progress_delivery.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_progress_delivery.py F                       [100%]\n\n================================== FAILURES ===================================\n_____________________________ test_order_delivery _____________________________\n\npage = <Page url='about:blank'>\n\n    def test_order_delivery(page: Page):\n        try:\n            # delivery_status가 2인 제품 선택\n            with open(\"product_name.json\", \"r\", encoding=\"utf-8\") as f:\n                products = json.load(f)\n    \n            eligible_products = [p for p in products if p.get(\"delivery_status\") == 2]\n            if not eligible_products:\n>               raise ValueError(\"No product found with delivery_status 2\")\nE               ValueError: No product found with delivery_status 2\n\ntests\\test_Bay_order_status_progress_delivery.py:39: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_delivery: No product found with delivery_status 2\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_progress_delivery.py::test_order_delivery\n============================== 1 failed in 2.03s ==============================\n",
-    "duration": "3.25초"
+    "stack": "",
+    "duration": "31.00초"
   },
   {
     "test_name": "test_Bay_order_status_progress_complete",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_receive_and_inventory_check: \\ubc1c\\uc8fc \\uc9c4\\ud589 \\uc0c1\\ud0dc\\uc778 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "timestamp": "2025-07-08 18:32:14",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:32:42",
     "file": "tests/test_Bay_order_status_progress_complete.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_progress_complete.py F                       [100%]\n\n================================== FAILURES ===================================\n______________________ test_order_receive_from_progress _______________________\n\npage = <Page url='about:blank'>\n\n    def test_order_receive_from_progress(page: Page):\n        try:\n            # delivery_status가 2인 제품 필터링\n            eligible_products = filter_products_by_delivery_status(2)\n            if not eligible_products:\n>               raise ValueError(\"발주 진행 상태인 제품이 없습니다.\")\nE               ValueError: 발주 진행 상태인 제품이 없습니다.\n\ntests\\test_Bay_order_status_progress_complete.py:37: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_receive_and_inventory_check: \\ubc1c\\uc8fc \\uc9c4\\ud589 \\uc0c1\\ud0dc\\uc778 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_progress_complete.py::test_order_receive_from_progress\n============================== 1 failed in 2.02s ==============================\n",
-    "duration": "3.47초"
+    "stack": "",
+    "duration": "28.68초"
   },
   {
     "test_name": "test_Bay_order_status_delivery",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_receive_from_delivery: \\ubc1c\\uc8fc \\uc9c4\\ud589 \\uc0c1\\ud0dc\\uc778 \\uc81c\\ud488\\uc774 \\uc5c6\\ub2e4",
-    "timestamp": "2025-07-08 18:32:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:33:01",
     "file": "tests/test_Bay_order_status_delivery.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_delivery.py F                                [100%]\n\n================================== FAILURES ===================================\n______________________ test_order_receive_from_delivery _______________________\n\npage = <Page url='about:blank'>\n\n    def test_order_receive_from_delivery(page: Page):\n        try:\n            # product.json에서 delivery_status가 3인 제품들 찾기\n            with open('product_name.json', 'r', encoding='utf-8') as f:\n                products = json.load(f)\n    \n            # delivery_status가 3인 제품들만 필터링\n            eligible_products = [product for product in products if product.get('delivery_status') == 3]\n    \n            if not eligible_products:\n>               raise ValueError(\"발주 진행 상태인 제품이 없다\")\nE               ValueError: 발주 진행 상태인 제품이 없다\n\ntests\\test_Bay_order_status_delivery.py:40: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_receive_from_delivery: \\ubc1c\\uc8fc \\uc9c4\\ud589 \\uc0c1\\ud0dc\\uc778 \\uc81c\\ud488\\uc774 \\uc5c6\\ub2e4\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_delivery.py::test_order_receive_from_delivery\n============================== 1 failed in 2.36s ==============================\n",
-    "duration": "3.60초"
+    "stack": "",
+    "duration": "18.26초"
   },
   {
     "test_name": "test_Bay_order_status_complete",
     "status": "FAIL",
     "message": "\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "timestamp": "2025-07-08 18:32:22",
+    "timestamp": "2025-07-09 18:33:21",
     "file": "tests/test_Bay_order_status_complete.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_order_status_complete.py FF                               [100%]\n\n================================== FAILURES ===================================\n________________________ test_order_status_complete_bf ________________________\n\npage = <Page url='about:blank'>\n\n    def test_order_status_complete_bf(page: Page):\n>       run_order_status_check(page, delivery_status=7)\n\ntests\\test_Bay_order_status_complete.py:60: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='about:blank'>, delivery_status = 7\n\n    def run_order_status_check(page: Page, delivery_status: int):\n        status_name = \"수령 확정\"\n    \n        # 상태에 따른 expected 키 매핑\n        status_key_map = {\n            7: \"수령 완료(배송전)\",\n            4: \"수령 완료(배송후)\",\n        }\n    \n        expected_key = status_key_map.get(delivery_status)\n        if not expected_key:\n            raise ValueError(f\"지원하지 않는 delivery_status: {delivery_status}\")\n    \n        expected = order_status_map[expected_key]\n    \n        try:\n            filtered_products = filter_products_by_delivery_status(delivery_status)\n            if not filtered_products:\n>               raise ValueError(f\"'{expected_key}' 상태의 제품이 없습니다.\")\nE               ValueError: '수령 완료(배송전)' 상태의 제품이 없습니다.\n\ntests\\test_Bay_order_status_complete.py:31: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\uc804)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n________________________ test_order_status_complete_af ________________________\n\npage = <Page url='about:blank'>\n\n    def test_order_status_complete_af(page: Page):\n>       run_order_status_check(page, delivery_status=4)\n\ntests\\test_Bay_order_status_complete.py:63: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='about:blank'>, delivery_status = 4\n\n    def run_order_status_check(page: Page, delivery_status: int):\n        status_name = \"수령 확정\"\n    \n        # 상태에 따른 expected 키 매핑\n        status_key_map = {\n            7: \"수령 완료(배송전)\",\n            4: \"수령 완료(배송후)\",\n        }\n    \n        expected_key = status_key_map.get(delivery_status)\n        if not expected_key:\n            raise ValueError(f\"지원하지 않는 delivery_status: {delivery_status}\")\n    \n        expected = order_status_map[expected_key]\n    \n        try:\n            filtered_products = filter_products_by_delivery_status(delivery_status)\n            if not filtered_products:\n>               raise ValueError(f\"'{expected_key}' 상태의 제품이 없습니다.\")\nE               ValueError: '수령 완료(배송후)' 상태의 제품이 없습니다.\n\ntests\\test_Bay_order_status_complete.py:31: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_complete.py::test_order_status_complete_bf\nFAILED tests/test_Bay_order_status_complete.py::test_order_status_complete_af\n============================== 2 failed in 2.35s ==============================\n",
-    "duration": "3.73초"
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_order_status_complete.py .F                               [100%]\n\n================================== FAILURES ===================================\n________________________ test_order_status_complete_af ________________________\n\npage = <Page url='about:blank'>\n\n    def test_order_status_complete_af(page: Page):\n>       run_order_status_check(page, delivery_status=4)\n\ntests\\test_Bay_order_status_complete.py:63: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='about:blank'>, delivery_status = 4\n\n    def run_order_status_check(page: Page, delivery_status: int):\n        status_name = \"수령 확정\"\n    \n        # 상태에 따른 expected 키 매핑\n        status_key_map = {\n            7: \"수령 완료(배송전)\",\n            4: \"수령 완료(배송후)\",\n        }\n    \n        expected_key = status_key_map.get(delivery_status)\n        if not expected_key:\n            raise ValueError(f\"지원하지 않는 delivery_status: {delivery_status}\")\n    \n        expected = order_status_map[expected_key]\n    \n        try:\n            filtered_products = filter_products_by_delivery_status(delivery_status)\n            if not filtered_products:\n>               raise ValueError(f\"'{expected_key}' 상태의 제품이 없습니다.\")\nE               ValueError: '수령 완료(배송후)' 상태의 제품이 없습니다.\n\ntests\\test_Bay_order_status_complete.py:31: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_complete.py::test_order_status_complete_af\n======================== 1 failed, 1 passed in 18.84s =========================\n",
+    "duration": "20.35초"
   },
   {
     "test_name": "test_Bay_order_status_fail",
-    "status": "FAIL",
-    "message": "\\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0708_49\\n\\u274c Error in test_order_status_fail: [FAIL] \\ubc1c\\uc8fc \\ub0b4\\uc5ed\\uc5d0\\uc11c \\uc81c\\ud488 '[\\uc18c\\ubaa8\\ud488][\\uc8fc\\uc0ac\\uc81c] \\ubc1c\\uc8fc\\uc2e4\\ud328 \\uad00\\ub828 \\ud14c\\uc2a4\\ud2b8\\uc785\\ub2c8\\ub2e4.'\\uc758 order_id\\ub97c \\ucc3e\\uc744 \\uc218 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "timestamp": "2025-07-08 18:32:38",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-09 18:33:40",
     "file": "tests/test_Bay_order_status_fail.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_fail.py F                                    [100%]\n\n================================== FAILURES ===================================\n___________________________ test_order_status_fail ____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history'>\n\n    def test_order_status_fail(page: Page):\n        status_name = \"발주 실패\"\n        expected = order_status_map[status_name]\n    \n        try:\n            # delivery_status == 6인 제품 목록 필터링\n            filtered_products = filter_products_by_delivery_status(6)\n            if not filtered_products:\n                raise ValueError(f\"[FAIL] '{status_name}' 상태의 제품이 없습니다.\")\n    \n            # 무작위 제품 선택\n            product = random.choice(filtered_products)\n            product_name = product[\"kor\"]\n    \n            bay_login(page)\n    \n            page.goto(URLS[\"bay_orderList\"])\n            expect(page.locator(\"data-testid=input_search\")).to_be_visible(timeout=7000)\n            page.fill(\"data-testid=input_search\", product_name)\n            page.wait_for_timeout(2000)\n            page.click(\"data-testid=btn_search\")\n            expect(page.locator(\"data-testid=history\").first).to_be_visible(timeout=7000)\n    \n            # order_id 가져오기\n            order_id = get_order_id_from_order_list(page, product_name)\n            if not order_id:\n>               raise ValueError(f\"[FAIL] 발주 내역에서 제품 '{product_name}'의 order_id를 찾을 수 없습니다.\")\nE               ValueError: [FAIL] 발주 내역에서 제품 '[소모품][주사제] 발주실패 관련 테스트입니다.'의 order_id를 찾을 수 없습니다.\n\ntests\\test_Bay_order_status_fail.py:39: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0708_49\\n\\u274c Error in test_order_status_fail: [FAIL] \\ubc1c\\uc8fc \\ub0b4\\uc5ed\\uc5d0\\uc11c \\uc81c\\ud488 '[\\uc18c\\ubaa8\\ud488][\\uc8fc\\uc0ac\\uc81c] \\ubc1c\\uc8fc\\uc2e4\\ud328 \\uad00\\ub828 \\ud14c\\uc2a4\\ud2b8\\uc785\\ub2c8\\ub2e4.'\\uc758 order_id\\ub97c \\ucc3e\\uc744 \\uc218 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_fail.py::test_order_status_fail - ValueErr...\n============================= 1 failed in 15.28s ==============================\n",
-    "duration": "16.57초"
+    "stack": "",
+    "duration": "18.71초"
   }
 ]

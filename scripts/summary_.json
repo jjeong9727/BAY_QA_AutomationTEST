@@ -58,9 +58,9 @@
   {
     "name": "[자동화][제품관리] 제품 등록 확인 테스트 실패",
     "file": "tests/test_Bay_product.py",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_product.py::test_register_multiple_products - Assertion...",
-    "stack_summary": " → ============================= 1 failed in 57.02s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][제품관리] 제품 등록 유효성 검사 테스트 실패",
@@ -79,71 +79,71 @@
   {
     "name": "[자동화][제품관리] 제품 삭제 확인 테스트 실패",
     "file": "tests/test_Bay_product_delete.py",
+    "status": "FAIL",
+    "message": "tests\\test_Bay_product_delete.py:165: AssertionError",
+    "stack_summary": " → ======================== 1 failed, 1 passed in 35.00s ========================="
+  },
+  {
+    "name": "[자동화][재고관리] 재고 입고 확인 테스트 실패",
+    "file": "tests/test_Bay_stock_in.py",
     "status": "PASS",
     "message": "테스트 성공",
     "stack_summary": ""
   },
   {
-    "name": "[자동화][재고관리] 재고 입고 확인 테스트 실패",
-    "file": "tests/test_Bay_stock_in.py",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_stock_in.py::test_stock_inflow - AssertionError: [FAIL]...",
-    "stack_summary": " → ============================= 1 failed in 45.60s =============================="
-  },
-  {
     "name": "[자동화][재고관리] 재고 출고 확인 테스트 실패",
     "file": "tests/test_Bay_stock_out.py",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_stock_in.py::test_stock_outflow - AssertionError: [FAIL]...",
-    "stack_summary": " → FAILED tests/test_Bay_stock_in.py::test_stock_outflow - AssertionError: [FAIL]..."
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 발주 취소 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_request_cancel.py",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_cancel: No product found with delivery_status 1",
-    "stack_summary": " → ============================== 1 failed in 1.87s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 발주 요청 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_request.py",
-    "status": "FAIL",
-    "message": "tests\\test_Bay_order_status_request.py:39: ValueError",
-    "stack_summary": " → ============================== 1 failed in 1.97s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 발주 진행 상태에서 운송장 등록 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_progress_delivery.py",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_delivery: No product found with delivery_status 2",
-    "stack_summary": " → ============================== 1 failed in 2.02s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 발주 진행 상태에서 수령 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_progress_complete.py",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_receive_and_inventory_check: \\ubc1c\\uc8fc \\uc9c4\\ud589 \\uc0c1\\ud0dc\\uc778 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "stack_summary": " → ============================== 1 failed in 2.06s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 배송 진행 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_delivery.py",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_receive_from_delivery: \\ubc1c\\uc8fc \\uc9c4\\ud589 \\uc0c1\\ud0dc\\uc778 \\uc81c\\ud488\\uc774 \\uc5c6\\ub2e4",
-    "stack_summary": " → ============================== 1 failed in 2.40s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 수령 완료 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_complete.py",
     "status": "FAIL",
     "message": "\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "stack_summary": " → ============================== 2 failed in 2.18s =============================="
+    "stack_summary": " → ======================== 1 failed, 1 passed in 18.84s ========================="
   },
   {
     "name": "[자동화][발주관리] 발주 실패 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_fail.py",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_status_fail: [FAIL] '\\ubc1c\\uc8fc \\uc2e4\\ud328' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "stack_summary": " → ============================== 1 failed in 2.12s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   }
 ]

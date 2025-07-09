@@ -86,7 +86,7 @@ def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, 
 
                     if key == "tracking_enabled":
                         td_tracking = row.locator("td").nth(7)
-                        tracking_button = td_tracking.locator("[data-testid=btn_tracking]")
+                        tracking_button = td_tracking.locator("[data-testid=btn_check_tracking]")
                         if tracking_button.count() > 0:
                             if value:
                                 expect(tracking_button).to_be_enabled()

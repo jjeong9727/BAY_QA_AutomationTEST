@@ -1,5 +1,5 @@
 import pytest
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.common_utils import bay_login
 
@@ -22,7 +22,7 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         page.wait_for_timeout(500)
         page.locator("data-testid=alert_duplicate").wait_for(timeout=5000)
 
-        assert page.locator("data-testid=alert_duplicate").is_visible(), "❌ 중복 알림 문구가 표시되지 않음"
+        expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=3000)
         print(f"[PASS] 중복 등록 시 알림 문구 확인")
 
     except Exception as e:
