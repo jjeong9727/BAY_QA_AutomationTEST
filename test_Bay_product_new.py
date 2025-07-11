@@ -18,9 +18,7 @@ def test_register_multiple_products(page: Page):
     try:
         bay_login(page)
         page.goto(URLS["bay_prdList"])
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_addprd").click()
-        page.wait_for_timeout(1000)
+        expect("data-testid=btn_")
 
         num_products = 6
         prdnames = []

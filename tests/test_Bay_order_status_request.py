@@ -2,9 +2,13 @@ import json
 import random
 from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
-from helpers.order_status_utils import filter_products_by_delivery_status, get_order_id_from_order_list, check_order_status_by_order_id
+from helpers.order_status_utils import (
+    filter_products_by_delivery_status, get_order_id_from_order_list, check_order_status_by_order_id,
+    search_order_history
+)
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
+from datetime import datetime
 
 # 발주 진행 상태 코드
     # 1: 발주 요청
@@ -37,7 +41,7 @@ def test_order_acceptance(page: Page):
     eligible_products = filter_products_by_delivery_status(1)
     if len(eligible_products) < 2:
         raise ValueError("delivery_status가 1인 제품이 2개 미만입니다.")
-
+    status_name = "발주 요청"
     selected_products = random.sample(eligible_products, 2)
 
     for product in selected_products:
@@ -49,17 +53,8 @@ def test_order_acceptance(page: Page):
 
             # 발주 내역 검색
             page.goto(URLS["bay_orderList"])
-            expect(page.locator("data-testid=drop_status_trigger")).to_be_visible(timeout=8000)
-            page.click("data-testid=drop_status_trigger")
-            expect(page.locator("data-testid=drop_status_item")).to_be_visible(timeout=5000)
-            page.click('div[data-testid="drop_status_item"] div[data-value="발주 요청"]')
-            page.wait_for_timeout(2000)
-            page.fill("data-testid=input_search", product_name)
-            page.wait_for_timeout(500)
-            page.click("data-testid=btn_search")
-            page.wait_for_timeout(3000)
-            expect(page.locator("data-testid=history").first).to_be_visible(timeout=5000)
-            page.wait_for_timeout(500)
+
+            search_order_history(page, product_name, status_name)
 
             # order_id 추출
             order_id = get_order_id_from_order_list(page, product_name)

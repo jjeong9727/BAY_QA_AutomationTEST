@@ -1,7 +1,7 @@
 import pytest
 import requests
 import random
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.common_utils import bay_login
 
@@ -12,9 +12,9 @@ def login_and_go_to_add_page(page: Page):
     try:
         bay_login(page)
         page.goto(URLS["bay_category"])
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(2000)
         page.wait_for_url(URLS["bay_category"])
-        page.wait_for_timeout(1500)
+        page.wait_for_timeout(2000)
     except Exception as e:
         error_message = f"Error in login_and_go_to_add_page: {str(e)}"
         raise
@@ -43,6 +43,7 @@ def test_register_category_each(page, tab, testid_kor, testid_eng, require_eng):
             page.wait_for_timeout(1000)
 
         page.click("data-testid=btn_save")
+        expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=3000)
         page.wait_for_timeout(3000)
 
         # 스크롤을 끝까지 내려서 확인

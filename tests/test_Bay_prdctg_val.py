@@ -23,10 +23,36 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         page.locator("data-testid=alert_duplicate").wait_for(timeout=5000)
 
         expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=3000)
-        print(f"[PASS] 중복 등록 시 알림 문구 확인")
+        print(f"[PASS] 중복 등록 토스트 확인")
+
+        # 사용중인 카테고리 삭제 시도
+        name_kr_locator = page.locator(f"input[data-testid='input_kor']")
+        item_to_delete = None
+        item_value_to_delete = None
+        row_index = -1
+        count = name_kr_locator.count()
+        for i in reversed(range(count)):
+            item_text = name_kr_locator.nth(i).input_value()
+            if item_text.startswith("중복테스트"):
+                item_to_delete = name_kr_locator.nth(i)
+                item_value_to_delete = item_text
+                row_index = i
+                break
+
+        if item_to_delete:
+            delete_buttons = page.locator("button[data-testid='btn_delete']")
+            target_button = delete_buttons.nth(row_index)
+            target_button.wait_for(state="visible")
+            target_button.click()
+            # expect(page.locator("txt_delete")).to_be_visible(timeout=3000)
+            # page.wait_for_timeout(500)
+            # page.locator("data-testid=btn_comfirm").click()
+            expect(page.locator("txt_alert_using")).to_be_visible(timeout=3000)
+            page.wait_for_timeout(1000)
 
     except Exception as e:
         raise
+
 
 def test_duplicate_category_names(page):
     bay_login(page)
@@ -40,13 +66,11 @@ def test_duplicate_category_names(page):
     name_en2 = "DupTwo"
 
     # 구분
-    # register_category(page, "tab_type", name_kr, name_en1)
     try_duplicate_registration(page, "tab_type", name_kr, name_en2)
-
     # 종류
-    # register_category(page, "tab_group", name_kr, name_en1)
     try_duplicate_registration(page, "tab_category", name_kr, name_en2)
 
     # 제조사
-    # register_category(page, "tab_maker", name_kr, name_en1)
     try_duplicate_registration(page, "tab_maker", name_kr, name_en2)
+
+    

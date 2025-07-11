@@ -8,12 +8,14 @@ from helpers.common_utils import bay_login
 def test_duplicate_product_name(page):
     try:
         item = get_latest_product_name()
-        prdname_kor = item["kor"]
-        prdname_eng = item["eng"]
+        prdname_kor = "중복테스트"
+        prdname_eng = "Duplicate Test"
 
         bay_login(page)
 
-        page.goto(URLS["bay_prdAdd"])
+        page.goto(URLS["bay_prdList"])
+        expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=7000)
+        page.locator("data-testid=btn_addprd").click()
         expect(page.locator("data-testid=drop_type_trigger")).to_be_visible(timeout=7000)
 
         # 구분 선택
@@ -36,9 +38,6 @@ def test_duplicate_product_name(page):
         page.fill("data-testid=input_prdname_kor", prdname_kor)
         page.fill("data-testid=input_prdname_eng", prdname_eng)
 
-        prdnames=[]
-        prdnames.append(prdname_kor)
-
         # 제조사 선택
         page.locator("data-testid=drop_maker_trigger").last.click()
         expect(page.locator("data-testid=drop_maker_item")).to_be_visible(timeout=5000)
@@ -54,14 +53,16 @@ def test_duplicate_product_name(page):
         page.locator("data-testid=input_stk_qty").last.fill(str(auto_order))
 
         # 업체 선택
+        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.locator("data-testid=drop_supplier_trigger").last.click()
         expect(page.locator("data-testid=drop_supplier_item")).to_be_visible(timeout=5000)
         supplier_items = page.locator("data-testid=drop_supplier_item")
-        automation_supplier = supplier_items.locator("text=자동화업체")  # 자동화 테스트 안정성을 위해 지정
+        automation_supplier = supplier_items.locator("text=자동화업체") 
         automation_supplier.click(force=True)
 
-        # page.click("data-testid=btn-save")
-        page.locator("button:has-text('완료')").click()
+        page.evaluate("window.scrollTo(0, 0)")
+        page.locator("data-testid=btn_save").click()
+        # page.locator("button:has-text('완료')").click()
         
         expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=4000)
 

@@ -1,7 +1,9 @@
 import json
 import random
 from helpers.order_status_data import order_status_map
-from helpers.order_status_utils import check_order_status_by_order_id, get_order_id_from_order_list, filter_products_by_delivery_status
+from helpers.order_status_utils import (
+    check_order_status_by_order_id, get_order_id_from_order_list, search_order_history
+)
 from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.common_utils import bay_login
@@ -32,6 +34,7 @@ def test_order_receive_from_delivery(page: Page):
         # product.json에서 delivery_status가 3인 제품들 찾기
         with open('product_name.json', 'r', encoding='utf-8') as f:
             products = json.load(f)
+        status_name = "발주 진행"
 
         # delivery_status가 3인 제품들만 필터링
         eligible_products = [product for product in products if product.get('delivery_status') == 3]
@@ -47,14 +50,7 @@ def test_order_receive_from_delivery(page: Page):
 
         # 발주 내역 화면으로 이동하여 제품명 검색 
         page.goto(URLS["bay_orderList"])
-        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
-        page.wait_for_timeout(500)
-        page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(500)
-        page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
-        page.wait_for_timeout(2000)
-
+        search_order_history(page, product_name, status_name)
         
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)

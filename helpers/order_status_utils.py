@@ -1,5 +1,7 @@
 import json
 from playwright.sync_api import Page, expect
+from datetime import datetime
+
 
 def load_products_from_json():
     with open("product_name.json", "r", encoding="utf-8") as f:
@@ -117,4 +119,59 @@ def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, 
     if not found:
         raise AssertionError(f"발주 내역을 찾을 수 없습니다: {status_name}, {order_id}")
 
+def search_by_today_date(page: Page):
+    today = datetime.now().strftime("%Y.%m.%d")  # 예: 2025.07.10
+    today_btn_id = datetime.now().strftime("btn_day_%m%d")  # 예: btn_day_0710
 
+    # 시작일 선택
+    page.click("[data-testid=select_startday]")
+    page.click(f"[data-testid={today_btn_id}]")
+    page.wait_for_timeout(500)
+
+    # 종료일 선택
+    page.click("[data-testid=select_endday]")
+    page.click(f"[data-testid={today_btn_id}]")
+    page.wait_for_timeout(500)
+
+    # 검색 버튼 클릭
+    page.click("[data-testid=btn_search]")
+    page.wait_for_timeout(1000)
+
+    # ✅ 오늘 날짜가 노출되는지 확인
+    date_elements = page.locator("[data-testid=txt_date]")
+    expect(date_elements.first).to_have_text(today)
+
+    # ✅ 초기화 버튼 클릭
+    page.click("[data-testid=btn_reset]")
+    page.wait_for_timeout(1000)
+
+    # ✅ txt_date가 여러 개 노출되는지 확인
+    count = date_elements.count()
+    assert count > 1, f"초기화 후 txt_date 요소 개수가 부족합니다. 현재 개수: {count}"
+
+    print(f"✅ 오늘 날짜 검색 및 초기화 후 확인 완료 (노출된 날짜 개수: {count})")
+
+def search_order_history(page:Page, product_name: str, status:str):
+    today_btn_id = datetime.now().strftime("btn_day_%m%d")  # 예: btn_day_0710
+    # 시작일 선택
+    page.click("[data-testid=select_startday]")
+    page.wait_for_timeout(1000)
+    page.click(f"[data-testid={today_btn_id}]")
+    page.wait_for_timeout(500)
+    # 종료일 선택
+    page.click("[data-testid=select_endday]")
+    page.wait_for_timeout(1000)
+    page.click(f"[data-testid={today_btn_id}]")
+    page.wait_for_timeout(500)
+    # 상태 선택
+    expect(page.locator("data-testid=drop_status_trigger")).to_be_visible(timeout=8000)
+    page.click("data-testid=drop_status_trigger")
+    expect(page.locator("data-testid=drop_status_item")).to_be_visible(timeout=5000)
+    page.locator("data-testid=drop_status_item", has_text=status).click()
+    page.wait_for_timeout(1000)
+    # 제품명 입력
+    page.fill("data-testid=input_search", product_name)
+    page.wait_for_timeout(500)
+    # 검색 버튼 클릭
+    page.click("[data-testid=btn_search]")
+    page.wait_for_timeout(2000)

@@ -1,6 +1,6 @@
 import pytest
 import random
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.product_utils import update_product_name
 from helpers.common_utils import bay_login
@@ -58,8 +58,8 @@ def test_edit_category_each(page, tab, testid_kor, testid_eng, require_eng):
 
             # 수정 후 저장 버튼 클릭
             
-            save_button = page.locator("data-testid=btn_save")  # 저장 버튼 클릭
-            save_button.click()
+            page.locator("data-testid=btn_save").click() 
+            expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=3000)
             page.wait_for_timeout(1500)
 
 

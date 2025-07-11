@@ -1,11 +1,11 @@
 import json
 import random
+from datetime import datetime
 from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import (
-    filter_products_by_delivery_status,
-    get_order_id_from_order_list,
-    check_order_status_by_order_id
+    filter_products_by_delivery_status, get_order_id_from_order_list, 
+    check_order_status_by_order_id, search_order_history
 )
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
@@ -35,6 +35,7 @@ def test_order_receive_from_progress(page: Page):
         eligible_products = filter_products_by_delivery_status(2)
         if not eligible_products:
             raise ValueError("발주 진행 상태인 제품이 없습니다.")
+        status_name = "발주 진행"
 
         # 대상 제품 선택
         target_product = random.choice(eligible_products)
@@ -44,11 +45,7 @@ def test_order_receive_from_progress(page: Page):
         bay_login(page)
 
         page.goto(URLS["bay_orderList"])
-        page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(2000)
-        page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
-        page.wait_for_timeout(500)
+        search_order_history(page, product_name, status_name)
 
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)

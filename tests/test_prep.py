@@ -106,8 +106,61 @@ def test_prep_bay (page:Page):
     page.wait_for_timeout(1000)
 
     page.click("data-testid=btn_orderadd")  # 업체 등록 모달 열기
+    page.wait_for_timeout(1000)
     page.fill("data-testid=input_sup_name", "자동화업체")  # 업체명 입력
+    page.wait_for_timeout(1000)
     page.fill("data-testid=input_sup_manager", "권정의")  # 담당자 입력
+    page.wait_for_timeout(1000)
     page.fill("data-testid=input_sup_contact", "01062754153")  # 연락처 입력
+    page.wait_for_timeout(1000)
     page.click("data-testid=btn_confirm")  # 완료 버튼 클릭
     page.wait_for_timeout(500)
+
+    # 제품 등록 (중복테스트)
+    page.goto(URLS["bay_products"])
+    page.wait_for_timeout(1000)
+    page.click("data-testid=btn_prdadd")
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_type_trigger").click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_type_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_type_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_category_trigger").click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_category_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_category_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.fill("data-testid=input_prdname_kor", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=input_prdname_eng", "Duplicate Test")
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_maker_trigger").click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_maker_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.fill("data-testid=input_price", 100)
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=input_stk_safe", 5)
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=input_stk_qty", 10)
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_supplier_trigger").click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_supplier_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=btn_save").click()
+    page.wait_for_timeout(1000)

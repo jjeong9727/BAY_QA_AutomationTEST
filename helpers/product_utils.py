@@ -320,7 +320,7 @@ def is_duplicate_supplier_from_product_file(manager: str, contact: str) -> bool:
             return True
     return False
 # 등록한 업체 정보 값 찾기(페이지네이션 포함)
-def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: str) -> bool:
+def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: str, memo : str) -> bool:
     # 검색
     page.fill("input[placeholder='업체명 검색']", supplier)
     page.wait_for_timeout(1000)
@@ -332,7 +332,7 @@ def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: 
         for i in range(rows.count()):
             row = rows.nth(i)
             row_text = row.inner_text()
-            if supplier in row_text and manager in row_text and contact in row_text:
+            if supplier in row_text and manager in row_text and contact and memo in row_text:
                 return True
 
         # 다음 페이지 버튼 활성화 여부 확인

@@ -6,6 +6,7 @@ from helpers.order_status_utils import (
     filter_products_by_delivery_status,
     get_order_id_from_order_list,
     check_order_status_by_order_id,
+    search_order_history
 )
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
@@ -40,19 +41,15 @@ def test_order_delivery(page: Page):
 
         target_product = random.choice(eligible_products)
         product_name = target_product["kor"]
-
+        status_name = "발주 진행"
 
         # 로그인
         bay_login(page)
 
         # 발주 내역 검색
         page.goto(URLS["bay_orderList"])
-        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
-        page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(5000)
-        page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
-        expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
+        page.wait_for_timeout(2000)
+        search_order_history(page, product_name, status_name)
 
         # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)

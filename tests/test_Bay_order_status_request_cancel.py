@@ -2,7 +2,9 @@ import json
 import random
 from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
-from helpers.order_status_utils import filter_products_by_delivery_status, get_order_id_from_order_list, check_order_status_by_order_id
+from helpers.order_status_utils import (
+    search_order_history, get_order_id_from_order_list, check_order_status_by_order_id
+)
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
 
@@ -41,16 +43,14 @@ def test_order_cancel(page: Page):
         # delivery_status가 1인 제품 중 랜덤으로 하나 선택
         target_product = random.choice(eligible_products)
         product_name = target_product['kor']
+        status_name = "발주 취소"
 
         # 발주 내역 화면으로 이동하여 제품명 검색 후 order_id 가져오기
         bay_login(page)
         
         page.goto(URLS["bay_orderList"])
-        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
-        page.fill("data-testid=input_search", product_name)
-        page.wait_for_timeout(3000)
-        page.click("data-testid=btn_search")
-        expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
+        page.wait_for_timeout(2000)
+        search_order_history(page, product_name, status_name)
 
         # 검색된 제품의 order_id 값 가져오기
         order_id = get_order_id_from_order_list(page, product_name)

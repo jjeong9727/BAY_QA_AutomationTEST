@@ -60,6 +60,8 @@ class StockManager:
                 return int(stock_value) if stock_value.isdigit() else 0
         
         raise Exception(f"재고 확인 실패: {self.product_name}")
+
+
     def perform_inflow(self, quantity: int):
         self.page.goto(URLS["bay_stock"])
         self.page.click("data-testid=btn_stockadd")
@@ -83,20 +85,12 @@ class StockManager:
 
         self.page.fill("data-testid=input_qty", str(quantity))
         self.page.wait_for_timeout(1000)
-        memo_input = self.page.get_by_placeholder("최대 30자 입력")
-        memo_input.fill("30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
+        self.page.fill("data-testid=input_memo", "30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
         self.page.wait_for_timeout(1000)
         self.page.locator("data-testid=btn_save").click()
         self.page.wait_for_timeout(1000)
         self.page.locator("data-testid=btn_confirm").click()
         self.page.wait_for_timeout(3000)
-
-
-        
-        
-
-
-
 
     def perform_outflow(self, quantity: int):
         self.page.goto(URLS["bay_stock"])

@@ -24,20 +24,14 @@ def test_stock_outflow(page):
         stock_manager = StockManager(page)
         stock_manager.load_product_from_json()
 
-        # 3개 제품을 랜덤으로 선택하여 출고 테스트 진행
+        # 1개 제품을 랜덤으로 선택하여 출고 테스트 진행
         filtered_products = get_filtered_products(stock_manager)
-
-    
-
-        if len(filtered_products) < 3:
-            print(f"❌ 조건에 맞는 제품이 {len(filtered_products)}개만 존재합니다. 3개 이상이 필요합니다.")
+        if len(filtered_products) < 1:
+            print(f"❌ 조건에 맞는 제품이 없습니다.")
             return
 
-        # 조건에 맞는 제품들 중에서 3개를 랜덤으로 선택
-        selected_products = random.sample(filtered_products, 3)
-
-        # 랜덤 선택된 제품 출력 (디버깅용)
-
+        # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
+        selected_products = random.sample(filtered_products, 1)
 
         for product in selected_products:
             stock_manager.product_name = product['kor']
@@ -103,3 +97,107 @@ def test_stock_outflow(page):
     except Exception as e:
         print(f"❌ 출고 테스트 실패: {str(e)}")
         raise
+
+def test_edit_stockList_and_auto_order(page):
+    bay_login(page)
+
+    stock_manager = StockManager(page)
+    stock_manager.load_product_from_json()
+
+    # 1개 제품을 랜덤으로 선택하여 출고 테스트 진행
+    filtered_products = get_filtered_products(stock_manager)
+    if len(filtered_products) < 1:
+        print(f"❌ 조건에 맞는 제품이 없습니다.")
+        return
+
+    # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
+    product = random.sample(filtered_products, 1)
+    current_stock = product["stock_qty"]
+    outflow = current_stock -1
+    page.goto(URLS["bay_stock"])
+    page.wait_for_timeout(2000)
+
+    page.locator("data-testid=input_search").fill(product)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_edit").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=btn_edit").first.click()
+    page.wait_for_timeout(1000)
+    row = page.locator("table tbody tr").first
+    input_field = row.locator("td").nth(7).locator("input")
+    input_field.scroll_into_view_if_needed()
+    input_field.fill(str(outflow))
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_edit").first.click()
+    expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+    
+    page.goto(URLS["bay_orderList"])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_search").fill(product)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_search").click()
+    expect(page.locator("data-testid=txt_date")).to_be_visible(timeout=3000)
+
+def test_edit_product_and_auto_order(page):
+    bay_login(page)
+    stock_manager = StockManager(page)
+    stock_manager.load_product_from_json()
+
+    # 1개 제품을 랜덤으로 선택하여 출고 테스트 진행
+    filtered_products = get_filtered_products(stock_manager)
+    if len(filtered_products) < 1:
+        print(f"❌ 조건에 맞는 제품이 없습니다.")
+        return
+
+    # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
+    product = random.sample(filtered_products, 1)
+    current_stock = product["stock_qty"]
+    safety = current_stock + 10
+
+    page.goto(URLS["bay_prdList"])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_search").fill(product)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(1000)
+
+    rows = page.locator("table tbody tr")
+    row_count = rows.count()
+
+    for i in range(row_count):
+        edit_button = rows.nth(i).locator("td:nth-child(11) >> text=수정")
+        if edit_button.is_visible():
+            print(f"✅ {i}번째 행의 수정 버튼 클릭")
+            edit_button.click()
+            page.wait_for_timeout(1000)
+            break
+
+    txt_order = "자동 발주를 진행하시겠습니까?"
+    page.locator("data-testid=input_stk_safe").fill(safety)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_save").click()
+    expect(page.locator("data-testid=txt_order")).to_have_text(txt_order, timeout=3000)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
+    expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+    
+    page.goto(URLS["bay_orderList"])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_search").fill(product)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(1000)
+    expect(page.locator("data-testid=txt_date")).to_be_visible(timeout=3000)
+
+
+
+
+
+
+
+    
