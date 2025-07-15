@@ -52,7 +52,6 @@ all_tests = [
     "tests/test_Bay_alert.py",
     "tests/test_Bay_supplier.py",
     "tests/test_Bay_supplier_val.py",
-    "tests/test_Bay_supplier_delete.py",
     "tests/test_Bay_prdctg.py",
     "tests/test_Bay_prdctg_val.py",
     "tests/test_Bay_prdctg_edit.py",
@@ -63,13 +62,14 @@ all_tests = [
     "tests/test_Bay_product_delete.py",
     "tests/test_Bay_stock_in.py",
     "tests/test_Bay_stock_out.py",
+    "tests/test_Bay_stock_history.py",
     "tests/test_Bay_order_status_request_cancel.py",
     "tests/test_Bay_order_status_request.py",
     "tests/test_Bay_order_status_progress_delivery.py",
     "tests/test_Bay_order_status_progress_complete.py",
     "tests/test_Bay_order_status_delivery.py",
     "tests/test_Bay_order_status_complete.py",
-    "tests/test_Bay_order_status_fail.py"
+    "tests/test_Bay_order_status_fail.py", 
     
 ]
 

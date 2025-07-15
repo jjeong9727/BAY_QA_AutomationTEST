@@ -34,13 +34,13 @@ def test_order_receive_from_delivery(page: Page):
         # product.json에서 delivery_status가 3인 제품들 찾기
         with open('product_name.json', 'r', encoding='utf-8') as f:
             products = json.load(f)
-        status_name = "발주 진행"
+        status_name = "배송 진행"
 
         # delivery_status가 3인 제품들만 필터링
         eligible_products = [product for product in products if product.get('delivery_status') == 3]
 
         if not eligible_products:
-            raise ValueError("발주 진행 상태인 제품이 없다")
+            raise ValueError("배송 진행 상태인 제품이 없다")
 
         # delivery_status가 3 제품 중 랜덤으로 하나 선택
         target_product = random.choice(eligible_products)
@@ -73,6 +73,12 @@ def test_order_receive_from_delivery(page: Page):
         page.wait_for_timeout(2000)
 
         # 발주 내역에서 해당 제품을 "수령 확정" 상태인지 확인
+        page.locator("data-testid=btn_reset").click()
+        page.wait_for_timeout(1000) 
+        page.locator("data-testid=input_search").fill(product_name)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(1000) 
         rows = page.locator("table tbody tr")
         found = False
         for i in range(rows.count()):

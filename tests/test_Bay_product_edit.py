@@ -20,7 +20,7 @@ def get_deletable_products():
     
     return deletable_products
 
-def test_edit_bulk_products(page):
+def test_edit_products(page):
     try:
         bay_login(page)
 
@@ -75,6 +75,7 @@ def test_edit_bulk_products(page):
         page.wait_for_timeout(500)
         page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
+        page.wait_for_timeout(1000)
 
 
         # 6. 제품관리에서 수정값 검증 (검증 후 PASS인 경우에만 업데이트)
@@ -82,9 +83,7 @@ def test_edit_bulk_products(page):
         if verify_product_update(page, new_name):  # 수정된 이름이 UI에 반영되었는지 검증
             print("✅ 수정된 이름이 UI에 반영됨")
             # UI 검증 후 수정이 반영되었으면 update_product_flag를 활용하여 JSON 업데이트
-            for name in new_name:
-                # update_product_flag를 이용해 수정된 제품의 속성 업데이트
-                update_product_flag(name)
+            update_product_flag(name_kor=origin_name, kor=new_name, maker=new_maker)
             
             msg = f"[PASS][제품관리] 제품 수정 완료: {new_name}"
         else:

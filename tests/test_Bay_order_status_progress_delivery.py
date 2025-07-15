@@ -51,7 +51,7 @@ def test_order_delivery(page: Page):
         page.wait_for_timeout(2000)
         search_order_history(page, product_name, status_name)
 
-        # order_id 추출
+        # # order_id 추출
         order_id = get_order_id_from_order_list(page, product_name)
         if not order_id:
             raise ValueError(f"{product_name} 제품의 order ID 확인 불가")
@@ -72,25 +72,23 @@ def test_order_delivery(page: Page):
         expect(page.locator("data-testid=drop_shipping_trigger")).to_be_visible(timeout=5000)
 
         # 배송사 선택 드롭다운 열기
+        carrier_name = "일양로지스"
+        tracking = "1234567890"
+        new_carrier = "CJ대한통운"
+        new_tracking = "0987654321"
         page.locator("data-testid=drop_shipping_trigger").click()
-        expect(page.locator("data-testid=drop_shipping_item")).to_be_visible(timeout=5000)
-        options = page.locator("div[data-testid='drop_shipping_item'] div[role='option']")
-        target = options.nth(1)
-        carrier_name = target.inner_text().strip()
-        print(f"[INFO] 선택된 배송사: {carrier_name}")
-
-        # 항목 클릭
-        target.click()
-
-
-        # 이후 페이지 이동 후 해당 값 활용 예시
-        print(f"[INFO] 선택한 택배사: {carrier_name}")
-
-
-        page.fill("input[data-testid='input_tracking']", "1234567890")
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_shipping_search").fill(carrier_name)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_shipping_item", has_text=carrier_name).click()
+        page.wait_for_timeout(1000)
+        
+        page.fill("input[data-testid='input_tracking']", tracking)
         page.wait_for_timeout(3000)
         page.locator("button[data-testid='btn_confirm']").last.click()
-        page.wait_for_timeout(4000)
+        expect(page.locator("data-testid=toast_tracking")).to_be_visible(timeout=3000)
+        page.wait_for_timeout(1000)
+
 
         # 상태 확인: 배송 진행
         page.goto(URLS["bay_orderList"])
@@ -112,12 +110,60 @@ def test_order_delivery(page: Page):
                 print(f"[PASS] 배송 진행 상태 확인 완료 → {product_name} 상태: {status}")
                 found = True
                 break
+        
+        # JSON 상태 업데이트
+        update_product_status_in_json(product_name, delivery_status=3)
+
+        # 택배사 + 운송장 확인
+        page.locator("data-testid=btn_check_tracking").click()
+        expect(page.locator("data-testid=txt_tracking")).to_have_text(carrier_name, timeout=3000)
+        expect(page.locator("data-testid=txt_tracking_num")).to_have_text(tracking, timeout=3000)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_confirm").click()
+        page.wait_for_timeout(1000)
+
+        # 운송정보 수정 후 확인
+        page.goto(tracking_url)
+        expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
+        page.fill("input[data-testid='input_name']", "권정의")
+        page.fill("input[data-testid='input_contact']", "01062754153")
+        page.click("button[data-testid='btn_confirm']")
+        page.wait_for_timeout(1000)
+        page.locator("button[data-testid='btn_confirm']").last.click()
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_shipping_trigger").click()
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_shipping_search").fill(new_carrier)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_shipping_item", has_text=new_carrier).click()
+        page.wait_for_timeout(1000)
+        
+        page.fill("input[data-testid='input_tracking']", new_tracking)
+        page.wait_for_timeout(3000)
+        page.locator("button[data-testid='btn_confirm']").last.click()
+        expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
+        page.wait_for_timeout(1000)
+
+        bay_login(page)
+        page.goto(URLS["bay_orderList"])
+        expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
+        page.fill("data-testid=input_search", product_name)
+        page.wait_for_timeout(500)
+        page.click("data-testid=btn_search")
+        expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
+        page.wait_for_timeout(500)
+
+        page.locator("data-testid=btn_check_tracking").click()
+        expect(page.locator("data-testid=txt_tracking")).to_have_text(new_carrier, timeout=3000)
+        expect(page.locator("data-testid=txt_tracking_num")).to_have_text(new_tracking, timeout=3000)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_confirm").click()
+        page.wait_for_timeout(1000)
 
         if not found:
             raise AssertionError(f"[FAIL] 발주 내역에서 제품 '{product_name}'을 찾을 수 없습니다.")
 
-        # JSON 상태 업데이트
-        update_product_status_in_json(product_name, delivery_status=3)
+
 
     except Exception as e:
         print(f"❌ Error in test_order_delivery: {str(e)}")

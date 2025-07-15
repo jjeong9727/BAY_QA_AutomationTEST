@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 from playwright.sync_api import TimeoutError, expect
 from config import URLS, Account
 from helpers.stock_utils import StockManager
@@ -41,7 +42,7 @@ def test_stock_outflow(page):
             safety_stock = product.get('safety_stock', 0)
 
             # 출고 수량 계산
-            max_outflow = current_stock - 1
+            max_outflow = current_stock 
             calculated_outflow = current_stock - safety_stock
             outflow_qty = max(1, min(max_outflow, calculated_outflow))
 
@@ -111,17 +112,16 @@ def test_edit_stockList_and_auto_order(page):
         return
 
     # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
-    product = random.sample(filtered_products, 1)
+    product = random.sample(filtered_products, 1)[0]
     current_stock = product["stock_qty"]
-    outflow = current_stock -1
+    outflow = current_stock
+    expected = current_stock - outflow
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
 
-    page.locator("data-testid=input_search").fill(product)
+    page.locator("data-testid=input_search").fill(product["kor"])
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=btn_edit").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=btn_edit").first.click()
@@ -134,13 +134,16 @@ def test_edit_stockList_and_auto_order(page):
     page.locator("data-testid=btn_edit").first.click()
     expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
-    
+
+    today = datetime.now().strftime("%Y. %m. %d")
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(1000)
-    page.locator("data-testid=input_search").fill(product)
+    page.locator("data-testid=input_search").fill(product["kor"])
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    expect(page.locator("data-testid=txt_date")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=txt_date").first).to_have_text(today)
+
+    update_product_flag(product['kor'], stock_qty=expected, order_flag=1, delivery_status=1)
 
 def test_edit_product_and_auto_order(page):
     bay_login(page)
@@ -154,13 +157,13 @@ def test_edit_product_and_auto_order(page):
         return
 
     # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
-    product = random.sample(filtered_products, 1)
+    product = random.sample(filtered_products, 1)[0]
     current_stock = product["stock_qty"]
     safety = current_stock + 10
 
     page.goto(URLS["bay_prdList"])
     page.wait_for_timeout(1000)
-    page.locator("data-testid=input_search").fill(product)
+    page.locator("data-testid=input_search").fill(product["kor"])
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(1000)
@@ -176,8 +179,10 @@ def test_edit_product_and_auto_order(page):
             page.wait_for_timeout(1000)
             break
 
+    
+
     txt_order = "자동 발주를 진행하시겠습니까?"
-    page.locator("data-testid=input_stk_safe").fill(safety)
+    page.locator("data-testid=input_stk_safe").fill(str(safety))
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_order")).to_have_text(txt_order, timeout=3000)
@@ -185,15 +190,17 @@ def test_edit_product_and_auto_order(page):
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
-    
+
+    today = datetime.now().strftime("%Y. %m. %d")
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(1000)
-    page.locator("data-testid=input_search").fill(product)
+    page.locator("data-testid=input_search").fill(product["kor"])
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(1000)
-    expect(page.locator("data-testid=txt_date")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=txt_date").first).to_have_text(today)
 
+    update_product_flag(product['kor'], safety=safety, order_flag=1, delivery_status=1)
 
 
 

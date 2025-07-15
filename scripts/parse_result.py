@@ -5,7 +5,7 @@ import re
 # 테스트 이름 한글 매핑
 full_name_mapping = {
     "test_Bay_login": "로그인 확인",
-    "test_Bay_alert.py" : "등록 수정 시 유효성 확인",
+    "test_Bay_alert" : "공통 토스트 팝업 및 검색 기능 확인",
     "test_Bay_order_status_request_cancel": "발주 취소 상태 확인",
     "test_Bay_order_status_request": "발주 요청 상태 확인",
     "test_Bay_order_status_progress_delivery": "발주 진행 상태에서 운송장 등록 확인",
@@ -24,6 +24,7 @@ full_name_mapping = {
     "test_Bay_supplier_delete": "업체 삭제 확인",
     "test_Bay_stock_in": "재고 입고 확인",
     "test_Bay_stock_out": "재고 출고 확인",
+    "test_Bay_stock_history":"재고 내역 확인",
 }
 
 category_prefix = {

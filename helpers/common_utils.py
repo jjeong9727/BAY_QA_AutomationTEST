@@ -90,7 +90,16 @@ def clean_product_json(file_path="product_name.json"):
 
 def bay_login(page: Page):
     page.goto(URLS["bay_login"])
-    page.wait_for_timeout(5000)
+    
+    # ✅ 로그인 페이지 로딩 확인: 최대 5초 대기
+    try:
+        page.wait_for_selector('[data-testid="input_id"]', timeout=5000)
+    except:
+        print("⚠️ input_id 요소가 5초 안에 로드되지 않아 새로고침 시도")
+        page.reload()
+        page.wait_for_selector('[data-testid="input_id"]', timeout=5000)
+
+    # ✅ 로그인 입력
     page.fill('[data-testid="input_id"]', Account["testid"])
     page.wait_for_timeout(1000)
     page.fill('[data-testid="input_pw"]', Account["testpw"])

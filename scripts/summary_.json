@@ -7,6 +7,13 @@
     "stack_summary": ""
   },
   {
+    "name": "[자동화][기타] 공통 토스트 팝업 및 검색 기능 확인 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "FAIL",
+    "message": "FAILED tests/test_Bay_alert.py::test_check_alert - AssertionError: Locator ex...",
+    "stack_summary": " → ============================= 1 failed in 55.23s =============================="
+  },
+  {
     "name": "[자동화][업체관리] 업체 등록 확인 테스트 실패",
     "file": "tests/test_Bay_supplier.py",
     "status": "PASS",
@@ -16,13 +23,6 @@
   {
     "name": "[자동화][업체관리] 업체 등록 유효성 검사 테스트 실패",
     "file": "tests/test_Bay_supplier_val.py",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "stack_summary": ""
-  },
-  {
-    "name": "[자동화][업체관리] 업체 삭제 확인 테스트 실패",
-    "file": "tests/test_Bay_supplier_delete.py",
     "status": "PASS",
     "message": "테스트 성공",
     "stack_summary": ""
@@ -79,9 +79,9 @@
   {
     "name": "[자동화][제품관리] 제품 삭제 확인 테스트 실패",
     "file": "tests/test_Bay_product_delete.py",
-    "status": "FAIL",
-    "message": "tests\\test_Bay_product_delete.py:165: AssertionError",
-    "stack_summary": " → ======================== 1 failed, 1 passed in 35.00s ========================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][재고관리] 재고 입고 확인 테스트 실패",
@@ -93,6 +93,13 @@
   {
     "name": "[자동화][재고관리] 재고 출고 확인 테스트 실패",
     "file": "tests/test_Bay_stock_out.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][재고관리] 재고 내역 확인 테스트 실패",
+    "file": "tests/test_Bay_stock_history.py",
     "status": "PASS",
     "message": "테스트 성공",
     "stack_summary": ""
@@ -135,9 +142,9 @@
   {
     "name": "[자동화][발주관리] 수령 완료 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_complete.py",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "stack_summary": " → ======================== 1 failed, 1 passed in 18.84s ========================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 발주 실패 상태 확인 테스트 실패",

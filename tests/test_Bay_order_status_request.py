@@ -46,6 +46,7 @@ def test_order_acceptance(page: Page):
 
     for product in selected_products:
         product_name = product['kor']
+        stock = product['stock_qty']
 
         try:
             # 로그인
@@ -65,6 +66,15 @@ def test_order_acceptance(page: Page):
             expected_status_conditions = order_status_map["발주 요청"]
             check_order_status_by_order_id(page, "발주 요청", order_id, expected_status_conditions)
 
+            # 재발송 확인
+            txt_resend = "재발송하시겠습니까?"
+            page.locator("data-testid=btn_resend").click()
+            expect(page.locator("data-testid=txt_resend")).to_have_text(txt_resend, timeout=3000)
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_confirm").click()
+            expect(page.locator("data-testid=toast_resend")).to_be_visible(timeout=3000)
+            page.wait_for_timeout(1000)
+
             # 수락 URL 접속 및 처리
             accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
             page.goto(accept_url)
@@ -74,7 +84,8 @@ def test_order_acceptance(page: Page):
             page.locator("button[data-testid='btn_confirm']").last.click()
             expect(page.locator("button[data-testid='btn_accept']")).to_be_visible(timeout=7000)
             page.click("button[data-testid='btn_accept']")
-            page.wait_for_timeout(5000)
+            expect(page.locator("data-testid=toast_accept")).to_be_visible(timeout=3000)
+            page.wait_for_timeout(1000)
 
             # 발주 상태 재확인
             page.goto(URLS["bay_orderList"])
@@ -103,6 +114,55 @@ def test_order_acceptance(page: Page):
             # JSON 업데이트
             update_product_status_in_json(product_name, 2)
 
+            # 안전 재고 수정 > 발주 불가 확인
+            txt_order = "자동 발주를 진행하시겠습니까?"
+            page.goto(URLS["bay_prdList"])
+            page.wait_for_timeout(2000)
+            page.fill('[data-testid="input_search"]', product_name)
+            page.wait_for_timeout(500)
+            page.click('[data-testid="btn_search"]')
+            page.wait_for_timeout(1000)
+
+            rows = page.locator("table tbody tr")
+            row_count = rows.count()
+
+            for i in range(row_count):
+                edit_button = rows.nth(i).locator("td:nth-child(11) >> text=수정")
+                if edit_button.is_visible():
+                    print(f"✅ {i}번째 행의 수정 버튼 클릭")
+                    edit_button.click()
+                    break
+            
+            page.locator("data-testid=input_stk_safe").fill(str(300))
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=btn_save").click()
+            expect(page.locator("data-testid=txt_order")).to_have_text(txt_order, timeout=3000)
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_confirm").click()
+            page.wait_for_timeout(500)
+            expect(page.locator("data-testid=toast_edit_noorder")).to_be_visible(timeout=3000)
+            page.wait_for_timeout(1000)
+
+            # 발주 진행 제품 삭제 불가 확인
+            if stock ==0:
+                page.fill('[data-testid="input_search"]', product_name)
+                page.wait_for_timeout(500)
+                page.click('[data-testid="btn_search"]')
+                page.wait_for_timeout(1000)
+
+                rows = page.locator("table tbody tr")
+                row_count = rows.count()
+
+                for i in range(row_count):
+                    delete_button = rows.nth(i).locator("td:nth-child(11) >> text=삭제")
+                    if delete_button.is_visible():
+                        print(f"✅ {i}번째 행의 삭제 버튼 클릭")
+                        delete_button.click()
+                        page.wait_for_timeout(1000)
+                        break
+                page.locator("data-testid=btn_del").click()                
+                expect(page.locator("data-testid=toast_order")).to_be_visible(timeout=3000)
+                page.wait_for_timeout(1000)
         except Exception as e:
             print(f"❌ {product_name} 처리 중 오류 발생: {str(e)}")
             raise
@@ -112,8 +172,6 @@ def test_order_acceptance(page: Page):
 def main():
     with sync_playwright() as p:
         page = p.chromium.launch(headless=False)
-
-
         # 배송 진행 상태로 업데이트 작업을 하나의 함수에서 처리
         test_order_acceptance(page)
 

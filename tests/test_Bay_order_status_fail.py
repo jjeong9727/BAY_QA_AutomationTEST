@@ -29,7 +29,16 @@ def test_order_status_fail(page: Page):
          
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(2000)
-        search_order_history(page, product_name, status_name)
+        page.locator("data-testid=drop_status_trigger").click()
+        expect(page.locator("data-testid=drop_status_item")).to_be_visible(timeout=5000)
+        page.locator('[role="option"]').filter(has_text="발주 실패").click()
+        page.wait_for_timeout(1000)
+        # 제품명 입력
+        page.locator("data-testid=input_search").fill(product_name)
+        page.wait_for_timeout(500)
+        # 검색 버튼 클릭
+        page.locator("[data-testid=btn_search]").click()
+        page.wait_for_timeout(2000)
 
         # order_id 가져오기
         order_id = get_order_id_from_order_list(page, product_name)

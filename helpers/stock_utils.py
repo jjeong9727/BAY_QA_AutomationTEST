@@ -14,10 +14,12 @@ class StockManager:
         try:
             with open(self.product_file_path, "r", encoding="utf-8") as f:
                 self.products = json.load(f)  # JSON 파일에서 제품 정보 로드
+            return self.products
         except FileNotFoundError:
             print(f"❌ 파일을 찾을 수 없습니다: {self.product_file_path}")
         except Exception as e:
             print(f"❌ 파일을 로드하는 중 오류 발생: {str(e)}")
+            return []
 
     def get_all_product_names(self):
         if not hasattr(self,  "products"):
@@ -55,6 +57,7 @@ class StockManager:
             
             # 제품명에서 줄바꿈 기준으로 첫 번째 값(한글)을 추출하여 비교
             korean_product_name = columns[3].split('\n')[0].strip()  # 줄바꿈 기준으로 첫 번째 값 추출
+            print(f"현 재고: {self.product_name}, 노출 값: {korean_product_name}")
             if korean_product_name == self.product_name.strip():
                 stock_value = columns[6].strip()  # 재고량 확인 (7열)
                 return int(stock_value) if stock_value.isdigit() else 0
@@ -64,25 +67,24 @@ class StockManager:
 
     def perform_inflow(self, quantity: int):
         self.page.goto(URLS["bay_stock"])
+        self.page.wait_for_timeout(2000)
         self.page.click("data-testid=btn_stockadd")
+        self.page.wait_for_timeout(2000)
         self.page.wait_for_url(URLS["bay_stockadd"])
-
+        
         # 상태 드롭다운 옵션 클릭
         self.page.locator("data-testid=drop_status_trigger").click()
+        self.page.wait_for_timeout(1000)
         self.page.get_by_role("option", name="입고", exact=True).click()
 
-        # 제품명 드롭다운 옵션이 보일 때까지 기다리기
+        # 제품명선택 
         self.page.locator("data-testid=drop_prdname_trigger").click()
-        self.page.locator("data-testid=drop_prdname_item").wait_for(state="visible")
-
-        # 제품명 옵션 확인
-        options = self.page.locator("data-testid=drop_prdname_item").all_inner_texts()
-
-        # 제품명이 정확히 일치하는 옵션 클릭
-        self.page.get_by_role("option", name=self.product_name, exact=True).wait_for(state="attached")
-        self.page.get_by_role("option", name=self.product_name, exact=True).click()
-        self.page.wait_for_timeout(500)
-
+        self.page.wait_for_timeout(1000)
+        self.page.locator("data-testid=drop_prdname_search").fill(self.product_name)
+        self.page.wait_for_timeout(1000)
+        self.page.locator("data-testid=drop_prdname_item", has_text=self.product_name).click()
+        self.page.wait_for_timeout(1000)
+        
         self.page.fill("data-testid=input_qty", str(quantity))
         self.page.wait_for_timeout(1000)
         self.page.fill("data-testid=input_memo", "30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
@@ -94,18 +96,22 @@ class StockManager:
 
     def perform_outflow(self, quantity: int):
         self.page.goto(URLS["bay_stock"])
+        self.page.wait_for_timeout(2000)
         self.page.click("data-testid=btn_stockadd")
+        self.page.wait_for_timeout(2000)
         self.page.wait_for_url(URLS["bay_stockadd"])
 
         self.page.locator("data-testid=drop_status_trigger").click()
         self.page.wait_for_timeout(500)
         self.page.get_by_role("option", name="출고", exact=True).click()
         self.page.wait_for_timeout(500)
+        # 제품명선택 
         self.page.locator("data-testid=drop_prdname_trigger").click()
-        self.page.wait_for_timeout(500)
-        self.page.get_by_role("option", name=self.product_name, exact=True).wait_for(state="attached")
-        self.page.get_by_role("option", name=self.product_name, exact=True).click()
-        self.page.wait_for_timeout(500)
+        self.page.wait_for_timeout(1000)
+        self.page.locator("data-testid=drop_prdname_search").fill(self.product_name)
+        self.page.wait_for_timeout(1000)
+        self.page.locator("data-testid=drop_prdname_item", has_text=self.product_name).click()
+        self.page.wait_for_timeout(1000)
         self.page.fill("data-testid=input_qty", str(quantity))
         self.page.wait_for_timeout(500)
         memo_input = self.page.get_by_placeholder("최대 30자 입력")

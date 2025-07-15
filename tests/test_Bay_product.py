@@ -66,6 +66,7 @@ def test_register_multiple_products(page: Page):
             auto_input.scroll_into_view_if_needed()
             auto_input.fill(str(auto_order))
 
+            txt_manager = "권정의 010-6275-4153"
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             page.wait_for_timeout(500)
             supplier_trigger = page.locator("data-testid=drop_supplier_trigger").last
@@ -75,6 +76,7 @@ def test_register_multiple_products(page: Page):
             supplier_items = page.locator("data-testid=drop_supplier_item")
             automation_supplier = supplier_items.locator("text=자동화업체")
             automation_supplier.click()
+            expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager)
             page.wait_for_timeout(1000)
 
             prd_data.append({
@@ -104,8 +106,8 @@ def test_register_multiple_products(page: Page):
         for product in prd_data:
             append_product_name(**product)
 
-        verify_products_in_list(page, prdnames, URLS["bay_prdList"], "제품명 검색", 4)
-        verify_products_in_list(page, prdnames, URLS["bay_stock"], "제품명 검색", 4)
+        verify_products_in_list(page, prdnames, URLS["bay_prdList"], 4)
+        verify_products_in_list(page, prdnames, URLS["bay_stock"], 4)
 
     except Exception as e:
         print(f"[FAIL] 여러 개 제품 등록 실패: {str(e)}")

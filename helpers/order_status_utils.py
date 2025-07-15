@@ -154,24 +154,24 @@ def search_by_today_date(page: Page):
 def search_order_history(page:Page, product_name: str, status:str):
     today_btn_id = datetime.now().strftime("btn_day_%m%d")  # 예: btn_day_0710
     # 시작일 선택
-    page.click("[data-testid=select_startday]")
+    page.locator("[data-testid=select_startday]").click()
     page.wait_for_timeout(1000)
-    page.click(f"[data-testid={today_btn_id}]")
+    page.locator(f"[data-testid={today_btn_id}]").click()
     page.wait_for_timeout(500)
     # 종료일 선택
-    page.click("[data-testid=select_endday]")
+    page.locator("[data-testid=select_endday]").click()
     page.wait_for_timeout(1000)
-    page.click(f"[data-testid={today_btn_id}]")
+    page.locator(f"[data-testid={today_btn_id}]").click()
     page.wait_for_timeout(500)
     # 상태 선택
     expect(page.locator("data-testid=drop_status_trigger")).to_be_visible(timeout=8000)
-    page.click("data-testid=drop_status_trigger")
+    page.locator("data-testid=drop_status_trigger").click()
     expect(page.locator("data-testid=drop_status_item")).to_be_visible(timeout=5000)
-    page.locator("data-testid=drop_status_item", has_text=status).click()
+    page.locator('[role="option"]').filter(has_text=status).click()
     page.wait_for_timeout(1000)
     # 제품명 입력
-    page.fill("data-testid=input_search", product_name)
+    page.locator("data-testid=input_search").fill(product_name)
     page.wait_for_timeout(500)
     # 검색 버튼 클릭
-    page.click("[data-testid=btn_search]")
+    page.locator("[data-testid=btn_search]").click()
     page.wait_for_timeout(2000)

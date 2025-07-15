@@ -102,15 +102,15 @@ def remove_products_from_json(deleted_names: list):
 
 
 # 제품 등록 이후 해당 제품명 리스트 찾기
-def verify_products_in_list(page, product_names: list[str], url: str, search_placeholder: str, table_column_index: int):
+def verify_products_in_list(page, product_names: list[str], url: str,  table_column_index: int):
     page.goto(url)
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(3000)
 
     for name in product_names:
         page.fill("data-testid=input_search", name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(2000)
 
         rows = page.locator("table tbody tr")
         found = False
@@ -119,6 +119,7 @@ def verify_products_in_list(page, product_names: list[str], url: str, search_pla
             cell_text = row.locator(f"td:nth-child({table_column_index})").inner_text().strip()
             if name in cell_text:
                 print(f"[PASS] {name} → '{url}'에서 확인됨")
+                page.wait_for_timeout(1000)
                 found = True
                 break
 
@@ -134,10 +135,8 @@ def is_product_exist(page, product_names) -> bool:
         product_names = [product_names]
 
     all_exist = True
-
     for name in product_names:
         try:
-            page.goto(URLS["bay_prdList"])
             page.fill("data-testid=input_search", name)
             page.wait_for_timeout(500)
             page.locator("data-testid=btn_search").click()
@@ -153,6 +152,8 @@ def is_product_exist(page, product_names) -> bool:
                 if name in row_name:
                     print(f"[PASS] '{name}' found in 제품 리스트")
                     found = True
+                    page.locator("data-testid=btn_reset").click()
+                    page.wait_for_timeout(1000)
                     break
 
             if not found:
@@ -174,6 +175,8 @@ def is_product_exist(page, product_names) -> bool:
 def sync_product_names_with_server(page):
     product_list = get_all_product_names()
     valid_list = []
+    
+    page.goto(URLS["bay_prdList"])
 
     for item in product_list:
         if is_product_exist(page, item["kor"]):
@@ -217,11 +220,14 @@ def update_product_flag(name_kor: str, **flags):
         products = json.load(f)
 
     for product in products:
-        if product.get("kor") == name_kor:
-            # 전달된 인자들만 업데이트
+        json_name = product.get("kor", "").replace("\n", "").strip()
+        target_name = name_kor.replace("\n", "").strip()
+
+        if json_name == target_name:
             for key, value in flags.items():
                 if value is not None:
-                    product[key] = value  # 해당 플래그 또는 값을 업데이트
+                    product[key] = value
+            updated = True
             break
 
     with open(path, "w", encoding="utf-8") as f:
@@ -238,44 +244,45 @@ def load_saved_product_names():
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 # 수정 후 수정 값 확인 (검색 포함)
-def verify_product_update(page, product_names):
-    for name in product_names:
-        page.goto(URLS["bay_prdList"])
-        page.fill("data-testid=input_search", name)
-        page.wait_for_timeout(500)
-        page.click("data-testid=btn_search")
-        page.wait_for_timeout(1000)
+def verify_product_update(page, product_name):
+    name = product_name
+    page.goto(URLS["bay_prdList"])
+    page.wait_for_timeout(2000)
+    page.fill("data-testid=input_search", name)
+    page.wait_for_timeout(500)
+    page.click("data-testid=btn_search")
+    page.wait_for_timeout(1000)
 
-        # 4열에 해당 제품명이 있는지 확인
-        rows = page.locator("table tbody tr")
-        found = False
+    # 4열에 해당 제품명이 있는지 확인
+    rows = page.locator("table tbody tr")
+    found = False
 
-        # Locator를 사용하여 각 행에 접근
-        row_count = rows.count()
-        for i in range(row_count):
-            row = rows.nth(i)  # 각 행을 하나씩 가져오기
-            product_name = row.locator("td:nth-child(4)").inner_text().strip().split("\n")[0]
-            
-            # 말줄임 처리된 텍스트를 처리하기 위해 title 속성 값 사용
-            if not product_name:  # 만약 텍스트가 없다면
-                product_name = row.locator("td:nth-child(4)").get_attribute("title").strip()
+    # Locator를 사용하여 각 행에 접근
+    row_count = rows.count()
+    for i in range(row_count):
+        row = rows.nth(i)  # 각 행을 하나씩 가져오기
+        product_name = row.locator("td:nth-child(4)").inner_text().strip().split("\n")[0]
+        
+        # 말줄임 처리된 텍스트를 처리하기 위해 title 속성 값 사용
+        if not product_name:  # 만약 텍스트가 없다면
+            product_name = row.locator("td:nth-child(4)").get_attribute("title").strip()
 
-            # 공백을 제거하고 비교
-            product_name = product_name.replace(" ", "").strip()
-            name = name.replace(" ", "").strip()
+        # 공백을 제거하고 비교
+        product_name = product_name.replace(" ", "").strip()
+        name = name.replace(" ", "").strip()
 
-            print(f"UI에서 노출되는 제품명: '{product_name}'")
-            print(f"비교하는 제품명: '{name}'")
-            
-            if product_name == name:
-                found = True
-                print(f"수정한 제품명: {name}")
-                break
+        print(f"UI에서 노출되는 제품명: '{product_name}'")
+        print(f"비교하는 제품명: '{name}'")
+        
+        if product_name == name:
+            found = True
+            print(f"수정한 제품명: {name}")
+            break
 
-        # 제품명이 없으면 실패 처리
-        if not found:
-            print(f"❌ 제품 관리 페이지에서 수정 확인 실패: {name}")
-            return False  # 수정된 제품명이 UI에 반영되지 않으면 False 반환
+    # 제품명이 없으면 실패 처리
+    if not found:
+        print(f"❌ 제품 관리 페이지에서 수정 확인 실패: {name}")
+        return False  # 수정된 제품명이 UI에 반영되지 않으면 False 반환
     return True  # 모든 제품명이 일치하면 True 반환
 
 
@@ -288,7 +295,7 @@ def verify_product_update(page, product_names):
 def get_product_stock(page, product_name):
     from config import URLS
     page.goto(URLS["bay_stock"])
-    page.wait_for_url(URLS["bay_stock"], timeout=10000)
+    page.wait_for_timeout(2000)
     page.fill("input[placeholder='제품명 검색']", product_name)
     page.wait_for_timeout(500)
     page.click("data-testid=btn_search")

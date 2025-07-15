@@ -66,7 +66,13 @@ def test_order_receive_from_progress(page: Page):
         page.wait_for_timeout(500)
 
         # 수령 상태 확인
-        page.wait_for_timeout(5000) #상태 변경 반영 시간 확보 
+        page.locator("data-testid=btn_reset").click()
+        page.wait_for_timeout(1000) 
+        page.locator("data-testid=input_search").fill(product_name)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(1000) 
+        
         rows = page.locator("table tbody tr")
         found = False
         for i in range(rows.count()):

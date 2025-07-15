@@ -43,7 +43,7 @@ def test_order_cancel(page: Page):
         # delivery_status가 1인 제품 중 랜덤으로 하나 선택
         target_product = random.choice(eligible_products)
         product_name = target_product['kor']
-        status_name = "발주 취소"
+        status_name = "발주 요청"
 
         # 발주 내역 화면으로 이동하여 제품명 검색 후 order_id 가져오기
         bay_login(page)
@@ -59,15 +59,21 @@ def test_order_cancel(page: Page):
             raise ValueError(f"Order ID for product {product_name} not found")
 
         # 취소 버튼
-        page.click("button[data-testid='btn_cancel']")  # 취소 버튼 클릭
-        btn = page.locator("button[data-testid='btn_confirm']")
-        expect(btn).to_be_visible(timeout=3000)
-        btn.scroll_into_view_if_needed()
-        btn.click()
-
-        page.wait_for_timeout(5000)
+        txt_cancel = "발주를 취소하시겠습니까?"
+        page.locator("data-testid=btn_cancel").click()  # 취소 버튼 클릭
+        expect(page.locator("data-testid=txt_cancel")).to_have_text(txt_cancel, timeout=3000)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_confirm").click()  
+        expect(page.locator("data-testid=toast_cancel")).to_be_visible(timeout=3000)
+        page.wait_for_timeout(1000)
 
         # 발주 내역에서 해당 제품을 "발주 취소" 상태인지 확인
+        page.locator("data-testid=btn_reset").click()
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=input_search").fill(product_name)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(1000)
         rows = page.locator("table tbody tr")
         found = False
         for i in range(rows.count()):
@@ -83,7 +89,7 @@ def test_order_cancel(page: Page):
             raise AssertionError(f"[FAIL] 발주 내역에서 제품 '{product_name}'을 찾을 수 없습니다.")
 
         # 발주 진행 상태 확인 후 delivery_status 값을 5로 업데이트 (발주 취소 상태)
-        update_product_status_in_json(product_name, delivery_status=5, order_flag=0)  # delivery_status를 5로 업데이트 (발주 취소), order_flag=0
+        update_product_status_in_json(product_name=product_name, delivery_status=5, order_flag=0)  # delivery_status를 5로 업데이트 (발주 취소), order_flag=0
 
         # 확인할 상태에 대한 기대값을 설정
         expected_status_conditions = order_status_map["발주 취소"]  # 발주 취소 상태 조건을 설정

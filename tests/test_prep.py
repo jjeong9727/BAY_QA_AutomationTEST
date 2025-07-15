@@ -164,3 +164,26 @@ def test_prep_bay (page:Page):
 
     page.locator("data-testid=btn_save").click()
     page.wait_for_timeout(1000)
+
+    # 중복테스트 재고 등록(삭제 불가 확인용)
+    page.goto(URLS["bay_stockadd"])
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=drop_status_trigger").click()
+    page.wait_for_timeout(1000)
+    page.get_by_role("option", name="입고", exact=True).click()
+
+    page.locator("data-testid=drop_prdname_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_prdname_search").fill("중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_prdname_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+    
+    page.fill("data-testid=input_qty", str(3))
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=input_memo", "테스트 메모")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_save").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
+    page.wait_for_timeout(3000)

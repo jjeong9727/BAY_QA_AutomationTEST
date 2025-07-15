@@ -13,11 +13,11 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
             page.wait_for_timeout(3000)    
 
         page.click("data-testid=btn_add")
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(2000)
         page.locator("data-testid=input_kor").last.fill(name_kr)
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=input_eng").last.fill(name_en)
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(1000)
         page.click("data-testid=btn_save")
         page.wait_for_timeout(500)
         page.locator("data-testid=alert_duplicate").wait_for(timeout=5000)
@@ -26,7 +26,7 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         print(f"[PASS] 중복 등록 토스트 확인")
 
         # 사용중인 카테고리 삭제 시도
-        name_kr_locator = page.locator(f"input[data-testid='input_kor']")
+        name_kr_locator = page.locator(f"input[data-testid='input_kor']").first
         item_to_delete = None
         item_value_to_delete = None
         row_index = -1
@@ -42,12 +42,11 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         if item_to_delete:
             delete_buttons = page.locator("button[data-testid='btn_delete']")
             target_button = delete_buttons.nth(row_index)
-            target_button.wait_for(state="visible")
             target_button.click()
             # expect(page.locator("txt_delete")).to_be_visible(timeout=3000)
             # page.wait_for_timeout(500)
             # page.locator("data-testid=btn_comfirm").click()
-            expect(page.locator("txt_alert_using")).to_be_visible(timeout=3000)
+            expect(page.locator("alert_using")).to_be_visible(timeout=3000)
             page.wait_for_timeout(1000)
 
     except Exception as e:
