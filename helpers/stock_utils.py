@@ -1,7 +1,62 @@
 import json
 from pathlib import Path
 from config import URLS
+from datetime import datetime
+from playwright.sync_api import Page, expect
+from helpers.product_utils import update_product_flag
+def register_stock_for_date(
+    page: Page,
+    date: datetime,
+    product_name: str,
+    current_stock: int,
+    past_memo: str
+):
+    page.click("data-testid=btn_stockadd")
+    page.wait_for_timeout(2000)
+    # 날짜 포맷
+    mmd = date.strftime("%m%d")  # MMDD → 버튼 testid용
+    ymd = date.strftime("%Y. %m. %d")  # 텍스트 비교용
+    txt_register = f"해당 날짜로 재고 등록하시겠습니까?"
 
+    # 날짜 선택
+    page.locator("[data-testid=select_date]").click()
+    page.wait_for_timeout(1000)
+    page.locator(f"[data-testid=btn_day_{mmd}]").click()
+    page.wait_for_timeout(1000)
+
+    # 입고 상태 선택
+    page.locator("data-testid=drop_status_trigger").click()
+    page.wait_for_timeout(1000)
+    page.get_by_role("option", name="입고", exact=True).click()
+    page.wait_for_timeout(1000)
+
+    # 제품명 선택
+    page.locator("data-testid=drop_prdname_trigger").click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_prdname_search", product_name)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_prdname_item", has_text=product_name).click()
+
+    # 현재 재고 확인
+    expect(page.locator("data-testid=txt_current_stock")).to_have_text(str(current_stock), timeout=3000)
+
+    # 입고 수량 입력 및 저장
+    instock = 100
+    page.fill("data-testid=input_qty", str(instock))
+    page.wait_for_timeout(500)
+
+    expected = int(current_stock) + instock
+    page.fill("data-testid=input_memo", past_memo)
+    page.wait_for_timeout(500)
+
+    page.locator("data-testid=btn_save").click()
+    expect(page.locator("data-testid=txt_register")).to_have_text(txt_register, timeout=3000)
+    page.locator("data-testid=btn_confirm").click()
+    expect(page.locator("data-testid=toast_stock")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+
+    # JSON 파일 갱신
+    update_product_flag(product_name, stock_qty=expected)
 
 class StockManager:
     def __init__(self, page):
@@ -63,6 +118,9 @@ class StockManager:
                 return int(stock_value) if stock_value.isdigit() else 0
         
         raise Exception(f"재고 확인 실패: {self.product_name}")
+    
+
+    
 
 
     def perform_inflow(self, quantity: int):
