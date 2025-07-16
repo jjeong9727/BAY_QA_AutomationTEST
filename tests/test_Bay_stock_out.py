@@ -116,6 +116,7 @@ def test_edit_stockList_and_auto_order(page):
     current_stock = product["stock_qty"]
     outflow = current_stock
     expected = current_stock - outflow
+    txt_edit = "재고 수정이 완료되었습니다."
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
 
@@ -132,7 +133,7 @@ def test_edit_stockList_and_auto_order(page):
     input_field.fill(str(outflow))
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_edit").first.click()
-    expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=toast_edit")).to_have_text(txt_edit, timeout=3000)
     page.wait_for_timeout(1000)
 
     today = datetime.now().strftime("%Y. %m. %d")

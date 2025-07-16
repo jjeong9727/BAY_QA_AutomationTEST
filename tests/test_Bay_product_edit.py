@@ -35,7 +35,7 @@ def test_edit_products(page):
         page.fill('[data-testid="input_search"]', product_name)
         page.wait_for_timeout(500)
         page.click('[data-testid="btn_search"]')
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(2000)
 
         # 3. 검색 결과에서 해당 행의 수정 버튼 클릭
         rows = page.locator("table tbody tr")
@@ -63,6 +63,7 @@ def test_edit_products(page):
         page.fill('[data-testid="drop_maker_search"]', new_maker)
         page.wait_for_timeout(1000)
         page.locator('[data-testid="drop_maker_item"]', has_text=new_maker).click()
+        page.wait_for_timeout(1000)
         print(f"🏷️ 제조사 수정 → {new_maker}")
                 
         # 저장

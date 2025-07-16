@@ -54,6 +54,7 @@ def test_order_acceptance(page: Page):
 
             # 발주 내역 검색
             page.goto(URLS["bay_orderList"])
+            page.wait_for_timeout(2000)
 
             search_order_history(page, product_name, status_name)
 
@@ -80,9 +81,12 @@ def test_order_acceptance(page: Page):
             page.goto(accept_url)
             expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
             page.fill("input[data-testid='input_name']", "권정의")
+            page.wait_for_timeout(1000)
             page.fill("input[data-testid='input_contact']", "01062754153")
+            page.wait_for_timeout(1000)
             page.locator("button[data-testid='btn_confirm']").last.click()
             expect(page.locator("button[data-testid='btn_accept']")).to_be_visible(timeout=7000)
+            page.wait_for_timeout(1000)
             page.click("button[data-testid='btn_accept']")
             expect(page.locator("data-testid=toast_accept")).to_be_visible(timeout=3000)
             page.wait_for_timeout(1000)
@@ -90,6 +94,7 @@ def test_order_acceptance(page: Page):
             # 발주 상태 재확인
             page.goto(URLS["bay_orderList"])
             expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
+            page.wait_for_timeout(1000)
             page.fill("data-testid=input_search", product_name)
             page.wait_for_timeout(500)
             page.click("data-testid=btn_search")
@@ -137,16 +142,17 @@ def test_order_acceptance(page: Page):
             page.wait_for_timeout(1000)
             page.locator("data-testid=btn_save").click()
             expect(page.locator("data-testid=txt_order")).to_have_text(txt_order, timeout=3000)
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
+
             page.locator("data-testid=btn_confirm").click()
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
             expect(page.locator("data-testid=toast_edit_noorder")).to_be_visible(timeout=3000)
             page.wait_for_timeout(1000)
 
             # 발주 진행 제품 삭제 불가 확인
             if stock ==0:
                 page.fill('[data-testid="input_search"]', product_name)
-                page.wait_for_timeout(500)
+                page.wait_for_timeout(1000)
                 page.click('[data-testid="btn_search"]')
                 page.wait_for_timeout(1000)
 

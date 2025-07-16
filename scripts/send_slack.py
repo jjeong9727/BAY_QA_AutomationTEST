@@ -15,6 +15,18 @@ KST = timezone(timedelta(hours=9))
 now = datetime.now(KST)
 seoul_time = now.strftime("%Y-%m-%d %H:%M:%S")
 
+# 버전 정보 불러오기
+def load_version():
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    version_path = os.path.join(base_path, "..", "tests", "version_info.json")
+
+    try:
+        with open(version_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data.get("version", "버전 정보 없음")
+    except FileNotFoundError:
+        return "버전 정보 없음"
+
 # 테스트 파일명 → 한글 매핑
 test_file_to_korean = {
     "test_Bay_login": "로그인 확인",
@@ -60,6 +72,7 @@ def get_total_duration_from_results(results):
     return format_duration(total)
 
 def build_slack_message(test_results):
+    version = load_version()
     success_count = 0
     fail_count = 0
     skip_count = 0
@@ -85,6 +98,7 @@ def build_slack_message(test_results):
     total_time = get_total_duration_from_results(test_results)
 
     slack_message = f":mega: *[CenturionBay] 자동화 테스트 결과* ({seoul_time})\n"
+    slack_message += f"버전: `{version}`\n"
     slack_message += f"Total: {len(test_results)} | ✅PASS: {success_count} | FAIL: ❌{fail_count} \n"
     slack_message += f":stopwatch: 전체 수행 시간: {total_time}\n\n"
     slack_message += "\n".join(detail_lines)

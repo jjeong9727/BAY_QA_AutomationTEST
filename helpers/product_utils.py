@@ -251,7 +251,7 @@ def verify_product_update(page, product_name):
     page.fill("data-testid=input_search", name)
     page.wait_for_timeout(500)
     page.click("data-testid=btn_search")
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(3000)
 
     # 4열에 해당 제품명이 있는지 확인
     rows = page.locator("table tbody tr")

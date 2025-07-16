@@ -38,14 +38,15 @@ def register_stock_for_date(
     page.locator("data-testid=drop_prdname_item", has_text=product_name).click()
 
     # 현재 재고 확인
-    expect(page.locator("data-testid=txt_current_stock")).to_have_text(str(current_stock), timeout=3000)
+    stock=current_stock
+    expect(page.locator("data-testid=txt_current_stock")).to_have_text(str(stock), timeout=3000)
 
     # 입고 수량 입력 및 저장
     instock = 100
     page.fill("data-testid=input_qty", str(instock))
     page.wait_for_timeout(500)
 
-    expected = int(current_stock) + instock
+    expected = int(stock) + instock
     page.fill("data-testid=input_memo", past_memo)
     page.wait_for_timeout(500)
 
@@ -129,6 +130,7 @@ class StockManager:
         self.page.click("data-testid=btn_stockadd")
         self.page.wait_for_timeout(2000)
         self.page.wait_for_url(URLS["bay_stockadd"])
+        self.page.wait_for_timeout(1000)
         
         # 상태 드롭다운 옵션 클릭
         self.page.locator("data-testid=drop_status_trigger").click()
@@ -158,6 +160,7 @@ class StockManager:
         self.page.click("data-testid=btn_stockadd")
         self.page.wait_for_timeout(2000)
         self.page.wait_for_url(URLS["bay_stockadd"])
+        self.page.wait_for_timeout(1000)
 
         self.page.locator("data-testid=drop_status_trigger").click()
         self.page.wait_for_timeout(500)

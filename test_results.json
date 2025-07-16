@@ -3,198 +3,189 @@
     "test_name": "test_Bay_login",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 15:54:25",
+    "timestamp": "2025-07-16 17:21:10",
     "file": "tests/test_Bay_login.py",
     "stack": "",
-    "duration": "11.13초"
+    "duration": "14.07초"
   },
   {
     "test_name": "test_Bay_alert",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_alert.py::test_check_alert - AssertionError: Locator ex...",
-    "timestamp": "2025-07-15 15:55:22",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-16 17:22:19",
     "file": "tests/test_Bay_alert.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_alert.py F                                                [100%]\n\n================================== FAILURES ===================================\n______________________________ test_check_alert _______________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/stocks?start_date=2025-07-15&end_date=2025-07-15'>\n\n    def test_check_alert(page:Page):\n        bay_login(page)\n        # [카테고리 관리] 이탈 팝업 확인\n        page.goto(URLS[\"bay_category\"])\n        page.wait_for_timeout(2000)\n        # 구분 탭\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_category\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_confirm\").click()\n        page.wait_for_timeout(1000)\n        # 종류 탭\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_maker\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_confirm\").click()\n        page.wait_for_timeout(1000)\n        # 제조사 탭\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_type\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_confirm\").click()\n        page.wait_for_timeout(1000)\n        # 구분 탭에서 이탈 취소 확인\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_category\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_cancel\").click()\n        expect(page.locator(\"data-testid=input_kor\").first).to_have_value(edit_name, timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # [제품 관리] 엑셀 다운로드 확인\n        # 오늘 날짜 포맷 (예: 2025_07_15)\n        page.goto(URLS[\"bay_prdList\"])\n        today = datetime.now().strftime(\"%Y_%m_%d\")\n        with page.expect_download() as download_info:\n            page.click('[data-testid=\"btn_download\"]')\n            page.wait_for_timeout(1000)\n        download = download_info.value\n    \n        filename = download.suggested_filename\n        print(f\"\\U0001f4c1 \\ub2e4\\uc6b4\\ub85c\\ub4dc\\ub41c \\ud30c\\uc77c\\uba85: {filename}\")\n        assert filename.startswith(today), f\"\\u274c \\ud30c\\uc77c\\uba85\\uc774 \\uc624\\ub298 \\ub0a0\\uc9dc({today})\\ub85c \\uc2dc\\uc791\\ud558\\uc9c0 \\uc54a\\uc2b5\\ub2c8\\ub2e4.\"\n    \n        # 제품 미선택 > 일괄 삭제 시도\n        page.locator(\"data-testid=btn_del_bulk\").click()\n        expect(page.locator(\"data-testid=toast_nodelete\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(500)\n    \n        # 재고 있는 제품 삭제 불가 확인\n        page.locator(\"data-testid=input_search\").fill(\"중복테스트\")\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(1000)\n        rows = page.locator(\"table tbody tr\")\n        row_count = rows.count()\n    \n        for i in range(row_count):\n            edit_button = rows.nth(i).locator(\"td:nth-child(11) >> text=삭제\")\n            if edit_button.is_visible():\n                print(f\"\\u2705 {i}\\ubc88\\uc9f8 \\ud589\\uc758 \\uc0ad\\uc81c \\ubc84\\ud2bc \\ud074\\ub9ad\")\n                edit_button.click()\n                break\n    \n        expect(page.locator(\"data-testid=toast_stock\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # [제품 관리] 이탈 팝업 확인\n        # 등록화면\n        page.goto(URLS[\"bay_prdList\"])\n        page.wait_for_timeout(2000)\n        page.locator(\"data-testid=btn_addprd\").click()\n        page.wait_for_timeout(2000)\n        page.locator(\"data-testid=input_prdname_kor\").fill(edit_name)\n        page.locator(\"body\").click(position={\"x\": 10, \"y\": 10})\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_no\").click()\n        expect(page.locator(\"data-testid=input_prdname_kor\").first).to_have_value(edit_name, timeout=3000)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_yes\").click()\n        expect(page.locator(\"data-testid=btn_addprd\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n        # 수정화면\n        rows = page.locator(\"table tbody tr\")\n        row_count = rows.count()\n    \n        for i in range(row_count):\n            edit_button = rows.nth(i).locator(\"td:nth-child(11) >> text=수정\")\n            if edit_button.is_visible():\n                print(f\"\\u2705 {i}\\ubc88\\uc9f8 \\ud589\\uc758 \\uc218\\uc815 \\ubc84\\ud2bc \\ud074\\ub9ad\")\n                edit_button.click()\n                break\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_maker_trigger\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_maker_search\").fill(\"중복테스트\")\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_maker_item\", has_text=\"중복테스트\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_no\").click()\n        expect(page.locator(\"data-testid=drop_maker_trigger\")).to_have_text(\"중복테스트\", timeout=3000)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_yes\").click()\n        expect(page.locator(\"data-testid=btn_addprd\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # [재고관리] 이탈 팝업 확인\n        # # 재고 등록화면\n        txt_register = \"해당 날짜로 재고 등록하시겠습니까?\"\n        page.goto(URLS[\"bay_stock\"])\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_stockadd\").click()\n        page.wait_for_timeout(1000)\n        # 재고량 초과 알럿 확인\n        page.locator(\"data-testid=drop_status_trigger\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_status_item\",has_text=\"입고\").click()\n    \n        page.locator(\"data-testid=drop_prdname_trigger\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_prdname_search\").fill(\"중복테스트\")\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_prdname_item\",has_text=\"중복테스트\").click()\n        page.wait_for_timeout(1000)\n        stock_text = page.locator('[data-testid=\"txt_current_stock\"]').inner_text().strip()\n        try:\n            current_stock = int(stock_text.replace(\",\", \"\"))\n        except ValueError:\n            raise ValueError(f\"\\u274c \\ud604\\uc7ac \\uc7ac\\uace0 \\ud14d\\uc2a4\\ud2b8\\uac00 \\uc815\\uc218\\ub85c \\ubcc0\\ud658 \\ubd88\\uac00: '{stock_text}'\")\n            # 재고보다 큰 수 계산 (예: +10)\n        larger_qty = current_stock + 10\n            # input_qty에 입력\n        page.locator('[data-testid=\"input_qty\"]').fill(str(larger_qty))\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=input_memo\").fill(\"테스트 메모\")\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_save\").click()\n        expect(page.locator('[data-testid=\"txt_register\"]')).to_have_text(txt_register,timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_confirm\").click()\n        expect(page.locator('[data-testid=\"toast_over_stock\"]')).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # 삭제 불가 Alert 확인\n        page.locator(\"data-testid=btn_addrow\").click()\n        page.wait_for_timeout(1000)\n        close_btn = page.locator(\"button:has(svg path[id='Path 4'])\").last\n        expect(close_btn).to_be_visible()\n        close_btn.click()\n        page.wait_for_timeout(1000)\n        close_btn.click()\n        expect(page.locator(\"data-testid=toast_nostock\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # 이탈 팝업 확인\n        page.locator(\"data-testid=btn_back\").click()\n>       expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\nE       AssertionError: Locator expected to have text '변경 사항을 저장하지 않으시겠습니까?'\nE       Actual value: <element(s) not found> \nE       Call log:\nE         - LocatorAssertions.to_have_text with timeout 3000ms\nE         -   - waiting for locator(\"data-testid=title\")\n\ntests\\test_Bay_alert.py:191: AssertionError\n---------------------------- Captured stdout call -----------------------------\n\\U0001f4c1 \\ub2e4\\uc6b4\\ub85c\\ub4dc\\ub41c \\ud30c\\uc77c\\uba85: 2025_07_15_\\uc81c\\ud488\\ubaa9\\ub85d.xlsx\\n\\u2705 0\\ubc88\\uc9f8 \\ud589\\uc758 \\uc0ad\\uc81c \\ubc84\\ud2bc \\ud074\\ub9ad\\n\\u2705 0\\ubc88\\uc9f8 \\ud589\\uc758 \\uc218\\uc815 \\ubc84\\ud2bc \\ud074\\ub9ad\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_alert.py::test_check_alert - AssertionError: Locator ex...\n============================= 1 failed in 55.23s ==============================\n",
-    "duration": "56.61초"
+    "stack": "",
+    "duration": "68.50초"
   },
   {
     "test_name": "test_Bay_supplier",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 15:56:03",
+    "timestamp": "2025-07-16 17:23:03",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "41.63초"
+    "duration": "44.12초"
   },
   {
     "test_name": "test_Bay_supplier_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 15:56:19",
+    "timestamp": "2025-07-16 17:23:18",
     "file": "tests/test_Bay_supplier_val.py",
     "stack": "",
-    "duration": "15.63초"
+    "duration": "15.36초"
   },
   {
     "test_name": "test_Bay_prdctg",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 15:57:13",
+    "timestamp": "2025-07-16 17:24:15",
     "file": "tests/test_Bay_prdctg.py",
     "stack": "",
-    "duration": "54.20초"
+    "duration": "56.78초"
   },
   {
     "test_name": "test_Bay_prdctg_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 15:57:49",
+    "timestamp": "2025-07-16 17:24:51",
     "file": "tests/test_Bay_prdctg_val.py",
     "stack": "",
-    "duration": "36.00초"
+    "duration": "36.51초"
   },
   {
     "test_name": "test_Bay_prdctg_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 15:58:33",
+    "timestamp": "2025-07-16 17:25:37",
     "file": "tests/test_Bay_prdctg_edit.py",
     "stack": "",
-    "duration": "43.97초"
+    "duration": "45.85초"
   },
   {
     "test_name": "test_Bay_prdctg_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 15:59:11",
+    "timestamp": "2025-07-16 17:26:15",
     "file": "tests/test_Bay_prdctg_delete.py",
     "stack": "",
-    "duration": "37.79초"
+    "duration": "37.91초"
   },
   {
     "test_name": "test_Bay_product",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:00:50",
+    "timestamp": "2025-07-16 17:28:28",
     "file": "tests/test_Bay_product.py",
     "stack": "",
-    "duration": "99.23초"
+    "duration": "132.36초"
   },
   {
     "test_name": "test_Bay_product_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:01:08",
+    "timestamp": "2025-07-16 17:28:48",
     "file": "tests/test_Bay_product_val.py",
     "stack": "",
-    "duration": "17.75초"
+    "duration": "20.07초"
   },
   {
     "test_name": "test_Bay_product_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:01:32",
+    "timestamp": "2025-07-16 17:29:16",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "24.28초"
+    "duration": "27.92초"
   },
   {
     "test_name": "test_Bay_product_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:01:56",
+    "timestamp": "2025-07-16 17:29:43",
     "file": "tests/test_Bay_product_delete.py",
     "stack": "",
-    "duration": "23.84초"
+    "duration": "27.14초"
   },
   {
     "test_name": "test_Bay_stock_in",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:03:21",
+    "timestamp": "2025-07-16 17:31:12",
     "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "84.41초"
+    "duration": "89.32초"
   },
   {
     "test_name": "test_Bay_stock_out",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:04:34",
+    "timestamp": "2025-07-16 17:32:30",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "72.83초"
+    "duration": "77.51초"
   },
   {
     "test_name": "test_Bay_stock_history",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:04:59",
+    "status": "FAIL",
+    "message": "FAILED tests/test_Bay_stock_history.py::test_stock_bulk_edit - AssertionError...",
+    "timestamp": "2025-07-16 17:33:36",
     "file": "tests/test_Bay_stock_history.py",
-    "stack": "",
-    "duration": "25.22초"
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_stock_history.py FF                                       [100%]\n\n================================== FAILURES ===================================\n______________________________ test_inflow_past _______________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/stocks/211?page=1'>\n\n    def test_inflow_past(page):\n        bay_login(page)\n        page.goto(URLS[\"bay_stock\"])\n        page.wait_for_timeout(2000)\n        today = datetime.today()\n        mmdd= today.strftime(\"%m%d\")\n        search_name = f\"등록테스트_{mmdd}\"\n    \n        page.locator(\"data-testid=input_search\").fill(search_name)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(1000)\n    \n        product_column = page.locator(\"table tbody tr\").first.locator(\"td\").nth(3)\n        stock_column = page.locator(\"table tbody tr\").first.locator(\"td\").nth(5)\n        stock_text = stock_column.text_content().strip()\n        product_name = product_column.locator(\"div\").first.text_content().strip()\n        current_stock = int(stock_text)\n        print(f\"재고량 : {stock_text}, 제품명 : {product_name}\")\n        yesterday_memo = \"어제 날짜 입고 확인 테스트\"\n        day_before_memo = \"그제 날짜 입고 확인 테스트\"\n        today_memo = \"30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다\"\n        yesterday = datetime.today() - timedelta(days=1)\n        day_before = datetime.today() - timedelta(days=2)\n        today_str = \"금일 재고 현황\"\n        yesterday_str = yesterday.strftime(\"%Y. %m. %d\")\n        day_before_str = day_before.strftime(\"%Y. %m. %d\")\n    \n        page.wait_for_timeout(2000)\n        # 두 날짜에 대해 각각 등록\n        register_stock_for_date(page, day_before, product_name, current_stock, day_before_memo)\n        register_stock_for_date(page, yesterday, product_name, current_stock + 100, yesterday_memo)  # 이전 등록 반영\n    \n        # 재고 상세 진입\n        page.fill(\"data-testid=input_search\", product_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(1000)\n        first_row_cell = page.locator(\"table tbody tr\").first.locator(\"td\").nth(3)\n        cell_text = first_row_cell.inner_text().strip().split(\"\\n\")[0]\n        assert cell_text == product_name, f\"\\u274c \\uac80\\uc0c9 \\uacb0\\uacfc\\uac00 \\uc77c\\uce58\\ud558\\uc9c0 \\uc54a\\uc74c: {cell_text} != {product_name}\"\n        first_row_cell = page.locator(\"table tbody tr\").first.locator(\"td\").nth(3)\n        first_row_cell.locator(\"div\").first.click()\n        expect(page.locator(\"data-testid=btn_back\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=btn_stockadd\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(500)\n        first_row_cell.locator(\"div\").first.click()\n        expect(page.locator(\"data-testid=txt_today\")).to_have_text(today_str, timeout=3000)\n        page.wait_for_timeout(500)\n    \n        # 날짜 및 상태 필터\n        day1_str = select_date_range(page, day_before)\n    \n        # 문구 확인\n        expect(page.locator('[data-testid=\"txt_today\"]')).to_be_visible()\n        expect(page.locator('[data-testid=\"txt_date\"]')).to_have_text(day1_str)\n    \n        # 값 추출\n        value_day1 = get_last_column_of_history2(page)\n        print(f\"[\\U0001f4c5 \\uadf8\\uc81c] history2\\uc758 \\uc0c1\\ud0dc \\uac12: {value_day1}\")\n    \n        # \\u2705 \\uc5b4\\uc81c \\ub0a0\\uc9dc \\uae30\\uc900 \\ud14c\\uc2a4\\ud2b8\n        day2_str = select_date_range(page, yesterday)\n    \n        # 문구 확인\n        expect(page.locator('[data-testid=\"txt_today\"]')).to_be_visible()\n        expect(page.locator('[data-testid=\"txt_date\"]')).to_have_text(day2_str)\n    \n        # 값 추출\n        value_day2 = get_last_column_of_history2(page)\n        print(f\"[\\U0001f4c5 \\uc5b4\\uc81c] history2\\uc758 \\uc0c1\\ud0dc \\uac12: {value_day2}\")\n    \n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_reset\").click()\n        page.wait_for_timeout(1000)\n    \n    \n        # 텍스트 문구 확인\n        expect(page.locator('[data-testid=\"txt_today\"]')).to_have_text(today_str)\n        txt_dates = page.locator('[data-testid=\"txt_date\"]')\n        expect(txt_dates.nth(0)).to_have_text(yesterday_str)\n        expect(txt_dates.nth(1)).to_have_text(day_before_str)\n    \n        # \\u2705 3\\ubc88\\uc9f8 history\n        hist3_qty = int(get_table_cell_text(page, 3, 0, 2))  # 3번째 열 = index 2\n        hist3_memo = get_table_cell_text(page, 3, 0, 4)      # 5번째 열 = index 4\n        hist3_last = get_last_column_text(page, 3)\n    \n>       assert hist3_qty == 100, f\"[H3] 수량 불일치: {hist3_qty} != 100\"\nE       AssertionError: [H3] 수량 불일치: 300 != 100\nE       assert 300 == 100\n\ntests\\test_Bay_stock_history.py:138: AssertionError\n---------------------------- Captured stdout call -----------------------------\n\\uc7ac\\uace0\\ub7c9 : 415, \\uc81c\\ud488\\uba85 : \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0716_09\\n[\\U0001f4c5 \\uadf8\\uc81c] history2\\uc758 \\uc0c1\\ud0dc \\uac12: \\uc785\\uace0\\n[\\U0001f4c5 \\uc5b4\\uc81c] history2\\uc758 \\uc0c1\\ud0dc \\uac12: \\uc785\\uace0\n____________________________ test_stock_bulk_edit _____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/stocks?page=1&product_name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0716&start_date=2025-07-16&end_date=2025-07-16'>\n\n    def test_stock_bulk_edit(page:Page):\n        bay_login(page)\n        page.goto(URLS[\"bay_stock\"])\n        page.wait_for_timeout(2000)\n        today = datetime.today()\n        mmdd= today.strftime(\"%m%d\")\n        product = f\"등록테스트_{mmdd}\"\n        inflow = 25\n        new_inflow = 15\n        txt_bulk = \"2개의 재고 수정이 완료되었습니다.\"\n        txt_edit = \"1개의 재고 수정이 완료되었습니다.\"\n    \n        page.locator(\"data-testid=input_search\").fill(product)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(1000)\n    \n        row1 = page.locator(\"table tbody tr\").first\n        row2 = page.locator(\"table tbody tr\").nth(1)\n        checkbox1 = row1.locator(\"td\").first\n        checkbox2 = row2.locator(\"td\").first\n        product_column1 = row1.locator(\"td\").nth(3)\n        product_column2 = row2.locator(\"td\").nth(3)\n        stock_column1 = row1.locator(\"td\").nth(5)\n        stock_column2 = row2.locator(\"td\").nth(5)\n        stock_text1 = stock_column1.text_content().strip()\n        stock_text2 = stock_column2.text_content().strip()\n        product_name1 = product_column1.locator(\"div\").first.text_content().strip()\n        product_name2 = product_column2.locator(\"div\").first.text_content().strip()\n    \n        # 재고 2개 일괄 수정(2개 모두) 후 상세 내역(2개 모두) 확인\n        page.locator(\"data-testid=btn_edit_bulk\").click()\n        expect(page.locator(\"data-testid=toast_select_stock\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n        checkbox1.click()\n        checkbox2.click()\n        page.locator(\"data-testid=btn_edit_bulk\").click()\n        page.wait_for_timeout(1000)\n        legacy1 = row1.locator(\"td\").nth(6).locator(\"div\").first\n        inflow_legacy1 = legacy1.text_content().strip()\n        legacy2 = row2.locator(\"td\").nth(6).locator(\"div\").first\n        inflow_legacy2 = legacy2.text_content().strip()\n    \n        print(f\"첫번째 입고량 : {inflow_legacy1}, 두번째 입고량: {inflow_legacy2}\")\n        input_field1 = row1.locator(\"td\").nth(6).locator(\"input\")\n        input_field2 = row2.locator(\"td\").nth(6).locator(\"input\")\n    \n        input_field1.fill(str(inflow))\n        page.wait_for_timeout(500)\n        input_field2.fill(str(inflow))\n        page.wait_for_timeout(500)\n        change1 = datetime.now()\n        page.locator(\"data-testid=btn_edit_bulk\").click()\n>       expect(page.locator(\"data-testid=toast_edit\")).to_have_text(txt_bulk, timeout=3000)\nE       AssertionError: Locator expected to have text '2개의 재고 수정이 완료되었습니다.'\nE       Actual value: <element(s) not found> \nE       Call log:\nE         - LocatorAssertions.to_have_text with timeout 3000ms\nE         -   - waiting for locator(\"data-testid=toast_edit\")\nE         -     2 × locator resolved to <li tabindex=\"0\" role=\"status\" aria-live=\"off\" data-state=\"open\" aria-atomic=\"true\" data-testid=\"toast_edit\" data-swipe-direction=\"up\" data-radix-collection-item=\"\" class=\"group relative shadow-toast overflow-hidden flex items-center justify-between shrink-0 gap-[10px] h-[50px] rounded-[8px] px-[26px] py-[12px] pointer-events-auto data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:duration-300 data-[state=open…>…</li>\nE         -       - unexpected value \"1개의 재고 수정이 완료되었습니다.\"\n\ntests\\test_Bay_stock_history.py:219: AssertionError\n---------------------------- Captured stdout call -----------------------------\n첫번째 입고량 : , 두번째 입고량: \n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_stock_history.py::test_inflow_past - AssertionError: [H...\nFAILED tests/test_Bay_stock_history.py::test_stock_bulk_edit - AssertionError...\n======================== 2 failed in 65.27s (0:01:05) =========================\n",
+    "duration": "66.66초"
   },
   {
     "test_name": "test_Bay_order_status_request_cancel",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:05:23",
+    "timestamp": "2025-07-16 17:34:02",
     "file": "tests/test_Bay_order_status_request_cancel.py",
     "stack": "",
-    "duration": "23.75초"
+    "duration": "25.38초"
   },
   {
     "test_name": "test_Bay_order_status_request",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:05:53",
+    "timestamp": "2025-07-16 17:35:21",
     "file": "tests/test_Bay_order_status_request.py",
     "stack": "",
-    "duration": "30.05초"
+    "duration": "79.25초"
   },
   {
     "test_name": "test_Bay_order_status_progress_delivery",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:06:41",
+    "status": "FAIL",
+    "message": "",
+    "timestamp": "2025-07-16 17:36:20",
     "file": "tests/test_Bay_order_status_progress_delivery.py",
     "stack": "",
-    "duration": "48.03초"
+    "duration": "59.36초"
   },
   {
     "test_name": "test_Bay_order_status_progress_complete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:06:43",
+    "timestamp": "2025-07-16 17:36:49",
     "file": "tests/test_Bay_order_status_progress_complete.py",
     "stack": "",
-    "duration": "15.02초"
+    "duration": "29.08초"
   },
   {
     "test_name": "test_Bay_order_status_delivery",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:07:10",
+    "status": "FAIL",
+    "message": "",
+    "timestamp": "2025-07-16 17:37:16",
     "file": "tests/test_Bay_order_status_delivery.py",
     "stack": "",
-    "duration": "26.63초"
-  },
-  {
-    "test_name": "test_Bay_order_status_complete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:07:26",
-    "file": "tests/test_Bay_order_status_complete.py",
-    "stack": "",
-    "duration": "16.21초"
+    "duration": "15.49초"
   },
   {
     "test_name": "test_Bay_order_status_fail",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-15 16:07:40",
+    "timestamp": "2025-07-16 17:37:47",
     "file": "tests/test_Bay_order_status_fail.py",
     "stack": "",
-    "duration": "14.28초"
+    "duration": "15.60초"
   }
 ]

@@ -9,9 +9,9 @@
   {
     "name": "[자동화][기타] 공통 토스트 팝업 및 검색 기능 확인 테스트 실패",
     "file": "tests/test_Bay_alert.py",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_alert.py::test_check_alert - AssertionError: Locator ex...",
-    "stack_summary": " → ============================= 1 failed in 55.23s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][업체관리] 업체 등록 확인 테스트 실패",
@@ -100,9 +100,9 @@
   {
     "name": "[자동화][재고관리] 재고 내역 확인 테스트 실패",
     "file": "tests/test_Bay_stock_history.py",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "stack_summary": ""
+    "status": "FAIL",
+    "message": "FAILED tests/test_Bay_stock_history.py::test_stock_bulk_edit - AssertionError...",
+    "stack_summary": " → ======================== 2 failed in 65.27s (0:01:05) ========================="
   },
   {
     "name": "[자동화][발주관리] 발주 취소 상태 확인 테스트 실패",
@@ -135,13 +135,6 @@
   {
     "name": "[자동화][발주관리] 배송 진행 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_delivery.py",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "stack_summary": ""
-  },
-  {
-    "name": "[자동화][발주관리] 수령 완료 상태 확인 테스트 실패",
-    "file": "tests/test_Bay_order_status_complete.py",
     "status": "PASS",
     "message": "테스트 성공",
     "stack_summary": ""

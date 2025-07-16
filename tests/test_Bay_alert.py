@@ -144,7 +144,7 @@ def test_check_alert(page:Page):
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_stockadd").click()
-    page.wait_for_timeout(1000)
+    expect(page.locator("data-testid=btn_addrow")).to_be_visible(timeout=3000)
 
     # 삭제 불가 Alert 확인	
     page.locator("data-testid=btn_addrow").click()

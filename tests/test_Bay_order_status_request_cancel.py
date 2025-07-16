@@ -62,7 +62,7 @@ def test_order_cancel(page: Page):
         txt_cancel = "발주를 취소하시겠습니까?"
         page.locator("data-testid=btn_cancel").click()  # 취소 버튼 클릭
         expect(page.locator("data-testid=txt_cancel")).to_have_text(txt_cancel, timeout=3000)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=btn_confirm").click()  
         expect(page.locator("data-testid=toast_cancel")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)

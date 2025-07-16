@@ -41,10 +41,12 @@ def test_register_multiple_products(page: Page):
             name_kor_input = page.locator("data-testid=input_prdname_kor").last
             name_kor_input.scroll_into_view_if_needed()
             name_kor_input.fill(prdname_kor)
+            page.wait_for_timeout(1000)
 
             name_eng_input = page.locator("data-testid=input_prdname_eng").last
             name_eng_input.scroll_into_view_if_needed()
             name_eng_input.fill(prdname_eng)
+            page.wait_for_timeout(1000)
 
             prdnames.append(prdname_kor)
 
@@ -54,6 +56,7 @@ def test_register_multiple_products(page: Page):
             price_input = page.locator("data-testid=input_price").last
             price_input.scroll_into_view_if_needed()
             price_input.fill(str(random.randint(1000, 10000)))
+            page.wait_for_timeout(1000)
 
             safety = 5
             auto_order = 10
@@ -61,14 +64,16 @@ def test_register_multiple_products(page: Page):
             safe_input = page.locator("data-testid=input_stk_safe").last
             safe_input.scroll_into_view_if_needed()
             safe_input.fill(str(safety))
+            page.wait_for_timeout(1000)
 
             auto_input = page.locator("data-testid=input_stk_qty").last
             auto_input.scroll_into_view_if_needed()
             auto_input.fill(str(auto_order))
+            page.wait_for_timeout(1000)
 
             txt_manager = "권정의 010-6275-4153"
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
             supplier_trigger = page.locator("data-testid=drop_supplier_trigger").last
             supplier_trigger.scroll_into_view_if_needed()
             supplier_trigger.click()
@@ -76,7 +81,7 @@ def test_register_multiple_products(page: Page):
             supplier_items = page.locator("data-testid=drop_supplier_item")
             automation_supplier = supplier_items.locator("text=자동화업체")
             automation_supplier.click()
-            expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager)
+            expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
 
             prd_data.append({
@@ -96,7 +101,7 @@ def test_register_multiple_products(page: Page):
                 add_row_button.click(force=True)
 
         page.evaluate("window.scrollTo(0, 0)")
-        page.wait_for_timeout(500)  # 스크롤 애니메이션 대기    
+        page.wait_for_timeout(1000)  # 스크롤 애니메이션 대기    
         save_btn = page.locator("data-testid=btn_save")
         save_btn.scroll_into_view_if_needed()
         save_btn.click()
