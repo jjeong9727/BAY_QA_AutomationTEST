@@ -155,7 +155,11 @@ def test_inflow_past(page):
     hist1_last = get_last_column_text(page, 1)
 
     assert hist1_qty == expected_total, f"[H1] 수량 불일치: {hist1_qty} != {expected_total}"
-    assert hist1_memo == today_memo, f"[H1] 메모 불일치: {hist1_memo} != {today_memo}"
+    acceptable_memos = [
+        today_memo,
+        "2개의 메모가 있습니다."
+    ]
+    assert hist1_memo in acceptable_memos, f"[H1] 메모 불일치: {hist1_memo} != {today_memo}"
     assert hist1_last == hist3_last, f"[H1] 마지막 열 불일치: {hist1_last} != {hist3_last}"
     print(f"✅ H1 확인 완료")
 

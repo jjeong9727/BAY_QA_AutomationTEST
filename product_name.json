@@ -13,42 +13,42 @@
     "delivery_status": 6
   },
   {
-    "kor": "[수정]등록테스트_0716_28",
-    "eng": "TestProduct_0716_28",
+    "kor": "[수정]등록테스트_0717_07",
+    "eng": "TestProduct_0717_07",
     "supplier": "자동화업체",
-    "type": "의약품",
-    "group": "주사제",
+    "type": "소모품",
+    "group": "보톡스",
     "maker": "중복테스트",
     "safety": 5,
     "auto_order": 10,
     "order_flag": 0,
-    "stock_qty": 0,
-    "delivery_status": 5
+    "stock_qty": 225,
+    "delivery_status": 4
   },
   {
-    "kor": "등록테스트_0716_29",
-    "eng": "TestProduct_0716_29",
+    "kor": "등록테스트_0717_10",
+    "eng": "TestProduct_0717_10",
     "supplier": "자동화업체",
-    "type": "의약품",
-    "group": "주사제",
+    "type": "의료기기",
+    "group": "연고",
     "maker": "메디톡스",
-    "safety": 5,
-    "auto_order": 10,
-    "order_flag": 1,
-    "stock_qty": 0,
-    "delivery_status": 3
-  },
-  {
-    "kor": "등록테스트_0716_30",
-    "eng": "TestProduct_0716_30",
-    "supplier": "자동화업체",
-    "type": "의약품",
-    "group": "주사제",
-    "maker": "메디톡스",
-    "safety": 19,
+    "safety": 17,
     "auto_order": 10,
     "order_flag": 0,
-    "stock_qty": 44,
+    "stock_qty": 17,
     "delivery_status": 7
+  },
+  {
+    "kor": "등록테스트_0717_12",
+    "eng": "TestProduct_0717_12",
+    "supplier": "자동화업체",
+    "type": "의료기기",
+    "group": "보톡스",
+    "maker": "루트로닉",
+    "safety": 5,
+    "auto_order": 10,
+    "order_flag": 0,
+    "stock_qty": 25,
+    "delivery_status": 5
   }
 ]

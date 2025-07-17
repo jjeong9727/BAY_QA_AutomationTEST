@@ -62,7 +62,6 @@ all_tests = [
     "tests/test_Bay_product_delete.py",
     "tests/test_Bay_stock_in.py",
     "tests/test_Bay_stock_out.py",
-    "tests/test_Bay_stock_history.py",
     "tests/test_Bay_order_status_request_cancel.py",
     "tests/test_Bay_order_status_request.py",
     "tests/test_Bay_order_status_progress_delivery.py",

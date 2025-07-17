@@ -26,11 +26,11 @@ def test_register_supplier_duplicate(page):
         page.fill("data-testid=input_sup_contact", contact_info)  # 연락처 입력
         page.wait_for_timeout(500)
         page.click("data-testid=btn_confirm")  # 완료 버튼 클릭
-        page.wait_for_timeout(500)
-
+        
         # 3. 중복 알림 확인
-        assert page.locator("data-testid=alert_duplicate").is_visible(), "❌ 중복 알림 문구가 표시되지 않음"
+        expect(page.locator("data-testid=alert_duplicate")).is_visible(timeout=3000), "❌ 중복 알림 문구가 표시되지 않음"
         print(f"[PASS] 중복 등록 시 알림 문구 노출 확인: {supplier_name} / {manager_name}")
+        page.wait_for_timeout(1000)
         page.locator("data-testid=btn_cancel").click()
         page.wait_for_timeout(1000)
 

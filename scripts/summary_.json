@@ -23,9 +23,9 @@
   {
     "name": "[자동화][업체관리] 업체 등록 유효성 검사 테스트 실패",
     "file": "tests/test_Bay_supplier_val.py",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "stack_summary": ""
+    "status": "FAIL",
+    "message": "tests\\test_Bay_supplier_val.py:32: AssertionError",
+    "stack_summary": " → ============================== 1 failed in 9.81s =============================="
   },
   {
     "name": "[자동화][기타] 카테고리 등록 확인 테스트 실패",
@@ -98,13 +98,6 @@
     "stack_summary": ""
   },
   {
-    "name": "[자동화][재고관리] 재고 내역 확인 테스트 실패",
-    "file": "tests/test_Bay_stock_history.py",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_stock_history.py::test_stock_bulk_edit - AssertionError...",
-    "stack_summary": " → ======================== 2 failed in 65.27s (0:01:05) ========================="
-  },
-  {
     "name": "[자동화][발주관리] 발주 취소 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_request_cancel.py",
     "status": "PASS",
@@ -140,8 +133,22 @@
     "stack_summary": ""
   },
   {
+    "name": "[자동화][발주관리] 수령 완료 상태 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_complete.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
     "name": "[자동화][발주관리] 발주 실패 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_fail.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][재고관리] 재고 내역 확인 테스트 실패",
+    "file": "tests/test_Bay_stock_history.py",
     "status": "PASS",
     "message": "테스트 성공",
     "stack_summary": ""
