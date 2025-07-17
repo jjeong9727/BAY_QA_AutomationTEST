@@ -70,7 +70,7 @@ all_tests = [
     "tests/test_Bay_order_status_delivery.py",
     "tests/test_Bay_order_status_complete.py",
     "tests/test_Bay_order_status_fail.py", 
-    
+    "tests/test_Bay_stock_history.py",
 ]
 
 # 발주 관련 테스트 목록
