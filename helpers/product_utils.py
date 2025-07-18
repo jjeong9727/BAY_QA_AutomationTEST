@@ -128,7 +128,6 @@ def verify_products_in_list(page, product_names: list[str], url: str,  table_col
 
 
 
-from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 def is_product_exist(page, product_names) -> bool:
     if isinstance(product_names, str):

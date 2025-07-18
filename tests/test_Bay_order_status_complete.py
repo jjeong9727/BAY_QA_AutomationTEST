@@ -11,7 +11,7 @@ from config import URLS, Account
 
 
 def run_order_status_check(page: Page, delivery_status: int):
-    status_name = "수령 확정"
+    status_name = "수령 완료"
     
     # 상태에 따른 expected 키 매핑
     status_key_map = {

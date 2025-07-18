@@ -86,7 +86,7 @@ def test_order_receive_from_delivery(page: Page):
             columns = row.locator("td").all_inner_texts()
             if product_name in columns[1]:  # 제품명으로 해당 행 찾기
                 status = columns[0].strip()  # 상태 확인
-                print(f"[PASS] 수령 확정 상태 확인 완료 → {product_name} 상태: {status}")
+                print(f"[PASS] 수령 완료 상태 확인 완료 → {product_name} 상태: {status}")
                 found = True
                 break
 
@@ -96,13 +96,15 @@ def test_order_receive_from_delivery(page: Page):
         # 재고 관리 화면으로 이동하여 제품명으로 검색
         page.goto(URLS["bay_stock"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
+        page.wait_for_timeout(1000)
         page.fill("data-testid=input_search", product_name)
         page.wait_for_timeout(2000)
         page.click("data-testid=btn_search")
         page.wait_for_timeout(3000)
 
         # 재고 관리 화면에서 해당 제품의 현 재고량 확인
-        current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()
+        first_row = page.locator("table tbody tr").first
+        current_stock_text = first_row.locator("td:nth-child(6)").inner_text()
         current_stock = int(current_stock_text.strip())
 
         # JSON 파일에 있던 재고 수량 + 입고 수량 계산 후 비교

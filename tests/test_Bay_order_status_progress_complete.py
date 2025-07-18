@@ -45,6 +45,7 @@ def test_order_receive_from_progress(page: Page):
         bay_login(page)
 
         page.goto(URLS["bay_orderList"])
+        page.wait_for_timeout(1000)
         search_order_history(page, product_name, status_name)
 
         # order_id 추출
@@ -80,7 +81,7 @@ def test_order_receive_from_progress(page: Page):
             columns = row.locator("td").all_inner_texts()
             if product_name in columns[1]:
                 status = columns[0].strip()
-                assert status == "수령 확정", f"[FAIL] {product_name} 상태가 '수령 확정'이 아님 → 현재 상태: {status}"
+                assert status == "수령 완료", f"[FAIL] {product_name} 상태가 '수령 완료'가 아님 → 현재 상태: {status}"
                 print(f"[PASS] 수령 완료 상태 확인 완료 → {product_name} 상태: {status}")
                 found = True
                 break
