@@ -288,6 +288,7 @@ def test_check_alert(page:Page):
     expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
+# 발주 규칙 관리 중복값 확인 (등록 / 수정)
     
 
     

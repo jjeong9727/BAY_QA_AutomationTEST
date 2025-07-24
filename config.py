@@ -13,7 +13,8 @@ URLS = {
     "bay_orderList" : f"{base_url}/orders/history",
     "bay_category" : f"{base_url}/categories_management",
     "bay_supplier" : f"{base_url}/providers-management",
-    "base_accept_url" : f"{base_url}/providers/orders/"
+    "base_accept_url" : f"{base_url}/providers/orders/",
+    "bay_rules" : f"{base_url}",
 
 }
 
