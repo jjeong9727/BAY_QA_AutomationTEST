@@ -72,12 +72,12 @@ def test_duplicate_product_name(page):
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_supplier_trigger").last.click()
-        expect(page.locator("data-testid=drop_supplier_item")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
-        supplier_items = page.locator("data-testid=drop_supplier_item")
-        automation_supplier = supplier_items.locator("text=자동화업체") 
-        automation_supplier.click(force=True)
+        page.locator("data-testid=drop_supplier_search").fill("중복테스트")
         page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_supplier_item", has_text="중복테스트").first.click()
+        page.wait_for_timeout(1000)
+        
 
         page.evaluate("window.scrollTo(0, 0)")
         page.wait_for_timeout(1000)

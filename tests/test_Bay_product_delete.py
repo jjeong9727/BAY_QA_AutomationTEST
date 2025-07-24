@@ -148,9 +148,8 @@ def test_bulk_delete_products(page):
 
         # 일괄 삭제 버튼 클릭
         page.click("data-testid=btn_del_bulk")
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_del").wait_for()
-        page.click("data-testid=btn_del")
+        page.wait_for_timeout(2000)
+        page.locator("data-testid=btn_del").click()
         page.wait_for_timeout(2000)
 
         # 삭제 후, 제품이 목록에서 사라졌는지 확인

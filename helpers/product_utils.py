@@ -110,7 +110,7 @@ def verify_products_in_list(page, product_names: list[str], url: str,  table_col
         page.fill("data-testid=input_search", name)
         page.wait_for_timeout(1000)
         page.click("data-testid=btn_search")
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(3000)
 
         rows = page.locator("table tbody tr")
         found = False
@@ -119,6 +119,8 @@ def verify_products_in_list(page, product_names: list[str], url: str,  table_col
             cell_text = row.locator(f"td:nth-child({table_column_index})").inner_text().strip()
             if name in cell_text:
                 print(f"[PASS] {name} → '{url}'에서 확인됨")
+                page.wait_for_timeout(1000)
+                page.locator("data-testid=btn_reset").click()
                 page.wait_for_timeout(1000)
                 found = True
                 break
@@ -137,9 +139,9 @@ def is_product_exist(page, product_names) -> bool:
     for name in product_names:
         try:
             page.fill("data-testid=input_search", name)
-            page.wait_for_timeout(500)
-            page.locator("data-testid=btn_search").click()
             page.wait_for_timeout(1000)
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(3000)
 
             # 검색 결과 로딩 대기
             page.locator("table tbody tr").first.wait_for(timeout=5000)

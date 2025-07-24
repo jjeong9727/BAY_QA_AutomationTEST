@@ -136,6 +136,7 @@ def test_order_acceptance(page: Page):
                 if edit_button.is_visible():
                     print(f"✅ {i}번째 행의 수정 버튼 클릭")
                     edit_button.click()
+                    page.wait_for_timeout(3000)
                     break
             
             page.locator("data-testid=input_stk_safe").fill(str(300))

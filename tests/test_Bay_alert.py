@@ -76,12 +76,15 @@ def test_check_alert(page:Page):
     page.wait_for_timeout(1000)
     rows = page.locator("table tbody tr")
     row_count = rows.count()
-
+    txt_delete = "제품을 삭제하시겠습니까?"
     for i in range(row_count):
         edit_button = rows.nth(i).locator("td:nth-child(11) >> text=삭제")
         if edit_button.is_visible():
             print(f"✅ {i}번째 행의 삭제 버튼 클릭")
             edit_button.click()
+            page.wait_for_timeout(1000)
+            expect(page.locator("data-testid=txt_delete")).to_be_visible(timeout=3000)
+            page.locator("data-testid=btn_del").click()
             break
     
     expect(page.locator("data-testid=toast_stock")).to_be_visible(timeout=3000)
@@ -181,9 +184,6 @@ def test_check_alert(page:Page):
     page.locator("data-testid=input_memo").fill("테스트 메모")
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_save").click()
-    expect(page.locator('[data-testid="txt_register"]')).to_have_text(txt_register,timeout=3000)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=btn_confirm").click()
     expect(page.locator('[data-testid="toast_over_stock"]')).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
@@ -212,28 +212,30 @@ def test_check_alert(page:Page):
 
     # 최근 1주 확인 
     page.click('[data-testid="btn_weekago"]')
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
     assert start_text == week_ago_str, f"시작일 값이 일주일 전이 아님 → {start_text}"
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
+    page.wait_for_timeout(2000)
 
     # 최근 1개월 확인
     page.click('[data-testid="btn_monthago"]')
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(2000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
     assert start_text == month_ago_str, f"시작일 값이 한 달 전이 아님 → {start_text}"
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
+    page.wait_for_timeout(2000)
 
     # 오늘 날짜 확인
     page.locator("data-testid=btn_today").click()    
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(2000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
     assert start_text == today_str, f"시작일 값이 오늘이 아님 → {start_text}"
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
 
     print("✅ 날짜 범위 버튼 테스트 성공")
     

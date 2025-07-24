@@ -9,9 +9,9 @@
   {
     "name": "[자동화][기타] 공통 토스트 팝업 및 검색 기능 확인 테스트 실패",
     "file": "tests/test_Bay_alert.py",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_alert.py::test_check_alert - AssertionError: Locator ex...",
-    "stack_summary": " → ============================= 1 failed in 55.74s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][업체관리] 업체 등록 확인 테스트 실패",
@@ -30,9 +30,9 @@
   {
     "name": "[자동화][기타] 카테고리 등록 확인 테스트 실패",
     "file": "tests/test_Bay_prdctg.py",
-    "status": "FAIL",
-    "message": "- LocatorAssertions.to_be_visible with timeout 3000ms",
-    "stack_summary": " → ======================== 1 failed, 2 passed in 53.75s ========================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][기타] test_Bay_prdctg_val 테스트 실패",
@@ -51,9 +51,9 @@
   {
     "name": "[자동화][기타] 카테고리 삭제 확인 테스트 실패",
     "file": "tests/test_Bay_prdctg_delete.py",
-    "status": "FAIL",
-    "message": "tests\\test_Bay_prdctg_delete.py:55: Exception",
-    "stack_summary": " → ======================== 1 failed, 2 passed in 33.48s ========================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][제품관리] 제품 등록 확인 테스트 실패",
@@ -128,16 +128,16 @@
   {
     "name": "[자동화][발주관리] 배송 진행 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_delivery.py",
-    "status": "FAIL",
-    "message": "\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0718_16\\n\\u2705 \\ucc3e\\uc740 order_id: 160\\n\\uc0c1\\ud0dc: \\ubc30\\uc1a1",
-    "stack_summary": " → ============================= 1 failed in 26.24s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 수령 완료 상태 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_complete.py",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "stack_summary": " → ============================== 2 failed in 1.03s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][발주관리] 발주 실패 상태 확인 테스트 실패",

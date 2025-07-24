@@ -11,5 +11,44 @@
     "order_flag": 1,
     "stock_qty": 0,
     "delivery_status": 6
+  },
+  {
+    "kor": "[수정]등록테스트_0724_07",
+    "eng": "TestProduct_0724_07",
+    "supplier": "자동화업체",
+    "type": "소모품",
+    "group": "주사제",
+    "maker": "중복테스트",
+    "safety": 5,
+    "auto_order": 10,
+    "order_flag": 0,
+    "stock_qty": 25,
+    "delivery_status": 5
+  },
+  {
+    "kor": "등록테스트_0724_08",
+    "eng": "TestProduct_0724_08",
+    "supplier": "자동화업체",
+    "type": "소모품",
+    "group": "연고",
+    "maker": "휴메딕스",
+    "safety": 20,
+    "auto_order": 10,
+    "order_flag": 0,
+    "stock_qty": 235,
+    "delivery_status": 7
+  },
+  {
+    "kor": "등록테스트_0724_11",
+    "eng": "TestProduct_0724_11",
+    "supplier": "자동화업체",
+    "type": "의료기기",
+    "group": "주사제",
+    "maker": "메디톡스",
+    "safety": 5,
+    "auto_order": 10,
+    "order_flag": 0,
+    "stock_qty": 10,
+    "delivery_status": 4
   }
 ]
