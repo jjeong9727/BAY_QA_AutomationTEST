@@ -33,7 +33,7 @@ def test_edit_products(page):
         page.goto(URLS["bay_prdList"])
         page.wait_for_timeout(2000)
         page.fill('[data-testid="input_search"]', product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.click('[data-testid="btn_search"]')
         page.wait_for_timeout(2000)
 
@@ -73,7 +73,7 @@ def test_edit_products(page):
         page.locator("data-testid=btn_save").click()
         page.wait_for_timeout(1000)
         expect(page.locator("data-testid=txt_edit")).to_have_text(txt_edit, timeout=3000)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)

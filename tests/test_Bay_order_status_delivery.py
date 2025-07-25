@@ -68,7 +68,24 @@ def test_order_receive_from_delivery(page: Page):
         expect(page.locator("data-testid=input_quantity")).to_be_visible(timeout=5000)
         stock_inflow = int(page.locator('[data-testid="input_quantity"]').input_value())#입고 수량 저장
         print(stock_inflow)
-
+        # 발주 수령 팝업 퀵메뉴 버튼 확인
+        page.locator("data-testid=btn_plus_10").click()
+        new_data = stock_inflow + 10
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_plus_100").click() 
+        new_data += 100 
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_minus_100").click() 
+        new_data -= 100 
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_minus_10").click() 
+        new_data -= 10 
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        page.wait_for_timeout(1000)
+        assert new_data == stock_inflow, f"초기 수량과 동일하지 않음. 초기 수량: {stock_inflow}, 현재 수량: {new_data}"
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
         page.wait_for_timeout(2000)
 
@@ -108,7 +125,7 @@ def test_order_receive_from_delivery(page: Page):
         current_stock = int(current_stock_text.strip())
 
         # JSON 파일에 있던 재고 수량 + 입고 수량 계산 후 비교
-        expected_stock = target_product['stock_qty'] + stock_inflow
+        expected_stock = target_product['stock_qty'] + int(stock_inflow)
 
         # 수령 완료 상태 확인 후 delivery_status 값을 4로 업데이트 (수령 완료 상태) 
         # 그리고 order_flag는 0으로 설정

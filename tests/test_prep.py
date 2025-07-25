@@ -1,8 +1,11 @@
 import pytest
 import random
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.common_utils import bay_login
+from helpers.product_utils import select_from_dropdown, generate_product_name
+
+
 
 def test_prep_bay (page:Page):
     bay_login(page)
@@ -102,19 +105,58 @@ def test_prep_bay (page:Page):
     page.wait_for_timeout(2000)
 
     # 업체 등록 
+    # 업체 등록 정보 리스트
+    suppliers = [
+        {"name": "자동화업체", "manager": "권정의", "contact": "01062754153"},
+        {"name": "자동화업체A", "manager": "권정의", "contact": "01062754153"},
+        {"name": "자동화업체A", "manager": "메디솔브", "contact": "01085148780"},
+        {"name": "자동화업체B", "manager": "권정의", "contact": "01062754153"},
+    ]
+
+    # 등록 페이지 진입
     page.goto(URLS["bay_supplier"])
     page.wait_for_timeout(1000)
 
-    page.click("data-testid=btn_orderadd")  # 업체 등록 모달 열기
+    # 업체 반복 등록
+    for supplier in suppliers:
+        page.click("data-testid=btn_orderadd")  # 업체 등록 모달 열기
+        page.wait_for_timeout(500)
+
+        page.fill("data-testid=input_sup_name", supplier["name"])       # 업체명
+        page.fill("data-testid=input_sup_manager", supplier["manager"]) # 담당자
+        page.fill("data-testid=input_sup_contact", supplier["contact"]) # 연락처
+
+        page.click("data-testid=btn_confirm")  # 등록 완료
+        page.wait_for_timeout(1000)
+
+    
+
+    # 발주 규칙명 "중복테스트" 등록 
+    page.goto(URLS["bay_rules"])
+    page.wait_for_timeout(2000)
+    rule_name = "중복테스트"
+    memo = "자동화 테스트를 위한 발주 규칙"
+
+    page.locator("data-testid=btn_register").click()
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=input_rule_name").fill(rule_name)
     page.wait_for_timeout(1000)
-    page.fill("data-testid=input_sup_name", "자동화업체")  # 업체명 입력
+    page.locator("data-testid=drop_cycle_trigger").click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=input_sup_manager", "권정의")  # 담당자 입력
+    page.locator("data-testid=drop_cycle_item", has_text="매일").click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=input_sup_contact", "01062754153")  # 연락처 입력
+
+    page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
-    page.click("data-testid=btn_confirm")  # 완료 버튼 클릭
-    page.wait_for_timeout(500)
+    page.locator("data-testid=drop_hour_item",has_text="12").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_minute_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_minute_item", has_text="00").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_memo").fill(memo)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
 
     # 제품 등록 (중복테스트)
     page.goto(URLS["bay_products"])
@@ -150,6 +192,16 @@ def test_prep_bay (page:Page):
 
     page.fill("data-testid=input_price", 100)
     page.wait_for_timeout(1000)
+
+    # 발주 규칙 선택 추가
+    rule = "규칙 없음"
+    page.locator("data-testid=drop_rule_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_search").fill(rule)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_trigger", has_text=rule).click()
+    page.wait_for_timeout(1000)
+
     page.fill("data-testid=input_stk_safe", 5)
     page.wait_for_timeout(1000)
     page.fill("data-testid=input_stk_qty", 10)
@@ -194,6 +246,15 @@ def test_prep_bay (page:Page):
 
     page.locator("data-testid=input_price").last.fill(100)
     page.wait_for_timeout(1000)
+
+    # 발주 규칙 선택 추가
+    page.locator("data-testid=drop_rule_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_search").fill(rule)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_trigger", has_text=rule).click()
+    page.wait_for_timeout(1000)
+
     page.locator("data-testid=input_stk_safe").last.fill(5)
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_stk_qty").last.fill(10)
@@ -234,5 +295,100 @@ def test_prep_bay (page:Page):
     page.locator("data-testid=btn_confirm").click()
     page.wait_for_timeout(3000)
 
-# "발주 규칙 변경 제품" 등록 추가 (발주규칙은 "규칙없음") => 규칙 선택 하는 코드 추가 필요
-# 발주 규칙명 "중복테스트" 등록 추가
+    # 배치 발주 테스트용 제품 생성(9개)
+    page.goto(URLS["bay_prdList"])
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=btn_addprd").click()
+    page.wait_for_timeout(2000)
+
+    num_products = 9
+    supplier_1 = "자동화업체A"
+    supplier_2 = "자동화업체A"
+    supplier_3 = "자동화업체B"
+    manager1 = "권정의 010-6275-4153"
+    manager2 = "메디솔브 010-8514-8780" 
+    manager3 = "권정의 010-6275-4153"
+    prdnames = []
+    type_options = ["의약품"]
+    group_options = ["보톡스"]
+    maker_options = ["메디톡스"]
+    
+    for idx in range(num_products):
+        select_from_dropdown(page, "drop_type_trigger", "drop_type_search", "drop_type_item", random.choice(type_options))
+        select_from_dropdown(page, "drop_group_trigger", "drop_group_search", "drop_group_item", random.choice(group_options))
+        prdname_kor, prdname_eng = generate_product_name(idx)
+        name_kor_input = page.locator("data-testid=input_prdname_kor").last
+        name_kor_input.scroll_into_view_if_needed()
+        name_kor_input.fill(prdname_kor)
+        page.wait_for_timeout(1000)
+
+        name_eng_input = page.locator("data-testid=input_prdname_eng").last
+        name_eng_input.scroll_into_view_if_needed()
+        name_eng_input.fill(prdname_eng)
+        page.wait_for_timeout(1000)
+        prdnames.append(prdname_kor)
+        select_from_dropdown(page, "drop_maker_trigger", "drop_maker_search", "drop_maker_item", random.choice(maker_options))
+
+        price_input = page.locator("data-testid=input_price").last
+        price_input.scroll_into_view_if_needed()
+        price_input.fill(str(random.randint(1000, 10000)))
+        page.wait_for_timeout(1000)
+
+        # 발주 규칙 선택
+        rule = "중복테스트"
+        page.locator("data-testid=drop_rule_trigger").click()
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_rule_search").fill(rule)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_rule_trigger", has_text=rule).click()
+        page.wait_for_timeout(1000)
+
+        safety = 5
+        auto_order = 10
+
+        safe_input = page.locator("data-testid=input_stk_safe").last
+        safe_input.scroll_into_view_if_needed()
+        safe_input.fill(str(safety))
+        page.wait_for_timeout(1000)
+
+        auto_input = page.locator("data-testid=input_stk_qty").last
+        auto_input.scroll_into_view_if_needed()
+        auto_input.fill(str(auto_order))
+        page.wait_for_timeout(1000)
+        adjusted_idx = idx + 1
+        if 1 <= adjusted_idx <= 3:
+            txt_manager = manager1
+            txt_supplier = supplier_1
+        elif 4 <= adjusted_idx <= 6:
+            txt_manager = manager2 
+            txt_supplier = supplier_2
+        elif 7 <= adjusted_idx <= 9:
+            txt_manager = manager3
+            txt_supplier = supplier_3
+        else:
+            raise ValueError(f"지원되지 않는 idx: {idx}")
+        
+        supplier_info = f"{txt_supplier}, {txt_manager}"
+        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_supplier_trigger").last.click()
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_supplier_search").last.fill(txt_supplier)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_supplier_item", has_text=supplier_info).click()
+        expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+        page.wait_for_timeout(1000)
+
+        if idx < num_products - 1:
+            add_row_button = page.locator("data-testid=btn_addrow")
+            add_row_button.scroll_into_view_if_needed()
+            add_row_button.wait_for(state="visible", timeout=5000)
+            add_row_button.click(force=True)
+
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(1000)  # 스크롤 애니메이션 대기    
+    save_btn = page.locator("data-testid=btn_save")
+    save_btn.scroll_into_view_if_needed()
+    save_btn.click()
+    page.wait_for_timeout(1000)
+    print(f"[PASS][제품관리] {num_products}개 제품 등록 및 저장 완료")

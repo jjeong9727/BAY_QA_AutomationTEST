@@ -1,18 +1,11 @@
 from playwright.sync_api import Page, expect
 import random
 from config import URLS, Account
-from helpers.product_utils import append_product_name, generate_product_names, verify_products_in_list
+from helpers.product_utils import append_product_name, generate_product_names, verify_products_in_list, select_from_dropdown
 from helpers.common_utils import bay_login
 
 # 드롭다운 내 검색 추가 (prep으로 등록한 값 활용)
 # 저장 버튼 testid 추가
-
-def select_from_dropdown(page: Page, trigger_id: str, search_id: str, item_id: str, keyword: str) -> str:
-    page.locator(f"[data-testid='{trigger_id}']").last.click()
-    page.fill(f"[data-testid='{search_id}']", keyword)
-    page.wait_for_timeout(500)  # 검색 결과 뜰 시간 확보
-    page.locator(f"[data-testid='{item_id}']", has_text=keyword).click()
-    return keyword
 
 def test_register_multiple_products(page: Page):
     try:
@@ -58,6 +51,15 @@ def test_register_multiple_products(page: Page):
             price_input.fill(str(random.randint(1000, 10000)))
             page.wait_for_timeout(1000)
 
+            # 발주 규칙 선택
+            rule = "중복테스트"
+            page.locator("data-testid=drop_rule_trigger").click()
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_rule_search").fill(rule)
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_rule_trigger", has_text=rule).click()
+            page.wait_for_timeout(1000)
+
             safety = 5
             auto_order = 10
 
@@ -91,7 +93,8 @@ def test_register_multiple_products(page: Page):
                 "group": selected_group,
                 "maker": selected_maker,
                 "safety": safety,
-                "auto_order": auto_order
+                "auto_order": auto_order,
+                "order_rule": rule
             })
 
             if idx < num_products - 1:

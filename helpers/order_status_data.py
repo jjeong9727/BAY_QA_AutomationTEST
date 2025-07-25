@@ -16,6 +16,12 @@ order_status_map = {
         "tracking_enabled": True,
         "receive_enabled": True,
         "cancel_enabled": False,
+    },                                                                             
+    "일부 수령": {
+        "resend_enabled": False,
+        "tracking_enabled": True,
+        "receive_enabled": True,
+        "cancel_enabled": False,
     },
     # 배송 진행 > 수령 (운송장 등록)
     "수령 완료(배송후)": {

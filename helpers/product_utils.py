@@ -20,6 +20,10 @@ def generate_product_names():
     prdname_kor = f"등록테스트_{date}_{count}"
     prdname_eng = f"TestProduct_{date}_{count}"
     return prdname_kor, prdname_eng
+def generate_product_name(count:int):
+    prdname_kor = f"자동화제품_{count}"
+    prdname_eng = f"AutoProduct_{count}"
+    return prdname_kor, prdname_eng
 
 # 제품 등록 후 json 파일에 제품 정보 업로드
 def append_product_name(
@@ -360,3 +364,13 @@ def get_outflow_target_products():
     # stock 값이 0이 아닌 제품만 필터링
     eligible = [p for p in products if p.get("stock", 0) != 0]
     return eligible
+
+# 제품 등록 시 드롭다운 선택하는 공통 함수
+def select_from_dropdown(page, trigger_id: str, search_id: str, item_id: str, keyword: str) -> str:
+    page.locator(f"[data-testid='{trigger_id}']").last.click()
+    page.wait_for_timeout(1000)
+    page.fill(f"[data-testid='{search_id}']", keyword)
+    page.wait_for_timeout(1000)  
+    page.locator(f"[data-testid='{item_id}']", has_text=keyword).click()
+    page.wait_for_timeout(1000)
+    return keyword
