@@ -6,7 +6,8 @@
 import random
 from config import URLS, Account
 from datetime import datetime, timedelta
-from helpers.order_status_utils import search_order_history,get_order_id_from_order_list
+from helpers.order_status_data import order_status_map
+from helpers.order_status_utils import search_order_history,get_order_id_from_order_list, check_order_status_by_order_id
 from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 import time
@@ -73,7 +74,7 @@ def test_cancel_batch_history(page:Page):
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
 
-    search_order_history(page, product_list[2], "발주 요청")
+    order_id = search_order_history(page, product_list[2], "발주 요청")
     page.wait_for_timeout(1000)
     
     cell_locator = page.locator("data-testid=history >> tr >> nth=0 >> td >> nth=1") #1행 2열 
@@ -116,6 +117,10 @@ def test_cancel_batch_history(page:Page):
         else:
             expect(status_locator).to_have_text("발주 요청", timeout=3000)
     
+    # 발주 요청 상태(발주 요청+발주 취소) UI 확인
+    expected_status_conditions = order_status_map["발주 요청"]  
+    check_order_status_by_order_id(page, "발주 요청", order_id, expected_status_conditions)
+    
     # 일괄 취소 후 상태 확인
     bulk_cancel_txt = "발주를 일괄 취소하시겠습니까?"
     cancel_button = page.locator("data-testid=history >> tr >> nth=0 >> td >> [data-testid=btn_cancel]")
@@ -131,6 +136,10 @@ def test_cancel_batch_history(page:Page):
         status_locator = page.locator(f"data-testid=history >> tr >> nth={i} >> td >> nth=0")
         expect(status_locator).to_have_text("발주 취소", timeout=3000)
         page.wait_for_timeout(1000)
+    
+    # 발주 취소 상태 UI 확인
+    expected_status_conditions = order_status_map["발주 취소"]  
+    check_order_status_by_order_id(page, "발주 취소", order_id, expected_status_conditions)
 
 def test_receive_without_tracking(page:Page):
     prd_name = f"{product_list[3]} 외 2건"
@@ -180,6 +189,10 @@ def test_receive_without_tracking(page:Page):
         else:
             expect(status_locator).to_have_text("발주 진행", timeout=3000)
         
+    # 일부 수령 상태 UI 확인
+    expected_status_conditions = order_status_map["일부 수령"]
+    check_order_status_by_order_id(page, "일부 수령", order_id, expected_status_conditions)
+
     # 일괄 수령 후 상태 확인
     bulk_receive_txt = "발주를 일괄 수령하시겠습니까?"
     receive_button = page.locator("data-testid=history >> tr >> nth=0 >> td >> [data-testid=btn_receive]")
@@ -196,6 +209,9 @@ def test_receive_without_tracking(page:Page):
         expect(status_locator).to_have_text("수령 완료", timeout=3000)
         page.wait_for_timeout(1000)
 
+    # 수령 완료 상태 UI 확인
+    expected_status_conditions = order_status_map["수령 완료"]
+    check_order_status_by_order_id(page, "수령 완료", order_id, expected_status_conditions)
     
 def test_receive_with_tracking(page:Page):
     prd_name = f"{product_list[6]} 외 2건"
@@ -246,7 +262,11 @@ def test_receive_with_tracking(page:Page):
             expect(status_locator).to_have_text("수령 완료", timeout=3000)
         else:
             expect(status_locator).to_have_text("배송 진행", timeout=3000)
-        
+    
+    # 일부 수령 상태 UI 확인
+    expected_status_conditions = order_status_map["일부 수령"]
+    check_order_status_by_order_id(page, "일부 수령", order_id, expected_status_conditions)
+    
     # 일괄 수령 후 상태 확인
     bulk_receive_txt = "발주를 일괄 수령하시겠습니까?"
     receive_button = page.locator("data-testid=history >> tr >> nth=0 >> td >> [data-testid=btn_receive]")
@@ -262,9 +282,9 @@ def test_receive_with_tracking(page:Page):
         status_locator = page.locator(f"data-testid=history >> tr >> nth={i} >> td >> nth=0")
         expect(status_locator).to_have_text("수령 완료", timeout=3000)
         page.wait_for_timeout(1000)
-    
 
-
-
+    # 수령 완료 상태 UI 확인
+    expected_status_conditions = order_status_map["수령 완료"]
+    check_order_status_by_order_id(page, "수령 완료", order_id, expected_status_conditions)
 
 

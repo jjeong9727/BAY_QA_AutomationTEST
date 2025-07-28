@@ -201,11 +201,11 @@ def test_prep_bay (page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_rule_trigger", has_text=rule).click()
     page.wait_for_timeout(1000)
-
-    page.fill("data-testid=input_stk_safe", 5)
-    page.wait_for_timeout(1000)
-    page.fill("data-testid=input_stk_qty", 10)
-    page.wait_for_timeout(1000)
+    # 규칙 없음 선택 시 비활성화 및 0 입력 상태 확인
+    expect(page.locator("data-testid=input_stk_safe")).to_have_text("0",timeout=3000)
+    expect(page.locator("data-testid=input_stk_safe")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=input_stk_qty")).to_have_text("0",timeout=3000)
+    expect(page.locator("data-testid=input_stk_qty")).to_be_visible(timeout=3000)
 
     page.locator("data-testid=drop_supplier_trigger").click()
     page.wait_for_timeout(1000)
