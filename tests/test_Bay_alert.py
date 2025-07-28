@@ -105,6 +105,57 @@ def test_check_alert(page:Page):
     page.locator("data-testid=btn_no").click()
     expect(page.locator("data-testid=input_prdname_kor").first).to_have_value(edit_name, timeout=3000)
     page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_type_trigger").last.click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_type_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_type_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_category_trigger").last.click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_category_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_category_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_maker_trigger").last.click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_maker_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=input_price").last.fill(100)
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_rule_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_search").fill("중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_trigger", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=input_stk_safe").last.fill("5")
+    page.wait_for_timeout(1000)
+    # 자동 발주 수량 0 으로 선택 후 토스트 확인 
+    page.locator("data-testid=input_stk_qty").last.fill("0")
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_supplier_trigger").last.click()
+    page.wait_for_timeout(1000)
+    page.fill("data-testid=drop_supplier_search", "중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_save").click()
+    expect(page.locator("data-testid=toast_order_min")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+
+    # 이탈 팝업 확인
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=title")).to_have_text(txt_nosave, timeout=3000)
     page.wait_for_timeout(500)

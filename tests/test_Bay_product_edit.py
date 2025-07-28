@@ -65,7 +65,19 @@ def test_edit_products(page):
         page.locator('[data-testid="drop_maker_item"]', has_text=new_maker).click()
         page.wait_for_timeout(1000)
         print(f"🏷️ 제조사 수정 → {new_maker}")
-                
+
+        # 자동 발주 수량 0 입력 시 토스트 확인
+        page.locator("data-testid=input_stk_qty").last.fill("0")
+        page.wait_for_timeout(1000)
+        page.evaluate("window.scrollTo(0, 0)")
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_save").click()
+        expect(page.locator("data-testid=toast_order_min")).to_be_visible(timeout=3000)
+        page.wait_for_timeout(1000)
+
+        page.locator("data-testid=input_stk_qty").last.fill("5")
+        page.wait_for_timeout(1000)
+
         # 저장
         txt_edit = "제품을 수정하시겠습니까?"
         page.evaluate("window.scrollTo(0, 0)")

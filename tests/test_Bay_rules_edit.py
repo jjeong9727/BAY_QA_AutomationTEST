@@ -80,7 +80,7 @@ def test_order_rules_edit(page:Page):
     expect(page.locator("table >> tr >> nth=0 >> td >> nth=0")).to_have_text(product_name, timeout=3000)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_confirm").click()
-    expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
     search_and_check_rule(page, rule_name_1, edit_info_1, "1개 제품", MEMO_TEXT)
