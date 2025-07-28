@@ -7,7 +7,6 @@ from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 import time
 
-
 def get_next_10min_slot() -> datetime:
     now = datetime.now()
     minute = (now.minute // 10 + 1) * 10
@@ -49,7 +48,7 @@ def test_inflow (page:Page):
         stock_manager.perform_inflow(inflow_qty)
 
 # 가장 가까운 시간으로 발주 규칙 변경 필요
-
+   
     
 def test_outflow(page:Page):
     bay_login(page)
@@ -101,17 +100,23 @@ def test_outflow(page:Page):
     cell_locator = page.locator("data-testid=history >> tr >> nth=0 >> td >> nth=1")
     expect(cell_locator).to_have_text("자동화제품_1 외 2건", timeout=3000)
 
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(2000)
     page.locator("data-testid=input_search").fill("자동화제품_6")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     cell_locator = page.locator("data-testid=history >> tr >> nth=0 >> td >> nth=1")
     expect(cell_locator).to_have_text("자동화제품_4 외 2건", timeout=3000)
-
+    
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(2000)
     page.locator("data-testid=input_search").fill("자동화제품_9")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     cell_locator = page.locator("data-testid=history >> tr >> nth=0 >> td >> nth=1")
     expect(cell_locator).to_have_text("자동화제품_7 외 2건", timeout=3000)
-    page.wait_for_timeout(1000)   
+    page.wait_for_timeout(1000)
+
+    
