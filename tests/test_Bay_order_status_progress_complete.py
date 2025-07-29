@@ -57,14 +57,32 @@ def test_order_receive_from_progress(page: Page):
         expected_status_conditions = order_status_map["발주 진행"]
         check_order_status_by_order_id(page, "발주 진행", order_id, expected_status_conditions)
 
-        # 수령확정 처리
+        
+        # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭
         page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
         expect(page.locator("data-testid=input_quantity")).to_be_visible(timeout=5000)
-        page.wait_for_timeout(1000)
         stock_inflow = int(page.locator('[data-testid="input_quantity"]').input_value())#입고 수량 저장
         print(stock_inflow)
-        page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
+        # 발주 수령 팝업 퀵메뉴 버튼 확인
+        page.locator("data-testid=btn_plus_10").click()
+        new_data = stock_inflow + 10
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
         page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_plus_100").click() 
+        new_data += 100 
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_minus_100").click() 
+        new_data -= 100 
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_minus_10").click() 
+        new_data -= 10 
+        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        page.wait_for_timeout(1000)
+        assert new_data == stock_inflow, f"초기 수량과 동일하지 않음. 초기 수량: {stock_inflow}, 현재 수량: {new_data}"
+        page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
+        page.wait_for_timeout(2000)
 
         # 수령 상태 확인
         page.locator("data-testid=btn_reset").click()

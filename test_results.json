@@ -3,198 +3,108 @@
     "test_name": "test_Bay_login",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:34:16",
+    "timestamp": "2025-07-29 13:25:37",
     "file": "tests/test_Bay_login.py",
     "stack": "",
-    "duration": "12.16초"
+    "duration": "22.46초"
   },
   {
     "test_name": "test_Bay_alert",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:34:44",
+    "status": "FAIL",
+    "message": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
+    "timestamp": "2025-07-29 13:27:08",
     "file": "tests/test_Bay_alert.py",
-    "stack": "",
-    "duration": "27.74초"
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_alert.py F                                                [100%]\n\n================================== FAILURES ===================================\n______________________________ test_check_alert _______________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/stocks?start_date=2025-07-22&end_date=2025-07-29'>\n\n    def test_check_alert(page:Page):\n        bay_login(page)\n        # [카테고리 관리] 이탈 팝업 확인\n        page.goto(URLS[\"bay_category\"])\n        page.wait_for_timeout(2000)\n        # 구분 탭\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_category\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_confirm\").click()\n        page.wait_for_timeout(1000)\n        # 종류 탭\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_maker\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_confirm\").click()\n        page.wait_for_timeout(1000)\n        # 제조사 탭\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_type\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_confirm\").click()\n        page.wait_for_timeout(1000)\n        # 구분 탭에서 이탈 취소 확인\n        page.locator(\"data-testid=input_kor\").first.fill(edit_name)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=tab_category\").click()\n        expect(page.locator(\"data-testid=txt_nosave\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_cancel\").click()\n        expect(page.locator(\"data-testid=input_kor\").first).to_have_value(edit_name, timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # [제품 관리] 엑셀 다운로드 확인\n        # 오늘 날짜 포맷 (예: 2025_07_15)\n        page.goto(URLS[\"bay_prdList\"])\n        today = datetime.now().strftime(\"%Y_%m_%d\")\n        with page.expect_download() as download_info:\n            page.click('[data-testid=\"btn_download\"]')\n            page.wait_for_timeout(1000)\n        download = download_info.value\n    \n        filename = download.suggested_filename\n        print(f\"\\U0001f4c1 \\ub2e4\\uc6b4\\ub85c\\ub4dc\\ub41c \\ud30c\\uc77c\\uba85: {filename}\")\n        assert filename.startswith(today), f\"\\u274c \\ud30c\\uc77c\\uba85\\uc774 \\uc624\\ub298 \\ub0a0\\uc9dc({today})\\ub85c \\uc2dc\\uc791\\ud558\\uc9c0 \\uc54a\\uc2b5\\ub2c8\\ub2e4.\"\n    \n        # 제품 미선택 > 일괄 삭제 시도\n        page.locator(\"data-testid=btn_del_bulk\").click()\n        expect(page.locator(\"data-testid=toast_nodelete\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(500)\n    \n        # 재고 있는 제품 삭제 불가 확인\n        page.locator(\"data-testid=input_search\").fill(\"중복테스트\")\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(1000)\n        rows = page.locator(\"table tbody tr\")\n        row_count = rows.count()\n        txt_delete = \"제품을 삭제하시겠습니까?\"\n        for i in range(row_count):\n            edit_button = rows.nth(i).locator(\"td:nth-child(11) >> text=삭제\")\n            if edit_button.is_visible():\n                print(f\"\\u2705 {i}\\ubc88\\uc9f8 \\ud589\\uc758 \\uc0ad\\uc81c \\ubc84\\ud2bc \\ud074\\ub9ad\")\n                edit_button.click()\n                page.wait_for_timeout(1000)\n                expect(page.locator(\"data-testid=txt_delete\")).to_be_visible(timeout=3000)\n                page.locator(\"data-testid=btn_del\").click()\n                break\n    \n        expect(page.locator(\"data-testid=toast_stock\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # [제품 관리] 이탈 팝업 확인\n        # 등록화면\n        page.goto(URLS[\"bay_prdList\"])\n        page.wait_for_timeout(2000)\n        page.locator(\"data-testid=btn_addprd\").click()\n        page.wait_for_timeout(2000)\n        page.locator(\"data-testid=input_prdname_kor\").fill(edit_name)\n        page.locator(\"body\").click(position={\"x\": 10, \"y\": 10})\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_no\").click()\n        expect(page.locator(\"data-testid=input_prdname_kor\").first).to_have_value(edit_name, timeout=3000)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_yes\").click()\n        expect(page.locator(\"data-testid=btn_addprd\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n        # 수정화면\n        rows = page.locator(\"table tbody tr\")\n        row_count = rows.count()\n    \n        for i in range(row_count):\n            edit_button = rows.nth(i).locator(\"td:nth-child(11) >> text=수정\")\n            if edit_button.is_visible():\n                print(f\"\\u2705 {i}\\ubc88\\uc9f8 \\ud589\\uc758 \\uc218\\uc815 \\ubc84\\ud2bc \\ud074\\ub9ad\")\n                edit_button.click()\n                break\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_maker_trigger\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_maker_search\").fill(\"중복테스트\")\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_maker_item\", has_text=\"중복테스트\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_no\").click()\n        expect(page.locator(\"data-testid=drop_maker_trigger\")).to_have_text(\"중복테스트\", timeout=3000)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_yes\").click()\n        expect(page.locator(\"data-testid=btn_addprd\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # [재고관리] 이탈 팝업 확인\n        # # 재고 등록화면\n        txt_register = \"해당 날짜로 재고 등록하시겠습니까?\"\n        page.goto(URLS[\"bay_stock\"])\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_stockadd\").click()\n        expect(page.locator(\"data-testid=btn_addrow\")).to_be_visible(timeout=3000)\n    \n        # 삭제 불가 Alert 확인\n        page.locator(\"data-testid=btn_addrow\").click()\n        page.wait_for_timeout(1000)\n        close_btn = page.locator(\"button:has(svg path[id='Path 4'])\").last\n        expect(close_btn).to_be_visible()\n        close_btn.click()\n        page.wait_for_timeout(1000)\n        close_btn.click()\n        expect(page.locator(\"data-testid=toast_nostock\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # 재고량 초과 알럿 확인\n        page.locator(\"data-testid=drop_status_trigger\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_status_item\",has_text=\"입고\").click()\n    \n        page.locator(\"data-testid=drop_prdname_trigger\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_prdname_search\").fill(\"중복테스트\")\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_prdname_item\",has_text=\"중복테스트\").click()\n        page.wait_for_timeout(1000)\n        stock_text = page.locator('[data-testid=\"txt_current_stock\"]').inner_text().strip()\n        try:\n            current_stock = int(stock_text.replace(\",\", \"\"))\n        except ValueError:\n            raise ValueError(f\"\\u274c \\ud604\\uc7ac \\uc7ac\\uace0 \\ud14d\\uc2a4\\ud2b8\\uac00 \\uc815\\uc218\\ub85c \\ubcc0\\ud658 \\ubd88\\uac00: '{stock_text}'\")\n            # 재고보다 큰 수 계산 (예: +10)\n        larger_qty = current_stock + 10\n            # input_qty에 입력\n        page.locator('[data-testid=\"input_qty\"]').fill(str(larger_qty))\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=input_memo\").fill(\"테스트 메모\")\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_save\").click()\n        expect(page.locator('[data-testid=\"toast_over_stock\"]')).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n    \n        # 이탈 팝업 확인\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_no\").click()\n        expect(page.locator(\"data-testid=input_memo\")).to_have_value(\"테스트 메모\", timeout=3000)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_back\").click()\n        expect(page.locator(\"data-testid=title\")).to_have_text(txt_nosave, timeout=3000)\n        page.wait_for_timeout(500)\n        page.locator(\"data-testid=btn_yes\").click()\n        expect(page.locator(\"data-testid=btn_stockadd\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        # 재고 리스트 날짜 퀵메뉴 확인\n        today = datetime.today()\n        week_ago = today - timedelta(days=7)\n        month_ago = today - timedelta(days=30)\n        today_str = format_date(today)\n        week_ago_str = format_date(week_ago)\n        month_ago_str = format_date(month_ago)\n    \n        # 최근 1주 확인\n        page.click('[data-testid=\"btn_weekago\"]')\n        page.wait_for_timeout(1000)\n        start_text = page.locator('[data-testid=\"select_startday\"] span').text_content()\n        end_text = page.locator('[data-testid=\"select_endday\"] span').text_content()\n        assert start_text == week_ago_str, f\"시작일 값이 일주일 전이 아님 → {start_text}\"\n        assert end_text == today_str, f\"종료일 값이 오늘이 아님 → {end_text}\"\n        page.wait_for_timeout(2000)\n    \n        # 최근 1개월 확인\n>       page.click('[data-testid=\"btn_monthago\"]')\n\ntests\\test_Bay_alert.py:223: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:9921: in click\n    self._sync(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_page.py:827: in click\n    return await self._main_frame.click(**locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:488: in click\n    await self._channel.send(\"click\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000002756D2AFCB0>\ncb = <function Channel.send.<locals>.<lambda> at 0x000002756D38B600>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Page.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"[data-testid=\\\"btn_monthago\\\"]\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n---------------------------- Captured stdout call -----------------------------\n\\U0001f4c1 \\ub2e4\\uc6b4\\ub85c\\ub4dc\\ub41c \\ud30c\\uc77c\\uba85: 2025_07_29_\\uc81c\\ud488\\ubaa9\\ub85d.xlsx\\n\\u2705 0\\ubc88\\uc9f8 \\ud589\\uc758 \\uc0ad\\uc81c \\ubc84\\ud2bc \\ud074\\ub9ad\\n\\u2705 0\\ubc88\\uc9f8 \\ud589\\uc758 \\uc218\\uc815 \\ubc84\\ud2bc \\ud074\\ub9ad\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_alert.py::test_check_alert - playwright._impl._errors.T...\n======================== 1 failed in 90.55s (0:01:30) =========================\n",
+    "duration": "91.77초"
   },
   {
     "test_name": "test_Bay_supplier",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:35:28",
+    "timestamp": "2025-07-29 13:27:51",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "44.78초"
+    "duration": "42.99초"
   },
   {
     "test_name": "test_Bay_supplier_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:35:45",
+    "timestamp": "2025-07-29 13:28:08",
     "file": "tests/test_Bay_supplier_val.py",
     "stack": "",
-    "duration": "16.18초"
+    "duration": "16.50초"
   },
   {
     "test_name": "test_Bay_prdctg",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:36:42",
+    "timestamp": "2025-07-29 13:29:05",
     "file": "tests/test_Bay_prdctg.py",
     "stack": "",
-    "duration": "56.90초"
+    "duration": "56.62초"
   },
   {
     "test_name": "test_Bay_prdctg_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:37:19",
+    "timestamp": "2025-07-29 13:29:41",
     "file": "tests/test_Bay_prdctg_val.py",
     "stack": "",
-    "duration": "37.42초"
+    "duration": "36.07초"
   },
   {
     "test_name": "test_Bay_prdctg_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:38:08",
+    "timestamp": "2025-07-29 13:30:28",
     "file": "tests/test_Bay_prdctg_edit.py",
     "stack": "",
-    "duration": "48.80초"
+    "duration": "46.79초"
   },
   {
     "test_name": "test_Bay_prdctg_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:38:45",
+    "timestamp": "2025-07-29 13:31:04",
     "file": "tests/test_Bay_prdctg_delete.py",
     "stack": "",
-    "duration": "36.83초"
+    "duration": "36.39초"
   },
   {
     "test_name": "test_Bay_product",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:41:24",
+    "status": "FAIL",
+    "message": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
+    "timestamp": "2025-07-29 13:32:58",
     "file": "tests/test_Bay_product.py",
-    "stack": "",
-    "duration": "159.08초"
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_product.py F                                              [100%]\n\n================================== FAILURES ===================================\n_______________________ test_register_multiple_products _______________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_01'>\n\n    def test_register_multiple_products(page: Page):\n        try:\n            bay_login(page)\n            page.goto(URLS[\"bay_prdList\"])\n            page.wait_for_timeout(1000)\n            page.locator(\"data-testid=btn_addprd\").click()\n            page.wait_for_timeout(1000)\n    \n            num_products = 6\n            prdnames = []\n            prd_data = []\n    \n            type_options = [\"의약품\", \"의료기기\", \"소모품\"]\n            group_options = [\"주사제\", \"연고\", \"보톡스\"]\n            maker_options = [\"메디톡스\", \"루트로닉\", \"휴메딕스\"]\n    \n            for idx in range(num_products):\n                selected_type = select_from_dropdown(\n                    page, \"drop_type_trigger\", \"drop_type_search\", \"drop_type_item\", random.choice(type_options))\n    \n                selected_group = select_from_dropdown(\n                    page, \"drop_group_trigger\", \"drop_group_search\", \"drop_group_item\", random.choice(group_options))\n    \n                prdname_kor, prdname_eng = generate_product_names()\n                name_kor_input = page.locator(\"data-testid=input_prdname_kor\").last\n                name_kor_input.scroll_into_view_if_needed()\n                name_kor_input.fill(prdname_kor)\n                page.wait_for_timeout(1000)\n    \n                name_eng_input = page.locator(\"data-testid=input_prdname_eng\").last\n                name_eng_input.scroll_into_view_if_needed()\n                name_eng_input.fill(prdname_eng)\n                page.wait_for_timeout(1000)\n    \n                prdnames.append(prdname_kor)\n    \n                selected_maker = select_from_dropdown(\n                    page, \"drop_maker_trigger\", \"drop_maker_search\", \"drop_maker_item\", random.choice(maker_options))\n    \n                price_input = page.locator(\"data-testid=input_price\").last\n                price_input.scroll_into_view_if_needed()\n                price_input.fill(str(random.randint(1000, 10000)))\n                page.wait_for_timeout(1000)\n    \n                safety = 5\n                auto_order = 10\n    \n                safe_input = page.locator(\"data-testid=input_stk_safe\").last\n                safe_input.scroll_into_view_if_needed()\n                safe_input.fill(str(safety))\n                page.wait_for_timeout(1000)\n    \n                auto_input = page.locator(\"data-testid=input_stk_qty\").last\n                auto_input.scroll_into_view_if_needed()\n                auto_input.fill(str(auto_order))\n                page.wait_for_timeout(1000)\n    \n                txt_manager = \"권정의 010-6275-4153\"\n                page.evaluate(\"window.scrollTo(0, document.body.scrollHeight)\")\n                page.wait_for_timeout(1000)\n                supplier_trigger = page.locator(\"data-testid=drop_supplier_trigger\").last\n                supplier_trigger.scroll_into_view_if_needed()\n                supplier_trigger.click()\n                page.wait_for_timeout(1000)\n                supplier_items = page.locator(\"data-testid=drop_supplier_item\")\n                automation_supplier = supplier_items.locator(\"text=자동화업체\")\n                automation_supplier.click()\n                expect(page.locator(\"data-testid=txt_supplier_contact\")).to_have_text(txt_manager, timeout=3000)\n                page.wait_for_timeout(1000)\n    \n                prd_data.append({\n                    \"prdname_kor\": prdname_kor,\n                    \"prdname_eng\": prdname_eng,\n                    \"type_name\": selected_type,\n                    \"group\": selected_group,\n                    \"maker\": selected_maker,\n                    \"safety\": safety,\n                    \"auto_order\": auto_order\n                })\n    \n                if idx < num_products - 1:\n                    add_row_button = page.locator(\"data-testid=btn_addrow\")\n                    add_row_button.scroll_into_view_if_needed()\n                    add_row_button.wait_for(state=\"visible\", timeout=5000)\n                    add_row_button.click(force=True)\n    \n            page.evaluate(\"window.scrollTo(0, 0)\")\n            page.wait_for_timeout(1000)  # 스크롤 애니메이션 대기\n            save_btn = page.locator(\"data-testid=btn_save\")\n            save_btn.scroll_into_view_if_needed()\n            save_btn.click()\n            page.wait_for_timeout(1000)\n            print(f\"[PASS][제품관리] {num_products}개 제품 등록 및 저장 완료\")\n    \n            for product in prd_data:\n                append_product_name(**product)\n    \n>           verify_products_in_list(page, prdnames, URLS[\"bay_prdList\"], 4)\n\ntests\\test_Bay_product.py:114: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nhelpers\\product_utils.py:119: in verify_products_in_list\n    cell_text = row.locator(f\"td:nth-child({table_column_index})\").inner_text().strip()\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:16878: in inner_text\n    self._sync(self._impl_obj.inner_text(timeout=timeout))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:444: in inner_text\n    return await self._frame.inner_text(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:618: in inner_text\n    return await self._channel.send(\"innerText\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001AD1935FCB0>\ncb = <function Channel.send.<locals>.<lambda> at 0x000001AD197BFCE0>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td:nth-child(4)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n---------------------------- Captured stdout call -----------------------------\n[PASS][제품관리] 6개 제품 등록 및 저장 완료\n[FAIL] 여러 개 제품 등록 실패: Locator.inner_text: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"table tbody tr\").first.locator(\"td:nth-child(4)\")\n\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_product.py::test_register_multiple_products - playwrigh...\n======================== 1 failed in 112.44s (0:01:52) ========================\n",
+    "duration": "113.56초"
   },
   {
     "test_name": "test_Bay_product_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:41:53",
+    "timestamp": "2025-07-29 13:33:25",
     "file": "tests/test_Bay_product_val.py",
     "stack": "",
-    "duration": "29.08초"
+    "duration": "27.82초"
   },
   {
     "test_name": "test_Bay_product_edit",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:42:22",
+    "status": "FAIL",
+    "message": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
+    "timestamp": "2025-07-29 13:34:11",
     "file": "tests/test_Bay_product_edit.py",
-    "stack": "",
-    "duration": "28.94초"
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_product_edit.py F                                         [100%]\n\n================================== FAILURES ===================================\n_____________________________ test_edit_products ______________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_01'>\n\n    def test_edit_products(page):\n        try:\n            bay_login(page)\n    \n            # 1. JSON에서 조건에 맞는 제품 하나 가져오기\n            product = get_deletable_products()[0]  # 또는 get_editable_product()\n            product_name = product[\"kor\"]\n            print(f\"\\U0001f3af \\uc218\\uc815 \\ub300\\uc0c1 \\uc81c\\ud488\\uba85: {product_name}\")\n    \n            # 2. 제품 검색\n            page.goto(URLS[\"bay_prdList\"])\n            page.wait_for_timeout(2000)\n            page.fill('[data-testid=\"input_search\"]', product_name)\n            page.wait_for_timeout(500)\n            page.click('[data-testid=\"btn_search\"]')\n            page.wait_for_timeout(2000)\n    \n            # 3. 검색 결과에서 해당 행의 수정 버튼 클릭\n            rows = page.locator(\"table tbody tr\")\n            row_count = rows.count()\n    \n            for i in range(row_count):\n                edit_button = rows.nth(i).locator(\"td:nth-child(11) >> text=수정\")\n                if edit_button.is_visible():\n                    print(f\"\\u2705 {i}\\ubc88\\uc9f8 \\ud589\\uc758 \\uc218\\uc815 \\ubc84\\ud2bc \\ud074\\ub9ad\")\n                    edit_button.click()\n                    break\n    \n            # 4. 제품명, 제조사 수정\n            page.wait_for_timeout(2000)\n            input_kor = page.locator('input[data-testid=\"input_prdname_kor\"]')\n>           origin_name = input_kor.input_value()\n\ntests\\test_Bay_product_edit.py:54: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:16914: in input_value\n    self._sync(self._impl_obj.input_value(timeout=timeout))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:452: in input_value\n    return await self._frame.input_value(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:686: in input_value\n    return await self._channel.send(\"inputValue\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x00000207AABFFCB0>\ncb = <function Channel.send.<locals>.<lambda> at 0x00000207AACDF380>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.input_value: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"input[data-testid=\\\"input_prdname_kor\\\"]\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n---------------------------- Captured stdout call -----------------------------\n\\U0001f3af \\uc218\\uc815 \\ub300\\uc0c1 \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_01\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_product_edit.py::test_edit_products - playwright._impl....\n============================= 1 failed in 44.50s ==============================\n",
+    "duration": "45.61초"
   },
   {
     "test_name": "test_Bay_product_delete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:43:18",
+    "status": "FAIL",
+    "message": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
+    "timestamp": "2025-07-29 13:35:34",
     "file": "tests/test_Bay_product_delete.py",
-    "stack": "",
-    "duration": "55.81초"
-  },
-  {
-    "test_name": "test_Bay_stock_in",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:45:06",
-    "file": "tests/test_Bay_stock_in.py",
-    "stack": "",
-    "duration": "108.69초"
-  },
-  {
-    "test_name": "test_Bay_stock_out",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:46:24",
-    "file": "tests/test_Bay_stock_out.py",
-    "stack": "",
-    "duration": "78.06초"
-  },
-  {
-    "test_name": "test_Bay_order_status_request_cancel",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:46:49",
-    "file": "tests/test_Bay_order_status_request_cancel.py",
-    "stack": "",
-    "duration": "24.41초"
-  },
-  {
-    "test_name": "test_Bay_order_status_request",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:48:12",
-    "file": "tests/test_Bay_order_status_request.py",
-    "stack": "",
-    "duration": "82.65초"
-  },
-  {
-    "test_name": "test_Bay_order_status_progress_delivery",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:49:18",
-    "file": "tests/test_Bay_order_status_progress_delivery.py",
-    "stack": "",
-    "duration": "66.05초"
-  },
-  {
-    "test_name": "test_Bay_order_status_progress_complete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:49:47",
-    "file": "tests/test_Bay_order_status_progress_complete.py",
-    "stack": "",
-    "duration": "29.45초"
-  },
-  {
-    "test_name": "test_Bay_order_status_delivery",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:50:15",
-    "file": "tests/test_Bay_order_status_delivery.py",
-    "stack": "",
-    "duration": "27.67초"
-  },
-  {
-    "test_name": "test_Bay_order_status_complete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:50:38",
-    "file": "tests/test_Bay_order_status_complete.py",
-    "stack": "",
-    "duration": "22.90초"
-  },
-  {
-    "test_name": "test_Bay_order_status_fail",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:50:52",
-    "file": "tests/test_Bay_order_status_fail.py",
-    "stack": "",
-    "duration": "14.72초"
-  },
-  {
-    "test_name": "test_Bay_stock_history",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-24 15:52:26",
-    "file": "tests/test_Bay_stock_history.py",
-    "stack": "",
-    "duration": "93.68초"
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_product_delete.py FF                                      [100%]\n\n================================== FAILURES ===================================\n_____________________________ test_delete_product _____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_03'>\nrow_index = 0\n\n    def delete_product_and_verify(page: Page, row_index: int):\n        try:\n>           product_name = page.locator(f\"table tbody tr >> nth={row_index} >> td:nth-child(4)\").inner_text().strip()\n\ntests\\test_Bay_product_delete.py:53: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:16878: in inner_text\n    self._sync(self._impl_obj.inner_text(timeout=timeout))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:444: in inner_text\n    return await self._frame.inner_text(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:618: in inner_text\n    return await self._channel.send(\"innerText\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001BE9BFBFCB0>\ncb = <function Channel.send.<locals>.<lambda> at 0x000001BE9C08F600>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td:nth-child(4)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n\nDuring handling of the above exception, another exception occurred:\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_03'>\n\n    def test_delete_product(page):\n        try:\n            bay_login(page)\n    \n            deletable_names = get_deletable_products_from_json()\n            if not deletable_names:\n                msg = \"\\u274c \\uc0ad\\uc81c \\uac00\\ub2a5\\ud55c \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n            target_name = random.choice(deletable_names)\n    \n            page.goto(URLS[\"bay_prdList\"])\n            page.fill(\"data-testid=input_search\", target_name)\n            page.wait_for_timeout(1000)\n            page.click(\"data-testid=btn_search\")\n            page.wait_for_timeout(1000)\n    \n            rows = page.locator(\"table tbody tr\")\n            if rows.count() == 0:\n                msg = f\"\\u274c \\uc81c\\ud488 '{target_name}' \\uc744(\\ub97c) \\ucc3e\\uc744 \\uc218 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n>           delete_product_and_verify(page, row_index=0)\n\ntests\\test_Bay_product_delete.py:104: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_03'>\nrow_index = 0\n\n    def delete_product_and_verify(page: Page, row_index: int):\n        try:\n            product_name = page.locator(f\"table tbody tr >> nth={row_index} >> td:nth-child(4)\").inner_text().strip()\n            product_display_name = product_name.splitlines()[0]\n    \n            delete_button = page.locator(f\"table tbody tr >> nth={row_index} >> td:nth-child(11) button\").nth(1)  # 0부터 시작하므로 1은 두 번째 버튼\n            delete_button.click()\n    \n    \n            page.click(\"data-testid=btn_del\")\n            page.wait_for_timeout(500)\n            page.reload()\n            page.wait_for_timeout(1000)\n    \n            if check_delete(page, product_name):\n                msg = f\"[PASS][제품관리] 제품 삭제 테스트 (삭제된 제품: '{product_display_name}')\"\n                print(msg)\n                remove_product_name_by_kor(product_display_name)  # \\u2705 JSON\\uc5d0\\uc11c \\uc81c\\uac70\n            else:\n                fail_msg = f\"[FAIL][제품관리] 제품 '{product_display_name}' 삭제 실패 (리스트에 존재)\"\n                print(fail_msg)\n    \n                assert False, fail_msg\n        except Exception as e:\n>           fail_msg = f\"[FAIL][제품관리] 제품 '{product_display_name}' 삭제 중 예외 발생\\n에러: {str(e)}\"\nE           UnboundLocalError: cannot access local variable 'product_display_name' where it is not associated with a value\n\ntests\\test_Bay_product_delete.py:75: UnboundLocalError\n---------------------------- Captured stdout call -----------------------------\n[FAIL][제품관리] 제품 삭제 중 예외 발생\n에러 내용: cannot access local variable 'product_display_name' where it is not associated with a value\n__________________________ test_bulk_delete_products __________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_03'>\n\n    def test_bulk_delete_products(page):\n        try:\n            # 로그인\n            bay_login(page)\n    \n    \n            # 일괄 삭제 가능한 제품 검색\n            deletable_names = get_deletable_products_from_json()\n            if not deletable_names:\n                msg = \"\\u274c \\uc77c\\uad04 \\uc0ad\\uc81c \\uac00\\ub2a5\\ud55c \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n            selected_names = random.sample(deletable_names, min(len(deletable_names), random.randint(1, 2)))\n    \n            # 제품 리스트 페이지로 이동\n    \n            selected_product_names = []\n    \n            for name in selected_names:\n                page.fill(\"data-testid=input_search\", name)\n                page.wait_for_timeout(1000)\n                page.click(\"data-testid=btn_search\")\n                page.wait_for_timeout(1000)\n    \n                row = page.locator(\"table tbody tr\").nth(0)\n                if row.is_visible():\n                    row.locator(\"td:nth-child(1)\").click()\n                    selected_product_names.append(name)\n    \n            if not selected_product_names:\n                msg = \"\\u2705 \\uc870\\uac74\\uc5d0 \\ub9de\\ub294 \\uc81c\\ud488\\uc774 \\uc5c6\\uc5b4\\uc11c \\uc0ad\\uc81c\\ub97c \\uc2a4\\ud0b5\\ud569\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n            # 일괄 삭제 버튼 클릭\n            page.click(\"data-testid=btn_del_bulk\")\n            page.wait_for_timeout(2000)\n>           page.locator(\"data-testid=btn_del\").click()\n\ntests\\test_Bay_product_delete.py:152: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:15464: in click\n    self._sync(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:156: in click\n    return await self._frame.click(self._selector, strict=True, **params)\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:488: in click\n    await self._channel.send(\"click\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001BE9BFBFCB0>\ncb = <function Channel.send.<locals>.<lambda> at 0x000001BE9C059F80>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=btn_del\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n---------------------------- Captured stdout call -----------------------------\n[FAIL][제품관리] 일괄 삭제 중 예외 발생\n에러 내용: Locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"data-testid=btn_del\")\n\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_product_delete.py::test_delete_product - UnboundLocalEr...\nFAILED tests/test_Bay_product_delete.py::test_bulk_delete_products - playwrig...\n======================== 2 failed in 81.70s (0:01:21) =========================\n",
+    "duration": "82.84초"
   }
 ]
