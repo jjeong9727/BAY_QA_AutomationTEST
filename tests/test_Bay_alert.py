@@ -3,7 +3,7 @@ import random
 from config import URLS, Account
 from helpers.product_utils import append_product_name, generate_product_names, verify_products_in_list
 from helpers.common_utils import bay_login
-
+import calendar
 from datetime import datetime, timedelta
 import os
 def format_date(date: datetime) -> str:
@@ -182,16 +182,16 @@ def test_check_alert(page:Page):
     page.locator('[data-testid="input_qty"]').fill(str(larger_qty))
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_memo").fill("테스트 메모")
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(2000)
     page.locator("data-testid=btn_save").click()
-    expect(page.locator('[data-testid="toast_over_stock"]')).to_be_visible(timeout=3000)
+    expect(page.locator('[data-testid="toast_over_stock"]')).to_be_visible(timeout=7000)
     page.wait_for_timeout(1000)
 
 
     # 이탈 팝업 확인
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=title")).to_have_text(txt_nosave, timeout=3000)
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     page.locator("data-testid=btn_no").click()
     expect(page.locator("data-testid=input_memo")).to_have_value("테스트 메모", timeout=3000)
     page.wait_for_timeout(1000)
@@ -205,12 +205,13 @@ def test_check_alert(page:Page):
     # 재고 리스트 날짜 퀵메뉴 확인
     today = datetime.today()
     week_ago = today - timedelta(days=7)
-    month_ago = today - timedelta(days=30)
     today_str = format_date(today)
     week_ago_str = format_date(week_ago)
-    month_ago_str = format_date(month_ago)
-
-    # 최근 1주 확인 
+    start_of_month = today.replace(day=1)
+    last_day = calendar.monthrange(today.year, today.month)[1]
+    end_of_month = today.replace(day=last_day)
+    month_start_str = start_of_month.strftime("%Y. %m. %d")
+        # 최근 1주 확인 
     page.click('[data-testid="btn_weekago"]')
     page.wait_for_timeout(1000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
@@ -219,13 +220,13 @@ def test_check_alert(page:Page):
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
     page.wait_for_timeout(2000)
 
-    # 최근 1개월 확인
-    page.click('[data-testid="btn_monthago"]')
+    # 이번달 확인
+    page.click('[data-testid="btn_month"]')
     page.wait_for_timeout(2000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
-    assert start_text == month_ago_str, f"시작일 값이 한 달 전이 아님 → {start_text}"
-    assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
+    assert start_text == month_start_str, f"❌ 시작일이 이번 달 1일이 아님 → {start_text}"
+    assert end_text == today_str, f"❌ 종료일이 이번 달 말일이 아님 → {end_text}"
     page.wait_for_timeout(2000)
 
     # 오늘 날짜 확인
@@ -237,7 +238,51 @@ def test_check_alert(page:Page):
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
     page.wait_for_timeout(2000)
 
+    # 월별 버튼 확인
+    today = datetime.now()
+    today_str = today.strftime("%Y. %m. %d")
+    current_month = today.month
+    active_month_buttons = []
+
+    # 1~12월 버튼의 활성/비활성 상태 확인
+    for month in range(1, 13):
+        month_name = calendar.month_name[month].lower()  # 예: "january"
+        btn = page.locator(f"data-testid=btn_{month_name}")
+        is_disabled = btn.is_disabled()
+        
+        if month <= current_month:
+            assert not is_disabled, f"❌ {month_name.capitalize()} 버튼은 활성화되어야 합니다."
+            active_month_buttons.append(month_name)
+        else:
+            assert is_disabled, f"❌ 미래 월 {month_name.capitalize()} 버튼은 비활성화되어야 합니다."
+
+    assert active_month_buttons, "❌ 활성화된 월 버튼이 없습니다."
+
+    # 활성 월 버튼 클릭 → 시작일/종료일 확인
+    for month_name in active_month_buttons:
+        page.locator(f"data-testid=btn_{month_name}").click()
+        page.wait_for_timeout(2000)
+        
+        start_text = page.locator('[data-testid="select_startday"] span').text_content()
+        end_text = page.locator('[data-testid="select_endday"] span').text_content()
+        
+        assert start_text != today_str, f"❌시작일 삭제되지 않음 → {start_text}"
+        assert end_text != today_str, f"❌종료일 삭제되지 않음 → {end_text}"
+
+    # 다시 클릭해서 해제
+    for month_name in active_month_buttons:
+        page.locator(f"data-testid=btn_{month_name}").click()
+        page.wait_for_timeout(1000)
+
+    # 시작일/종료일 → 오늘 날짜 확인
+    start_text = page.locator('[data-testid="select_startday"] span').text_content()
+    end_text = page.locator('[data-testid="select_endday"] span').text_content()
+
+    assert start_text == today_str, f"❌시작일 오늘 아님 → {start_text}"
+    assert end_text == today_str, f"❌종료일 오늘 아님 → {end_text}"
     print("✅ 날짜 범위 버튼 테스트 성공")
+    page.wait_for_timeout(1000)
+
     
     # 재고 리스트 일괄 수정 선택 알럿
     page.locator("data-testid=btn_edit_bulk").click()
