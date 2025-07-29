@@ -125,6 +125,7 @@ class StockManager:
 
 
     def perform_inflow(self, quantity: int):
+        txt_inflow = "제품 입고가 완료되었습니다."
         self.page.goto(URLS["bay_stock"])
         self.page.wait_for_timeout(2000)
         self.page.click("data-testid=btn_stockadd")
@@ -150,10 +151,12 @@ class StockManager:
         self.page.fill("data-testid=input_memo", "30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
         self.page.wait_for_timeout(1000)
         self.page.locator("data-testid=btn_save").click()
-        expect(self.page.locator("data-testid=toast_inflow")).to_be_visible(timeout=3000)
+        # 입고 시 입고 완료 토스트 변경
+        expect(self.page.locator("data-testid=toast_inflow")).to_have_text(txt_inflow, timeout=3000)
         self.page.wait_for_timeout(3000)
 
     def perform_outflow(self, quantity: int):
+        txt_outflow = "재고가 안전 재고 보다 적은 경우 발주 규칙에 따라 발주됩니다."
         self.page.goto(URLS["bay_stock"])
         self.page.wait_for_timeout(2000)
         self.page.click("data-testid=btn_stockadd")
@@ -178,5 +181,6 @@ class StockManager:
         memo_input.fill("30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
         self.page.wait_for_timeout(1000)
         self.page.locator("data-testid=btn_save").click()
-        expect(self.page.locator("data-testid=toast_outflow")).to_be_visible(timeout=3000)
+        # 출고 시 배치에 따른 발주 안내 토스트 변경
+        expect(self.page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
         self.page.wait_for_timeout(3000)
