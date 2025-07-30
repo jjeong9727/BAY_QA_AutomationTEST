@@ -63,6 +63,7 @@ def test_order_receive_from_delivery(page: Page):
         # order_id를 사용하여 order status 확인
         check_order_status_by_order_id(page, "배송 진행", order_id, expected_status_conditions)
 
+        
         # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭
         page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
         expect(page.locator("data-testid=input_quantity")).to_be_visible(timeout=5000)
@@ -89,6 +90,7 @@ def test_order_receive_from_delivery(page: Page):
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
         page.wait_for_timeout(2000)
 
+        
         # 발주 내역에서 해당 제품을 "수령 확정" 상태인지 확인
         page.locator("data-testid=btn_reset").click()
         page.wait_for_timeout(1000) 

@@ -57,6 +57,7 @@ def test_order_receive_from_progress(page: Page):
         expected_status_conditions = order_status_map["발주 진행"]
         check_order_status_by_order_id(page, "발주 진행", order_id, expected_status_conditions)
 
+        
         # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭
         page.click("button[data-testid='btn_receive']")  # 수령 확정 버튼 클릭
         expect(page.locator("data-testid=input_quantity")).to_be_visible(timeout=5000)
@@ -83,6 +84,7 @@ def test_order_receive_from_progress(page: Page):
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
         page.wait_for_timeout(2000)
         
+
         # 수령 상태 확인
         page.locator("data-testid=btn_reset").click()
         page.wait_for_timeout(1000) 

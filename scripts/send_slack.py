@@ -102,7 +102,7 @@ def build_slack_message(test_results):
     total_time = get_total_duration_from_results(test_results)
 
     slack_message = f":mega: *[CenturionBay] 자동화 테스트 결과* ({seoul_time})\n"
-    slack_message += f"버전: `{version}`\n"
+    slack_message += f"버전: :centurionlogo: `{version}`\n"
     slack_message += f"Total: {len(test_results)} | ✅PASS: {success_count} | FAIL: ❌{fail_count} \n"
     slack_message += f":stopwatch: 전체 수행 시간: {total_time}\n\n"
     slack_message += "\n".join(detail_lines)
