@@ -131,10 +131,11 @@ def test_prep_bay (page:Page):
 
     
 
-    # 발주 규칙명 "중복테스트" 등록 
+    # 발주 규칙명 "중복테스트", "자동화규칙" 등록 
     page.goto(URLS["bay_rules"])
     page.wait_for_timeout(2000)
     rule_name = "중복테스트"
+    rule_name1 = "자동화규칙"
     memo = "자동화 테스트를 위한 발주 규칙"
 
     page.locator("data-testid=btn_register").click()
@@ -145,7 +146,6 @@ def test_prep_bay (page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_cycle_item", has_text="매일").click()
     page.wait_for_timeout(1000)
-
     page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_hour_item",has_text="12").click()
@@ -157,6 +157,28 @@ def test_prep_bay (page:Page):
     page.locator("data-testid=input_memo").fill(memo)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_confirm").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=btn_register").click()
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=input_rule_name").fill(rule_name1)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_cycle_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_cycle_item", has_text="매일").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_hour_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_hour_item",has_text="12").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_minute_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_minute_item", has_text="00").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_memo").fill(memo)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
+    page.wait_for_timeout(1000)
 
     # 제품 등록 (중복테스트)
     page.goto(URLS["bay_products"])
@@ -214,7 +236,7 @@ def test_prep_bay (page:Page):
     page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
-    # "발주 규칙 변경 확인 제품" 등록
+    # "중복테스트" 제품 등록
     page.locator("data-testid=btn_addrow").click()
     page.wait_for_timeout(1000)
 
@@ -335,7 +357,7 @@ def test_prep_bay (page:Page):
         page.wait_for_timeout(1000)
 
         # 발주 규칙 선택
-        rule = "중복테스트"
+        rule = "자동화규칙"
         page.locator("data-testid=drop_rule_trigger").click()
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_rule_search").fill(rule)

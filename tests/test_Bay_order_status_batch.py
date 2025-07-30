@@ -15,6 +15,7 @@ product_list = [f"자동화제품_{i}" for i in range(1, 10)]
 
 def accept_order(page:Page, order_id:str, manager:str):
     accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
+    quantity = "총 3건"
     page.goto(accept_url)
     page.wait_for_timeout(2000)
     if manager == "권정의":
@@ -28,7 +29,8 @@ def accept_order(page:Page, order_id:str, manager:str):
         page.fill("input[data-testid='input_contact']", "01085148780")
         page.wait_for_timeout(1000)
     page.locator("button[data-testid='btn_confirm']").last.click()
-    expect(page.locator("data-testid=btn_accept")).to_be_visible(timeout=5000)
+    # 발주 규칙에 따른 제품 개수 확인(3개 고정)
+    expect(page.locator("data-testid=txt_quantity")).to_have_text(quantity, timeout=7000)
     page.wait_for_timeout(1000)
     page.click("button[data-testid='btn_accept']")
     expect(page.locator("data-testid=toast_accept")).to_be_visible(timeout=3000)
@@ -66,7 +68,7 @@ def delivery_order(page:Page, order_id:str, manager:str):
     page.locator("button[data-testid='btn_confirm']").last.click()
     expect(page.locator("data-testid=toast_tracking")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
-
+# ✅ 발주 요청 -> 개별 취소 / 일괄 취소 
 def test_cancel_batch_history(page:Page):
     prd_name = f"{product_list[0]} 외 2건"
 
@@ -141,6 +143,7 @@ def test_cancel_batch_history(page:Page):
     expected_status_conditions = order_status_map["발주 취소"]  
     check_order_status_by_order_id(page, "발주 취소", order_id, expected_status_conditions)
 
+# ✅ 발주 진행 -> 일부 수령 -> 수령 완료
 def test_receive_without_tracking(page:Page):
     prd_name = f"{product_list[3]} 외 2건"
     bay_login(page)
@@ -212,7 +215,8 @@ def test_receive_without_tracking(page:Page):
     # 수령 완료 상태 UI 확인
     expected_status_conditions = order_status_map["수령 완료"]
     check_order_status_by_order_id(page, "수령 완료", order_id, expected_status_conditions)
-    
+
+# ✅ 배송 진행 -> 일부 수령 -> 수령 완료    
 def test_receive_with_tracking(page:Page):
     prd_name = f"{product_list[6]} 외 2건"
     bay_login(page)
