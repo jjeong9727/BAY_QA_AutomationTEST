@@ -22,6 +22,10 @@ def test_register_multiple_products(page: Page):
         type_options = ["의약품", "의료기기", "소모품"]
         group_options = ["주사제", "연고", "보톡스"]
         maker_options = ["메디톡스", "루트로닉", "휴메딕스"]
+        supplier_1 = "자동화업체, 권정의A" 
+        supplier_2 = "자동화업체, 권정의B"
+        supplier_3 = "자동화업체, 권정의C"
+        supplier_4 = "자동화업체, 권정의"
 
         for idx in range(num_products):
             selected_type = select_from_dropdown(
@@ -52,7 +56,7 @@ def test_register_multiple_products(page: Page):
             page.wait_for_timeout(1000)
 
             # 발주 규칙 선택
-            rule = "중복테스트"
+            rule = "자동화규칙"
             page.locator("data-testid=drop_rule_trigger").click()
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_rule_search").fill(rule)
@@ -73,18 +77,33 @@ def test_register_multiple_products(page: Page):
             auto_input.fill(str(auto_order))
             page.wait_for_timeout(1000)
 
-            txt_manager = "권정의 010-6275-4153"
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             page.wait_for_timeout(1000)
-            supplier_trigger = page.locator("data-testid=drop_supplier_trigger").last
-            supplier_trigger.scroll_into_view_if_needed()
-            supplier_trigger.click()
+
+            page.locator("data-testid=drop_supplier_trigger").last.click()
             page.wait_for_timeout(1000)
-            supplier_items = page.locator("data-testid=drop_supplier_item")
-            automation_supplier = supplier_items.locator("text=자동화업체")
-            automation_supplier.click()
-            expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+            page.locator("data-testid=drop_supplier_search").last.fill("자동화업체")
             page.wait_for_timeout(1000)
+            if idx == 0: #제품1
+                txt_manager = supplier_1+" 010-6275-4153"
+                page.locator("data-testid=drop_supplier_item", has_text=supplier_1).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.wait_for_timeout(1000)
+            elif idx == 1: #제품2
+                txt_manager = supplier_2+" 010-6275-4153"
+                page.locator("data-testid=drop_supplier_item", has_text=supplier_2).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.wait_for_timeout(1000)
+            elif idx == 2: #제품3
+                txt_manager = supplier_3+" 010-6275-4153"
+                page.locator("data-testid=drop_supplier_item", has_text=supplier_3).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.wait_for_timeout(1000)
+            else: #제품 4, 5, 6
+                txt_manager = supplier_4+" 010-6275-4153"
+                page.locator("data-testid=drop_supplier_item", has_text=supplier_4).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.wait_for_timeout(1000)
 
             prd_data.append({
                 "prdname_kor": prdname_kor,
@@ -94,7 +113,8 @@ def test_register_multiple_products(page: Page):
                 "maker": selected_maker,
                 "safety": safety,
                 "auto_order": auto_order,
-                "order_rule": rule
+                "order_rule": rule,
+                "supplier" : supplier_4 # ("자동화업체, 권정의")
             })
 
             if idx < num_products - 1:

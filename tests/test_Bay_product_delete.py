@@ -14,7 +14,7 @@ def get_deletable_products_from_json():
         with open("product_name.json", "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        deletable = [item["kor"] for item in data if item.get("order_flag") == 0 and item.get("stock_qty", 0) == 0]
+        deletable = [item["kor"] for item in data if item.get("supplier") == "자동화업체, 권정의" and item.get("stock_qty", 0) == 0]
         return deletable
     except Exception as e:
         error_message = f"Error while fetching deletable products: {str(e)}"
@@ -123,8 +123,8 @@ def test_bulk_delete_products(page):
             msg = "❌ 일괄 삭제 가능한 제품이 없습니다."
             print(msg)
             return
-
-        selected_names = random.sample(deletable_names, min(len(deletable_names), random.randint(1, 2)))
+        # 2개 이상이면 2개, 1개면 1개, 0개면 빈 리스트
+        selected_names = random.sample(deletable_names, min(len(deletable_names), 2))
 
         # 제품 리스트 페이지로 이동
         
