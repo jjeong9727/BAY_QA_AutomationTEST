@@ -49,7 +49,11 @@ test_file_to_korean = {
     "test_Bay_supplier_delete": "업체 삭제 확인",
     "test_Bay_stock_in": "재고 입고 확인",
     "test_Bay_stock_out": "재고 출고 확인",
-    "test_Bay_stock_history":"재고 내역 확인",
+    "test_Bay_stock_history":"재고 상세 내역 확인",
+    "test_Bay_order_status_batch":"규칙 발주 내역 확인",
+    "test_Bay_stock_batch":"여러 제품 규칙 발주 확인",
+    "test_Bay_rules_register":"발주 규칙 등록 확인",
+    "test_Bay_rules_edit":"발주 규칙 수정 확인",
 }
 
 def load_test_results(file_path):

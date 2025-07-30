@@ -87,8 +87,10 @@ def test_stock_outflow(page):
             page.locator('[data-testid="drop_minute_item"]', has_text=minute_str).click()
         
         page.locator("data-testid=btn_confirm").click()
-
-        expect(page.locator("data-testid=toast_register")).to_be_visible(timeout=3000)
+        expect(page.locator("data-testid=txt_title")).to_have_text("발주 규칙 변경 제품", timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_confirm").click()
+        expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)
 
         # 출고 처리
