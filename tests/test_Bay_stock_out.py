@@ -6,6 +6,7 @@ from config import URLS, Account
 from helpers.stock_utils import StockManager
 from helpers.product_utils import update_product_flag
 from helpers.common_utils import bay_login
+from helpers.order_status_utils import search_order_history
 def get_filtered_products(stock_manager):
     """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
     products = stock_manager.get_all_product_names()
@@ -25,7 +26,7 @@ def get_safe_batch_time() -> datetime:
     minute = now.minute
     base_minute = (minute // 10) * 10
 
-    if minute >= 28:
+    if minute >= 28: # 테스트 해보고 시간 조정 필요할수도?
         # 다다음 배치
         next_minute = base_minute + 20
     else:
@@ -123,44 +124,6 @@ def test_stock_outflow(page):
             assert updated == expected, f"[FAIL] {product['kor']} 출고 후 재고 오류: {expected} != {updated}"
             print(f"[PASS] 출고 확인: {product['kor']} → {updated}")
 
-           # 발주 내역 페이지 이동
-            page.goto(URLS["bay_orderList"])
-            expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
-
-            # 제품명 검색
-            page.fill("data-testid=input_search", stock_manager.product_name)
-            page.wait_for_timeout(1000)
-            page.click("data-testid=btn_search")
-            page.wait_for_timeout(5000)
-
-            # history 항목이 하나 이상 있는지 확인 (strict 모드 회피)
-            history_div = page.locator("div[data-testid=history]")
-            count = history_div.count()
-
-            if count == 0:
-                raise AssertionError("❌ history 항목이 존재하지 않습니다.")
-            else:
-                print(f"[INFO] {count}개의 history 항목이 확인되었습니다.")
-
-            # 모든 history 항목을 순차적으로 확인
-            history_items = history_div.all()
-            product_name_to_search = stock_manager.product_name
-            found_product = False
-
-            # 각 history 항목을 순차적으로 확인
-            for history in history_items:
-                # 첫 번째 테이블에서 2열에 제품명이 있는지 확인
-                first_row_product_name = history.locator("table tbody tr:first-child td:nth-child(2)").inner_text()
-
-                if product_name_to_search in first_row_product_name:
-                    found_product = True
-                    print(f"[PASS] {product_name_to_search}의 발주 내역을 찾았습니다.")
-                    break
-
-            # 모든 history 항목을 확인한 후에도 제품을 찾지 못했다면 FAIL 처리
-            if not found_product:
-                raise AssertionError(f"[FAIL] {product_name_to_search}의 발주 내역을 찾을 수 없습니다.")
-
             # 출고 후 재고 값을 json에 저장
             update_product_flag(product['kor'], stock_qty=expected, order_flag=1, delivery_status=1)
 
@@ -214,15 +177,17 @@ def test_edit_stocklist_and_auto_order(page):
         page.wait_for_timeout(1000)
 
         # 발주 내역 페이지에서 날짜 확인
-        wait_until(next_time)
-        today = datetime.now().strftime("%Y. %m. %d")
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(2000)
-
         page.locator("data-testid=input_search").fill(product["kor"])
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_search").click()
-        expect(page.locator("data-testid=txt_date").first).to_have_text(today)
-
+        page.wait_for_timeout(2000)
+        page.locator("data-testid=history").is_hidden(timeout=3000)
+        wait_until(next_time)
+        search_order_history(page, product["kor"], "발주 요청")
+        cell_locator = page.locator("data-testid=history >> tr >> nth=0 >> td >> nth=1")
+        expect(cell_locator).to_have_text(product["kor"], timeout=3000)
+        page.wait_for_timeout(1000)
         # 상태 업데이트
         update_product_flag(product["kor"], stock_qty=expected, order_flag=1, delivery_status=1)

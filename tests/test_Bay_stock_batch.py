@@ -12,7 +12,7 @@ def get_safe_batch_time() -> datetime:
     minute = now.minute
     base_minute = (minute // 10) * 10
 
-    if minute >= 28:
+    if minute >= 28: # 테스트 해보고 시간 조정 필요할수도?
         # 다다음 배치
         next_minute = base_minute + 20
     else:
@@ -139,12 +139,16 @@ def test_outflow(page:Page):
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
     page.locator("data-testid=input_search").fill(product)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(2000)
     page.locator("data-testid=history").is_hidden(timeout=3000)
 
     wait_until(next_time)
 
     page.reload()
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
+
     search_order_history(page, "자동화제품_3", "발주 요청")
     cell_locator = page.locator("data-testid=history >> tr >> nth=0 >> td >> nth=1")
     expect(cell_locator).to_have_text("자동화제품_1 외 2건", timeout=3000)
