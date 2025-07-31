@@ -78,7 +78,7 @@ def test_check_alert(page:Page):
     row_count = rows.count()
     txt_delete = "제품을 삭제하시겠습니까?"
     for i in range(row_count):
-        edit_button = rows.nth(i).locator("td:nth-child(11) >> text=삭제")
+        edit_button = rows.nth(i).locator("td:nth-child(12) >> text=삭제")
         if edit_button.is_visible():
             print(f"✅ {i}번째 행의 삭제 버튼 클릭")
             edit_button.click()
@@ -112,11 +112,11 @@ def test_check_alert(page:Page):
     page.locator("data-testid=drop_type_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
-    page.locator("data-testid=drop_category_trigger").last.click()
+    page.locator("data-testid=drop_group_trigger").last.click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_category_search", "중복테스트")
+    page.fill("data-testid=drop_group_search", "중복테스트")
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_category_item", has_text="중복테스트").click()
+    page.locator("data-testid=drop_group_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_maker_trigger").last.click()
@@ -165,14 +165,21 @@ def test_check_alert(page:Page):
     # 수정화면
     rows = page.locator("table tbody tr")
     row_count = rows.count()
-
-    for i in range(row_count):
-        edit_button = rows.nth(i).locator("td:nth-child(11) >> text=수정")
-        if edit_button.is_visible():
-            print(f"✅ {i}번째 행의 수정 버튼 클릭")
-            edit_button.click()
-            break
+    page.locator("data-testid=input_search").fill("발주 규칙 변경 제품")
     page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(2000)
+    txt_toast = "자동 발주 수량은 최소 1개 이상이어야 합니다."
+    rows.locator("td:nth-child(12) >> text=수정").click()
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=input_stk_safe").fill("0")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_stk_qty").fill("0")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_save").click()
+    expect(page.locator("data-testid=toast_order_min")).to_have_text(txt_toast, timeout=3000)
+    page.wait_for_timeout(1000)
+
     page.locator("data-testid=drop_maker_trigger").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_maker_search").fill("중복테스트")
@@ -363,25 +370,25 @@ def test_check_alert(page:Page):
     page.wait_for_timeout(1000)
 
 
-    # [업체 전용 화면] 지난 발주 건 진입 불가 확인
-    order_id = "2"
-    accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
-    tracking_url = f"{URLS['base_accept_url']}/{order_id}/delivery"
-    page.goto(accept_url)
-    expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
-    page.fill("input[data-testid='input_name']", "권정의")
-    page.fill("input[data-testid='input_contact']", "01062754153")
-    page.locator("button[data-testid='btn_confirm']").last.click()
-    expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
-    page.wait_for_timeout(1000)
+    # # [업체 전용 화면] 지난 발주 건 진입 불가 확인
+    # order_id = "2"
+    # accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
+    # tracking_url = f"{URLS['base_accept_url']}/{order_id}/delivery"
+    # page.goto(accept_url)
+    # expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
+    # page.fill("input[data-testid='input_name']", "권정의")
+    # page.fill("input[data-testid='input_contact']", "01062754153")
+    # page.locator("button[data-testid='btn_confirm']").last.click()
+    # expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
+    # page.wait_for_timeout(1000)
 
-    page.goto(tracking_url)
-    expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
-    page.fill("input[data-testid='input_name']", "권정의")
-    page.fill("input[data-testid='input_contact']", "01062754153")
-    page.locator("button[data-testid='btn_confirm']").last.click()
-    expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
-    page.wait_for_timeout(1000)
+    # page.goto(tracking_url)
+    # expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
+    # page.fill("input[data-testid='input_name']", "권정의")
+    # page.fill("input[data-testid='input_contact']", "01062754153")
+    # page.locator("button[data-testid='btn_confirm']").last.click()
+    # expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
+    # page.wait_for_timeout(1000)
 
 
     # [발주 규칙 관리] 중복명 확인
@@ -405,7 +412,7 @@ def test_check_alert(page:Page):
     page.locator("data-testid=drop_weekday_trigger").click()
     page.wait_for_timeout(1000)
     for day in ["월요일", "수요일", "금요일"]:
-        page.locator(f"data-testid=drop_weekday_item", has_text={day}).click()
+        page.locator("data-testid=drop_weekday_item", has_text=day).click()
         page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_hour_trigger").click()

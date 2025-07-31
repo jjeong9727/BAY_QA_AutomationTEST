@@ -3,198 +3,126 @@
     "test_name": "test_Bay_login",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:25:07",
+    "timestamp": "2025-07-31 16:04:46",
     "file": "tests/test_Bay_login.py",
     "stack": "",
-    "duration": "15.81초"
+    "duration": "14.75초"
   },
   {
     "test_name": "test_Bay_alert",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:26:50",
+    "timestamp": "2025-07-31 16:05:36",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "103.15초"
+    "duration": "49.32초"
   },
   {
     "test_name": "test_Bay_supplier",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:27:33",
+    "timestamp": "2025-07-31 16:06:17",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "43.11초"
+    "duration": "41.58초"
   },
   {
     "test_name": "test_Bay_supplier_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:27:50",
+    "timestamp": "2025-07-31 16:06:31",
     "file": "tests/test_Bay_supplier_val.py",
     "stack": "",
-    "duration": "16.03초"
+    "duration": "13.44초"
   },
   {
     "test_name": "test_Bay_prdctg",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:28:46",
+    "timestamp": "2025-07-31 16:07:26",
     "file": "tests/test_Bay_prdctg.py",
     "stack": "",
-    "duration": "56.60초"
+    "duration": "55.45초"
   },
   {
     "test_name": "test_Bay_prdctg_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:29:22",
+    "timestamp": "2025-07-31 16:08:02",
     "file": "tests/test_Bay_prdctg_val.py",
     "stack": "",
-    "duration": "35.92초"
+    "duration": "35.42초"
   },
   {
     "test_name": "test_Bay_prdctg_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:30:08",
+    "timestamp": "2025-07-31 16:08:49",
     "file": "tests/test_Bay_prdctg_edit.py",
     "stack": "",
-    "duration": "46.05초"
+    "duration": "47.25초"
   },
   {
     "test_name": "test_Bay_prdctg_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:30:46",
+    "timestamp": "2025-07-31 16:09:25",
     "file": "tests/test_Bay_prdctg_delete.py",
     "stack": "",
-    "duration": "37.96초"
+    "duration": "35.73초"
+  },
+  {
+    "test_name": "test_Bay_rules_register",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-31 16:10:13",
+    "file": "tests/test_Bay_rules_register.py",
+    "stack": "",
+    "duration": "48.14초"
+  },
+  {
+    "test_name": "test_Bay_rules_edit",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-07-31 16:11:57",
+    "file": "tests/test_Bay_rules_edit.py",
+    "stack": "",
+    "duration": "104.59초"
   },
   {
     "test_name": "test_Bay_product",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:33:22",
+    "timestamp": "2025-07-31 16:15:45",
     "file": "tests/test_Bay_product.py",
     "stack": "",
-    "duration": "156.03초"
+    "duration": "227.33초"
   },
   {
     "test_name": "test_Bay_product_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:33:51",
+    "timestamp": "2025-07-31 16:16:41",
     "file": "tests/test_Bay_product_val.py",
     "stack": "",
-    "duration": "29.10초"
+    "duration": "56.47초"
   },
   {
     "test_name": "test_Bay_product_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:34:19",
+    "timestamp": "2025-07-31 16:17:04",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "27.31초"
+    "duration": "23.21초"
   },
   {
     "test_name": "test_Bay_product_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:34:44",
+    "timestamp": "2025-07-31 16:17:18",
     "file": "tests/test_Bay_product_delete.py",
     "stack": "",
-    "duration": "25.50초"
-  },
-  {
-    "test_name": "test_Bay_stock_in",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:36:33",
-    "file": "tests/test_Bay_stock_in.py",
-    "stack": "",
-    "duration": "108.45초"
-  },
-  {
-    "test_name": "test_Bay_stock_out",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:37:52",
-    "file": "tests/test_Bay_stock_out.py",
-    "stack": "",
-    "duration": "79.72초"
-  },
-  {
-    "test_name": "test_Bay_order_status_request_cancel",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:38:16",
-    "file": "tests/test_Bay_order_status_request_cancel.py",
-    "stack": "",
-    "duration": "23.88초"
-  },
-  {
-    "test_name": "test_Bay_order_status_request",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:39:39",
-    "file": "tests/test_Bay_order_status_request.py",
-    "stack": "",
-    "duration": "82.65초"
-  },
-  {
-    "test_name": "test_Bay_order_status_progress_delivery",
-    "status": "FAIL",
-    "message": "\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_14\\n\\u2705 \\ucc3e\\uc740 order_id: 182\\n\\uc0c1\\ud0dc: \\ubc1c\\uc8fc \\uc9c4\\ud589\\n\\uc8fc\\ubb38 ID: 182\\n[\\ub514\\ubc84\\uae45] \\uc6b4\\uc1a1\\uc7a5 \\ud14d\\uc2a4\\ud2b8: '\\ub300\\uae30\\uc911'\\n[PASS] \\ubc30\\uc1a1 \\uc9c4\\ud589 \\uc0c1\\ud0dc \\ud655\\uc778 \\uc644\\ub8cc \\u2192 \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_14 \\uc0c1\\ud0dc: \\ubc30\\uc1a1 \\uc9c4\\ud589\\n\\u274c Error in test_order_delivery: Locator expected to have text '1234567890'\\nActual value: 1,234,567,890 \\nCall log:\\n  - LocatorAssertions.to_have_text with timeout 3000ms\\n  -   - waiting for locator(\"data-testid=txt_tracking_num\")\\n  -     7 \\xd7 locator resolved to <div data-testid=\"txt_tracking_num\" class=\"relative h-[50px] flex items-center text-font-16-400 rounded-[10px] border border-gray-300 bg-white p-[16px] pr-[56px]\">\\u2026</div>\\n  -       - unexpected value \"1,234,567,890\"\\n",
-    "timestamp": "2025-07-29 14:40:15",
-    "file": "tests/test_Bay_order_status_progress_delivery.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_progress_delivery.py F                       [100%]\n\n================================== FAILURES ===================================\n_____________________________ test_order_delivery _____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history?product_name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_14&page=1'>\n\n    def test_order_delivery(page: Page):\n        try:\n            # delivery_status가 2인 제품 선택\n            with open(\"product_name.json\", \"r\", encoding=\"utf-8\") as f:\n                products = json.load(f)\n    \n            eligible_products = [p for p in products if p.get(\"delivery_status\") == 2]\n            if not eligible_products:\n                raise ValueError(\"No product found with delivery_status 2\")\n    \n            target_product = random.choice(eligible_products)\n            product_name = target_product[\"kor\"]\n            status_name = \"발주 진행\"\n    \n            # 로그인\n            bay_login(page)\n    \n            # 발주 내역 검색\n            page.goto(URLS[\"bay_orderList\"])\n            page.wait_for_timeout(2000)\n            search_order_history(page, product_name, status_name)\n    \n            # # order_id 추출\n            order_id = get_order_id_from_order_list(page, product_name)\n            if not order_id:\n                raise ValueError(f\"{product_name} 제품의 order ID 확인 불가\")\n    \n            # 발주 상태 확인: '발주 진행'\n            expected_status_conditions = order_status_map[\"발주 진행\"]\n            check_order_status_by_order_id(page, \"발주 진행\", order_id, expected_status_conditions)\n    \n            # 배송 URL 진입\n            tracking_url = f\"{URLS['base_accept_url']}/{order_id}/delivery\"\n            page.goto(tracking_url)\n            expect(page.locator(\"data-testid=input_name\")).to_be_visible(timeout=8000)\n    \n            # 본인 인증\n            page.fill(\"input[data-testid='input_name']\", \"권정의\")\n            page.fill(\"input[data-testid='input_contact']\", \"01062754153\")\n            page.click(\"button[data-testid='btn_confirm']\")\n            expect(page.locator(\"data-testid=drop_shipping_trigger\")).to_be_visible(timeout=5000)\n    \n            # 배송사 선택 드롭다운 열기\n            carrier_name = \"일양로지스\"\n            tracking = \"1234567890\"\n            new_carrier = \"CJ대한통운\"\n            new_tracking = \"0987654321\"\n            page.locator(\"data-testid=drop_shipping_trigger\").click()\n            page.wait_for_timeout(1000)\n            page.locator(\"data-testid=drop_shipping_search\").fill(carrier_name)\n            page.wait_for_timeout(1000)\n            page.locator(\"data-testid=drop_shipping_item\", has_text=carrier_name).click()\n            page.wait_for_timeout(1000)\n    \n            page.fill(\"input[data-testid='input_tracking']\", tracking)\n            page.wait_for_timeout(3000)\n            page.locator(\"button[data-testid='btn_confirm']\").last.click()\n            expect(page.locator(\"data-testid=toast_tracking\")).to_be_visible(timeout=3000)\n            page.wait_for_timeout(1000)\n    \n    \n            # 상태 확인: 배송 진행\n            page.goto(URLS[\"bay_orderList\"])\n            expect(page.locator(\"data-testid=input_search\")).to_be_visible(timeout=7000)\n            page.fill(\"data-testid=input_search\", product_name)\n            page.wait_for_timeout(500)\n            page.click(\"data-testid=btn_search\")\n            expect(page.locator(\"data-testid=history\").first).to_be_visible(timeout=7000)\n            page.wait_for_timeout(500)\n    \n            rows = page.locator(\"table tbody tr\")\n            found = False\n            for i in range(rows.count()):\n                row = rows.nth(i)\n                columns = row.locator(\"td\").all_inner_texts()\n                if product_name in columns[1]:\n                    status = columns[0].strip()\n                    assert status == \"배송 진행\", f\"[FAIL] {product_name} 상태가 '배송 진행'이 아님 → 현재 상태: {status}\"\n                    print(f\"[PASS] 배송 진행 상태 확인 완료 → {product_name} 상태: {status}\")\n                    found = True\n                    break\n    \n            # JSON 상태 업데이트\n            update_product_status_in_json(product_name, delivery_status=3)\n    \n            # 택배사 + 운송장 확인\n            page.goto(URLS[\"bay_orderList\"])\n            expect(page.locator(\"data-testid=input_search\")).to_be_visible(timeout=7000)\n            page.wait_for_timeout(1000)\n            page.fill(\"data-testid=input_search\", product_name)\n            page.wait_for_timeout(1000)\n            page.click(\"data-testid=btn_search\")\n            page.wait_for_timeout(2000)\n            page.locator(\"data-testid=btn_check_tracking\").first.click()\n            expect(page.locator(\"data-testid=txt_tracking\")).to_have_text(carrier_name, timeout=3000)\n            page.wait_for_timeout(1000)\n>           expect(page.locator(\"data-testid=txt_tracking_num\")).to_have_text(tracking, timeout=3000)\nE           AssertionError: Locator expected to have text '1234567890'\nE           Actual value: 1,234,567,890 \nE           Call log:\nE             - LocatorAssertions.to_have_text with timeout 3000ms\nE             -   - waiting for locator(\"data-testid=txt_tracking_num\")\nE             -     7 × locator resolved to <div data-testid=\"txt_tracking_num\" class=\"relative h-[50px] flex items-center text-font-16-400 rounded-[10px] border border-gray-300 bg-white p-[16px] pr-[56px]\">…</div>\nE             -       - unexpected value \"1,234,567,890\"\n\ntests\\test_Bay_order_status_progress_delivery.py:128: AssertionError\n---------------------------- Captured stdout call -----------------------------\n\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_14\\n\\u2705 \\ucc3e\\uc740 order_id: 182\\n\\uc0c1\\ud0dc: \\ubc1c\\uc8fc \\uc9c4\\ud589\\n\\uc8fc\\ubb38 ID: 182\\n[\\ub514\\ubc84\\uae45] \\uc6b4\\uc1a1\\uc7a5 \\ud14d\\uc2a4\\ud2b8: '\\ub300\\uae30\\uc911'\\n[PASS] \\ubc30\\uc1a1 \\uc9c4\\ud589 \\uc0c1\\ud0dc \\ud655\\uc778 \\uc644\\ub8cc \\u2192 \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_14 \\uc0c1\\ud0dc: \\ubc30\\uc1a1 \\uc9c4\\ud589\\n\\u274c Error in test_order_delivery: Locator expected to have text '1234567890'\\nActual value: 1,234,567,890 \\nCall log:\\n  - LocatorAssertions.to_have_text with timeout 3000ms\\n  -   - waiting for locator(\"data-testid=txt_tracking_num\")\\n  -     7 \\xd7 locator resolved to <div data-testid=\"txt_tracking_num\" class=\"relative h-[50px] flex items-center text-font-16-400 rounded-[10px] border border-gray-300 bg-white p-[16px] pr-[56px]\">\\u2026</div>\\n  -       - unexpected value \"1,234,567,890\"\\n\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_progress_delivery.py::test_order_delivery\n============================= 1 failed in 35.12s ==============================\n",
-    "duration": "36.48초"
-  },
-  {
-    "test_name": "test_Bay_order_status_progress_complete",
-    "status": "FAIL",
-    "message": "\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_15\\n\\u2705 \\ucc3e\\uc740 order_id: 181\\n\\uc0c1\\ud0dc: \\ubc1c\\uc8fc \\uc9c4\\ud589\\n\\uc8fc\\ubb38 ID: 181\\n[\\ub514\\ubc84\\uae45] \\uc6b4\\uc1a1\\uc7a5 \\ud14d\\uc2a4\\ud2b8: '\\ub300\\uae30\\uc911'\\n10\\n\\u274c Error in test_order_receive_and_inventory_check: Locator.click: Timeout 30000ms exceeded.\\nCall log:\\n  - waiting for locator(\"data-testid=btn_plus_10\")\\n",
-    "timestamp": "2025-07-29 14:41:03",
-    "file": "tests/test_Bay_order_status_progress_complete.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_progress_complete.py F                       [100%]\n\n================================== FAILURES ===================================\n______________________ test_order_receive_from_progress _______________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history?start_date=2025-07-29&end_date=2025-07-29&order_status=CONFIRMED&product_name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_15&page=1'>\n\n    def test_order_receive_from_progress(page: Page):\n        try:\n            # delivery_status가 2인 제품 필터링\n            eligible_products = filter_products_by_delivery_status(2)\n            if not eligible_products:\n                raise ValueError(\"발주 진행 상태인 제품이 없습니다.\")\n            status_name = \"발주 진행\"\n    \n            # 대상 제품 선택\n            target_product = random.choice(eligible_products)\n            product_name = target_product['kor']\n            previous_stock = target_product.get('stock_qty', 0)\n    \n            bay_login(page)\n    \n            page.goto(URLS[\"bay_orderList\"])\n            page.wait_for_timeout(1000)\n            search_order_history(page, product_name, status_name)\n    \n            # order_id 추출\n            order_id = get_order_id_from_order_list(page, product_name)\n            if not order_id:\n                raise ValueError(f\"{product_name} 제품의 order ID를 찾을 수 없습니다.\")\n    \n            # 상태 확인: 배송 진행\n            expected_status_conditions = order_status_map[\"발주 진행\"]\n            check_order_status_by_order_id(page, \"발주 진행\", order_id, expected_status_conditions)\n    \n    \n            # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭\n            page.click(\"button[data-testid='btn_receive']\")  # 수령 확정 버튼 클릭\n            expect(page.locator(\"data-testid=input_quantity\")).to_be_visible(timeout=5000)\n            stock_inflow = int(page.locator('[data-testid=\"input_quantity\"]').input_value())#입고 수량 저장\n            print(stock_inflow)\n            # 발주 수령 팝업 퀵메뉴 버튼 확인\n>           page.locator(\"data-testid=btn_plus_10\").click()\n\ntests\\test_Bay_order_status_progress_complete.py:67: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:15464: in click\n    self._sync(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:156: in click\n    return await self._frame.click(self._selector, strict=True, **params)\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:488: in click\n    await self._channel.send(\"click\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001834B8AFE00>\ncb = <function Channel.send.<locals>.<lambda> at 0x000001834BC76A20>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=btn_plus_10\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n---------------------------- Captured stdout call -----------------------------\n\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_15\\n\\u2705 \\ucc3e\\uc740 order_id: 181\\n\\uc0c1\\ud0dc: \\ubc1c\\uc8fc \\uc9c4\\ud589\\n\\uc8fc\\ubb38 ID: 181\\n[\\ub514\\ubc84\\uae45] \\uc6b4\\uc1a1\\uc7a5 \\ud14d\\uc2a4\\ud2b8: '\\ub300\\uae30\\uc911'\\n10\\n\\u274c Error in test_order_receive_and_inventory_check: Locator.click: Timeout 30000ms exceeded.\\nCall log:\\n  - waiting for locator(\"data-testid=btn_plus_10\")\\n\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_progress_complete.py::test_order_receive_from_progress\n============================= 1 failed in 46.42s ==============================\n",
-    "duration": "47.79초"
-  },
-  {
-    "test_name": "test_Bay_order_status_delivery",
-    "status": "FAIL",
-    "message": "\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_14\\n\\u2705 \\ucc3e\\uc740 order_id: 182\\n\\uc0c1\\ud0dc: \\ubc30\\uc1a1 \\uc9c4\\ud589\\n\\uc8fc\\ubb38 ID: 182\\n10\\n\\u274c Error in test_order_receive_from_delivery: Locator.click: Timeout 30000ms exceeded.\\nCall log:\\n  - waiting for locator(\"data-testid=btn_plus_10\")\\n",
-    "timestamp": "2025-07-29 14:41:50",
-    "file": "tests/test_Bay_order_status_delivery.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 1 item\n\ntests\\test_Bay_order_status_delivery.py F                                [100%]\n\n================================== FAILURES ===================================\n______________________ test_order_receive_from_delivery _______________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history?start_date=2025-07-29&end_date=2025-07-29&order_status=SHIPPED&product_name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0729_14&page=1'>\n\n    def test_order_receive_from_delivery(page: Page):\n        try:\n            # product.json에서 delivery_status가 3인 제품들 찾기\n            with open('product_name.json', 'r', encoding='utf-8') as f:\n                products = json.load(f)\n            status_name = \"배송 진행\"\n    \n            # delivery_status가 3인 제품들만 필터링\n            eligible_products = [product for product in products if product.get('delivery_status') == 3]\n    \n            if not eligible_products:\n                raise ValueError(\"배송 진행 상태인 제품이 없다\")\n    \n            # delivery_status가 3 제품 중 랜덤으로 하나 선택\n            target_product = random.choice(eligible_products)\n            product_name = target_product['kor']\n    \n            bay_login(page)\n    \n            # 발주 내역 화면으로 이동하여 제품명 검색\n            page.goto(URLS[\"bay_orderList\"])\n            search_order_history(page, product_name, status_name)\n    \n            # order_id 추출\n            order_id = get_order_id_from_order_list(page, product_name)\n            if not order_id:\n                raise ValueError(f\"{product_name} 제품의 order ID 확인 불가\")\n    \n            # 확인할 상태에 대한 기대값을 설정\n            expected_status_conditions = order_status_map[\"배송 진행\"]  # 배송 진행 상태 조건을 설정\n    \n            # order_id를 사용하여 order status 확인\n            check_order_status_by_order_id(page, \"배송 진행\", order_id, expected_status_conditions)\n    \n    \n            # 수령확정 버튼(btn_receive)을 누르고 수령확인 버튼 클릭\n            page.click(\"button[data-testid='btn_receive']\")  # 수령 확정 버튼 클릭\n            expect(page.locator(\"data-testid=input_quantity\")).to_be_visible(timeout=5000)\n            stock_inflow = int(page.locator('[data-testid=\"input_quantity\"]').input_value())#입고 수량 저장\n            print(stock_inflow)\n            # 발주 수령 팝업 퀵메뉴 버튼 확인\n>           page.locator(\"data-testid=btn_plus_10\").click()\n\ntests\\test_Bay_order_status_delivery.py:73: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:15464: in click\n    self._sync(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:156: in click\n    return await self._frame.click(self._selector, strict=True, **params)\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:488: in click\n    await self._channel.send(\"click\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001FD0614FE00>\ncb = <function Channel.send.<locals>.<lambda> at 0x000001FD061E9F80>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=btn_plus_10\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n---------------------------- Captured stdout call -----------------------------\n\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0729_14\\n\\u2705 \\ucc3e\\uc740 order_id: 182\\n\\uc0c1\\ud0dc: \\ubc30\\uc1a1 \\uc9c4\\ud589\\n\\uc8fc\\ubb38 ID: 182\\n10\\n\\u274c Error in test_order_receive_from_delivery: Locator.click: Timeout 30000ms exceeded.\\nCall log:\\n  - waiting for locator(\"data-testid=btn_plus_10\")\\n\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_delivery.py::test_order_receive_from_delivery\n============================= 1 failed in 45.88s ==============================\n",
-    "duration": "47.27초"
-  },
-  {
-    "test_name": "test_Bay_order_status_complete",
-    "status": "FAIL",
-    "message": "\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.",
-    "timestamp": "2025-07-29 14:41:53",
-    "file": "tests/test_Bay_order_status_complete.py",
-    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_order_status_complete.py FF                               [100%]\n\n================================== FAILURES ===================================\n________________________ test_order_status_complete_bf ________________________\n\npage = <Page url='about:blank'>\n\n    def test_order_status_complete_bf(page: Page):\n>       run_order_status_check(page, delivery_status=7)\n\ntests\\test_Bay_order_status_complete.py:56: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='about:blank'>, delivery_status = 7\n\n    def run_order_status_check(page: Page, delivery_status: int):\n        status_name = \"수령 완료\"\n    \n        # 상태에 따른 expected 키 매핑\n        status_key_map = {\n            7: \"수령 완료(배송전)\",\n            4: \"수령 완료(배송후)\",\n        }\n    \n        expected_key = status_key_map.get(delivery_status)\n        if not expected_key:\n            raise ValueError(f\"지원하지 않는 delivery_status: {delivery_status}\")\n    \n        expected = order_status_map[expected_key]\n    \n        try:\n            filtered_products = filter_products_by_delivery_status(delivery_status)\n            if not filtered_products:\n>               raise ValueError(f\"'{expected_key}' 상태의 제품이 없습니다.\")\nE               ValueError: '수령 완료(배송전)' 상태의 제품이 없습니다.\n\ntests\\test_Bay_order_status_complete.py:31: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\uc804)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n________________________ test_order_status_complete_af ________________________\n\npage = <Page url='about:blank'>\n\n    def test_order_status_complete_af(page: Page):\n>       run_order_status_check(page, delivery_status=4)\n\ntests\\test_Bay_order_status_complete.py:59: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='about:blank'>, delivery_status = 4\n\n    def run_order_status_check(page: Page, delivery_status: int):\n        status_name = \"수령 완료\"\n    \n        # 상태에 따른 expected 키 매핑\n        status_key_map = {\n            7: \"수령 완료(배송전)\",\n            4: \"수령 완료(배송후)\",\n        }\n    \n        expected_key = status_key_map.get(delivery_status)\n        if not expected_key:\n            raise ValueError(f\"지원하지 않는 delivery_status: {delivery_status}\")\n    \n        expected = order_status_map[expected_key]\n    \n        try:\n            filtered_products = filter_products_by_delivery_status(delivery_status)\n            if not filtered_products:\n>               raise ValueError(f\"'{expected_key}' 상태의 제품이 없습니다.\")\nE               ValueError: '수령 완료(배송후)' 상태의 제품이 없습니다.\n\ntests\\test_Bay_order_status_complete.py:31: ValueError\n---------------------------- Captured stdout call -----------------------------\n\\u274c Error in test_order_status_complete: '\\uc218\\ub839 \\uc644\\ub8cc(\\ubc30\\uc1a1\\ud6c4)' \\uc0c1\\ud0dc\\uc758 \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_complete.py::test_order_status_complete_bf\nFAILED tests/test_Bay_order_status_complete.py::test_order_status_complete_af\n============================== 2 failed in 0.93s ==============================\n",
-    "duration": "2.39초"
-  },
-  {
-    "test_name": "test_Bay_order_status_fail",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:42:08",
-    "file": "tests/test_Bay_order_status_fail.py",
-    "stack": "",
-    "duration": "14.72초"
-  },
-  {
-    "test_name": "test_Bay_stock_history",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-07-29 14:43:42",
-    "file": "tests/test_Bay_stock_history.py",
-    "stack": "",
-    "duration": "94.65초"
+    "duration": "13.31초"
   }
 ]

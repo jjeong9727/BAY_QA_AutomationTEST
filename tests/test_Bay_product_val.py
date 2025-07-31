@@ -59,17 +59,17 @@ def test_duplicate_product_name(page):
         page.locator("data-testid=input_price").last.fill(str(random.randint(1000, 10000)))
         page.wait_for_timeout(1000)
 
-        safety = 5
-        page.locator("data-testid=input_stk_safe").last.fill(str(safety))
+        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(1000)
-
-        auto_order = 10
-        page.locator("data-testid=input_stk_qty").last.fill(str(auto_order))
+        rule = "규칙 없음"
+        page.locator("data-testid=drop_rule_trigger").last.click()
         page.wait_for_timeout(1000)
-
+        page.locator("data-testid=drop_rule_search").fill(rule)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_rule_item", has_text=rule).click()
+        page.wait_for_timeout(1000)
 
         # 업체 선택
-        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_supplier_trigger").last.click()
         page.wait_for_timeout(1000)

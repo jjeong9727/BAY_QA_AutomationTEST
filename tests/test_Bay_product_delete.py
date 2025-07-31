@@ -53,7 +53,7 @@ def delete_product_and_verify(page: Page, row_index: int):
         product_name = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(4)").inner_text().strip()
         product_display_name = product_name.splitlines()[0]
 
-        delete_button = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(11) button").nth(1)  # 0부터 시작하므로 1은 두 번째 버튼
+        delete_button = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(12) button").nth(1)  # 0부터 시작하므로 1은 두 번째 버튼
         delete_button.click()
 
 

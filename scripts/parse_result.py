@@ -19,6 +19,8 @@ full_name_mapping = {
     "test_Bay_product": "제품 등록 확인",
     "test_Bay_prdctg_delete": "카테고리 삭제 확인",
     "test_Bay_prdctg": "카테고리 등록 확인",
+    "test_Bay_prdctg_val": "카테고리 등록 유효성 검사",
+    "test_Bay_prdctg_edit": "카테고리 수정 확인",
     "test_Bay_supplier": "업체 등록 확인",
     "test_Bay_supplier_val": "업체 등록 유효성 검사",
     "test_Bay_supplier_delete": "업체 삭제 확인",

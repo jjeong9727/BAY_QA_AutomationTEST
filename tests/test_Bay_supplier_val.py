@@ -11,8 +11,8 @@ def test_register_supplier_duplicate(page):
         page.wait_for_url(URLS["bay_supplier"], timeout=60000)
 
         supplier_name = "중복테스트"
-        manager_name = "중복테스트"
-        contact_info = "01012345678"
+        manager_name = "권정의"
+        contact_info = "01062754153"
         
         print(f"선택된 업체: {supplier_name}, 담당자: {manager_name}, 연락처: {contact_info}")
 
@@ -35,11 +35,11 @@ def test_register_supplier_duplicate(page):
         page.wait_for_timeout(1000)
 
         # 사용 중인 업체 삭제 불가 확인
-        page.fill("data-testid=input_search", "자동화업체")  # 제품명 검색
+        page.fill("data-testid=input_search", "중복테스트")  # 제품명 검색
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_search").click()  # 검색 버튼 클릭
         page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_delete").click()
+        page.locator("data-testid=btn_delete").first.click()
         expect(page.locator("data-testid=alert_using")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)
 

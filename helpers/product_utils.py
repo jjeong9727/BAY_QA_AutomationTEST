@@ -32,11 +32,14 @@ def append_product_name(
     type_name: str,
     group: str,
     maker: str,
+    order_rule: str,
+    supplier: str,
     safety: int = 0,
     auto_order : int =0,
     order_flag : int = 0,
-    stock_qty : int =0,
-    delivery_status : int=0 # 1: 발주 요청, 2: 발주 진행, 3: 배송 진행, 4: 수령 완료(운송장O), 5: 발주 취소, 6: 발주 실패, 7: 수령 완료(운송장X)
+    stock_qty : int =0,   
+    delivery_status : int=0, # 1: 발주 요청, 2: 발주 진행, 3: 배송 진행, 4: 수령 완료(운송장O), 5: 발주 취소, 6: 발주 실패, 7: 수령 완료(운송장X)
+
 ):
     
     try:
@@ -50,8 +53,8 @@ def append_product_name(
     data.append({
         "kor": prdname_kor,
         "eng": prdname_eng,
-        "supplier": "자동화업체",
-        # "contact": contact,
+        "supplier": supplier,
+        "order_rule": order_rule,
         "type": type_name,
         "group": group,
         "maker": maker,

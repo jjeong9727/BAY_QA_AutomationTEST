@@ -14,13 +14,14 @@ URLS = {
     "bay_category" : f"{base_url}/categories_management",
     "bay_supplier" : f"{base_url}/providers-management",
     "base_accept_url" : f"{base_url}/providers/orders/",
-    "bay_rules" : f"{base_url}",
+    "bay_rules" : f"{base_url}/orders/rule-management",
 
 }
 
 
 Account = {
-    "testid": "qaje@medisolveai.com", # 권정의 01062754153
+    # "testid": "qaje@medisolveai.com", # 권정의 01062754153
+    "testid" : "stg@medisolveai.com",
     "testpw": "12341234",
     "wrongpw": "0000"
 
