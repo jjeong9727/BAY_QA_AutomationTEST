@@ -26,12 +26,12 @@ def get_safe_batch_time() -> datetime:
     minute = now.minute
     base_minute = (minute // 10) * 10
 
-    if minute >= 28: # 테스트 해보고 시간 조정 필요할수도?
-        # 다다음 배치
+    # 남은 시간 계산
+    minutes_until_next = (base_minute + 10) - minute
+    if minutes_until_next <= 3: # 3분 이내면 다다음 배치로 설정
         next_minute = base_minute + 20
     else:
-        # 다음 배치
-        next_minute = base_minute + 10
+        next_minute = base_minute + 10 # 아니면 다음 배치
 
     # 시(hour) 넘어가는 경우 처리
     if next_minute >= 60:
@@ -41,6 +41,7 @@ def get_safe_batch_time() -> datetime:
         next_time = now.replace(minute=next_minute, second=0, microsecond=0)
 
     return next_time
+
 
 def wait_until(target_time: datetime):
     print(f"⏳ 다음 발주 배치 시각까지 대기 중: {target_time.strftime('%H:%M')}")
