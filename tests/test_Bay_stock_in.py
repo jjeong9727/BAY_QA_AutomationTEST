@@ -6,16 +6,16 @@ from helpers.product_utils import update_product_flag, sync_product_names_with_s
 from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 
-def get_filtered_products(stock_manager, page):
+# def get_filtered_products(stock_manager, page):
     # 서버와 동기화
-    valid_products = sync_product_names_with_server(page)
+    # valid_products = sync_product_names_with_server(page)
 
-    # 필터링
-    return [
-        p for p in valid_products
-        if p.get("stock_qty", 0) <= p.get("safety_stock", 0)
-        and p.get("order_flag", 1) == 0
-    ]
+    # # 필터링
+    # return [
+    #     p for p in valid_products
+    #     if p.get("stock_qty", 0) <= p.get("safety_stock", 0)
+    #     and p.get("order_flag", 1) == 0
+    # ]
 
 def get_have_stock_product(stock_manager, page):
     # 전체 상품 목록 가져오기
@@ -37,23 +37,19 @@ def get_have_stock_product(stock_manager, page):
 def test_stock_inflow(page):
     try:
         bay_login(page)
-        
 
         stock_manager = StockManager(page)
-        stock_manager.load_product_from_json()
 
         # 3개 제품을 랜덤으로 선택하여 입고 테스트 진행
-        filtered_products = get_filtered_products(stock_manager, page)
+        filtered_products = stock_manager.load_product_from_json()
 
         if len(filtered_products) < 3:
-            print(f"❌ 조건에 맞는 제품이 {len(filtered_products)}개만 존재합니다. 3개 이상이 필요합니다.")
-            return
+            raise AssertionError(f"❌ 조건에 맞는 제품이 {len(filtered_products)}개만 존재합니다. 3개 이상이 필요합니다.")
 
         # 조건에 맞는 제품들 중에서 3개를 랜덤으로 선택
         selected_products = random.sample(filtered_products, 3)
 
         print("[선택된 제품]", [p["kor"] for p in selected_products])
-
 
         for product in selected_products:
             print(product)
@@ -70,7 +66,6 @@ def test_stock_inflow(page):
 
             # 입고 후 재고 값을 json 파일에 저장
             update_product_flag(product['kor'], stock_qty=expected)
-
 
     except Exception as e:
         print(f"❌ 입고 테스트 실패: {str(e)}")

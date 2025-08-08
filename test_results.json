@@ -3,126 +3,225 @@
     "test_name": "test_Bay_login",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:04:46",
+    "timestamp": "2025-08-08 17:56:22",
     "file": "tests/test_Bay_login.py",
     "stack": "",
-    "duration": "14.75초"
+    "duration": "16.15초"
   },
   {
     "test_name": "test_Bay_alert",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:05:36",
+    "timestamp": "2025-08-08 17:58:55",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "49.32초"
+    "duration": "152.47초"
   },
   {
     "test_name": "test_Bay_supplier",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:06:17",
+    "timestamp": "2025-08-08 17:59:36",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "41.58초"
+    "duration": "41.17초"
   },
   {
     "test_name": "test_Bay_supplier_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:06:31",
+    "timestamp": "2025-08-08 17:59:51",
     "file": "tests/test_Bay_supplier_val.py",
     "stack": "",
-    "duration": "13.44초"
+    "duration": "15.56초"
   },
   {
     "test_name": "test_Bay_prdctg",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:07:26",
+    "timestamp": "2025-08-08 18:00:46",
     "file": "tests/test_Bay_prdctg.py",
     "stack": "",
-    "duration": "55.45초"
+    "duration": "54.84초"
   },
   {
     "test_name": "test_Bay_prdctg_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:08:02",
+    "timestamp": "2025-08-08 18:01:22",
     "file": "tests/test_Bay_prdctg_val.py",
     "stack": "",
-    "duration": "35.42초"
+    "duration": "35.92초"
   },
   {
     "test_name": "test_Bay_prdctg_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:08:49",
+    "timestamp": "2025-08-08 18:02:06",
     "file": "tests/test_Bay_prdctg_edit.py",
     "stack": "",
-    "duration": "47.25초"
+    "duration": "43.94초"
   },
   {
     "test_name": "test_Bay_prdctg_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:09:25",
+    "timestamp": "2025-08-08 18:02:45",
     "file": "tests/test_Bay_prdctg_delete.py",
     "stack": "",
-    "duration": "35.73초"
+    "duration": "38.47초"
   },
   {
     "test_name": "test_Bay_rules_register",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:10:13",
+    "timestamp": "2025-08-08 18:03:35",
     "file": "tests/test_Bay_rules_register.py",
     "stack": "",
-    "duration": "48.14초"
+    "duration": "50.68초"
   },
   {
     "test_name": "test_Bay_rules_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:11:57",
+    "timestamp": "2025-08-08 18:05:22",
     "file": "tests/test_Bay_rules_edit.py",
     "stack": "",
-    "duration": "104.59초"
+    "duration": "106.93초"
   },
   {
     "test_name": "test_Bay_product",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:15:45",
+    "timestamp": "2025-08-08 18:08:37",
     "file": "tests/test_Bay_product.py",
     "stack": "",
-    "duration": "227.33초"
+    "duration": "195.02초"
   },
   {
     "test_name": "test_Bay_product_val",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:16:41",
+    "timestamp": "2025-08-08 18:09:10",
     "file": "tests/test_Bay_product_val.py",
     "stack": "",
-    "duration": "56.47초"
+    "duration": "32.68초"
   },
   {
     "test_name": "test_Bay_product_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:17:04",
+    "timestamp": "2025-08-08 18:09:39",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "23.21초"
+    "duration": "29.25초"
   },
   {
     "test_name": "test_Bay_product_delete",
+    "status": "FAIL",
+    "message": "FAILED tests/test_Bay_product_delete.py::test_delete_product - AssertionError...",
+    "timestamp": "2025-08-08 18:10:05",
+    "file": "tests/test_Bay_product_delete.py",
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_product_delete.py FF                                      [100%]\n\n================================== FAILURES ===================================\n_____________________________ test_delete_product _____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%5B%EC%88%98%EC%A0%95%5D%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0801_04'>\n\n    def test_delete_product(page):\n        try:\n            bay_login(page)\n    \n            deletable_names = get_deletable_products_from_json()\n            if not deletable_names:\n                msg = \"\\u274c \\uc0ad\\uc81c \\uac00\\ub2a5\\ud55c \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n            target_name = random.choice(deletable_names)\n    \n            page.goto(URLS[\"bay_prdList\"])\n            page.fill(\"data-testid=input_search\", target_name)\n            page.wait_for_timeout(1000)\n            page.click(\"data-testid=btn_search\")\n            page.wait_for_timeout(1000)\n    \n            rows = page.locator(\"table tbody tr\")\n            if rows.count() == 0:\n                msg = f\"\\u274c \\uc81c\\ud488 '{target_name}' \\uc744(\\ub97c) \\ucc3e\\uc744 \\uc218 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n>           delete_product_and_verify(page, row_index=0)\n\ntests\\test_Bay_product_delete.py:104: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%5B%EC%88%98%EC%A0%95%5D%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0801_04'>\nrow_index = 0\n\n    def delete_product_and_verify(page: Page, row_index: int):\n        try:\n            product_name = page.locator(f\"table tbody tr >> nth={row_index} >> td:nth-child(4)\").inner_text().strip()\n            product_display_name = product_name.splitlines()[0]\n    \n            delete_button = page.locator(f\"table tbody tr >> nth={row_index} >> td:nth-child(12) button\").nth(1)  # 0부터 시작하므로 1은 두 번째 버튼\n            delete_button.click()\n    \n    \n            page.click(\"data-testid=btn_del\")\n            page.wait_for_timeout(500)\n            page.reload()\n            page.wait_for_timeout(1000)\n    \n            if check_delete(page, product_name):\n                msg = f\"[PASS][제품관리] 제품 삭제 테스트 (삭제된 제품: '{product_display_name}')\"\n                print(msg)\n                remove_product_name_by_kor(product_display_name)  # \\u2705 JSON\\uc5d0\\uc11c \\uc81c\\uac70\n            else:\n                fail_msg = f\"[FAIL][제품관리] 제품 '{product_display_name}' 삭제 실패 (리스트에 존재)\"\n                print(fail_msg)\n    \n>               assert False, fail_msg\nE               AssertionError: [FAIL][제품관리] 제품 '[수정]등록테스트_0801_04' 삭제 실패 (리스트에 존재)\nE               assert False\n\ntests\\test_Bay_product_delete.py:73: AssertionError\n---------------------------- Captured stdout call -----------------------------\n[FAIL][제품관리] 제품 '[수정]등록테스트_0801_04' 삭제 실패 (리스트에 존재)\n[FAIL][제품관리] 제품 '[수정]등록테스트_0801_04' 삭제 중 예외 발생\n에러: [FAIL][제품관리] 제품 '[수정]등록테스트_0801_04' 삭제 실패 (리스트에 존재)\nassert False\n[FAIL][제품관리] 제품 삭제 중 예외 발생\n에러 내용: [FAIL][제품관리] 제품 '[수정]등록테스트_0801_04' 삭제 실패 (리스트에 존재)\nassert False\n__________________________ test_bulk_delete_products __________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/products?name=%5B%EC%88%98%EC%A0%95%5D%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0801_04'>\n\n    def test_bulk_delete_products(page):\n        try:\n            # 로그인\n            bay_login(page)\n    \n    \n            # 일괄 삭제 가능한 제품 검색\n            deletable_names = get_deletable_products_from_json()\n            if not deletable_names:\n                msg = \"\\u274c \\uc77c\\uad04 \\uc0ad\\uc81c \\uac00\\ub2a5\\ud55c \\uc81c\\ud488\\uc774 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n            # 2개 이상이면 2개, 1개면 1개, 0개면 빈 리스트\n            selected_names = random.sample(deletable_names, min(len(deletable_names), 2))\n    \n            # 제품 리스트 페이지로 이동\n    \n            selected_product_names = []\n    \n            for name in selected_names:\n                page.fill(\"data-testid=input_search\", name)\n                page.wait_for_timeout(1000)\n                page.click(\"data-testid=btn_search\")\n                page.wait_for_timeout(1000)\n    \n                row = page.locator(\"table tbody tr\").nth(0)\n                if row.is_visible():\n                    row.locator(\"td:nth-child(1)\").click()\n                    selected_product_names.append(name)\n    \n            if not selected_product_names:\n                msg = \"\\u2705 \\uc870\\uac74\\uc5d0 \\ub9de\\ub294 \\uc81c\\ud488\\uc774 \\uc5c6\\uc5b4\\uc11c \\uc0ad\\uc81c\\ub97c \\uc2a4\\ud0b5\\ud569\\ub2c8\\ub2e4.\"\n                print(msg)\n                return\n    \n            # 일괄 삭제 버튼 클릭\n            page.click(\"data-testid=btn_del_bulk\")\n            page.wait_for_timeout(2000)\n            page.locator(\"data-testid=btn_del\").click()\n            page.wait_for_timeout(2000)\n    \n            # 삭제 후, 제품이 목록에서 사라졌는지 확인\n            failed = []\n            for name in selected_product_names:\n                if not check_delete(page, name):  # 삭제 확인 함수 호출\n                    failed.append(name)\n    \n            if failed:\n                fail_msg = f\"[FAIL][제품관리] 일부 제품 삭제 실패: {failed}\"\n                print(fail_msg)\n>               assert False, fail_msg\nE               AssertionError: [FAIL][제품관리] 일부 제품 삭제 실패: ['[수정]등록테스트_0801_04']\nE               assert False\n\ntests\\test_Bay_product_delete.py:164: AssertionError\n---------------------------- Captured stdout call -----------------------------\n[FAIL][제품관리] 일부 제품 삭제 실패: ['[수정]등록테스트_0801_04']\n[FAIL][제품관리] 일괄 삭제 중 예외 발생\n에러 내용: [FAIL][제품관리] 일부 제품 삭제 실패: ['[수정]등록테스트_0801_04']\nassert False\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_product_delete.py::test_delete_product - AssertionError...\nFAILED tests/test_Bay_product_delete.py::test_bulk_delete_products - Assertio...\n============================= 2 failed in 24.53s ==============================\n",
+    "duration": "25.68초"
+  },
+  {
+    "test_name": "test_Bay_stock_in",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-07-31 16:17:18",
-    "file": "tests/test_Bay_product_delete.py",
+    "timestamp": "2025-08-08 18:11:17",
+    "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "13.31초"
+    "duration": "72.17초"
+  },
+  {
+    "test_name": "test_Bay_stock_out",
+    "status": "FAIL",
+    "message": "helpers\\order_status_utils.py:243: AssertionError",
+    "timestamp": "2025-08-08 18:22:20",
+    "file": "tests/test_Bay_stock_out.py",
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_stock_out.py .F                                           [100%]\n\n================================== FAILURES ===================================\n_____________________ test_edit_stocklist_and_auto_order ______________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history?page=1&start_date=2025-08-08&end_date=2025-08-08&order_status=PENDING&product_name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0808_07'>\n\n    def test_edit_stocklist_and_auto_order(page):\n        bay_login(page)\n    \n        stock_manager = StockManager(page)\n        stock_manager.load_product_from_json()\n    \n        ordered_product = []\n    \n        # 조건에 맞는 제품 필터링\n        filtered_products = get_filtered_products(stock_manager)\n        if len(filtered_products) < 2:\n            print(\"\\u274c \\uc870\\uac74\\uc5d0 \\ub9de\\ub294 \\uc81c\\ud488\\uc774 2\\uac1c \\uc774\\uc0c1 \\uc5c6\\uc2b5\\ub2c8\\ub2e4.\")\n            return\n    \n        # 2개 제품 랜덤 선택\n        selected_products = random.sample(filtered_products, 2)\n    \n        for product in selected_products:\n            current_stock = product[\"stock_qty\"]\n            outflow = current_stock\n            expected = current_stock - outflow\n            txt_outflow = \"재고가 안전 재고보다 적은 경우 발주 규칙에 따라 발주됩니다.\"\n    \n            # 제품 검색 후 수정 버튼 클릭\n            page.goto(URLS[\"bay_stock\"])\n            page.wait_for_timeout(2000)\n    \n            page.locator(\"data-testid=input_search\").fill(product[\"kor\"])\n            page.wait_for_timeout(1000)\n            page.locator(\"data-testid=btn_search\").click()\n            page.wait_for_timeout(1000)\n    \n            row = page.locator(\"table tbody tr\").first\n    \n            # 현재 재고(6열) 값 가져오기\n            cell_6 = row.locator(\"td\").nth(5)\n            value_6 = int(cell_6.inner_text().strip())\n    \n            # (출고이력)8열 값 가져오기\n            cell_8 = row.locator(\"td\").nth(7)\n            value_8 = int(cell_8.inner_text().strip())\n    \n            page.locator(\"data-testid=btn_edit\").first.click()\n            page.wait_for_timeout(1000)\n    \n            # 8번째 셀(출고)의 input에 출고량 입력\n            sum_value = value_6 + value_8\n            input_field = row.locator(\"td\").nth(7).locator(\"input\")\n            input_field.scroll_into_view_if_needed()\n            input_field.fill(str(sum_value))\n            page.wait_for_timeout(1000)\n    \n            # 저장 버튼 클릭 후 토스트 확인\n            page.locator(\"data-testid=btn_edit_bulk\").click()\n            expect(page.locator(\"data-testid=toast_outflow\")).to_have_text(txt_outflow, timeout=3000)\n            page.wait_for_timeout(1000)\n            ordered_product.append({\"kor\": product[\"kor\"]} )\n    \n        # 발주 내역 페이지에서 날짜 확인\n        page.goto(URLS[\"bay_orderList\"])\n        page.wait_for_timeout(2000)\n        page.locator(\"data-testid=input_search\").fill(product[\"kor\"])\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(2000)\n        page.locator(\"data-testid=btn_resend\").is_hidden(timeout=3000)\n        wait_until(next_time)\n        page.wait_for_timeout(30000) # 혹시 모를 Delay를 위한 30초 추가 대기\n        page.locator(\"data-testid=btn_reset\").click()\n        page.wait_for_timeout(3000)\n    \n        for product in ordered_product:\n>           search_order_history(page, product[\"kor\"], \"발주 요청\")\n\ntests\\test_Bay_stock_out.py:214: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history?page=1&start_date=2025-08-08&end_date=2025-08-08&order_status=PENDING&product_name=%EB%93%B1%EB%A1%9D%ED%85%8C%EC%8A%A4%ED%8A%B8_0808_07'>\nproduct_name = '등록테스트_0808_07', status = '발주 요청'\n\n    def search_order_history(page:Page, product_name: str, status:str):\n        today_btn_id = datetime.now().strftime(\"btn_day_%m%d\")  # 예: btn_day_0710\n        # 시작일 선택\n        page.locator(\"[data-testid=select_startday]\").click()\n        page.wait_for_timeout(1000)\n        page.locator(f\"[data-testid={today_btn_id}]\").click()\n        page.wait_for_timeout(500)\n        # 종료일 선택\n        page.locator(\"[data-testid=select_endday]\").click()\n        page.wait_for_timeout(1000)\n        page.locator(f\"[data-testid={today_btn_id}]\").click()\n        page.wait_for_timeout(500)\n        # 상태 선택\n        expect(page.locator(\"data-testid=drop_status_trigger\")).to_be_visible(timeout=8000)\n        page.locator(\"data-testid=drop_status_trigger\").click()\n        expect(page.locator(\"data-testid=drop_status_item\")).to_be_visible(timeout=5000)\n        page.locator('[role=\"option\"]').filter(has_text=status).click()\n        page.wait_for_timeout(1000)\n        # 제품명 입력\n        page.locator(\"data-testid=input_search\").fill(product_name)\n        page.wait_for_timeout(500)\n        # 검색 버튼 클릭\n        page.locator(\"[data-testid=btn_search]\").click()\n        page.wait_for_timeout(2000)\n>       expect(page.locator(\"data-testid=history\")).to_be_visible(timeout=100000)\nE       AssertionError: Locator expected to be visible\nE       Actual value: <element(s) not found> \nE       Call log:\nE         - LocatorAssertions.to_be_visible with timeout 100000ms\nE         -   - waiting for locator(\"data-testid=history\")\n\nhelpers\\order_status_utils.py:243: AssertionError\n---------------------------- Captured stdout call -----------------------------\n\\u2753 \\ud544\\ud130\\ub9c1\\ub41c \\uc81c\\ud488 - \\uc774\\ub984: [\\uc218\\uc815]\\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0808_01, \\uc7ac\\uace0: 18, \\uc548\\uc804 \\uc7ac\\uace0: 5\\n\\u2753 \\ud544\\ud130\\ub9c1\\ub41c \\uc81c\\ud488 - \\uc774\\ub984: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0808_04, \\uc7ac\\uace0: 600, \\uc548\\uc804 \\uc7ac\\uace0: 5\\n\\u2753 \\ud544\\ud130\\ub9c1\\ub41c \\uc81c\\ud488 - \\uc774\\ub984: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0808_07, \\uc7ac\\uace0: 6, \\uc548\\uc804 \\uc7ac\\uace0: 5\\n\\u2753 \\ud544\\ud130\\ub9c1\\ub41c \\uc81c\\ud488 - \\uc774\\ub984: \\ub4f1\\ub85d\\ud14c\\uc2a4\\ud2b8_0808_08, \\uc7ac\\uace0: 10, \\uc548\\uc804 \\uc7ac\\uace0: 5\\n\\u23f3 \\ub2e4\\uc74c \\ubc1c\\uc8fc \\ubc30\\uce58 \\uc2dc\\uac01\\uae4c\\uc9c0 \\ub300\\uae30 \\uc911: 18:20\\n\\U0001f552 448\\ucd08 \\ub0a8\\uc74c... 60\\ucd08 \\ub300\\uae30\\n\\U0001f552 388\\ucd08 \\ub0a8\\uc74c... 60\\ucd08 \\ub300\\uae30\\n\\U0001f552 328\\ucd08 \\ub0a8\\uc74c... 60\\ucd08 \\ub300\\uae30\\n\\U0001f552 268\\ucd08 \\ub0a8\\uc74c... 60\\ucd08 \\ub300\\uae30\\n\\U0001f552 208\\ucd08 \\ub0a8\\uc74c... 60\\ucd08 \\ub300\\uae30\\n\\U0001f552 148\\ucd08 \\ub0a8\\uc74c... 60\\ucd08 \\ub300\\uae30\\n\\U0001f552 88\\ucd08 \\ub0a8\\uc74c... 60\\ucd08 \\ub300\\uae30\\n\\U0001f552 28\\ucd08 \\ub0a8\\uc74c... 28\\ucd08 \\ub300\\uae30\\n\\u2705 \\ub3c4\\ub2ec \\uc644\\ub8cc! \\ubc1c\\uc8fc \\ub0b4\\uc5ed \\ud655\\uc778 \\uc2dc\\uc791\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_stock_out.py::test_edit_stocklist_and_auto_order - Asse...\n=================== 1 failed, 1 passed in 662.12s (0:11:02) ===================\n",
+    "duration": "663.43초"
+  },
+  {
+    "test_name": "test_Bay_stock_batch",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:38",
+    "file": "tests/test_Bay_stock_batch.py",
+    "stack": "",
+    "duration": "797.77초"
+  },
+  {
+    "test_name": "test_Bay_order_status_request_cancel",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:38",
+    "file": "tests/test_Bay_order_status_request_cancel.py",
+    "stack": "",
+    "duration": "30.04초"
+  },
+  {
+    "test_name": "test_Bay_order_status_request",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:38",
+    "file": "tests/test_Bay_order_status_request.py",
+    "stack": "",
+    "duration": "32.68초"
+  },
+  {
+    "test_name": "test_Bay_order_status_progress_delivery",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:38",
+    "file": "tests/test_Bay_order_status_progress_delivery.py",
+    "stack": "",
+    "duration": "43.94초"
+  },
+  {
+    "test_name": "test_Bay_order_status_progress_complete",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:38",
+    "file": "tests/test_Bay_order_status_progress_complete.py",
+    "stack": "",
+    "duration": "43.94초"
+  },
+  {
+    "test_name": "test_Bay_order_status_delivery",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:38",
+    "file": "tests/test_Bay_order_status_delivery.py",
+    "stack": "",
+    "duration": "23.87초"
+  },
+  {
+    "test_name": "test_Bay_order_status_complete",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:38",
+    "file": "tests/test_Bay_order_status_complete.py",
+    "stack": "",
+    "duration": "23.54초"
+  },
+  {
+    "test_name": "test_Bay_order_status_fail",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:35:39",
+    "file": "tests/test_Bay_order_status_fail.py",
+    "stack": "",
+    "duration": "21.04초"
+  },
+  {
+    "test_name": "test_Bay_order_status_batch",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-08-08 18:39:16",
+    "file": "tests/test_Bay_order_status_batch.py",
+    "stack": "",
+    "duration": "217.86초"
   }
 ]

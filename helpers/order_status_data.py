@@ -17,7 +17,13 @@ order_status_map = {
         "receive_enabled": True,
         "cancel_enabled": False,
     },                                                                             
-    "일부 수령": {
+    "일부 수령(배송전)": {
+        "resend_enabled": False,
+        "tracking_text": "대기중",
+        "receive_enabled": True,
+        "cancel_enabled": False,
+    },                                                                             
+    "일부 수령(배송후)": {
         "resend_enabled": False,
         "tracking_enabled": True,
         "receive_enabled": True,

@@ -66,19 +66,19 @@ def test_order_receive_from_progress(page: Page):
         # 발주 수령 팝업 퀵메뉴 버튼 확인
         page.locator("data-testid=btn_plus_10").click()
         new_data = stock_inflow + 10
-        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        expect(page.locator("data-testid=input_quantity")).to_have_value(str(new_data), timeout=3000)
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_plus_100").click() 
         new_data += 100 
-        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        expect(page.locator("data-testid=input_quantity")).to_have_value(str(new_data), timeout=3000)
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_minus_100").click() 
         new_data -= 100 
-        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        expect(page.locator("data-testid=input_quantity")).to_have_value(str(new_data), timeout=3000)
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_minus_10").click() 
         new_data -= 10 
-        expect(page.locator("data-testid=input_quantity")).to_have_value(int(new_data), timeout=3000)
+        expect(page.locator("data-testid=input_quantity")).to_have_value(str(new_data), timeout=3000)
         page.wait_for_timeout(1000)
         assert new_data == stock_inflow, f"초기 수량과 동일하지 않음. 초기 수량: {stock_inflow}, 현재 수량: {new_data}"
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭

@@ -55,11 +55,29 @@ def test_duplicate_product_name(page):
         selected_maker = maker_items.nth(maker_index).inner_text().strip()
         maker_items.nth(maker_index).click()
         page.wait_for_timeout(1000)
-
+        # 단가
         page.locator("data-testid=input_price").last.fill(str(random.randint(1000, 10000)))
         page.wait_for_timeout(1000)
+        # 자동 발주 수량
+        page.locator("data-testid=input_stk_qty").last.fill("10")
+        page.wait_for_timeout(1000)
+        # 안전 재고
+        page.locator("data-testid=input_stk_safe").last.fill("10")
+        page.wait_for_timeout(1000)
 
-        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+        page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
+        page.wait_for_timeout(1000)
+        # 업체 선택
+        page.locator("data-testid=drop_supplier_trigger").last.click()
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_supplier_search").fill("중복테스트")
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_supplier_item", has_text="중복테스트").first.click()
+        page.wait_for_timeout(1000)
+
+
+        # 발주 규칙 선택 
+        page.evaluate("window.scrollTo(0, document.body.scrollHeight)") 
         page.wait_for_timeout(1000)
         rule = "규칙 없음"
         page.locator("data-testid=drop_rule_trigger").last.click()
@@ -68,21 +86,11 @@ def test_duplicate_product_name(page):
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_rule_item", has_text=rule).click()
         page.wait_for_timeout(1000)
-
-        # 업체 선택
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_supplier_trigger").last.click()
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_supplier_search").fill("중복테스트")
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_supplier_item", has_text="중복테스트").first.click()
-        page.wait_for_timeout(1000)
         
 
         page.evaluate("window.scrollTo(0, 0)")
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_save").click()
-        # page.locator("button:has-text('완료')").click()
         
         expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=4000)
         page.wait_for_timeout(1000)

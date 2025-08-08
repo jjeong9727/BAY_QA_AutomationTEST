@@ -111,8 +111,8 @@ def remove_products_from_json(deleted_names: list):
 # 제품 등록 이후 해당 제품명 리스트 찾기
 def verify_products_in_list(page, product_names: list[str], url: str,  table_column_index: int):
     page.goto(url)
-    page.wait_for_timeout(3000)
-
+    page.wait_for_selector(f"data-testid=input_search", timeout=10000)
+    
     for name in product_names:
         page.fill("data-testid=input_search", name)
         page.wait_for_timeout(1000)

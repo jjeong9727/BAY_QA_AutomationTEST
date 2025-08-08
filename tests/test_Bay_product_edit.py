@@ -11,7 +11,7 @@ from helpers.common_utils import bay_login
 PRODUCT_FILE_PATH = Path("product_name.json")
 
 # JSON에서 조건에 맞는 제품을 찾는 함수
-def get_deletable_products():
+def get_editable_product():
     with open(PRODUCT_FILE_PATH, "r", encoding="utf-8") as f:
         products = json.load(f)
 
@@ -25,7 +25,7 @@ def test_edit_products(page):
         bay_login(page)
 
         # 1. JSON에서 조건에 맞는 제품 하나 가져오기
-        product = get_deletable_products()[0]  # 또는 get_editable_product()
+        product = get_editable_product()[0]  
         product_name = product["kor"]
         print(f"🎯 수정 대상 제품명: {product_name}")
 
@@ -69,7 +69,7 @@ def test_edit_products(page):
         # 저장
         txt_edit = "제품을 수정하시겠습니까?"
         page.evaluate("window.scrollTo(0, 0)")
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(2000)
         page.locator("data-testid=btn_save").click()
         page.wait_for_timeout(1000)
         expect(page.locator("data-testid=txt_edit")).to_have_text(txt_edit, timeout=3000)

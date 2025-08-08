@@ -7,6 +7,8 @@ from helpers.stock_utils import StockManager
 from helpers.product_utils import update_product_flag
 from helpers.common_utils import bay_login
 from helpers.order_status_utils import search_order_history
+
+ordered_product = []
 def get_filtered_products(stock_manager):
     """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
     products = stock_manager.get_all_product_names()
@@ -49,7 +51,8 @@ def wait_until(target_time: datetime):
         now = datetime.now()
         remaining = (target_time - now).total_seconds()
         if remaining <= 0:
-            print("✅ 도달 완료! 발주 내역 확인 시작")
+            print("✅ 도달 완료!")
+            time.sleep(60) # 60초 추가 대기
             break
         elif remaining > 60:
             print(f"🕒 {int(remaining)}초 남음... 60초 대기")
@@ -59,7 +62,9 @@ def wait_until(target_time: datetime):
             time.sleep(remaining)
 next_time = get_safe_batch_time()
 hour_str = next_time.strftime("%H")  
-minute_str = next_time.strftime("%M")  
+minute_str = next_time.strftime("%M") 
+
+
 def test_stock_outflow(page):
     try:
         bay_login(page)
@@ -74,18 +79,20 @@ def test_stock_outflow(page):
         page.wait_for_timeout(2000) 
 
         # ⏰ 시간 설정
-        current_hour = page.locator('[data-testid="drop_hour_trigger"]').text_content()
+        current_hour = page.locator("data-testid=drop_hour_trigger").text_content()
         if current_hour != hour_str:
-            page.locator('[data-testid="drop_hour_trigger"]').click()
-            page.locator('[data-testid="drop_hour_search"]').fill(hour_str)
-            page.locator('[data-testid="drop_hour_item"]', has_text=hour_str).click()
+            page.locator("data-testid=drop_hour_trigger").click()
+            page.wait_for_timeout(1000)
+            page.locator(f'div[data-testid^="drop_hour_item_"][data-value="{hour_str}"]').click()
+            page.wait_for_timeout(1000)
 
         # ⏱️ 분 설정
-        current_minute = page.locator('[data-testid="drop_minute_trigger"]').text_content()
+        current_minute = page.locator("data-testid=drop_minute_trigger").text_content()
         if current_minute != minute_str:
-            page.locator('[data-testid="drop_minute_trigger"]').click()
-            page.locator('[data-testid="drop_minute_search"]').fill(minute_str)
-            page.locator('[data-testid="drop_minute_item"]', has_text=minute_str).click()
+            page.locator("data-testid=drop_minute_trigger").click()
+            page.wait_for_timeout(1000)
+            page.locator(f'div[data-testid^="drop_minute_item_"][data-value="{minute_str}"]').click()
+            page.wait_for_timeout(1000)
         
         page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=txt_title")).to_have_text("발주 규칙 변경 제품", timeout=3000)
@@ -94,6 +101,7 @@ def test_stock_outflow(page):
         expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)
 
+        
         # 출고 처리
         stock_manager = StockManager(page)
         stock_manager.load_product_from_json()
@@ -101,8 +109,7 @@ def test_stock_outflow(page):
         # 1개 제품을 랜덤으로 선택하여 출고 테스트 진행
         filtered_products = get_filtered_products(stock_manager)
         if len(filtered_products) < 1:
-            print(f"❌ 조건에 맞는 제품이 없습니다.")
-            return
+            raise AssertionError("❌ 조건에 맞는 제품이 없습니다.")
 
         # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
         selected_products = random.sample(filtered_products, 1)
@@ -115,9 +122,7 @@ def test_stock_outflow(page):
             safety_stock = product.get('safety_stock', 0)
 
             # 출고 수량 계산
-            max_outflow = current_stock 
-            calculated_outflow = current_stock - safety_stock
-            outflow_qty = max(1, min(max_outflow, calculated_outflow))
+            outflow_qty = current_stock
 
             # 출고 처리
             stock_manager.perform_outflow(outflow_qty)
@@ -129,6 +134,7 @@ def test_stock_outflow(page):
 
             # 출고 후 재고 값을 json에 저장
             update_product_flag(product['kor'], stock_qty=expected, order_flag=1, delivery_status=1)
+            ordered_product.append(product['kor'])
 
     except Exception as e:
         print(f"❌ 출고 테스트 실패: {str(e)}")
@@ -140,9 +146,11 @@ def test_edit_stocklist_and_auto_order(page):
     stock_manager = StockManager(page)
     stock_manager.load_product_from_json()
 
+    ordered_product = []
+
     # 조건에 맞는 제품 필터링
     filtered_products = get_filtered_products(stock_manager)
-    if len(filtered_products) < 2:
+    if len(filtered_products) < 2: 
         print("❌ 조건에 맞는 제품이 2개 이상 없습니다.")
         return
 
@@ -151,12 +159,12 @@ def test_edit_stocklist_and_auto_order(page):
 
     for product in selected_products:
         current_stock = product["stock_qty"]
-        outflow = 1
+        outflow = current_stock
         expected = current_stock - outflow
         txt_outflow = "재고가 안전 재고보다 적은 경우 발주 규칙에 따라 발주됩니다."
 
-        # 제품 검색 후 편집 버튼 클릭
-        page.goto(URLS["bay_stockList"])
+        # 제품 검색 후 수정 버튼 클릭
+        page.goto(URLS["bay_stock"])
         page.wait_for_timeout(2000)
 
         page.locator("data-testid=input_search").fill(product["kor"])
@@ -164,33 +172,56 @@ def test_edit_stocklist_and_auto_order(page):
         page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(1000)
 
+        row = page.locator("table tbody tr").first
+
+        # 현재 재고(6열) 값 가져오기
+        cell_6 = row.locator("td").nth(5)
+        value_6 = int(cell_6.inner_text().strip())
+
+        # (출고이력)8열 값 가져오기
+        cell_8 = row.locator("td").nth(7)
+        value_8 = int(cell_8.inner_text().strip())
+
         page.locator("data-testid=btn_edit").first.click()
         page.wait_for_timeout(1000)
 
-        # 7번째 셀의 input에 출고량 입력
-        row = page.locator("table tbody tr").first
+        # 8번째 셀(출고)의 input에 출고량 입력
+        sum_value = value_6 + value_8
         input_field = row.locator("td").nth(7).locator("input")
         input_field.scroll_into_view_if_needed()
-        input_field.fill(str(outflow))
+        input_field.fill(str(sum_value))
         page.wait_for_timeout(1000)
 
         # 저장 버튼 클릭 후 토스트 확인
-        page.locator("data-testid=btn_edit").first.click()
-        expect(page.locator("data-testid=toast_edit")).to_have_text(txt_outflow, timeout=3000)
+        page.locator("data-testid=btn_edit_bulk").click()
+        expect(page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
         page.wait_for_timeout(1000)
+        ordered_product.append({"kor": product["kor"]} )
 
-        # 발주 내역 페이지에서 날짜 확인
-        page.goto(URLS["bay_orderList"])
-        page.wait_for_timeout(2000)
-        page.locator("data-testid=input_search").fill(product["kor"])
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_search").click()
-        page.wait_for_timeout(2000)
-        page.locator("data-testid=history").is_hidden(timeout=3000)
-        wait_until(next_time)
+    # 발주 내역 페이지에서 날짜 확인
+    page.goto(URLS["bay_orderList"])
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=input_search").fill(product["kor"])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=btn_resend").is_hidden(timeout=3000)
+    wait_until(next_time)
+    page.wait_for_timeout(1000) 
+    page.locator("data-testid=btn_reset").click()
+    page.wait_for_timeout(3000)
+
+    for product in ordered_product:
         search_order_history(page, product["kor"], "발주 요청")
-        cell_locator = page.locator("data-testid=history >> tr >> nth=0 >> td >> nth=1")
-        expect(cell_locator).to_have_text(product["kor"], timeout=3000)
+        rows = page.lacator('table tbody tr')
+        product_cell = rows.nth(0).locator('td:nth-child(2)')
+        product_text = product_cell.inner_text()
+        print(f"제품명: {product_text}")
+        assert product_text in product["kor"], f"❌ 제품명이 발주 내역에 없음: {product["kor"]}"
+
+
         page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_reset").click()
+        page.wait_for_timeout(2000)
         # 상태 업데이트
-        update_product_flag(product["kor"], stock_qty=expected, order_flag=1, delivery_status=1)
+        update_product_flag(product, stock_qty=expected, order_flag=1, delivery_status=1)

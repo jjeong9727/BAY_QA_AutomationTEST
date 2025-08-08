@@ -1,4 +1,5 @@
 import json
+import re
 import random
 from playwright.sync_api import Page, sync_playwright, expect 
 from config import URLS, Account
@@ -42,6 +43,14 @@ def test_order_delivery(page: Page):
         target_product = random.choice(eligible_products)
         product_name = target_product["kor"]
         status_name = "발주 진행"
+        supplier = target_product['supplier']
+        match = re.search(r",\s*(.*?)\s+(\d{3}-\d{4}-\d{4})", supplier)
+        if match:
+            name = match.group(1)
+            phone = match.group(2)
+        else:
+            name = ""
+            phone = ""
 
         # 로그인
         bay_login(page)
@@ -66,8 +75,8 @@ def test_order_delivery(page: Page):
         expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
 
         # 본인 인증
-        page.fill("input[data-testid='input_name']", "권정의")
-        page.fill("input[data-testid='input_contact']", "01062754153")
+        page.fill("input[data-testid='input_name']", name)
+        page.fill("input[data-testid='input_contact']", phone)
         page.click("button[data-testid='btn_confirm']")
         expect(page.locator("data-testid=drop_shipping_trigger")).to_be_visible(timeout=5000)
 
@@ -134,9 +143,9 @@ def test_order_delivery(page: Page):
         page.goto(tracking_url)
         expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
         page.wait_for_timeout(1000)
-        page.fill("input[data-testid='input_name']", "권정의")
+        page.fill("input[data-testid='input_name']", name)
         page.wait_for_timeout(1000)
-        page.fill("input[data-testid='input_contact']", "01062754153")
+        page.fill("input[data-testid='input_contact']", phone)
         page.wait_for_timeout(1000)
         page.click("button[data-testid='btn_confirm']")
         page.wait_for_timeout(1000)

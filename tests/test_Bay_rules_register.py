@@ -35,7 +35,7 @@ def test_order_rules_register(page: Page):
         text = dropdown_items.nth(i).inner_text().strip()
         if text in ["월요일", "수요일", "금요일"]:
             dropdown_items.nth(i).click()
-            page.wait_for_timeout(300)
+            page.wait_for_timeout(1000)
 
 
 

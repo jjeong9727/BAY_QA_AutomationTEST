@@ -34,7 +34,7 @@ def get_order_id_from_order_list(page: Page, product_name: str):
         # 제품명이 일치하는지 비교
         if row_product_name == product_name:
             # 제품명이 일치하면 해당 행에서 order_id 추출
-            order_id = row.locator("td[data-testid='order']").get_attribute('data-orderid')
+            order_id = row.locator("td[data-testid='order']").first.get_attribute('data-orderid')
             print(f"✅ 찾은 order_id: {order_id}")
             return order_id
 
@@ -53,7 +53,7 @@ def update_product_delivery_status(product_name: str, new_status: int):
         json.dump(products, f, ensure_ascii=False, indent=2)
 
 from playwright.sync_api import expect
-
+# 개별 발주 내역 상태 확인 
 def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, expected: dict):
     histories = page.locator("[data-testid='history']").all()
     found = False
@@ -64,7 +64,7 @@ def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, 
         
         for row in rows:
             status = row.locator("td").nth(0).inner_text().strip()
-            order_data_id = row.locator("td[data-testid='order']").get_attribute('data-orderid')
+            order_data_id = row.locator("td[data-testid='order']").first.get_attribute('data-orderid')
 
             print(f"상태: {status}")
             print(f"주문 ID: {order_data_id}")
@@ -105,7 +105,72 @@ def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, 
                             expect(receive_button).to_be_disabled()
 
                     if key == "cancel_enabled":
-                        cancel_button = row.locator("[data-testid=btn_cancel]")
+                        cancel_button = row.locator("[data-testid=btn_order_cancel]")
+                        if value:
+                            expect(cancel_button).to_be_enabled()
+                        else:
+                            expect(cancel_button).to_be_disabled()
+
+                break
+
+        if found:
+            break
+
+    if not found:
+        raise AssertionError(f"발주 내역을 찾을 수 없습니다: {status_name}, {order_id}")
+# 통합 발주 내역 상태 확인 
+def check_order_status_by_order_id_bulk(page: Page, status_name: str, order_id: str, expected: dict):
+    histories = page.locator("[data-testid='history']").all()
+    found = False
+
+    for history in histories:
+        table = history.locator("table")
+        rows = table.locator("tbody tr").all()
+        
+        for row in rows:
+            status = row.locator("td").nth(0).inner_text().strip()
+            order_data_id = row.locator("td[data-testid='order']").first.get_attribute('data-orderid')
+
+            print(f"상태: {status}")
+            print(f"주문 ID: {order_data_id}")
+            
+            if status == status_name and order_data_id == order_id:
+                found = True
+
+                for key, value in expected.items():
+                    if key == "resend_enabled":
+                        resend_button = row.locator("[data-testid=btn_resend]")
+                        if value:
+                            expect(resend_button).to_be_enabled()
+                        else:
+                            expect(resend_button).to_be_disabled()
+
+                    if key == "tracking_text":
+                        td_tracking = row.locator("td").nth(8)
+                        text = td_tracking.text_content().strip()
+                        print(f"[디버깅] 운송장 텍스트: '{text}'")
+                        assert value in text, f"운송장 칸에 '{value}'가 없음. 실제 값: '{text}'"
+
+                    if key == "tracking_enabled":
+                        td_tracking = row.locator("td").nth(8)
+                        tracking_button = td_tracking.locator("[data-testid=btn_check_tracking]")
+                        if tracking_button.count() > 0:
+                            if value:
+                                expect(tracking_button).to_be_enabled()
+                            else:
+                                expect(tracking_button).to_be_disabled()
+                        else:
+                            assert not value, "트래킹 버튼이 없지만 활성화를 기대하고 있습니다."
+
+                    if key == "receive_enabled":
+                        receive_button = row.locator("[data-testid=btn_receive]")
+                        if value:
+                            expect(receive_button).to_be_enabled()
+                        else:
+                            expect(receive_button).to_be_disabled()
+
+                    if key == "cancel_enabled":
+                        cancel_button = row.locator("[data-testid=btn_order_cancel]")
                         if value:
                             expect(cancel_button).to_be_enabled()
                         else:
@@ -175,3 +240,5 @@ def search_order_history(page:Page, product_name: str, status:str):
     # 검색 버튼 클릭
     page.locator("[data-testid=btn_search]").click()
     page.wait_for_timeout(2000)
+    expect(page.locator("data-testid=history")).to_be_visible(timeout=100000)
+    page.wait_for_timeout(1000)

@@ -60,7 +60,7 @@ def test_order_cancel(page: Page):
 
         # 취소 버튼
         txt_cancel = "발주를 취소하시겠습니까?"
-        page.locator("data-testid=btn_cancel").click()  # 취소 버튼 클릭
+        page.locator("data-testid=btn_order_cancel").click()  # 취소 버튼 클릭
         expect(page.locator("data-testid=txt_cancel")).to_have_text(txt_cancel, timeout=3000)
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_confirm").click()  

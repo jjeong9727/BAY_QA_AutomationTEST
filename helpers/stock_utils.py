@@ -16,7 +16,7 @@ def register_stock_for_date(
     # 날짜 포맷
     mmd = date.strftime("%m%d")  # MMDD → 버튼 testid용
     ymd = date.strftime("%Y. %m. %d")  # 텍스트 비교용
-    txt_register = f"해당 날짜로 재고 등록하시겠습니까?"
+    txt_register = "해당 날짜로 재고 등록하시겠습니까?"
 
     # 날짜 선택
     page.locator("[data-testid=select_date]").click()
@@ -53,7 +53,7 @@ def register_stock_for_date(
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_register")).to_have_text(txt_register, timeout=3000)
     page.locator("data-testid=btn_confirm").click()
-    expect(page.locator("data-testid=toast_stock")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=toast_inflow")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
     # JSON 파일 갱신
@@ -108,24 +108,19 @@ class StockManager:
 
         rows = self.page.locator("table tbody tr").all()
         for row in rows:
-            columns = row.locator("td").all_inner_texts()
-            
+            columns = row.locator("td").all()  # ✅ locator 객체 리스트
             
             # 제품명에서 줄바꿈 기준으로 첫 번째 값(한글)을 추출하여 비교
-            korean_product_name = columns[3].split('\n')[0].strip()  # 줄바꿈 기준으로 첫 번째 값 추출
+            korean_product_name = columns[3].inner_text().split("\n")[0].strip()  # 줄바꿈 기준으로 첫 번째 값 추출
             print(f"현 재고: {self.product_name}, 노출 값: {korean_product_name}")
             if korean_product_name == self.product_name.strip():
-                stock_value = columns[6].strip()  # 재고량 확인 (7열)
+                stock_value = columns[6].inner_text().strip()  # 재고량 확인 (7열)
                 return int(stock_value) if stock_value.isdigit() else 0
         
         raise Exception(f"재고 확인 실패: {self.product_name}")
     
-
-    
-
-
     def perform_inflow(self, quantity: int):
-        txt_inflow = "제품 입고가 완료되었습니다."
+        txt_inflow = f"재고 입고가 완료되었습니다."
         self.page.goto(URLS["bay_stock"])
         self.page.wait_for_timeout(2000)
         self.page.click("data-testid=btn_stockadd")
@@ -156,7 +151,7 @@ class StockManager:
         self.page.wait_for_timeout(3000)
 
     def perform_outflow(self, quantity: int):
-        txt_outflow = "재고가 안전 재고 보다 적은 경우 발주 규칙에 따라 발주됩니다."
+        txt_outflow = "재고가 안전 재고보다 적은 경우 발주 규칙에 따라 발주됩니다."
         self.page.goto(URLS["bay_stock"])
         self.page.wait_for_timeout(2000)
         self.page.click("data-testid=btn_stockadd")

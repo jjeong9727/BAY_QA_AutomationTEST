@@ -1,4 +1,5 @@
 import json
+import re
 import random
 from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
@@ -15,8 +16,8 @@ from datetime import datetime
     # 2: 발주 진행
     # 3: 배송 진행 
     # 4: 수령 완료(운송장O) 3 -> 4
-    # 5: 배송 취소
-    # 6: 배송 실패
+    # 5: 발주 취소
+    # 6: 발주 실패
     # 7: 수령 완료(운송장X) 2 -> 7
 
 def update_product_status_in_json(product_name: str, delivery_status: int):
@@ -47,6 +48,14 @@ def test_order_acceptance(page: Page):
     for product in selected_products:
         product_name = product['kor']
         stock = product['stock_qty']
+        supplier = product['supplier']
+        match = re.search(r",\s*(.*?)\s+(\d{3}-\d{4}-\d{4})", supplier)
+        if match:
+            name = match.group(1)
+            phone = match.group(2)
+        else:
+            name = ""
+            phone = ""
 
         try:
             # 로그인
@@ -80,9 +89,9 @@ def test_order_acceptance(page: Page):
             accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
             page.goto(accept_url)
             expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
-            page.fill("input[data-testid='input_name']", "권정의")
+            page.fill("input[data-testid='input_name']", name)
             page.wait_for_timeout(1000)
-            page.fill("input[data-testid='input_contact']", "01062754153")
+            page.fill("input[data-testid='input_contact']", phone)
             page.wait_for_timeout(1000)
             page.locator("button[data-testid='btn_confirm']").last.click()
             expect(page.locator("button[data-testid='btn_accept']")).to_be_visible(timeout=7000)
@@ -119,57 +128,7 @@ def test_order_acceptance(page: Page):
             # JSON 업데이트
             update_product_status_in_json(product_name, 2)
 
-            # 안전 재고 수정 > 발주 불가 확인
-            txt_order = "자동 발주를 진행하시겠습니까?"
-            page.goto(URLS["bay_prdList"])
-            page.wait_for_timeout(2000)
-            page.fill('[data-testid="input_search"]', product_name)
-            page.wait_for_timeout(500)
-            page.click('[data-testid="btn_search"]')
-            page.wait_for_timeout(1000)
-
-            rows = page.locator("table tbody tr")
-            row_count = rows.count()
-
-            for i in range(row_count):
-                edit_button = rows.nth(i).locator("td:nth-child(11) >> text=수정")
-                if edit_button.is_visible():
-                    print(f"✅ {i}번째 행의 수정 버튼 클릭")
-                    edit_button.click()
-                    page.wait_for_timeout(3000)
-                    break
             
-            page.locator("data-testid=input_stk_safe").fill(str(300))
-            page.wait_for_timeout(1000)
-            page.locator("data-testid=btn_save").click()
-            expect(page.locator("data-testid=txt_order")).to_have_text(txt_order, timeout=3000)
-            page.wait_for_timeout(1000)
-
-            page.locator("data-testid=btn_confirm").click()
-            page.wait_for_timeout(1000)
-            expect(page.locator("data-testid=toast_edit_noorder")).to_be_visible(timeout=3000)
-            page.wait_for_timeout(1000)
-
-            # 발주 진행 제품 삭제 불가 확인
-            if stock ==0:
-                page.fill('[data-testid="input_search"]', product_name)
-                page.wait_for_timeout(1000)
-                page.click('[data-testid="btn_search"]')
-                page.wait_for_timeout(1000)
-
-                rows = page.locator("table tbody tr")
-                row_count = rows.count()
-
-                for i in range(row_count):
-                    delete_button = rows.nth(i).locator("td:nth-child(11) >> text=삭제")
-                    if delete_button.is_visible():
-                        print(f"✅ {i}번째 행의 삭제 버튼 클릭")
-                        delete_button.click()
-                        page.wait_for_timeout(1000)
-                        break
-                page.locator("data-testid=btn_del").click()                
-                expect(page.locator("data-testid=toast_order")).to_be_visible(timeout=3000)
-                page.wait_for_timeout(1000)
         except Exception as e:
             print(f"❌ {product_name} 처리 중 오류 발생: {str(e)}")
             raise

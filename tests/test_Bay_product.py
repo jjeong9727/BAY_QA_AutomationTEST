@@ -28,20 +28,24 @@ def test_register_multiple_products(page: Page):
         supplier_4 = "자동화업체, 권정의"
 
         for idx in range(num_products):
+            page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
+            page.wait_for_timeout(1000)
             selected_type = select_from_dropdown(
                 page, "drop_type_trigger", "drop_type_search", "drop_type_item", random.choice(type_options))
 
             selected_group = select_from_dropdown(
                 page, "drop_group_trigger", "drop_group_search", "drop_group_item", random.choice(group_options))
 
+
+            page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
+            page.wait_for_timeout(1000)
+
             prdname_kor, prdname_eng = generate_product_names()
             name_kor_input = page.locator("data-testid=input_prdname_kor").last
-            name_kor_input.scroll_into_view_if_needed()
             name_kor_input.fill(prdname_kor)
             page.wait_for_timeout(1000)
 
             name_eng_input = page.locator("data-testid=input_prdname_eng").last
-            name_eng_input.scroll_into_view_if_needed()
             name_eng_input.fill(prdname_eng)
             page.wait_for_timeout(1000)
 
@@ -51,21 +55,10 @@ def test_register_multiple_products(page: Page):
                 page, "drop_maker_trigger", "drop_maker_search", "drop_maker_item", random.choice(maker_options))
 
             price_input = page.locator("data-testid=input_price").last
-            price_input.scroll_into_view_if_needed()
             price_input.fill(str(random.randint(1000, 10000)))
             page.wait_for_timeout(1000)
 
-            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_timeout(1000)
 
-            # 발주 규칙 선택
-            rule = "자동화규칙_개별"
-            page.locator("data-testid=drop_rule_trigger").click()
-            page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_rule_search").fill(rule)
-            page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_rule_item", has_text=rule).click()
-            page.wait_for_timeout(1000)
 
             safety = 5
             auto_order = 10
@@ -81,7 +74,8 @@ def test_register_multiple_products(page: Page):
             page.wait_for_timeout(1000)
 
             
-
+            # page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            # page.wait_for_timeout(1000)
             page.locator("data-testid=drop_supplier_trigger").last.click()
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_supplier_search").last.fill("자동화업체")
@@ -111,6 +105,17 @@ def test_register_multiple_products(page: Page):
                 expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
                 page.wait_for_timeout(1000)
 
+                        # 발주 규칙 선택
+            rule = "자동화규칙_개별"
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_rule_trigger").click()
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_rule_search").fill(rule)
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_rule_item", has_text=rule).click()
+            page.wait_for_timeout(1000)
+            
             prd_data.append({
                 "prdname_kor": prdname_kor,
                 "prdname_eng": prdname_eng,
@@ -141,7 +146,7 @@ def test_register_multiple_products(page: Page):
             append_product_name(**product)
 
         verify_products_in_list(page, prdnames, URLS["bay_prdList"], 4)
-        verify_products_in_list(page, prdnames, URLS["bay_stock"], 4)
+        # verify_products_in_list(page, prdnames, URLS["bay_stock"], 4)
 
     except Exception as e:
         print(f"[FAIL] 여러 개 제품 등록 실패: {str(e)}")

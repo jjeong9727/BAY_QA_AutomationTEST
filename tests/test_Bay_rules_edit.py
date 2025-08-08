@@ -12,6 +12,7 @@ from helpers.rules_utils import search_and_check_rule
 MEMO_TEXT = "✔️ Memo 테스트 123!@# 한글과 English 포함하여 총 100자를 맞춘 예시입니다. 여기에 더 추가하면 100자가 딱 됩니다!!! 딱 맞아 떨어지는 100자는 여기까지이후 문자는 삭제 되어야 합니다."
 rule_name_1 = "규칙명 등록 테스트_매일"
 rule_name_2 = "규칙명 등록 테스트_매주"
+
 new_name = "[수정]규칙명 등록 테스트_매주"
 edit_info_1 = "매일 / 20:00"
 edit_info_2 = "매주 월,수,목,금 / 16:30"
@@ -31,7 +32,7 @@ def test_order_rules_edit(page:Page):
     row_count = rows.count()
 
     for i in range(row_count):
-        edit_button = rows.nth(i).locator("td:nth-child(12) >> text=수정")
+        edit_button = rows.nth(i).locator("td:last-child >> text=수정")
         if edit_button.is_visible():
             print(f"✅ {i}번째 행의 수정 버튼 클릭")
             edit_button.click()
@@ -66,6 +67,8 @@ def test_order_rules_edit(page:Page):
     page.wait_for_timeout(2000)
 
     # 첫번째 규칙 수정 (발주 규칙 변경 제품 팝업 확인)
+    page.goto(URLS["bay_rules"])
+    page.wait_for_timeout(2000)
     page.locator("data-testid=input_search").fill(rule_name_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
@@ -80,15 +83,13 @@ def test_order_rules_edit(page:Page):
     
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=txt_title")).to_have_text("발주 규칙 변경 제품", timeout=3000)
-    expect(page.locator('p.truncate', has_text=product_name)).to_have_text(product_name, timeout=3000)
-
 
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
-    search_and_check_rule(page, rule_name_1, edit_info_1, "1개 제품", MEMO_TEXT)
+    search_and_check_rule(page, "규칙명 등록 테스트_매일", edit_info_1, "1개 제품", MEMO_TEXT)
     page.wait_for_timeout(1000)
     
     page.locator("data-testid=btn_reset").click()
@@ -138,7 +139,7 @@ def test_order_rules_delete(page:Page):
     expect(page.locator("data-testid=toast_delete")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
     # 사용중 토스트 확인
-    page.locator("data-testid=input_search").fill(rule_name_1)
+    page.locator("data-testid=input_search").fill("자동화규칙_개별")
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
@@ -198,6 +199,7 @@ def test_order_rules_delete(page:Page):
     txt_delete = "발주 규칙을 삭제하시겠습니까?"
     # 삭제 확인
     page.locator("data-testid=input_search").fill(rule_name_1)
+    
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)

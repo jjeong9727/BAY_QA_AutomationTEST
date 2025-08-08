@@ -62,17 +62,17 @@ all_tests = [
     "tests/test_Bay_product_val.py",
     "tests/test_Bay_product_edit.py",
     "tests/test_Bay_product_delete.py",
-    # "tests/test_Bay_stock_in.py",
-    # "tests/test_Bay_stock_out.py",
-    # "tests/test_Bay_stock_batch.py",
-    # "tests/test_Bay_order_status_request_cancel.py",
-    # "tests/test_Bay_order_status_request.py",
-    # "tests/test_Bay_order_status_progress_delivery.py",
-    # "tests/test_Bay_order_status_progress_complete.py",
-    # "tests/test_Bay_order_status_delivery.py",
-    # "tests/test_Bay_order_status_complete.py",
-    # "tests/test_Bay_order_status_fail.py", 
-    # "tests/test_Bay_order_status_batch.py",
+    "tests/test_Bay_stock_in.py",
+    "tests/test_Bay_stock_out.py",
+    "tests/test_Bay_stock_batch.py",
+    "tests/test_Bay_order_status_request_cancel.py",
+    "tests/test_Bay_order_status_request.py",
+    "tests/test_Bay_order_status_progress_delivery.py",
+    "tests/test_Bay_order_status_progress_complete.py",
+    "tests/test_Bay_order_status_delivery.py",
+    "tests/test_Bay_order_status_complete.py",
+    "tests/test_Bay_order_status_fail.py", 
+    "tests/test_Bay_order_status_batch.py",
     # "tests/test_Bay_stock_history.py",
 ]
 
@@ -91,16 +91,16 @@ order_tests = {
 for test_file in all_tests:
     test_name = os.path.splitext(os.path.basename(test_file))[0]
 
-    if stock_out_failed and test_file in order_tests:
-        print(f"⏭️ 출고 실패로 발주 관련 테스트 스킵: {test_file}")
-        skipped_tests.append(test_file)
-        save_test_result(
-            test_name=test_name,
-            message="출고 실패로 인해 발주 테스트 스킵됨",
-            status="SKIP",
-            file_name=test_file
-        )
-        continue
+    # if stock_out_failed and test_file in order_tests:
+    #     print(f"⏭️ 출고 실패로 발주 관련 테스트 스킵: {test_file}")
+    #     skipped_tests.append(test_file)
+    #     save_test_result(
+    #         test_name=test_name,
+    #         message="출고 실패로 인해 발주 테스트 스킵됨",
+    #         status="SKIP",
+    #         file_name=test_file
+    #     )
+    #     continue
 
     print(f"\n🚀 {test_file} 테스트 실행 중...")
     start_time = datetime.now()

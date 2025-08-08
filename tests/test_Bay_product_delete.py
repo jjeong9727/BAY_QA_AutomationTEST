@@ -14,7 +14,7 @@ def get_deletable_products_from_json():
         with open("product_name.json", "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        deletable = [item["kor"] for item in data if item.get("supplier") == "자동화업체, 권정의" and item.get("stock_qty", 0) == 0]
+        deletable = [item["kor"] for item in data if item.get("supplier") == "자동화업체, 권정의 010-6275-4153" and item.get("stock_qty", 0) == 0]
         return deletable
     except Exception as e:
         error_message = f"Error while fetching deletable products: {str(e)}"
@@ -24,7 +24,7 @@ def get_deletable_products_from_json():
 def remove_product_name_by_kor(kor_name: str):
     try:
         if not PRODUCT_FILE_PATH.exists():
-            return
+            raise
         with open(PRODUCT_FILE_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
         updated = [item for item in data if item["kor"] != kor_name]

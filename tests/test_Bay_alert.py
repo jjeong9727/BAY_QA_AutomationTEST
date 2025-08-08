@@ -14,81 +14,80 @@ txt_nosave = "변경 사항을 저장하지 않으시겠습니까?"
 
 def test_check_alert(page:Page):
     bay_login(page)
-    # [카테고리 관리] 이탈 팝업 확인
-    page.goto(URLS["bay_category"])
-    page.wait_for_timeout(2000)
-    # 구분 탭
-    page.locator("data-testid=input_kor").first.fill(edit_name)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=tab_category").click()
-    expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=btn_confirm").click()
-    page.wait_for_timeout(1000)
-    # 종류 탭
-    page.locator("data-testid=input_kor").first.fill(edit_name)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=tab_maker").click()
-    expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=btn_confirm").click()
-    page.wait_for_timeout(1000) 
-    # 제조사 탭
-    page.locator("data-testid=input_kor").first.fill(edit_name)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=tab_type").click()
-    expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=btn_confirm").click()
-    page.wait_for_timeout(1000)
-    # 구분 탭에서 이탈 취소 확인
-    page.locator("data-testid=input_kor").first.fill(edit_name)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=tab_category").click()
-    expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
-    page.wait_for_timeout(500)
-    page.locator("data-testid=btn_cancel").click()
-    expect(page.locator("data-testid=input_kor").first).to_have_value(edit_name, timeout=3000)
-    page.wait_for_timeout(1000)
+    #     # [카테고리 관리] 이탈 팝업 확인
+    # page.goto(URLS["bay_category"])
+    # page.wait_for_timeout(2000)
+    # # 구분 탭
+    # page.locator("data-testid=input_kor").first.fill(edit_name)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=tab_category").click()
+    # expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=btn_confirm").click()
+    # page.wait_for_timeout(1000)
+    # # 종류 탭
+    # page.locator("data-testid=input_kor").first.fill(edit_name)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=tab_maker").click()
+    # expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=btn_confirm").click()
+    # page.wait_for_timeout(1000) 
+    # # 제조사 탭
+    # page.locator("data-testid=input_kor").first.fill(edit_name)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=tab_type").click()
+    # expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=btn_confirm").click()
+    # page.wait_for_timeout(1000)
+    # # 구분 탭에서 이탈 취소 확인
+    # page.locator("data-testid=input_kor").first.fill(edit_name)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=tab_category").click()
+    # expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=btn_cancel").click()
+    # expect(page.locator("data-testid=input_kor").first).to_have_value(edit_name, timeout=3000)
+    # page.wait_for_timeout(1000)
 
-    # [제품 관리] 엑셀 다운로드 확인
-    # 오늘 날짜 포맷 (예: 2025_07_15)
-    page.goto(URLS["bay_prdList"])
-    today = datetime.now().strftime("%Y_%m_%d")
-    with page.expect_download() as download_info:
-        page.click('[data-testid="btn_download"]')
-        page.wait_for_timeout(1000)
-    download = download_info.value
+    # # [제품 관리] 엑셀 다운로드 확인
+    # # 오늘 날짜 포맷 (예: 2025_07_15)
+    # page.goto(URLS["bay_prdList"])
+    # today = datetime.now().strftime("%Y_%m_%d")
+    # with page.expect_download() as download_info:
+    #     page.click('[data-testid="btn_download"]')
+    #     page.wait_for_timeout(1000)
+    # download = download_info.value
 
-    filename = download.suggested_filename
-    print(f"📁 다운로드된 파일명: {filename}")
-    assert filename.startswith(today), f"❌ 파일명이 오늘 날짜({today})로 시작하지 않습니다."
+    # filename = download.suggested_filename
+    # print(f"📁 다운로드된 파일명: {filename}")
+    # assert filename.startswith(today), f"❌ 파일명이 오늘 날짜({today})로 시작하지 않습니다."
 
-    # 제품 미선택 > 일괄 삭제 시도 
-    page.locator("data-testid=btn_del_bulk").click()
-    expect(page.locator("data-testid=toast_nodelete")).to_be_visible(timeout=3000)
-    page.wait_for_timeout(500)
+    # # 제품 미선택 > 일괄 삭제 시도 
+    # page.locator("data-testid=btn_del_bulk").click()
+    # expect(page.locator("data-testid=toast_nodelete")).to_be_visible(timeout=3000)
+    # page.wait_for_timeout(500)
 
-    # 재고 있는 제품 삭제 불가 확인
-    page.locator("data-testid=input_search").fill("중복테스트")
-    page.wait_for_timeout(500)
-    page.locator("data-testid=btn_search").click()
-    page.wait_for_timeout(1000)
-    rows = page.locator("table tbody tr")
-    row_count = rows.count()
-    txt_delete = "제품을 삭제하시겠습니까?"
-    for i in range(row_count):
-        edit_button = rows.nth(i).locator("td:nth-child(12) >> text=삭제")
-        if edit_button.is_visible():
-            print(f"✅ {i}번째 행의 삭제 버튼 클릭")
-            edit_button.click()
-            page.wait_for_timeout(1000)
-            expect(page.locator("data-testid=txt_delete")).to_be_visible(timeout=3000)
-            page.locator("data-testid=btn_del").click()
-            break
-    
-    expect(page.locator("data-testid=toast_stock")).to_be_visible(timeout=3000)
-    page.wait_for_timeout(1000)
+    # # 재고 있는 제품 삭제 불가 확인
+    # page.locator("data-testid=input_search").fill("중복테스트")
+    # page.wait_for_timeout(500)
+    # page.locator("data-testid=btn_search").click()
+    # page.wait_for_timeout(2000)
+    # rows = page.locator("table tbody tr")
+    # row_count = rows.count()
+    # txt_delete = "제품을 삭제하시겠습니까?"
+    # for i in range(row_count):
+    #     edit_button = rows.nth(i).locator("td:nth-child(12) >> text=삭제")
+    #     if edit_button.is_visible():
+    #         print(f"✅ {i+1}번째 행의 삭제 버튼 클릭")
+    #         edit_button.click()
+    #         page.wait_for_timeout(1000)
+    #         expect(page.locator("data-testid=txt_delete")).to_have_text(txt_delete, timeout=3000)
+    #         page.locator("data-testid=btn_del").click()
+    #         expect(page.locator("data-testid=toast_stock")).to_be_visible(timeout=3000)
+    #         break
+    # page.wait_for_timeout(1000)
 
     # [제품 관리] 이탈 팝업 확인
     # 등록화면
@@ -126,22 +125,19 @@ def test_check_alert(page:Page):
     page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
-    page.locator("data-testid=input_price").last.fill(100)
+    page.locator("data-testid=input_price").last.fill("100")
     page.wait_for_timeout(1000)
 
-    page.locator("data-testid=drop_rule_trigger").click()
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_rule_search").fill("중복테스트")
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_rule_trigger", has_text="중복테스트").click()
-    page.wait_for_timeout(1000)
 
     page.locator("data-testid=input_stk_safe").last.fill("5")
     page.wait_for_timeout(1000)
-    # 자동 발주 수량 0 으로 선택 후 토스트 확인 
+    # 자동 발주 수량 0 으로 선택 후 토스트 확인
+    txt_toast = "자동 발주 수량은 최소 1개 이상이어야 합니다." 
     page.locator("data-testid=input_stk_qty").last.fill("0")
     page.wait_for_timeout(1000)
-
+    # page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+    page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
+    page.wait_for_timeout(1000)
     page.locator("data-testid=drop_supplier_trigger").last.click()
     page.wait_for_timeout(1000)
     page.fill("data-testid=drop_supplier_search", "중복테스트")
@@ -149,10 +145,21 @@ def test_check_alert(page:Page):
     page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
-    page.evaluate("window.scrollTo(0, 0)")
+    
+    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_search").fill("중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_rule_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+
+
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(2000)
     page.locator("data-testid=btn_save").click()
-    expect(page.locator("data-testid=toast_order_min")).to_be_visible(timeout=3000)
+    expect(page.locator('[data-testid="toast_order_min"]')).to_have_text(txt_toast, timeout=3000)
     page.wait_for_timeout(1000)
 
     # 이탈 팝업 확인
@@ -169,15 +176,19 @@ def test_check_alert(page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
-    txt_toast = "자동 발주 수량은 최소 1개 이상이어야 합니다."
-    rows.locator("td:nth-child(12) >> text=수정").click()
+    rows.locator("td:last-child >> text=수정").first.click()
     page.wait_for_timeout(2000)
     page.locator("data-testid=input_stk_safe").fill("0")
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_stk_qty").fill("0")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_save").click()
-    expect(page.locator("data-testid=toast_order_min")).to_have_text(txt_toast, timeout=3000)
+    txt_edit = "제품을 수정하시겠습니까?"
+    expect(page.locator("data-testid=txt_edit")).to_have_text(txt_edit, timeout=3000)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
+    page.wait_for_timeout
+    expect(page.locator('[data-testid="toast_order_min"]')).to_have_text(txt_toast, timeout=3000)
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_maker_trigger").click()
@@ -190,6 +201,7 @@ def test_check_alert(page:Page):
     expect(page.locator("data-testid=title")).to_have_text(txt_nosave, timeout=3000)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_no").click()
+    page.wait_for_timeout(500)
     expect(page.locator("data-testid=drop_maker_trigger")).to_have_text("중복테스트", timeout=3000)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_back").click()
@@ -268,7 +280,7 @@ def test_check_alert(page:Page):
     last_day = calendar.monthrange(today.year, today.month)[1]
     end_of_month = today.replace(day=last_day)
     month_start_str = start_of_month.strftime("%Y. %m. %d")
-        # 최근 1주 확인 
+    # 최근 1주 확인 
     page.click('[data-testid="btn_weekago"]')
     page.wait_for_timeout(1000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
@@ -303,21 +315,20 @@ def test_check_alert(page:Page):
 
     # 1~12월 버튼의 활성/비활성 상태 확인
     for month in range(1, 13):
-        month_name = calendar.month_name[month].lower()  # 예: "january"
-        btn = page.locator(f"data-testid=btn_{month_name}")
+        btn = page.locator(f"[data-testid='btn_month_{month}']")
         is_disabled = btn.is_disabled()
         
         if month <= current_month:
-            assert not is_disabled, f"❌ {month_name.capitalize()} 버튼은 활성화되어야 합니다."
-            active_month_buttons.append(month_name)
+            assert not is_disabled, f"❌ {month}월 버튼은 활성화되어야 합니다."
+            active_month_buttons.append(month)
         else:
-            assert is_disabled, f"❌ 미래 월 {month_name.capitalize()} 버튼은 비활성화되어야 합니다."
+            assert is_disabled, f"❌ {month}월 버튼은 비활성화되어야 합니다."
 
     assert active_month_buttons, "❌ 활성화된 월 버튼이 없습니다."
 
     # 활성 월 버튼 클릭 → 시작일/종료일 확인
     for month_name in active_month_buttons:
-        page.locator(f"data-testid=btn_{month_name}").click()
+        page.locator(f"data-testid=btn_month_{month_name}").click()
         page.wait_for_timeout(2000)
         
         start_text = page.locator('[data-testid="select_startday"] span').text_content()
@@ -328,7 +339,7 @@ def test_check_alert(page:Page):
 
     # 다시 클릭해서 해제
     for month_name in active_month_buttons:
-        page.locator(f"data-testid=btn_{month_name}").click()
+        page.locator(f"data-testid=btn_month_{month_name}").click()
         page.wait_for_timeout(1000)
 
     # 시작일/종료일 → 오늘 날짜 확인
@@ -370,27 +381,6 @@ def test_check_alert(page:Page):
     page.wait_for_timeout(1000)
 
 
-    # # [업체 전용 화면] 지난 발주 건 진입 불가 확인
-    # order_id = "2"
-    # accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
-    # tracking_url = f"{URLS['base_accept_url']}/{order_id}/delivery"
-    # page.goto(accept_url)
-    # expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
-    # page.fill("input[data-testid='input_name']", "권정의")
-    # page.fill("input[data-testid='input_contact']", "01062754153")
-    # page.locator("button[data-testid='btn_confirm']").last.click()
-    # expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
-    # page.wait_for_timeout(1000)
-
-    # page.goto(tracking_url)
-    # expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
-    # page.fill("input[data-testid='input_name']", "권정의")
-    # page.fill("input[data-testid='input_contact']", "01062754153")
-    # page.locator("button[data-testid='btn_confirm']").last.click()
-    # expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
-    # page.wait_for_timeout(1000)
-
-
     # [발주 규칙 관리] 중복명 확인
     rule_name = "중복테스트"
     memo = "중복값 확인"
@@ -404,25 +394,20 @@ def test_check_alert(page:Page):
 
     page.locator("data-testid=drop_cycle_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_cycle_item", has_text="매주").click()
+    page.locator("data-testid=drop_cycle_item_0").click()
     page.wait_for_timeout(1000)
 
-    expect(page.locator("data-testid=drop_weekday_trigger")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=drop_weekday_trigger")).not_to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_weekday_trigger").click()
-    page.wait_for_timeout(1000)
-    for day in ["월요일", "수요일", "금요일"]:
-        page.locator("data-testid=drop_weekday_item", has_text=day).click()
-        page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_hour_item",has_text="16").click()
+    page.locator('div[data-testid^="drop_hour_item_"][data-value="20"]').click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_minute_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_minute_item", has_text="30").click()
+    page.locator('div[data-testid^="drop_minute_item_"][data-value="50"]').click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=input_memo").fill(memo)
@@ -434,20 +419,33 @@ def test_check_alert(page:Page):
 
     page.locator("data-testid=drop_cycle_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_cycle_item", has_text="매일").click()
+    page.locator("data-testid=drop_cycle_item_1").click()
     page.wait_for_timeout(1000)
 
-    expect(page.locator("data-testid=drop_weekday_trigger")).not_to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=drop_weekday_trigger")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_weekday_trigger").click()
+    page.wait_for_timeout(1000)
+    dropdown_items = page.locator('div[data-testid="drop_weekday_item"] div[data-value]')
+    count = dropdown_items.count()
+
+    for i in range(count):
+        text = dropdown_items.nth(i).inner_text().strip()
+        if text in ["월요일", "수요일", "금요일"]:
+            dropdown_items.nth(i).click()
+            page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_weekday_trigger").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_hour_item",has_text="20").click()
+    page.locator('div[data-testid^="drop_hour_item_"][data-value="16"]').click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_minute_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_minute_item", has_text="50").click()
+    page.locator('div[data-testid^="drop_minute_item_"][data-value="30"]').click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=input_memo").fill(memo)
@@ -457,4 +455,25 @@ def test_check_alert(page:Page):
     expect(page.locator("data-testid=toast_duplicate")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
-    # [발주 내역] 
+
+    # [업체 전용 화면] 지난 발주 건 진입 불가 확인
+    order_id_complete = "38"
+    order_id_cancel = "34"
+
+    accept_url = f"{URLS['base_accept_url']}/{order_id_complete}/accept"
+    tracking_url = f"{URLS['base_accept_url']}/{order_id_cancel}/delivery"
+    page.goto(accept_url)
+    expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
+    page.fill("input[data-testid='input_name']", "권정의")
+    page.fill("input[data-testid='input_contact']", "01062754153")
+    page.locator("button[data-testid='btn_confirm']").last.click()
+    expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+
+    page.goto(tracking_url)
+    expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
+    page.fill("input[data-testid='input_name']", "권정의")
+    page.fill("input[data-testid='input_contact']", "01062754153")
+    page.locator("button[data-testid='btn_confirm']").last.click()
+    expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)

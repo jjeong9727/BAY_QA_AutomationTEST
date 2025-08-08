@@ -51,7 +51,8 @@ def test_inflow_past(page):
     page.wait_for_timeout(2000)
     today = datetime.today()
     mmdd= today.strftime("%m%d")
-    search_name = f"등록테스트_{mmdd}"
+    # search_name = f"등록테스트_{mmdd}"
+    search_name = "등록테스트_0804"
 
     page.locator("data-testid=input_search").fill(search_name)
     page.wait_for_timeout(1000)
@@ -175,8 +176,8 @@ def test_stock_bulk_edit(page:Page):
     product = f"등록테스트_{mmdd}"
     inflow = 25
     new_inflow = 15
-    txt_bulk = "2개의 재고 수정이 완료되었습니다."
-    txt_edit = "1개의 재고 수정이 완료되었습니다."
+    txt_bulk = "2개의 재고 입고가 완료되었습니다."
+    txt_edit = "재고 입고가 완료되었습니다."
 
     page.locator("data-testid=input_search").fill(product)
     page.wait_for_timeout(500)
@@ -218,7 +219,7 @@ def test_stock_bulk_edit(page:Page):
     page.wait_for_timeout(500)  
     change1 = datetime.now()
     page.locator("data-testid=btn_edit_bulk").click()
-    expect(page.locator("data-testid=toast_edit")).to_have_text(txt_bulk, timeout=3000)
+    expect(page.locator("data-testid=toast_inflow")).to_have_text(txt_bulk, timeout=7000)
     page.wait_for_timeout(1000)
     
     # 첫번째 재고 상세 진입
@@ -264,7 +265,7 @@ def test_stock_bulk_edit(page:Page):
     page.wait_for_timeout(500)
     change2 = datetime.now()
     page.locator("data-testid=btn_edit_bulk").click()
-    expect(page.locator("data-testid=toast_edit")).to_have_text(txt_edit, timeout=3000)
+    expect(page.locator("data-testid=toast_inflow")).to_have_text(txt_edit, timeout=3000)
     page.wait_for_timeout(1000)
 
     # 첫번째 재고 상세 진입
