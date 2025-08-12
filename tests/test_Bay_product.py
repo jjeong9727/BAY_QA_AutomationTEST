@@ -39,8 +39,8 @@ def test_register_multiple_products(page: Page):
 
             page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
             page.wait_for_timeout(1000)
-
-            prdname_kor, prdname_eng = generate_product_names()
+            # 제품명 입력 
+            prdname_kor, prdname_eng = generate_product_names()     
             name_kor_input = page.locator("data-testid=input_prdname_kor").last
             name_kor_input.fill(prdname_kor)
             page.wait_for_timeout(1000)
@@ -58,8 +58,8 @@ def test_register_multiple_products(page: Page):
             price_input.fill(str(random.randint(1000, 10000)))
             page.wait_for_timeout(1000)
 
-
-
+ 
+           # 안전 재고 / 자동 발주 수량 입력 
             safety = 5
             auto_order = 10
 
@@ -73,9 +73,6 @@ def test_register_multiple_products(page: Page):
             auto_input.fill(str(auto_order))
             page.wait_for_timeout(1000)
 
-            
-            # page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            # page.wait_for_timeout(1000)
             page.locator("data-testid=drop_supplier_trigger").last.click()
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_supplier_search").last.fill("자동화업체")
@@ -105,7 +102,7 @@ def test_register_multiple_products(page: Page):
                 expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
                 page.wait_for_timeout(1000)
 
-                        # 발주 규칙 선택
+            # 발주 규칙 선택
             rule = "자동화규칙_개별"
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             page.wait_for_timeout(1000)
@@ -114,6 +111,15 @@ def test_register_multiple_products(page: Page):
             page.locator("data-testid=drop_rule_search").fill(rule)
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_rule_item", has_text=rule).click()
+            page.wait_for_timeout(1000)
+
+            # 승인 규칙 선택
+            approve_rule = "승인규칙_1명"
+            page.locator("data-testid=drop_approval_trigger").click()
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_approval_search").fill(approve_rule)
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_approval_item", has_text=approve_rule).click()
             page.wait_for_timeout(1000)
             
             prd_data.append({
@@ -125,7 +131,9 @@ def test_register_multiple_products(page: Page):
                 "safety": safety,
                 "auto_order": auto_order,
                 "order_rule": rule,
-                "supplier" : supplier # ("자동화업체, 권정의 010-6275-4153")
+                "supplier" : supplier, # ("자동화업체, 권정의 010-6275-4153")
+                "approve_rule" : approve_rule, # (승인규칙_1명)
+
             })
 
             if idx < num_products - 1:

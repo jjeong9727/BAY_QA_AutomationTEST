@@ -1,4 +1,3 @@
-# 발주 규칙 생성 후 발주 규칙 리스트 및 제품 등록화면 규칙 드롭다운 확인
 from playwright.sync_api import Page, expect
 from helpers.common_utils import bay_login
 from config import URLS
