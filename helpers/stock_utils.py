@@ -86,8 +86,11 @@ class StockManager:
         self.product_name = product_name  # 제품명 저장
         # 'product_name'을 기준으로 검색을 실행
         self.page.goto(URLS["bay_prdList"])
+        self.page.wait_for_timeout(2000)
         self.page.fill("[data-testid='input_search']", self.product_name)
+        self.page.wait_for_timeout(1000)
         self.page.click("[data-testid='btn_search']")
+        self.page.wait_for_timeout(2000)
         self.page.wait_for_selector(f"text={self.product_name}")  # 제품이 검색 결과에 나타날 때까지 기다림
         rows = self.page.locator("table tbody tr").all()
         for row in rows:
@@ -102,7 +105,7 @@ class StockManager:
         self.page.goto(URLS["bay_prdList"])
         self.page.wait_for_timeout(2000)
         self.page.fill("data-testid=input_search", self.product_name)
-        self.page.wait_for_timeout(500)
+        self.page.wait_for_timeout(1000)
         self.page.locator("data-testid=btn_search").click()
         self.page.wait_for_timeout(2000)  # 충분한 대기 시간 추가
 

@@ -30,6 +30,7 @@ def get_safe_batch_time() -> datetime:
     return next_time
 
 def wait_until(target_time: datetime):
+    target_time = target_time + timedelta(minutes=1) # 배치 후 1분 추가 대기 (발주 시간 10분이면 11분까지 대기)
     print(f"⏳ 다음 발주 배치 시각까지 대기 중: {target_time.strftime('%H:%M')}")
     while True:
         now = datetime.now()

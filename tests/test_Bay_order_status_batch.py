@@ -127,6 +127,7 @@ def test_cancel_batch_history(page:Page):
     page.wait_for_timeout(2000)
 
     search_order_history(page, product_list[2],"발주 취소")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
 
     for i in range(4):  # → 1~4행
         first_history = page.locator('[data-testid="history"]').first
@@ -150,6 +151,7 @@ def test_receive_without_tracking(page:Page):
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
     search_order_history(page, product_list[5], "발주 요청")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
 
 
     first_history = page.locator('[data-testid="history"]').first
@@ -166,6 +168,7 @@ def test_receive_without_tracking(page:Page):
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
     search_order_history(page, product_list[5], "발주 진행")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
 
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
@@ -198,6 +201,7 @@ def test_receive_without_tracking(page:Page):
     page.locator("data-testid=btn_reset").click()
     page.wait_for_timeout(3000)
     search_order_history(page, product_list[5], "일부 수령")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
 
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
@@ -231,6 +235,7 @@ def test_receive_without_tracking(page:Page):
     page.wait_for_timeout(3000)
 
     search_order_history(page, product_list[5], "수령 완료")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
     rows.nth(0).locator('[data-testid="btn_detail"]').click()
@@ -254,6 +259,7 @@ def test_receive_with_tracking(page:Page):
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
     search_order_history(page, product_list[8], "발주 요청")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
 
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
@@ -270,6 +276,7 @@ def test_receive_with_tracking(page:Page):
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
     search_order_history(page, product_list[8], "배송 진행")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
 
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
@@ -300,6 +307,8 @@ def test_receive_with_tracking(page:Page):
     page.locator("data-testid=btn_reset").click()
     page.wait_for_timeout(3000)
     search_order_history(page, product_list[8], "일부 수령")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
+    
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
     rows.nth(0).locator('[data-testid="btn_detail"]').click()
@@ -331,6 +340,7 @@ def test_receive_with_tracking(page:Page):
     page.wait_for_timeout(3000)
 
     search_order_history(page, product_list[8], "수령 완료")
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
     rows.nth(0).locator('[data-testid="btn_detail"]').click()

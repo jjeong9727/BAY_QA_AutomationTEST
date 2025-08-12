@@ -41,6 +41,7 @@ def test_order_status_fail(page: Page):
         page.wait_for_timeout(2000)
 
         # order_id 가져오기
+        search_order_history(page, product_name, "발주 실패")
         order_id = get_order_id_from_order_list(page, product_name)
         if not order_id:
             raise ValueError(f"[FAIL] 발주 내역에서 제품 '{product_name}'의 order_id를 찾을 수 없습니다.")

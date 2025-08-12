@@ -14,7 +14,7 @@ def get_deletable_products_from_json():
         with open("product_name.json", "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        deletable = [item["kor"] for item in data if item.get("supplier") == "자동화업체, 권정의 010-6275-4153" and item.get("stock_qty", 0) == 0]
+        deletable = [item["kor"] for item in data if item.get("supplier") == "자동화업체, 권정의 010-6275-4153" and item.get("stock_qty", 0) == 0 and item.get("delivery_status", 0) == 0]
         return deletable
     except Exception as e:
         error_message = f"Error while fetching deletable products: {str(e)}"
@@ -53,14 +53,15 @@ def delete_product_and_verify(page: Page, row_index: int):
         product_name = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(4)").inner_text().strip()
         product_display_name = product_name.splitlines()[0]
 
-        delete_button = page.locator(f"table tbody tr >> nth={row_index} >> td:nth-child(12) button").nth(1)  # 0부터 시작하므로 1은 두 번째 버튼
+        delete_button = page.locator(f"table tbody tr >> nth={row_index} >> td:last-child button").nth(1)  # 0부터 시작하므로 1은 두 번째 버튼
         delete_button.click()
+        page.wait_for_timeout(1000)
 
 
         page.click("data-testid=btn_del")
-        page.wait_for_timeout(500)
-        page.reload()
         page.wait_for_timeout(1000)
+        page.reload()
+        page.wait_for_timeout(2000)
 
         if check_delete(page, product_name):
             msg = f"[PASS][제품관리] 제품 삭제 테스트 (삭제된 제품: '{product_display_name}')"

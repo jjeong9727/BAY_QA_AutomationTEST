@@ -213,7 +213,7 @@ def test_edit_stocklist_and_auto_order(page):
 
     for product in ordered_product:
         search_order_history(page, product["kor"], "발주 요청")
-        rows = page.lacator('table tbody tr')
+        rows = page.locator('table tbody tr')
         product_cell = rows.nth(0).locator('td:nth-child(2)')
         product_text = product_cell.inner_text()
         print(f"제품명: {product_text}")
@@ -224,4 +224,4 @@ def test_edit_stocklist_and_auto_order(page):
         page.locator("data-testid=btn_reset").click()
         page.wait_for_timeout(2000)
         # 상태 업데이트
-        update_product_flag(product, stock_qty=expected, order_flag=1, delivery_status=1)
+        update_product_flag(product["kor"], stock_qty=expected, order_flag=1, delivery_status=1)

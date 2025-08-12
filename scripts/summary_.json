@@ -93,9 +93,9 @@
   {
     "name": "[자동화][제품관리] 제품 삭제 확인 테스트 실패",
     "file": "tests/test_Bay_product_delete.py",
-    "status": "FAIL",
-    "message": "FAILED tests/test_Bay_product_delete.py::test_delete_product - AssertionError...",
-    "stack_summary": " → ============================= 2 failed in 24.53s =============================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][재고관리] 재고 입고 확인 테스트 실패",
@@ -107,9 +107,9 @@
   {
     "name": "[자동화][재고관리] 재고 출고 확인 테스트 실패",
     "file": "tests/test_Bay_stock_out.py",
-    "status": "FAIL",
-    "message": "helpers\\order_status_utils.py:243: AssertionError",
-    "stack_summary": " → =================== 1 failed, 1 passed in 662.12s (0:11:02) ==================="
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   },
   {
     "name": "[자동화][재고관리] 여러 제품 규칙 발주 확인 테스트 실패",

@@ -222,12 +222,12 @@ def search_order_history(page:Page, product_name: str, status:str):
     page.locator("[data-testid=select_startday]").click()
     page.wait_for_timeout(1000)
     page.locator(f"[data-testid={today_btn_id}]").click()
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     # 종료일 선택
     page.locator("[data-testid=select_endday]").click()
     page.wait_for_timeout(1000)
     page.locator(f"[data-testid={today_btn_id}]").click()
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     # 상태 선택
     expect(page.locator("data-testid=drop_status_trigger")).to_be_visible(timeout=8000)
     page.locator("data-testid=drop_status_trigger").click()
@@ -236,7 +236,7 @@ def search_order_history(page:Page, product_name: str, status:str):
     page.wait_for_timeout(1000)
     # 제품명 입력
     page.locator("data-testid=input_search").fill(product_name)
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     # 검색 버튼 클릭
     page.locator("[data-testid=btn_search]").click()
     page.wait_for_timeout(2000)
