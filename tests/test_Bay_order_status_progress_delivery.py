@@ -12,38 +12,39 @@ from helpers.order_status_utils import (
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
 
+suppliers = ["자동화업체A, 권정의A 010-6275-4153", "자동화업체B, 권정의B 010-6275-4153", "자동화업체C, 권정의C 010-6275-4153"]
+product_name = "자동화개별제품_2"
+# def update_product_status_in_json(product_name: str, delivery_status: int):
+#     try:
+#         with open("product_name.json", "r", encoding="utf-8") as f:
+#             products = json.load(f)
 
-def update_product_status_in_json(product_name: str, delivery_status: int):
-    try:
-        with open("product_name.json", "r", encoding="utf-8") as f:
-            products = json.load(f)
+#         for product in products:
+#             if product["kor"] == product_name:
+#                 product["delivery_status"] = delivery_status
+#                 break
 
-        for product in products:
-            if product["kor"] == product_name:
-                product["delivery_status"] = delivery_status
-                break
+#         with open("product_name.json", "w", encoding="utf-8") as f:
+#             json.dump(products, f, ensure_ascii=False, indent=4)
 
-        with open("product_name.json", "w", encoding="utf-8") as f:
-            json.dump(products, f, ensure_ascii=False, indent=4)
-
-    except Exception as e:
-        raise RuntimeError(f"Error updating product status in JSON: {str(e)}")
+#     except Exception as e:
+#         raise RuntimeError(f"Error updating product status in JSON: {str(e)}")
 
 
 def test_order_delivery(page: Page):
     try:
-        # delivery_status가 2인 제품 선택
-        with open("product_name.json", "r", encoding="utf-8") as f:
-            products = json.load(f)
+        # # delivery_status가 2인 제품 선택
+        # with open("product_name.json", "r", encoding="utf-8") as f:
+        #     products = json.load(f)
 
-        eligible_products = [p for p in products if p.get("delivery_status") == 2]
-        if not eligible_products:
-            raise ValueError("No product found with delivery_status 2")
+        # eligible_products = [p for p in products if p.get("delivery_status") == 2]
+        # if not eligible_products:
+        #     raise ValueError("No product found with delivery_status 2")
 
-        target_product = random.choice(eligible_products)
-        product_name = target_product["kor"]
+        # target_product = random.choice(eligible_products)
+        # product_name = target_product["kor"]
+        supplier = suppliers[1]
         status_name = "발주 진행"
-        supplier = target_product['supplier']
         match = re.search(r",\s*(.*?)\s+(\d{3}-\d{4}-\d{4})", supplier)
         if match:
             name = match.group(1)
@@ -120,8 +121,8 @@ def test_order_delivery(page: Page):
                 found = True
                 break
         
-        # JSON 상태 업데이트
-        update_product_status_in_json(product_name, delivery_status=3)
+        # # JSON 상태 업데이트
+        # update_product_status_in_json(product_name, delivery_status=3)
 
         # 택배사 + 운송장 확인
         page.goto(URLS["bay_orderList"])

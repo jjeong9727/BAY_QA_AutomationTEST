@@ -7,21 +7,24 @@ from helpers.stock_utils import StockManager
 from helpers.product_utils import update_product_flag
 from helpers.common_utils import bay_login
 from helpers.order_status_utils import search_order_history
+from helpers.approve_utils import check_approval_history, check_order_pending_history
 
+products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"]
+products.append("발주 거절 제품_1")
 ordered_product = []
-def get_filtered_products(stock_manager):
-    """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
-    products = stock_manager.get_all_product_names()
-    filtered_products = [
-        p for p in products
-        if p.get("stock_qty", 0) >= p.get("safety", 0) and p.get("order_flag", 1) == 0
-    ]
+# def get_filtered_products(stock_manager):
+#     """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
+#     products = stock_manager.get_all_product_names()
+#     filtered_products = [
+#         p for p in products
+#         if p.get("stock_qty", 0) >= p.get("safety", 0) and p.get("order_flag", 1) == 0
+#     ]
     
-    # 필터링된 제품 출력 (디버깅용)
-    for product in filtered_products:
-        print(f"❓ 필터링된 제품 - 이름: {product['kor']}, 재고: {product['stock_qty']}, 안전 재고: {product['safety']}")
+#     # 필터링된 제품 출력 (디버깅용)
+#     for product in filtered_products:
+#         print(f"❓ 필터링된 제품 - 이름: {product['kor']}, 재고: {product['stock_qty']}, 안전 재고: {product['safety']}")
     
-    return filtered_products
+#     return filtered_products
 
 def get_safe_batch_time() -> datetime:
     now = datetime.now()
@@ -104,19 +107,19 @@ def test_stock_outflow(page):
         
         # 출고 처리
         stock_manager = StockManager(page)
-        stock_manager.load_product_from_json()
+        # stock_manager.load_product_from_json()
 
-        # 1개 제품을 랜덤으로 선택하여 출고 테스트 진행
-        filtered_products = get_filtered_products(stock_manager)
-        if len(filtered_products) < 1:
-            raise AssertionError("❌ 조건에 맞는 제품이 없습니다.")
+        # # 1개 제품을 랜덤으로 선택하여 출고 테스트 진행
+        # filtered_products = get_filtered_products(stock_manager)
+        # if len(filtered_products) < 1:
+        #     raise AssertionError("❌ 조건에 맞는 제품이 없습니다.")
 
-        # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
-        selected_products = random.sample(filtered_products, 1)
+        # # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
+        # selected_products = random.sample(filtered_products, 1)
 
-        for product in selected_products:
-            stock_manager.product_name = product['kor']
-            stock_manager.search_product_by_name(product['kor'])
+        for product in products:
+            stock_manager.product_name = product
+            stock_manager.search_product_by_name(product)
 
             current_stock = stock_manager.get_current_stock()
             safety_stock = product.get('safety_stock', 0)
@@ -132,9 +135,9 @@ def test_stock_outflow(page):
             assert updated == expected, f"[FAIL] {product['kor']} 출고 후 재고 오류: {expected} != {updated}"
             print(f"[PASS] 출고 확인: {product['kor']} → {updated}")
 
-            # 출고 후 재고 값을 json에 저장
-            update_product_flag(product['kor'], stock_qty=expected, order_flag=1, delivery_status=1)
-            ordered_product.append(product['kor'])
+            # # 출고 후 재고 값을 json에 저장
+            # update_product_flag(product['kor'], stock_qty=expected, order_flag=1, delivery_status=1)
+            ordered_product.append(product)
 
     except Exception as e:
         print(f"❌ 출고 테스트 실패: {str(e)}")
@@ -144,20 +147,20 @@ def test_edit_stocklist_and_auto_order(page):
     bay_login(page)
 
     stock_manager = StockManager(page)
-    stock_manager.load_product_from_json()
+    # stock_manager.load_product_from_json()
 
-    ordered_product = []
+    # ordered_product = []
 
-    # 조건에 맞는 제품 필터링
-    filtered_products = get_filtered_products(stock_manager)
-    if len(filtered_products) < 2: 
-        print("❌ 조건에 맞는 제품이 2개 이상 없습니다.")
-        return
+    # # 조건에 맞는 제품 필터링
+    # filtered_products = get_filtered_products(stock_manager)
+    # if len(filtered_products) < 2: 
+    #     print("❌ 조건에 맞는 제품이 2개 이상 없습니다.")
+    #     return
 
-    # 2개 제품 랜덤 선택
-    selected_products = random.sample(filtered_products, 2)
+    # # 2개 제품 랜덤 선택
+    # selected_products = random.sample(filtered_products, 2)
 
-    for product in selected_products:
+    for product in products:
         current_stock = product["stock_qty"]
         outflow = current_stock
         expected = current_stock - outflow
@@ -196,32 +199,40 @@ def test_edit_stocklist_and_auto_order(page):
         page.locator("data-testid=btn_edit_bulk").click()
         expect(page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
         page.wait_for_timeout(1000)
-        ordered_product.append({"kor": product["kor"]} )
+        ordered_product.append({"kor": product} )
 
-    # 발주 내역 페이지에서 날짜 확인
-    page.goto(URLS["bay_orderList"])
+    
+    page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
-    page.locator("data-testid=input_search").fill(product["kor"])
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=btn_search").click()
-    page.wait_for_timeout(2000)
-    page.locator("data-testid=btn_resend").is_hidden(timeout=3000)
-    wait_until(next_time)
-    page.wait_for_timeout(1000) 
-    page.locator("data-testid=btn_reset").click()
-    page.wait_for_timeout(3000)
-
     for product in ordered_product:
-        search_order_history(page, product["kor"], "발주 요청")
-        rows = page.locator('table tbody tr')
-        product_cell = rows.nth(0).locator('td:nth-child(2)')
-        product_text = product_cell.inner_text()
-        print(f"제품명: {product_text}")
-        assert product_text in product["kor"], f"❌ 제품명이 발주 내역에 없음: {product["kor"]}"
+        # 발주 예정 페이지에서 확인
+        check_order_pending_history(page, "자동화규칙_개별", product, manual=False, group=False)
+        # 승인 요청 페이지에서 확인
+        check_approval_history(page, "승인 대기", product)
+    
+    
+    
+    # page.locator("data-testid=input_search").fill(product)
+    # page.wait_for_timeout(1000)
+    # page.locator("data-testid=btn_search").click()
+    # page.wait_for_timeout(2000)
+    # page.locator("data-testid=btn_resend").is_hidden(timeout=3000)
+    # wait_until(next_time)
+    # page.wait_for_timeout(1000) 
+    # page.locator("data-testid=btn_reset").click()
+    # page.wait_for_timeout(3000)
+
+    # for product in ordered_product:
+    #     search_order_history(page, product, "발주 요청")
+    #     rows = page.locator('table tbody tr')
+    #     product_cell = rows.nth(0).locator('td:nth-child(2)')
+    #     product_text = product_cell.inner_text()
+    #     print(f"제품명: {product_text}")
+    #     assert product_text in product, f"❌ 제품명이 발주 내역에 없음: {product}"
 
 
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_reset").click()
-        page.wait_for_timeout(2000)
-        # 상태 업데이트
-        update_product_flag(product["kor"], stock_qty=expected, order_flag=1, delivery_status=1)
+    #     page.wait_for_timeout(1000)
+    #     page.locator("data-testid=btn_reset").click()
+    #     page.wait_for_timeout(2000)
+    #     # # 상태 업데이트
+    #     # update_product_flag(product, stock_qty=expected, order_flag=1, delivery_status=1)

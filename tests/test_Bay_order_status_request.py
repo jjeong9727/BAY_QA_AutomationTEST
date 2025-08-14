@@ -10,7 +10,6 @@ from helpers.order_status_utils import (
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
 from datetime import datetime
-
 # 발주 진행 상태 코드
     # 1: 발주 요청
     # 2: 발주 진행
@@ -20,30 +19,30 @@ from datetime import datetime
     # 6: 발주 실패
     # 7: 수령 완료(운송장X) 2 -> 7
 
-def update_product_status_in_json(product_name: str, delivery_status: int):
-    try:
-        with open('product_name.json', 'r', encoding='utf-8') as f:
-            products = json.load(f)
+# def update_product_status_in_json(product_name: str, delivery_status: int):
+#     try:
+#         with open('product_name.json', 'r', encoding='utf-8') as f:
+#             products = json.load(f)
 
-        for product in products:
-            if product['kor'] == product_name:
-                product['delivery_status'] = delivery_status
-                break
+#         for product in products:
+#             if product['kor'] == product_name:
+#                 product['delivery_status'] = delivery_status
+#                 break
 
-        with open('product_name.json', 'w', encoding='utf-8') as f:
-            json.dump(products, f, ensure_ascii=False, indent=4)
+#         with open('product_name.json', 'w', encoding='utf-8') as f:
+#             json.dump(products, f, ensure_ascii=False, indent=4)
 
-    except Exception as e:
-        raise RuntimeError(f"Error updating product status in JSON: {str(e)}")
+#     except Exception as e:
+#         raise RuntimeError(f"Error updating product status in JSON: {str(e)}")
 
 
 def test_order_acceptance(page: Page):
-    # 발주 요청 상태(1)인 제품 2개 선택
-    eligible_products = filter_products_by_delivery_status(1)
-    if len(eligible_products) < 2:
-        raise ValueError("delivery_status가 1인 제품이 2개 미만입니다.")
+    # # 발주 요청 상태(1)인 제품 2개 선택
+    # eligible_products = filter_products_by_delivery_status(1)
+    # if len(eligible_products) < 2:
+    #     raise ValueError("delivery_status가 1인 제품이 2개 미만입니다.")
     status_name = "발주 요청"
-    selected_products = random.sample(eligible_products, 2)
+    selected_products = ["자동화개별제품_2", "자동화개별제품_3"]
 
     for product in selected_products:
         product_name = product['kor']
@@ -125,8 +124,8 @@ def test_order_acceptance(page: Page):
             if not found:
                 raise AssertionError(f"제품 '{product_name}'을 발주 내역에서 찾을 수 없습니다.")
 
-            # JSON 업데이트
-            update_product_status_in_json(product_name, 2)
+            # # JSON 업데이트
+            # update_product_status_in_json(product_name, 2)
 
             
         except Exception as e:

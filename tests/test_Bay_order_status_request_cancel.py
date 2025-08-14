@@ -8,49 +8,49 @@ from helpers.order_status_utils import (
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
 
+product_name = "자동화개별제품_1"
+# def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int):
+#     try:
+#         with open('product_name.json', 'r', encoding='utf-8') as f:
+#             products = json.load(f)
 
-def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int):
-    try:
-        with open('product_name.json', 'r', encoding='utf-8') as f:
-            products = json.load(f)
+#         for product in products:
+#             if product['kor'] == product_name:
+#                 product['delivery_status'] = delivery_status
+#                 product['order_flag'] = order_flag
+#                 break
 
-        for product in products:
-            if product['kor'] == product_name:
-                product['delivery_status'] = delivery_status
-                product['order_flag'] = order_flag
-                break
+#         with open('product_name.json', 'w', encoding='utf-8') as f:
+#             json.dump(products, f, ensure_ascii=False, indent=4)
 
-        with open('product_name.json', 'w', encoding='utf-8') as f:
-            json.dump(products, f, ensure_ascii=False, indent=4)
-
-    except Exception as e:
-        error_message = f"Error updating product status in JSON: {str(e)}"
-        raise
+#     except Exception as e:
+#         error_message = f"Error updating product status in JSON: {str(e)}"
+#         raise
 
 
 def test_order_cancel(page: Page):
     try:
-        # JSON 파일에서 제품명 불러오기
-        with open('product_name.json', 'r', encoding='utf-8') as f:
-            products = json.load(f)
+        # # JSON 파일에서 제품명 불러오기
+        # with open('product_name.json', 'r', encoding='utf-8') as f:
+        #     products = json.load(f)
 
-        # delivery_status가 1인 제품들 필터링
-        eligible_products = [product for product in products if product.get('delivery_status') == 1]
+        # # delivery_status가 1인 제품들 필터링
+        # eligible_products = [product for product in products if product.get('delivery_status') == 1]
 
-        if not eligible_products:
-            raise ValueError("No product found with delivery_status 1")
+        # if not eligible_products:
+        #     raise ValueError("No product found with delivery_status 1")
 
-        # delivery_status가 1인 제품 중 랜덤으로 하나 선택
-        target_product = random.choice(eligible_products)
-        product_name = target_product['kor']
-        status_name = "발주 요청"
+        # # delivery_status가 1인 제품 중 랜덤으로 하나 선택
+        # target_product = random.choice(eligible_products)
+        # product_name = target_product['kor']
+        # status_name = "발주 요청"
 
         # 발주 내역 화면으로 이동하여 제품명 검색 후 order_id 가져오기
         bay_login(page)
         
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(2000)
-        search_order_history(page, product_name, status_name)
+        search_order_history(page, product_name, "발주 요청")
 
         # 검색된 제품의 order_id 값 가져오기
         order_id = get_order_id_from_order_list(page, product_name)
@@ -88,8 +88,8 @@ def test_order_cancel(page: Page):
         if not found:
             raise AssertionError(f"[FAIL] 발주 내역에서 제품 '{product_name}'을 찾을 수 없습니다.")
 
-        # 발주 진행 상태 확인 후 delivery_status 값을 5로 업데이트 (발주 취소 상태)
-        update_product_status_in_json(product_name=product_name, delivery_status=5, order_flag=0)  # delivery_status를 5로 업데이트 (발주 취소), order_flag=0
+        # # 발주 진행 상태 확인 후 delivery_status 값을 5로 업데이트 (발주 취소 상태)
+        # update_product_status_in_json(product_name=product_name, delivery_status=5, order_flag=0)  # delivery_status를 5로 업데이트 (발주 취소), order_flag=0
 
         # 확인할 상태에 대한 기대값을 설정
         expected_status_conditions = order_status_map["발주 취소"]  # 발주 취소 상태 조건을 설정

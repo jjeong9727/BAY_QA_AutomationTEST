@@ -27,9 +27,11 @@ URLS = {
 
 
 Account = {
-    "testid": "qaje@medisolveai.com", # 권정의 01062754153
-    # "testid" : "stg@medisolveai.com",
+    "testid_je": "qaje@medisolveai.com", # 권정의 010-6275-4153
+    "testid_sr" :"qaje@medisolveai.com", # 김사라 010-9879-6020
+    "testid_sy" :"qasy@medisolveai.com", # 김수연 010-2303-2620
+    "testid_stg" : "stg@medisolveai.com", # QA 계정 
+    "testid_qa" : "stg@medisolveai.com", # QA 계정(법인폰) 010-8514-8780
     "testpw": "12341234",
     "wrongpw": "0000"
-
 }

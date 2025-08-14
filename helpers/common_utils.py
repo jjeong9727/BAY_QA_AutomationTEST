@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Optional 
 from datetime import datetime
 from config import URLS, Account
 from playwright.sync_api import Page  
@@ -88,7 +89,7 @@ def clean_product_json(file_path="product_name.json"):
     except Exception as e:
         print(f"❌ JSON 처리 중 오류 발생: {e}")
 
-def bay_login(page: Page):
+def bay_login(page: Page, account: Optional[str] = None,):
     page.goto(URLS["bay_login"])
     
     # ✅ 로그인 페이지 로딩 확인: 최대 5초 대기
@@ -99,8 +100,14 @@ def bay_login(page: Page):
         page.reload()
         page.wait_for_selector('[data-testid="input_id"]', timeout=5000)
 
+
+    if account : 
+        id = f"{account}@medisolveai.com"
+    else:
+        id = Account["testid"]
+
     # ✅ 로그인 입력
-    page.fill('[data-testid="input_id"]', Account["testid"])
+    page.fill('[data-testid="input_id"]', id)
     page.wait_for_timeout(1000)
     page.fill('[data-testid="input_pw"]', Account["testpw"])
     page.wait_for_timeout(1000)

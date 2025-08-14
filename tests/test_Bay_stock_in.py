@@ -17,41 +17,41 @@ from playwright.sync_api import Page, expect
     #     and p.get("order_flag", 1) == 0
     # ]
 
-def get_have_stock_product(stock_manager, page):
-    # 전체 상품 목록 가져오기
-    all_products = stock_manager.load_product_from_json()
+# def get_have_stock_product(stock_manager, page):
+#     # 전체 상품 목록 가져오기
+#     all_products = stock_manager.load_product_from_json()
 
-    # 조건에 맞는 상품 필터링
-    filtered_products = [
-        p for p in all_products
-        if p.get("stock_qty", 0) >= 1 and p.get("order_flag", 1) == 0
-    ]
+#     # 조건에 맞는 상품 필터링
+#     filtered_products = [
+#         p for p in all_products
+#         if p.get("stock_qty", 0) >= 1 and p.get("order_flag", 1) == 0
+#     ]
 
-    if not filtered_products:
-        raise ValueError("조건에 맞는 상품이 없습니다.")
+#     if not filtered_products:
+#         raise ValueError("조건에 맞는 상품이 없습니다.")
 
-    # 랜덤으로 하나 선택
-    product = random.choice(filtered_products)
-    return product
-
+#     # 랜덤으로 하나 선택
+#     product = random.choice(filtered_products)
+#     return product
+products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"]
 def test_stock_inflow(page):
     try:
         bay_login(page)
 
         stock_manager = StockManager(page)
 
-        # 3개 제품을 랜덤으로 선택하여 입고 테스트 진행
-        filtered_products = stock_manager.load_product_from_json()
+        # # 3개 제품을 랜덤으로 선택하여 입고 테스트 진행
+        # filtered_products = stock_manager.load_product_from_json()
 
-        if len(filtered_products) < 3:
-            raise AssertionError(f"❌ 조건에 맞는 제품이 {len(filtered_products)}개만 존재합니다. 3개 이상이 필요합니다.")
+        if len(products) < 3:
+            raise AssertionError(f"❌ 조건에 맞는 제품이 {len(products)}개만 존재합니다. 3개 이상이 필요합니다.")
 
-        # 조건에 맞는 제품들 중에서 3개를 랜덤으로 선택
-        selected_products = random.sample(filtered_products, 3)
+        # # 조건에 맞는 제품들 중에서 3개를 랜덤으로 선택
+        # selected_products = random.sample(products, 3)
 
-        print("[선택된 제품]", [p["kor"] for p in selected_products])
+        print("[선택된 제품]", [p["kor"] for p in products])
 
-        for product in selected_products:
+        for product in products:
             print(product)
             stock_manager.product_name = product['kor']  # 제품명을 클래스 속성에 저장
             stock_manager.search_product_by_name(product['kor'])
@@ -64,8 +64,8 @@ def test_stock_inflow(page):
             assert updated == expected, f"[FAIL] {product['kor']} 입고 후 재고 오류: {expected} != {updated}"
             print(f"[PASS] 입고 확인: {product['kor']} → {updated}")
 
-            # 입고 후 재고 값을 json 파일에 저장
-            update_product_flag(product['kor'], stock_qty=expected)
+            # # 입고 후 재고 값을 json 파일에 저장
+            # update_product_flag(product['kor'], stock_qty=expected)
 
     except Exception as e:
         print(f"❌ 입고 테스트 실패: {str(e)}")

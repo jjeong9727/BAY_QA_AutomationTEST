@@ -14,7 +14,7 @@ def get_deletable_products_from_json():
         with open("product_name.json", "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        deletable = [item["kor"] for item in data if item.get("supplier") == "자동화업체, 권정의 010-6275-4153" and item.get("stock_qty", 0) == 0 and item.get("delivery_status", 0) == 0]
+        deletable = [item["kor"] for item in data if item.get("stock_qty", 0) == 0 and item.get("delivery_status", 0) == 0]
         return deletable
     except Exception as e:
         error_message = f"Error while fetching deletable products: {str(e)}"

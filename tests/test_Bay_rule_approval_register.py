@@ -53,7 +53,7 @@ def test_approval_rules_register(page:Page):
     page.locator("data-testid=drop_referrer_search").fill(referrer_1)
         # 참조자 중복 선택 불가
     expect(page.locator("data-testid=drop_referrer_item")).to_be_hidden(timeout=3000)
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(1000) 
     page.locator("data-testid=drop_referrer_search").fill(referrer_2)
     page.wait_for_timeout(1000)
     page.locator("data-testid=data-testid=drop_referrer_item", has_text=referrer_2).click()

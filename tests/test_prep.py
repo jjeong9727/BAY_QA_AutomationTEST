@@ -189,9 +189,9 @@ def test_prep_register_rules (page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_trigger").last.click()
     page.wait_for_selector("data-testid=drop_approver_search",timeout=3000)
-    page.locator("data-testid=drop_approver_search").fill(name1)
+    page.locator("data-testid=drop_approver_search").fill(name2)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_approver_item", has_text=name1).click()
+    page.locator("data-testid=drop_approver_item", has_text=name2).click()
     page.wait_for_timeout(1000)
     # 참조자 선택
     page.locator("data-testid=drop_referrer_trigger").click()
@@ -206,9 +206,9 @@ def test_prep_register_rules (page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").last.click()
     page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
-    page.locator("data-testid=drop_referrer_search").fill(name2)
+    page.locator("data-testid=drop_referrer_search").fill(name1)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_referrer_item",has_text=name2).click()
+    page.locator("data-testid=drop_referrer_item",has_text=name1).click()
     page.wait_for_timeout(1000)
     
     page.locator("data-testid=btn_save").click()
@@ -282,8 +282,8 @@ def test_prep_register_rules (page:Page):
 def test_prep_product (page:Page):
     bay_login(page)
     # 수동 발주 제품 / 발주 승인 거절 테스트용 제품 등록 
-    # (수동 발주 제품_1, 2 / 발주 거절 제품_1, 2, 3)
-    names = ["수동 발주 제품 1", "수동 발주 제품 2", "발주 거절 제품 1", "발주 거절 제품 2", "발주 거절 제품 3"]
+    # (수동 발주 제품_1, 2, 3 / 발주 거절 제품_1, 2, 3)
+    names = ["수동 발주 제품 1", "수동 발주 제품 2", "수동 발주 제품 3", "발주 거절 제품 1", "발주 거절 제품 2", "발주 거절 제품 3"]
     
     page.goto(URLS["bay_prdList"])
     page.wait_for_selector("data-testid=btn_addprd", timeout=5000)
@@ -317,42 +317,46 @@ def test_prep_product (page:Page):
 
         page.fill("data-testid=input_price", "100")
         page.wait_for_timeout(1000)
-        supplier_1 = "자동화업체, 권정의D"
-        supplier_2 = "자동화업체, 권정의G"
-        supplier_3 = "자동화업체, 권정의H"
+        supplier_1 = "자동화업체D, 권정의D"
+        supplier_2 = "자동화업체G, 권정의G"
+        supplier_3 = "자동화업체H, 권정의H"
         # 업체
         page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_supplier_trigger").click()
         page.wait_for_timeout(1000)
-        page.fill("data-testid=drop_supplier_search", "자동화업체")
-        page.wait_for_timeout(1000)
-        if idx in (1, 2): #수동 발주 제품 1, 2
+
+        if idx in (1, 3): #수동 발주 제품 1, 2, 3
             txt_manager = "권정의D 010-6275-4153"
-            page.locator("data-testid=drop_supplier_item_5", has_text=supplier_1).click()
+            page.fill("data-testid=drop_supplier_search", "자동화업체D")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_supplier_item", has_text=supplier_1).click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
-        elif idx in (3, 5):
+        elif idx in (4, 6): # 발주 거절 제품 1, 3
             txt_manager = "권정의G 010-6275-4153"
-            page.locator("data-testid=drop_supplier_item_8", has_text=supplier_2).click()
+            page.fill("data-testid=drop_supplier_search", "자동화업체G")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_supplier_item", has_text=supplier_2).click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
-        elif idx == 4:
+        elif idx == 5: # 발주 거절 제품 2
             txt_manager = "권정의H 010-6275-4153"
-            page.locator("data-testid=drop_supplier_item_9", has_text=supplier_3).click()
+            page.fill("data-testid=drop_supplier_search", "자동화업체H")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_supplier_item", has_text=supplier_3).click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
         
 
-
-                # 발주 규칙 선택 추가
+                # 발주 규칙 선택
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(1000)
-        if idx in (1, 2):
+        if idx in (1, 2, 3): #수동 발주 제품 1, 2, 3
             rule = "규칙 없음" #수동 발주
-        elif idx in (3, 4):
+        elif idx in (4, 5): # 발주 거절 제품 1, 2
             rule = "자동화규칙_개별"
-        elif idx == 5:
+        elif idx == 6: # 발주 거절 제품 3
             rule = "자동화규칙_묶음"
 
         page.locator("data-testid=drop_rule_trigger").click()
@@ -365,13 +369,17 @@ def test_prep_product (page:Page):
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(1000)
 
+                # 승인 규칙 선택
         rule1 = "승인규칙_1명"
         rule2 = "승인규칙_n명"
-        
-        if idx in (1, 2, 5):
+        auto  = "자동 승인"
+
+        if idx in (1, 4, 6): # 수동 발주 제품 1, 발주 거절 제품 1, 발주 거절 제품 3
             approve_rule = rule1
-        elif idx in (2, 4):
+        elif idx in (2, 5): # 수동 발주 제품 2, 발주 거절 제품 2
             approve_rule = rule2
+        elif idx == 3: # 수동 발주 제품 3
+            approve_rule = auto
 
         page.locator("data-testid=drop_approval_trigger").click()
         page.wait_for_timeout(1000)
@@ -435,7 +443,7 @@ def test_prep_product (page:Page):
     page.wait_for_timeout(1000)
 
 
-            # 발주 규칙 선택 추가
+            # 발주 규칙 선택 
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
     rule = "규칙 없음"
@@ -450,7 +458,7 @@ def test_prep_product (page:Page):
     expect(page.locator("data-testid=input_stk_qty")).to_have_value("0",timeout=3000)
     page.locator("data-testid=drop_supplier_trigger").click()
     page.wait_for_timeout(1000)
-
+            # 승인 규칙 선택 
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
 
@@ -583,15 +591,6 @@ def test_prep_product (page:Page):
         auto_input.scroll_into_view_if_needed()
         auto_input.fill(str(auto_order))
         page.wait_for_timeout(1000)
-
-        page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_supplier_trigger").last.click()
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_supplier_search").last.fill("자동화업체")
-        page.wait_for_timeout(1000)
-
-
         # 발주 규칙 선택
         page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
         page.wait_for_timeout(1000)
@@ -603,30 +602,50 @@ def test_prep_product (page:Page):
         page.locator("data-testid=drop_rule_item", has_text=rule).click()
         page.wait_for_timeout(1000)
 
-        # 승인 규칙 선택 
-        page.locator("data-testid=drop_approval_trigger").click()
-        page.wait_for_selector("data-testid=drop_approval_search",timeout=3000)
-        page.locator("data-testid=drop_approval_search").fill("자동 승인")
+        page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
         page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_approval_item",has_text="자동 승인").click()
+        
+        # 업체 선택 
+        page.locator("data-testid=drop_supplier_trigger").last.click()
         page.wait_for_timeout(1000)
-
+        
 
         if 0 <= idx <=2: #제품1, 2, 3
             txt_manager = "권정의D 010-6275-4153"
-            page.locator("data-testid=drop_supplier_item_5").click()
+            page.locator("data-testid=drop_supplier_search").last.fill("자동화업체D")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_supplier_item", has_text="자동화업체D").click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
 
         elif 3<= idx <= 5: #제품 4, 5, 6
             txt_manager = "권정의E 010-6275-4153"
-            page.locator("data-testid=drop_supplier_item_6").click()
+            page.locator("data-testid=drop_supplier_search").last.fill("자동화업체E")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_supplier_item", has_text="자동화업체E").click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
         elif 6<= idx <= 8: #제품 7, 8, 9
             txt_manager = "권정의F 010-6275-4153"
-            page.locator("data-testid=drop_supplier_item_7").click()
+            page.locator("data-testid=drop_supplier_search").last.fill("자동화업체F")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_supplier_item", has_text="자동화업체F").click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+            page.wait_for_timeout(1000)
+
+
+                # 승인 규칙 선택 
+        page.locator("data-testid=drop_approval_trigger").click()
+        page.wait_for_selector("data-testid=drop_approval_search",timeout=3000)
+        if idx in (1, 4, 7): # 자동화제품_2, 5, 8
+            page.locator("data-testid=drop_approval_search").fill("자동 승인")
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_approval_item",has_text="자동 승인").click()
+            page.wait_for_timeout(1000)
+        else:
+            page.locator("data-testid=drop_approval_search").fill(rule1)
+            page.wait_for_timeout(1000)
+            page.locator("data-testid=drop_approval_item",has_text=rule1).click()
             page.wait_for_timeout(1000)
 
         if idx < num_products - 1:
@@ -634,7 +653,6 @@ def test_prep_product (page:Page):
             add_row_button.scroll_into_view_if_needed()
             add_row_button.wait_for(state="visible", timeout=5000)
             add_row_button.click(force=True)
-
         # 저장
         page.evaluate("window.scrollTo(0, 0)")
         page.wait_for_timeout(1000)  # 스크롤 애니메이션 대기    

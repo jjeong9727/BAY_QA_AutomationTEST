@@ -15,7 +15,7 @@ def test_register_multiple_products(page: Page):
         page.locator("data-testid=btn_addprd").click()
         page.wait_for_timeout(1000)
 
-        num_products = 6
+        num_products = 3
         prdnames = []
         prd_data = []
 

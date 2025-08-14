@@ -8,9 +8,9 @@ from helpers.order_status_utils import (
 from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 from config import URLS, Account
+filtered_products = ["자동화개별제품_2", "자동화개별제품_3"]
 
-
-def run_order_status_check(page: Page, delivery_status: int):
+def run_order_status_check(page: Page, delivery_status: int, product_name:str):
     status_name = "수령 완료"
     
     # 상태에 따른 expected 키 매핑
@@ -26,13 +26,7 @@ def run_order_status_check(page: Page, delivery_status: int):
     expected = order_status_map[expected_key]
 
     try:
-        filtered_products = filter_products_by_delivery_status(delivery_status)
-        if not filtered_products:
-            raise ValueError(f"'{expected_key}' 상태의 제품이 없습니다.")
-
-        product = random.choice(filtered_products)
-        product_name = product["kor"]
-
+        
         bay_login(page)
 
         # 발주 내역 검색
@@ -53,8 +47,8 @@ def run_order_status_check(page: Page, delivery_status: int):
 
 
 def test_order_status_complete_bf(page: Page):
-    run_order_status_check(page, delivery_status=7)
+    run_order_status_check(page, delivery_status=7, product=filtered_products[1])
 
 def test_order_status_complete_af(page: Page):
-    run_order_status_check(page, delivery_status=4)
+    run_order_status_check(page, delivery_status=4, product=filtered_products[1])
 
