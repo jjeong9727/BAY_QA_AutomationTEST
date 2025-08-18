@@ -114,7 +114,7 @@ def test_register_multiple_products(page: Page):
             page.wait_for_timeout(1000)
 
             # 승인 규칙 선택
-            approve_rule = "승인규칙_1명"
+            approve_rule = "승인규칙_n명"
             page.locator("data-testid=drop_approval_trigger").click()
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_approval_search").fill(approve_rule)

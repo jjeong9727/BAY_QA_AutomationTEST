@@ -1,6 +1,10 @@
 import random
 import time
-from datetime import datetime
+from __future__ import annotations
+from datetime import datetime, timedelta, timezone
+import json
+from pathlib import Path
+from typing import Optional
 from playwright.sync_api import TimeoutError, expect
 from config import URLS, Account
 from helpers.stock_utils import StockManager
@@ -8,6 +12,8 @@ from helpers.product_utils import update_product_flag
 from helpers.common_utils import bay_login
 from helpers.order_status_utils import search_order_history
 from helpers.approve_utils import check_approval_history, check_order_pending_history
+
+BATCH_PATH = Path("batch_time.json")
 
 products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"]
 products.append("발주 거절 제품_1")
@@ -32,12 +38,8 @@ def get_safe_batch_time() -> datetime:
     base_minute = (minute // 10) * 10
 
     # 남은 시간 계산
-    minutes_until_next = (base_minute + 10) - minute
-    if minutes_until_next <= 3: # 3분 이내면 다다음 배치로 설정
-        next_minute = base_minute + 20
-    else:
-        next_minute = base_minute + 10 # 아니면 다음 배치
-
+    next_minute = base_minute + 20
+    
     # 시(hour) 넘어가는 경우 처리
     if next_minute >= 60:
         next_hour = now.hour + 1
@@ -46,6 +48,22 @@ def get_safe_batch_time() -> datetime:
         next_time = now.replace(minute=next_minute, second=0, microsecond=0)
 
     return next_time
+
+def save_batch_time(next_time: datetime, path: Path = BATCH_PATH) -> None:
+    data = {
+        "hour": next_time.strftime("%H"),
+        "minute": next_time.strftime("%M"),
+        "next_time_iso": next_time.isoformat()  # 참고용(로깅/디버깅)
+    }
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+# 배치 시간 계산 후 JSON에 저장
+next_time = get_safe_batch_time()
+save_batch_time(next_time)
+
+# 필요 시 문자열도 바로 사용
+hour_str = next_time.strftime("%H")
+minute_str = next_time.strftime("%M")
 
 
 def wait_until(target_time: datetime):
@@ -63,9 +81,7 @@ def wait_until(target_time: datetime):
         else:
             print(f"🕒 {int(remaining)}초 남음... {int(remaining)}초 대기")
             time.sleep(remaining)
-next_time = get_safe_batch_time()
-hour_str = next_time.strftime("%H")  
-minute_str = next_time.strftime("%M") 
+
 
 
 def test_stock_outflow(page):
@@ -103,6 +119,8 @@ def test_stock_outflow(page):
         page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)
+
+
 
         
         # 출고 처리

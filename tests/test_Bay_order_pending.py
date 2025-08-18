@@ -52,37 +52,86 @@ def test_edit_history_bulk(page:Page):
     expect(edit_cell).to_have_text("10,000", timeout=3000)
     assert amount == '100,000', f"금액이 다름 (기대 값: 100,000원, 노출 값: {amount}원)"
 
-# 승인 요청 버튼 확인 후 요청 동작 
+# 승인 요청 버튼 확인 후 요청 동작 (개별 내역)
+def check_status_request(page:Page):
+    bay_login(page)
+    page.goto(URLS["bay_order_pending"])
+    page.wait_for_timeout(2000)
+
+    check_approval_status_buttons(page, status="승인 요청", product=products[0], 
+                                  order_rule=order_rule[0], bulk=False, approve=False)
+    page.locator("data-testid=btn_reset").click()
+    page.wait_for_timeout(2000)
+
+    for product in products:
+        page.fill("data-testid=input_search", product)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(2000)
+
+        page.locator("data-testid=btn_approval").first.click()
+        expect(page.locator("data-testid=txt_approval")).to_have_text("발주 승인을 요청하시겠습니까?", timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_request").click()
+        expect(page.locator("data-testid=toast_request")).to_have_text("발주 승인 요청이 완료되었습니다.", timeout=3000)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_reset").click()
+        page.wait_for_timeout(2000)
+
+    
+
+# 승인 요청 버튼 확인 후 요청 동작 (통합 내역)
 def check_status_request_bulk(page:Page):
+    target_products = ["자동화제품_3", "자동화제품_6", "자동화제품_9"]
     bay_login(page)
     page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
     # 승인 요청 전 상태 확인 (통합내역 / 발주 요청 내역)
     check_approval_status_buttons(page, status="승인 요청", product=bulk_products[0], 
                                   order_rule=order_rule[1], bulk=True, approve=False)
-    # 자동화제품 승인 요청 처리 및 자동 승인 확인
-    for idx, product in enumerate(bulk_products, start=1):
-        if idx == 9 :
-            break
-        search_order_pending_history(page, order_rule[1], bulk_products[0])
-        page.locator("data-testid=btn_detail").first.click()
+    page.locator("data-testid=btn_reset").click()
+    page.wait_for_timeout(2000)
 
-        rows = page.locator('table tbody tr')
-        status_cell = rows.locator('td:nth-child(8)')
-        status_text = status_cell.inner_text().strip()
+    # 자동화제품 승인 요청 처리 및 자동 승인 확인
+    for product in target_products:
+        # 제품 검색
+        page.fill("data-testid=input_search", product)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(2000)
+
+        # 상세 보기 클릭
+        page.locator("data-testid=btn_detail").first.click()
+        page.wait_for_timeout(1000)
+
+        # 상세 행 가져오기 (2, 3, 4행)
+        rows = page.locator("table tbody tr")
+
+        for row_idx in [1, 2, 3]:  # 0이 첫 행 → 2,3,4행은 인덱스 1,2,3
+            product_cell = rows.nth(row_idx).locator("td:nth-child(2)")
+            approval_button = rows.nth(row_idx).locator("data-testid=btn_approval")
+
+            product_text = product_cell.inner_text().strip()
+            status_text = approval_button.inner_text().strip()
             
-        for i in rows:
+            print(f"📝 확인 중: {product} → {product_text}, 상태: {status_text}")
+
+            # ✅ 상태 체크 (예: 승인 요청 or 자동 승인)
             if status_text == "승인 요청":
-                page.locator("data-testid=btn_approval").nth(i).click()
+                page.locator("data-testid=btn_approval").nth(row_idx).click()
                 expect(page.locator("data-testid=txt_approval")).to_have_text("발주 승인을 요청하시겠습니까?", timeout=3000)
-                txt_rule = f"승인 규칙명: {approval_rules[0]}"
-                expect(page.locator("data-testid=txt_rule")).to_have_text(txt_rule, timeout=3000)
+                page.wait_for_timeout(1000)
                 page.locator("data-testid=btn_request").click()
                 expect(page.locator("data-testid=toast_request")).to_have_text("발주 승인 요청이 완료되었습니다.", timeout=3000)
-            elif status_text == "자동 승인":
-                expect(page.locator("data-testid=btn_approval").nth(i)).to_have_text("자동 승인", timeout=3000)
-                expect(page.locator("data-testid=btn_approval").nth(i)).to_be_disabled(timeout=3000)
+                page.wait_for_timeout(1000)
 
+            elif status_text == "자동 승인":
+                expect(page.locator("data-testid=btn_approval").nth(row_idx)).to_have_text("자동 승인", timeout=3000)
+                expect(page.locator("data-testid=btn_approval").nth(row_idx)).to_be_disabled(timeout=3000)
+
+        page.locator("data-testid=btn_reset").click()
+        page.wait_for_timeout(500)
+        
 # 발주 예정 제품 삭제 
 def test_delete_history(page:Page):
     bay_login(page)

@@ -10,7 +10,29 @@ from helpers.order_status_data import order_status_map
 from helpers.order_status_utils import search_order_history,get_order_id_from_order_list, check_order_status_by_order_id_bulk
 from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
+import json
+from pathlib import Path
 import time
+
+BATCH_PATH = Path("batch_time.json")
+def load_batch_time(path: Path = BATCH_PATH) -> tuple[str, str]:
+    obj = json.loads(path.read_text(encoding="utf-8"))
+    return obj["hour"], obj["minute"]  # "HH", "MM"
+hour_str, minute_str = load_batch_time()
+def is_target_passed_now(hour_str: str, minute_str: str) -> bool:
+    now = datetime.now()
+    target_today = now.replace(
+        hour=int(hour_str), minute=int(minute_str), second=0, microsecond=0
+    )
+    return now >= target_today
+
+if not is_target_passed_now(hour_str, minute_str):
+    # 아직 안 지났으면 목표 시각 + 1분까지 대기
+    
+    now = datetime.now()
+    target = now.replace(hour=int(hour_str), minute=int(minute_str), second=0, microsecond=0)
+    time.sleep(max(0, (target - now).total_seconds()) + 60)  # +60s 여유
+
 product_list = [f"자동화제품_{i}" for i in range(1, 10)]
 
 def accept_order(page:Page, order_id:str, manager:str):

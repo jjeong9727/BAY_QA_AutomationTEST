@@ -1,6 +1,9 @@
 import json
 import re
+from datetime import datetime, timedelta
+import time
 import random
+from pathlib import Path
 from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import (
@@ -10,6 +13,25 @@ from helpers.order_status_utils import (
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
 from datetime import datetime
+BATCH_PATH = Path("batch_time.json")
+def load_batch_time(path: Path = BATCH_PATH) -> tuple[str, str]:
+    obj = json.loads(path.read_text(encoding="utf-8"))
+    return obj["hour"], obj["minute"]  # "HH", "MM"
+hour_str, minute_str = load_batch_time()
+def is_target_passed_now(hour_str: str, minute_str: str) -> bool:
+    now = datetime.now()
+    target_today = now.replace(
+        hour=int(hour_str), minute=int(minute_str), second=0, microsecond=0
+    )
+    return now >= target_today
+
+if not is_target_passed_now(hour_str, minute_str):
+    # 아직 안 지났으면 목표 시각 + 1분까지 대기
+    
+    now = datetime.now()
+    target = now.replace(hour=int(hour_str), minute=int(minute_str), second=0, microsecond=0)
+    time.sleep(max(0, (target - now).total_seconds()) + 60)  # +60s 여유
+
 # 발주 진행 상태 코드
     # 1: 발주 요청
     # 2: 발주 진행
@@ -41,6 +63,8 @@ def test_order_acceptance(page: Page):
     # eligible_products = filter_products_by_delivery_status(1)
     # if len(eligible_products) < 2:
     #     raise ValueError("delivery_status가 1인 제품이 2개 미만입니다.")
+    
+
     status_name = "발주 요청"
     selected_products = ["자동화개별제품_2", "자동화개별제품_3"]
 
