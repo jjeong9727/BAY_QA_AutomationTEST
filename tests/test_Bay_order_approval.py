@@ -40,6 +40,14 @@ def test_approve_order(page:Page):
     expect(page.locator("data-testid=toast_approve")).to_have_text("발주 승인이 완료되었습니다.", timeout=3000)
     page.wait_for_timeout(1000)
 
+    page.locator("data-testid=input_email").fill(approver[0])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_pw").fill("1234")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_login").click()
+    expect(page.locator("data-testid=toast_approved")).to_have_text("발주 승인 완료된 발주입니다.", timeout=3000)
+    page.wait_for_timeout(1000)
+
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
     # 승인 요청 내역
@@ -58,6 +66,16 @@ def test_approve_order(page:Page):
     page.goto(approval_url)
     page.wait_for_selector("data-testid=btn_login", timeout=5000)
 
+    # 이전 승인자 로그인 불가 확인
+    page.locator("data-testid=input_email").fill(approver[0])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_pw").fill("1234")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_login").click()
+    expect(page.locator("data-testid=toast_approved")).to_have_text("발주 승인 완료된 발주입니다.", timeout=3000)
+    page.wait_for_timeout(1000)
+
+    # 2번째 승인자 결재 
     page.locator("data-testid=input_email").fill(approver[3])
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_pw").fill("1234")
@@ -76,8 +94,6 @@ def test_approve_order(page:Page):
     # 발주 예정 내역
     check_approval_status_buttons(page, "승인 완료", products[0], order_rule[1], bulk=True, approve=False)
 
-
-
 # 통합 내역 승인
 def test_approve_bulk_order(page:Page):
     bay_login(page, account="qaje")
@@ -94,6 +110,16 @@ def test_approve_bulk_order(page:Page):
     page.goto(approval_url)
     page.wait_for_selector("data-testid=btn_login", timeout=5000)
 
+    # 승인자 정보 틀린 경우 로그인 불가 확인
+    page.locator("data-testid=input_email").fill("jekwon@medisolveai.com")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_pw").fill("1234")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_login").click()
+    expect(page.locator("data-testid=toast_wrong")).to_have_text("로그인 정보가 올바르지 않습니다.", timeout=3000)
+    
+
+    # 정상 승인 동작 확인
     page.locator("data-testid=input_email").fill(approver[0])
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_pw").fill("1234")
@@ -138,6 +164,15 @@ def test_reject_order(page:Page):
     expect(page.locator("data-testid=toast_approve")).to_have_text("발주 승인이 완료되었습니다.", timeout=3000)
     page.wait_for_timeout(1000)
 
+    # 이전 승인자 로그인 불가 확인
+    page.locator("data-testid=input_email").fill(approver[0])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_pw").fill("1234")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_login").click()
+    expect(page.locator("data-testid=toast_approved")).to_have_text("발주 승인 완료된 발주입니다.", timeout=3000)
+    page.wait_for_timeout(1000)
+
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
     # 승인 요청 내역
@@ -156,6 +191,15 @@ def test_reject_order(page:Page):
     page.goto(approval_url)
     page.wait_for_selector("data-testid=btn_login", timeout=5000)
 
+    # 이전 승인자 로그인 불가 확인
+    page.locator("data-testid=input_email").fill(approver[0])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_pw").fill("1234")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_login").click()
+    expect(page.locator("data-testid=toast_approved")).to_have_text("발주 승인 완료된 발주입니다.", timeout=3000)
+    page.wait_for_timeout(1000)
+
     page.locator("data-testid=input_email").fill(approver[3])
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_pw").fill("1234")
@@ -166,6 +210,15 @@ def test_reject_order(page:Page):
     page.locator("data-testid=btn_reject").click()
     expect(page.locator("data-testid=toast_reject")).to_have_text("발주 거절이 완료되었습니다.", timeout=3000)
     page.wait_for_timeout(1000)
+
+    # 거절 후 로그인 불가 확인 
+    page.locator("data-testid=input_email").fill(approver[3])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_pw").fill("1234")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_login").click()
+    expect(page.locator("data-testid=toast_rejected")).to_have_text("발주 거절 완료된 발주입니다.", timeout=3000)
+    page.wait_for_timeout(1000)    
 
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)

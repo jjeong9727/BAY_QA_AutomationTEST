@@ -1,50 +1,22 @@
-import random
-import re
+import time
 from config import URLS, Account
 from datetime import datetime, timedelta
-from helpers.stock_utils import StockManager
+from helpers.stock_utils import StockManager, load_batch_time
 from helpers.order_status_utils import search_order_history
 from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 from helpers.approve_utils import check_approval_history, check_order_pending_history
-import time
 
-def get_safe_batch_time() -> datetime:
+def build_target_time_from_json(path="batch_time.json") -> datetime:
+    data = load_batch_time(path)
+    h = int(data["hour"]); m = int(data["minute"])
     now = datetime.now()
-    minute = now.minute
-    base_minute = (minute // 10) * 10
+    target = now.replace(hour=h, minute=m, second=0, microsecond=0)
+    # 이미 지났으면 다음날로 보정 (자정 넘어가는 케이스 대비)
+    if target <= now:
+        target += timedelta(days=1)
+    return target
 
-    if minute >= 28: # 테스트 해보고 시간 조정 필요할수도?
-        # 다다음 배치
-        next_minute = base_minute + 20
-    else:
-        # 다음 배치
-        next_minute = base_minute + 10
-
-    # 시(hour) 넘어가는 경우 처리
-    if next_minute >= 60:
-        next_hour = now.hour + 1
-        next_time = now.replace(hour=next_hour % 24, minute=0, second=0, microsecond=0)
-    else:
-        next_time = now.replace(minute=next_minute, second=0, microsecond=0)
-
-    return next_time
-
-def wait_until(target_time: datetime):
-    target_time = target_time + timedelta(minutes=1) # 배치 후 1분 추가 대기 (발주 시간 10분이면 11분까지 대기)
-    print(f"⏳ 다음 발주 배치 시각까지 대기 중: {target_time.strftime('%H:%M')}")
-    while True:
-        now = datetime.now()
-        remaining = (target_time - now).total_seconds()
-        if remaining <= 0:
-            print("✅ 도달 완료! 발주 내역 확인 시작")
-            break
-        elif remaining > 60:
-            print(f"🕒 {int(remaining)}초 남음... 60초 대기")
-            time.sleep(60)
-        else:
-            print(f"🕒 {int(remaining)}초 남음... {int(remaining)}초 대기")
-            time.sleep(remaining)
 
 def test_inflow (page:Page):
     bay_login(page)
@@ -97,9 +69,9 @@ def test_outflow(page:Page):
     page.locator("data-testid=btn_edit").click()
     page.wait_for_timeout(2000)
 
-    next_time = get_safe_batch_time()
-    hour_str = next_time.strftime("%H")  
-    minute_str = next_time.strftime("%M")  
+    next_time = build_target_time_from_json()
+    hour_str = next_time["hour"]
+    minute_str = next_time["minute"]
 
     # ⏰ 시간 설정
     current_hour = page.locator("data-testid=drop_hour_trigger").text_content()

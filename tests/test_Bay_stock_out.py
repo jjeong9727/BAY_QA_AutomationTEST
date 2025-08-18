@@ -65,25 +65,6 @@ save_batch_time(next_time)
 hour_str = next_time.strftime("%H")
 minute_str = next_time.strftime("%M")
 
-
-def wait_until(target_time: datetime):
-    print(f"⏳ 다음 발주 배치 시각까지 대기 중: {target_time.strftime('%H:%M')}")
-    while True:
-        now = datetime.now()
-        remaining = (target_time - now).total_seconds()
-        if remaining <= 0:
-            print("✅ 도달 완료!")
-            time.sleep(60) # 60초 추가 대기
-            break
-        elif remaining > 60:
-            print(f"🕒 {int(remaining)}초 남음... 60초 대기")
-            time.sleep(60)
-        else:
-            print(f"🕒 {int(remaining)}초 남음... {int(remaining)}초 대기")
-            time.sleep(remaining)
-
-
-
 def test_stock_outflow(page):
     try:
         bay_login(page)
@@ -217,7 +198,7 @@ def test_edit_stocklist_and_auto_order(page):
         page.locator("data-testid=btn_edit_bulk").click()
         expect(page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
         page.wait_for_timeout(1000)
-        ordered_product.append({"kor": product} )
+        ordered_product.append({"kor": product})
 
     
     page.goto(URLS["bay_order_pending"])

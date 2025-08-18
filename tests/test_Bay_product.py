@@ -132,7 +132,7 @@ def test_register_multiple_products(page: Page):
                 "auto_order": auto_order,
                 "order_rule": rule,
                 "supplier" : supplier, # ("자동화업체, 권정의 010-6275-4153")
-                "approve_rule" : approve_rule, # (승인규칙_1명)
+                "approve_rule" : approve_rule, # (승인규칙_n명)
 
             })
 
