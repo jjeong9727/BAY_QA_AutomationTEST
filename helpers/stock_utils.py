@@ -4,6 +4,15 @@ from config import URLS
 from datetime import datetime
 from playwright.sync_api import Page, expect
 from helpers.product_utils import update_product_flag
+
+BATCH_PATH = Path("batch_time.json")
+
+def load_batch_time(path: Path = BATCH_PATH):
+    with path.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data
+
+
 def register_stock_for_date(
     page: Page,
     date: datetime,
