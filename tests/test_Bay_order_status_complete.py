@@ -5,7 +5,6 @@ from helpers.order_status_utils import (
     get_order_id_from_order_list,
     check_order_status_by_order_id, search_order_history
 )
-from helpers.approve_utils import check_approval_status_buttons
 from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 from config import URLS, Account
@@ -49,11 +48,9 @@ def run_order_status_check(page: Page, delivery_status: int, product_name:str):
 
 def test_order_status_complete_bf(page: Page):
     run_order_status_check(page, delivery_status=7, product=filtered_products[1])
-    check_approval_status_buttons(page, "수령 완료", filtered_products[1], "승인규칙_n명", False, False)
     
     
 
 def test_order_status_complete_af(page: Page):
     run_order_status_check(page, delivery_status=4, product=filtered_products[0])
-    check_approval_status_buttons(page, "수령 완료", filtered_products[0], "승인규칙_n명", False, False)
 

@@ -4,6 +4,7 @@ from helpers.order_status_data import order_status_map
 from helpers.order_status_utils import (
     check_order_status_by_order_id, get_order_id_from_order_list, search_order_history
 )
+from helpers.approve_utils import check_approval_status_buttons
 from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.common_utils import bay_login
@@ -148,6 +149,11 @@ def test_order_receive_from_delivery(page: Page):
 
         assert current_stock == expected_stock, f"[FAIL] 현 재고량이 예상치와 다릅니다. 예상: {expected_stock}, 실제: {current_stock}"
         print(f"[PASS] 현 재고량 확인 완료 → 예상: {expected_stock}, 실제: {current_stock}")
+
+        # 수령완료 후 승인 요청 내역의 "수령완료"상태 확인
+        check_approval_status_buttons(page, "수령 완료", product_name, "승인규칙_n명", False, False)
+
+
 
     except Exception as e:
         error_message = f"❌ Error in test_order_receive_from_delivery: {str(e)}"

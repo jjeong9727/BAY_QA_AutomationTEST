@@ -7,6 +7,7 @@ from helpers.order_status_utils import (
     filter_products_by_delivery_status, get_order_id_from_order_list, 
     check_order_status_by_order_id, search_order_history
 )
+from helpers.approve_utils import check_approval_status_buttons
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
 
@@ -134,6 +135,10 @@ def test_order_receive_from_progress(page: Page):
         expected_stock = previous_stock + stock_inflow
         assert current_stock == expected_stock, f"[FAIL] 재고 불일치: 예상 {expected_stock}, 실제 {current_stock}"
         print(f"[PASS] 재고 확인 완료 → 예상: {expected_stock}, 실제: {current_stock}")
+
+            
+        # 수령완료 후 승인 요청 내역의 "수령완료" 상태 확인
+        check_approval_status_buttons(page, "수령 완료", product_name, "승인규칙_n명", False, False)    
 
         # # JSON 재고량 업데이트
         # with open('product_name.json', 'r', encoding='utf-8') as f:
