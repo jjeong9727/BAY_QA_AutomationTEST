@@ -1,6 +1,6 @@
+from __future__ import annotations
 import random
 import time
-from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
@@ -16,21 +16,21 @@ from helpers.approve_utils import check_approval_history, check_order_pending_hi
 BATCH_PATH = Path("batch_time.json")
 
 products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"]
-products.append("발주 거절 제품_1")
+reject_products = ["발주 거절 제품 1", "발주 거절 제품 2"]
 ordered_product = []
-# def get_filtered_products(stock_manager):
-#     """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
-#     products = stock_manager.get_all_product_names()
-#     filtered_products = [
-#         p for p in products
-#         if p.get("stock_qty", 0) >= p.get("safety", 0) and p.get("order_flag", 1) == 0
-#     ]
+def get_filtered_products(stock_manager):
+    """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
+    products = stock_manager.get_all_product_names()
+    filtered_products = [
+        p for p in products
+        if p.get("stock_qty", 0) >= p.get("safety", 0) and p.get("order_flag", 1) == 0
+    ]
     
-#     # 필터링된 제품 출력 (디버깅용)
-#     for product in filtered_products:
-#         print(f"❓ 필터링된 제품 - 이름: {product['kor']}, 재고: {product['stock_qty']}, 안전 재고: {product['safety']}")
+    # 필터링된 제품 출력 (디버깅용)
+    for product in filtered_products:
+        print(f"❓ 필터링된 제품 - 이름: {product['kor']}, 재고: {product['stock_qty']}, 안전 재고: {product['safety']}")
     
-#     return filtered_products
+    return filtered_products
 
 def get_safe_batch_time() -> datetime:
     now = datetime.now()
@@ -106,22 +106,12 @@ def test_stock_outflow(page):
         
         # 출고 처리
         stock_manager = StockManager(page)
-        # stock_manager.load_product_from_json()
-
-        # # 1개 제품을 랜덤으로 선택하여 출고 테스트 진행
-        # filtered_products = get_filtered_products(stock_manager)
-        # if len(filtered_products) < 1:
-        #     raise AssertionError("❌ 조건에 맞는 제품이 없습니다.")
-
-        # # 조건에 맞는 제품들 중에서 1개를 랜덤으로 선택
-        # selected_products = random.sample(filtered_products, 1)
 
         for product in products:
             stock_manager.product_name = product
             stock_manager.search_product_by_name(product)
 
             current_stock = stock_manager.get_current_stock()
-            safety_stock = product.get('safety_stock', 0)
 
             # 출고 수량 계산
             outflow_qty = current_stock
@@ -131,13 +121,12 @@ def test_stock_outflow(page):
 
             updated = stock_manager.get_current_stock()
             expected = current_stock - outflow_qty
-            assert updated == expected, f"[FAIL] {product['kor']} 출고 후 재고 오류: {expected} != {updated}"
-            print(f"[PASS] 출고 확인: {product['kor']} → {updated}")
+            assert updated == expected, f"[FAIL] {product} 출고 후 재고 오류: {expected} != {updated}"
+            print(f"[PASS] 출고 확인: {product} → {updated}")
 
-            # # 출고 후 재고 값을 json에 저장
-            # update_product_flag(product['kor'], stock_qty=expected, order_flag=1, delivery_status=1)
             ordered_product.append(product)
 
+           
     except Exception as e:
         print(f"❌ 출고 테스트 실패: {str(e)}")
         raise
@@ -146,30 +135,17 @@ def test_edit_stocklist_and_auto_order(page):
     bay_login(page)
 
     stock_manager = StockManager(page)
-    # stock_manager.load_product_from_json()
 
-    # ordered_product = []
 
-    # # 조건에 맞는 제품 필터링
-    # filtered_products = get_filtered_products(stock_manager)
-    # if len(filtered_products) < 2: 
-    #     print("❌ 조건에 맞는 제품이 2개 이상 없습니다.")
-    #     return
 
-    # # 2개 제품 랜덤 선택
-    # selected_products = random.sample(filtered_products, 2)
-
-    for product in products:
-        current_stock = product["stock_qty"]
-        outflow = current_stock
-        expected = current_stock - outflow
-        txt_outflow = "재고가 안전 재고보다 적은 경우 발주 규칙에 따라 발주됩니다."
+    txt_outflow = "재고가 안전 재고보다 적은 경우 발주 규칙에 따라 발주됩니다."
+    for product in reject_products:
 
         # 제품 검색 후 수정 버튼 클릭
         page.goto(URLS["bay_stock"])
         page.wait_for_timeout(2000)
 
-        page.locator("data-testid=input_search").fill(product["kor"])
+        page.locator("data-testid=input_search").fill(product)
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(1000)
@@ -198,40 +174,14 @@ def test_edit_stocklist_and_auto_order(page):
         page.locator("data-testid=btn_edit_bulk").click()
         expect(page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
         page.wait_for_timeout(1000)
-        ordered_product.append({"kor": product})
+
+        ordered_product.append(product)
 
     
     page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
     for product in ordered_product:
         # 발주 예정 페이지에서 확인
-        check_order_pending_history(page, "자동화규칙_개별", product, manual=False, group=False)
-        # 승인 요청 페이지에서 확인
-        check_approval_history(page, "승인 대기", product)
-    
-    
-    
-    # page.locator("data-testid=input_search").fill(product)
-    # page.wait_for_timeout(1000)
-    # page.locator("data-testid=btn_search").click()
-    # page.wait_for_timeout(2000)
-    # page.locator("data-testid=btn_resend").is_hidden(timeout=3000)
-    # wait_until(next_time)
-    # page.wait_for_timeout(1000) 
-    # page.locator("data-testid=btn_reset").click()
-    # page.wait_for_timeout(3000)
-
-    # for product in ordered_product:
-    #     search_order_history(page, product, "발주 요청")
-    #     rows = page.locator('table tbody tr')
-    #     product_cell = rows.nth(0).locator('td:nth-child(2)')
-    #     product_text = product_cell.inner_text()
-    #     print(f"제품명: {product_text}")
-    #     assert product_text in product, f"❌ 제품명이 발주 내역에 없음: {product}"
-
-
-    #     page.wait_for_timeout(1000)
-    #     page.locator("data-testid=btn_reset").click()
-    #     page.wait_for_timeout(2000)
-    #     # # 상태 업데이트
-    #     # update_product_flag(product, stock_qty=expected, order_flag=1, delivery_status=1)
+        check_order_pending_history(page, "자동화규칙_개별", product, "승인 요청", manual=False, group=False)
+        # # 승인 요청 페이지에서 확인
+        # check_approval_history(page, "승인 대기", product)

@@ -34,12 +34,13 @@ def append_product_name(
     maker: str,
     order_rule: str,
     supplier: str,
+    approve_rule: str,
     safety: int = 0,
     auto_order : int =0,
     order_flag : int = 0,
     stock_qty : int =0,   
     delivery_status : int=0, # 1: 발주 요청, 2: 발주 진행, 3: 배송 진행, 4: 수령 완료(운송장O), 5: 발주 취소, 6: 발주 실패, 7: 수령 완료(운송장X)
-
+    
 ):
     
     try:
@@ -62,7 +63,8 @@ def append_product_name(
         "auto_order": auto_order,
         "order_flag" : order_flag,
         "stock_qty" : stock_qty,
-        "delivery_status" : delivery_status
+        "delivery_status" : delivery_status,
+        "approve_rule" : approve_rule
     })
 
     with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:

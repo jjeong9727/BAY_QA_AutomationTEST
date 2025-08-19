@@ -9,8 +9,8 @@ def test_approval_rules_register(page:Page):
 
     name = "규칙 등록 테스트"
     approval_1 = "권정의"
-    approval_2 = "메디"
-    referrer_1 = "메디"
+    approval_2 = "QA 계정"
+    referrer_1 = "QA 계정"
     referrer_2 = "권정의"
     txt_register = "승인 규칙 등록이 완료되었습니다."
 
@@ -23,7 +23,7 @@ def test_approval_rules_register(page:Page):
     page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(approval_1)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=data-testid=drop_approver_item", has_text=approval_1).click()
+    page.locator("data-testid=drop_approver_item", has_text=approval_1).click()
     page.wait_for_timeout(1000)
     # 승인자 2 선택
     page.locator("data-testid=btn_add_approver").click()
@@ -36,14 +36,16 @@ def test_approval_rules_register(page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_search").fill(approval_2)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=data-testid=drop_approver_item", has_text=approval_2).click()
+    page.locator("data-testid=drop_approver_item", has_text=approval_2).click()
     page.wait_for_timeout(1000)
     # 참조자 1 선택
+    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+    page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").click()
     page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(referrer_1)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=data-testid=drop_referrer_item", has_text=referrer_1).click()
+    page.locator("data-testid=drop_referrer_item", has_text=referrer_1).click()
     page.wait_for_timeout(1000)
     # 참조자 2 선택
     page.locator("data-testid=btn_add_referrer").click()
@@ -56,9 +58,11 @@ def test_approval_rules_register(page:Page):
     page.wait_for_timeout(1000) 
     page.locator("data-testid=drop_referrer_search").fill(referrer_2)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=data-testid=drop_referrer_item", has_text=referrer_2).click()
+    page.locator("data-testid=drop_referrer_item", has_text=referrer_2).click()
     page.wait_for_timeout(1000)
     
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(1000)
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=toast_register")).to_have_text(txt_register, timeout=3000)
     page.wait_for_timeout(1000)
@@ -68,7 +72,7 @@ def test_approval_rules_register(page:Page):
     page.locator("data-testid=input_search").fill(name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
 
     rows = page.locator('table tbody tr')
     name_cell = rows.nth(0).locator('td:nth-child(1)') # 1행 1열 (규칙명)

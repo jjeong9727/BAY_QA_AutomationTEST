@@ -33,7 +33,7 @@ from playwright.sync_api import Page, expect
 #     # 랜덤으로 하나 선택
 #     product = random.choice(filtered_products)
 #     return product
-products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"]
+products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3", "발주 거절 제품 1", "발주 거절 제품 2"]
 def test_stock_inflow(page):
     try:
         bay_login(page)
@@ -49,23 +49,23 @@ def test_stock_inflow(page):
         # # 조건에 맞는 제품들 중에서 3개를 랜덤으로 선택
         # selected_products = random.sample(products, 3)
 
-        print("[선택된 제품]", [p["kor"] for p in products])
+        
 
         for product in products:
             print(product)
-            stock_manager.product_name = product['kor']  # 제품명을 클래스 속성에 저장
-            stock_manager.search_product_by_name(product['kor'])
+            stock_manager.product_name = product  # 제품명을 클래스 속성에 저장
+            stock_manager.search_product_by_name(product)
 
             inflow_qty = random.randint(6, 10)  # 랜덤 입고 수량
             stock_manager.perform_inflow(inflow_qty)  
 
             updated = stock_manager.get_current_stock()
             expected = stock_manager.initial_stock + inflow_qty
-            assert updated == expected, f"[FAIL] {product['kor']} 입고 후 재고 오류: {expected} != {updated}"
-            print(f"[PASS] 입고 확인: {product['kor']} → {updated}")
+            assert updated == expected, f"[FAIL] {product} 입고 후 재고 오류: {expected} != {updated}"
+            print(f"[PASS] 입고 확인: {product} → {updated}")
 
             # # 입고 후 재고 값을 json 파일에 저장
-            # update_product_flag(product['kor'], stock_qty=expected)
+            # update_product_flag(product, stock_qty=expected)
 
     except Exception as e:
         print(f"❌ 입고 테스트 실패: {str(e)}")

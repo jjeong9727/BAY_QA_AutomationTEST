@@ -143,7 +143,7 @@ def test_prep_register_rules (page:Page):
     rule1 = "승인규칙_1명"
     rule2 = "승인규칙_n명"
     name1 = "권정의"
-    name2 = "메디" # 법인폰 이름으로 변경 필요
+    name2 = "QA 계정" 
 
     # 승인 규칙 1(승인자/참조자 1명)
     page.wait_for_selector("data-testid=btn_register",timeout=5000)
@@ -638,9 +638,9 @@ def test_prep_product (page:Page):
         page.locator("data-testid=drop_approval_trigger").click()
         page.wait_for_selector("data-testid=drop_approval_search",timeout=3000)
         if idx in (1, 4, 7): # 자동화제품_2, 5, 8
-            page.locator("data-testid=drop_approval_search").fill("자동 승인")
+            page.locator("data-testid=drop_approval_search").fill("승인 규칙_1명")
             page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_approval_item",has_text="자동 승인").click()
+            page.locator("data-testid=drop_approval_item",has_text="승인 규칙_1명").click()
             page.wait_for_timeout(1000)
         else:
             page.locator("data-testid=drop_approval_search").fill(rule1)

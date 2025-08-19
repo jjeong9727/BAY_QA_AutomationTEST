@@ -10,7 +10,7 @@ def test_approval_rules_register(page:Page):
     name = "규칙 등록 테스트"
     edit_name = "[수정] 규칙 등록 테스트"
     approval_1 = "권정의"
-    referrer_1 = "메디"
+    referrer_1 = "QA 계정"
     edit_approval = "김수연"
     edit_referrer = "김사라"
 
@@ -30,10 +30,8 @@ def test_approval_rules_register(page:Page):
     # 규칙명 수정
     page.locator("data-testid=input_rule_name").fill(edit_name)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=btn_edit").first.click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
 
-    # 승인자 변경 (1: 권정의 > 김수연, 2: 메디 > 권정의 3: 메디)
+    # 승인자 변경 (1: 권정의 > 김수연, 2: QA 계정 > 권정의 3: QA 계정)
     page.locator("data-testid=drop_approver_trigger").nth(0).click()
     page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(edit_approval)
@@ -54,11 +52,13 @@ def test_approval_rules_register(page:Page):
     page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(referrer_1)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=data-testid=drop_approver_item", has_text=referrer_1).click()
+    page.locator("data-testid=drop_approver_item", has_text=referrer_1).click()
     page.wait_for_timeout(1000)
     
-    # 참조자 변경 (1: 메디 > 김사라, 2: 권정의 > 메디, 3: 권정의)
-    page.locator("data-testid=drop_referrer_trigger").nth(0).click()
+    # 참조자 변경 (1: QA 계정 > 김사라, 2: 권정의 > QA 계정, 3: 권정의)
+    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_referrer_trigger").first.click()
     page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(edit_referrer)
     page.wait_for_timeout(1000)
@@ -78,10 +78,12 @@ def test_approval_rules_register(page:Page):
     page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(approval_1)
     page.wait_for_timeout(1000)
-    page.locator("data-testid=data-testid=drop_referrer_item", has_text=approval_1).click()
+    page.locator("data-testid=drop_referrer_item", has_text=approval_1).click()
     page.wait_for_timeout(1000)
 
     # 저장 후 이름 수정 반영 확인
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(1000)
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=toast_edit")).to_have_text("승인 규칙이 수정되었습니다.", timeout=3000)
     page.wait_for_timeout(1000)

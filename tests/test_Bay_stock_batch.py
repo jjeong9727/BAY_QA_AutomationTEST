@@ -1,5 +1,6 @@
 import time
 from config import URLS, Account
+from pathlib import Path
 from datetime import datetime, timedelta
 from helpers.stock_utils import StockManager, load_batch_time
 from helpers.order_status_utils import search_order_history
@@ -7,8 +8,8 @@ from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 from helpers.approve_utils import check_approval_history, check_order_pending_history
 
-def build_target_time_from_json(path="batch_time.json") -> datetime:
-    data = load_batch_time(path)
+def build_target_time_from_json(path: str = "batch_time.json"):
+    data = load_batch_time(Path(path))
     h = int(data["hour"]); m = int(data["minute"])
     now = datetime.now()
     target = now.replace(hour=h, minute=m, second=0, microsecond=0)
@@ -20,11 +21,12 @@ def build_target_time_from_json(path="batch_time.json") -> datetime:
 
 def test_inflow (page:Page):
     bay_login(page)
-    page.goto(URLS["bay_stockadd"])
+    page.goto(URLS["bay_stock"])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_stockadd").click()
     page.wait_for_timeout(2000)
-    txt_inflow = "9개의 재고 입고가 완료되었습니다."
     product_list = [f"자동화제품_{i}" for i in range(1, 10)]  # 1~9번 제품 리스트 생성
-    product_list.append("발주 거절 제품_3", "발주 삭제 제품_1", "발주 삭제 제품_2")
+    product_list.extend(["발주 거절 제품 3", "발주 삭제 제품 1", "발주 삭제 제품 2"])
     for idx, product in enumerate(product_list):
         page.locator("data-testid=drop_status_trigger").last.click()
         page.wait_for_timeout(1000)
@@ -50,11 +52,11 @@ def test_inflow (page:Page):
                 add_row_button.scroll_into_view_if_needed()
                 add_row_button.wait_for(state="visible", timeout=5000)
                 add_row_button.click(force=True)
-
+    txt_inflow = f"{len(product_list)}개의 재고 입고가 완료되었습니다."
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_save").click()
-    # expect(page.locator("data-testid=toast_inflow")).to_have_text(txt_inflow, timeout=10000)
+    expect(page.locator("data-testid=toast_inflow")).to_have_text(txt_inflow, timeout=10000)
     page.wait_for_timeout(2000)
 
 def test_outflow(page:Page):
@@ -70,8 +72,8 @@ def test_outflow(page:Page):
     page.wait_for_timeout(2000)
 
     next_time = build_target_time_from_json()
-    hour_str = next_time["hour"]
-    minute_str = next_time["minute"]
+    hour_str = f"{next_time.hour:02d}"
+    minute_str = f"{next_time.minute:02d}"
 
     # ⏰ 시간 설정
     current_hour = page.locator("data-testid=drop_hour_trigger").text_content()
@@ -103,7 +105,7 @@ def test_outflow(page:Page):
     page.locator("data-testid=btn_stockadd").click()
     page.wait_for_timeout(2000)
     product_list = [f"자동화제품_{i}" for i in range(1, 10)]  # 1~9번 제품 리스트 생성
-    product_list.append("발주 거절 제품_3", "발주 삭제 제품_1", "발주 삭제 제품_2")
+    product_list.extend(["발주 거절 제품 3", "발주 삭제 제품 1", "발주 삭제 제품 2"])
 
     stock_manager = StockManager(page)
 
@@ -174,62 +176,17 @@ def test_outflow(page:Page):
 
     # 발주 예정 내역 노출 확인 
     page.goto(URLS["bay_order_pending"])
-    page.wait_for_timeout(2000)
-    
-
-    # wait_until(next_time)
-    
-    # page.wait_for_timeout(300000) # 혹시 모를 Delay를 위한 30초 추가 대기
-
-    # page.reload()
-    # page.locator("data-testid=btn_reset").click()
-    # page.wait_for_timeout(3000)
-
+    page.wait_for_timeout(2000)    
 
     for idx, product in enumerate(product_list, start=1):
-        if idx in (2, 5, 8):
-            check_order_pending_history(page, "자동 승인", product, False, True)
+        if idx in (3, 6, 9): 
+            check_order_pending_history(page, "자동화규칙_묶음", product, "승인 요청", False, True)
         elif idx == 10:
-            check_order_pending_history(page, "승인규칙_1명", product, False, False)
-        else :
-            check_order_pending_history(page, "승인규칙_n명", product, False, True)
-        page.locator("data-testid=btn_reset").click()
+            check_order_pending_history(page, "자동화규칙_묶음", product, "승인 요청", False, False)
+        elif idx in (11, 12):
+            check_order_pending_history(page, "자동화규칙_묶음", product, "승인 요청", False, True)
+        else:
+            continue
         page.wait_for_timeout(3000)
     
     
-    # search_order_history(page, "자동화제품_3", "발주 요청")
-    # rows = page.locator('table tbody tr')
-    # product_cell = rows.nth(0).locator('td:nth-child(2)')
-    # product_text = product_cell.inner_text()
-    # main_product_name = re.split(r"\s*외\s*", product_text)[0].strip()
-    # print(f"대표 제품명: {repr(main_product_name)}")
-    # assert main_product_name in products, f"❌ 대표 제품명이 products 리스트에 없음: {main_product_name}"
-
-    # page.wait_for_timeout(1000)
-    # page.locator("data-testid=btn_reset").click()
-    # page.wait_for_timeout(2000)
-
-
-    # products = ["자동화제품_4", "자동화제품_5", "자동화제품_6"]
-    # search_order_history(page, "자동화제품_6", "발주 요청")
-    # rows = page.locator('table tbody tr')
-    # product_cell = rows.nth(0).locator('td:nth-child(2)')
-    # product_text = product_cell.inner_text()
-    # main_product_name = re.split(r"\s*외\s*", product_text)[0].strip()
-    # print(f"대표 제품명: {repr(main_product_name)}")
-    # assert main_product_name in products, f"❌ 대표 제품명이 products 리스트에 없음: {main_product_name}"
-    
-    # page.wait_for_timeout(1000)
-    # page.locator("data-testid=btn_reset").click()
-    # page.wait_for_timeout(2000)
-
-
-    # products = ["자동화제품_7", "자동화제품_8", "자동화제품_9"]
-    # search_order_history(page, "자동화제품_9", "발주 요청")
-    # rows = page.locator('table tbody tr')
-    # product_cell = rows.nth(0).locator('td:nth-child(2)')
-    # product_text = product_cell.inner_text()
-    # main_product_name = re.split(r"\s*외\s*", product_text)[0].strip()
-    # print(f"대표 제품명: {repr(main_product_name)}")
-    # assert main_product_name in products, f"❌ 대표 제품명이 products 리스트에 없음: {main_product_name}"
-    # page.wait_for_timeout(1000) 

@@ -86,6 +86,15 @@ def test_duplicate_product_name(page):
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_rule_item", has_text=rule).click()
         page.wait_for_timeout(1000)
+
+        # 승인 규칙 선택 
+        approval = "자동 승인"
+        page.locator("data-testid=drop_approval_trigger").last.click()
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_approval_search").fill(approval)
+        page.wait_for_timeout(1000)
+        page.locator("data-testid=drop_approval_item", has_text=approval).click()
+        page.wait_for_timeout(1000)
         
 
         page.evaluate("window.scrollTo(0, 0)")

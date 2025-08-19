@@ -56,6 +56,11 @@ test_file_to_korean = {
     "test_Bay_stock_batch":"여러 제품 규칙 발주 확인",
     "test_Bay_rule_order_register":"발주 규칙 등록 확인",
     "test_Bay_rule_order_edit":"발주 규칙 수정 확인",
+    "test_Bay_order_approval":"발주 승인 요청 내역 확인",
+    "test_Bay_order_pending":"발주 예정 내역 확인",
+    "test_Bay_rule_approval_register":"승인 규칙 등록 확인",
+    "test_Bay_rule_approval_edit":"승인 규칙 수정 확인",
+    "test_Bay_stock_manual":"수동 발주 확인",
 }
 
 def load_test_results(file_path):

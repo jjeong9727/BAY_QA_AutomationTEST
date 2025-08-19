@@ -1,227 +1,74 @@
 [
   {
-    "test_name": "test_Bay_login",
+    "test_name": "test_Bay_rule_approval_register",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:24:50",
-    "file": "tests/test_Bay_login.py",
+    "timestamp": "2025-08-19 17:49:11",
+    "file": "tests/test_Bay_rule_approval_register.py",
     "stack": "",
-    "duration": "11.25초"
+    "duration": "36.94초"
   },
   {
-    "test_name": "test_Bay_alert",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:27:21",
-    "file": "tests/test_Bay_alert.py",
-    "stack": "",
-    "duration": "150.78초"
-  },
-  {
-    "test_name": "test_Bay_supplier",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:28:03",
-    "file": "tests/test_Bay_supplier.py",
-    "stack": "",
-    "duration": "41.40초"
-  },
-  {
-    "test_name": "test_Bay_supplier_val",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:28:18",
-    "file": "tests/test_Bay_supplier_val.py",
-    "stack": "",
-    "duration": "15.29초"
-  },
-  {
-    "test_name": "test_Bay_prdctg",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:29:12",
-    "file": "tests/test_Bay_prdctg.py",
-    "stack": "",
-    "duration": "53.56초"
-  },
-  {
-    "test_name": "test_Bay_prdctg_val",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:29:47",
-    "file": "tests/test_Bay_prdctg_val.py",
-    "stack": "",
-    "duration": "35.45초"
-  },
-  {
-    "test_name": "test_Bay_prdctg_edit",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:30:32",
-    "file": "tests/test_Bay_prdctg_edit.py",
-    "stack": "",
-    "duration": "45.24초"
-  },
-  {
-    "test_name": "test_Bay_prdctg_delete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:31:11",
-    "file": "tests/test_Bay_prdctg_delete.py",
-    "stack": "",
-    "duration": "38.30초"
-  },
-  {
-    "test_name": "test_Bay_rules_register",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:32:01",
-    "file": "tests/test_Bay_rules_register.py",
-    "stack": "",
-    "duration": "50.06초"
-  },
-  {
-    "test_name": "test_Bay_rules_edit",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:33:46",
-    "file": "tests/test_Bay_rules_edit.py",
-    "stack": "",
-    "duration": "105.86초"
-  },
-  {
-    "test_name": "test_Bay_product",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:37:02",
-    "file": "tests/test_Bay_product.py",
-    "stack": "",
-    "duration": "195.53초"
-  },
-  {
-    "test_name": "test_Bay_product_val",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:37:33",
-    "file": "tests/test_Bay_product_val.py",
-    "stack": "",
-    "duration": "30.98초"
-  },
-  {
-    "test_name": "test_Bay_product_edit",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:38:02",
-    "file": "tests/test_Bay_product_edit.py",
-    "stack": "",
-    "duration": "29.38초"
-  },
-  {
-    "test_name": "test_Bay_product_delete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:38:31",
-    "file": "tests/test_Bay_product_delete.py",
-    "stack": "",
-    "duration": "28.73초"
+    "test_name": "test_Bay_rule_approval_edit",
+    "status": "FAIL",
+    "message": "tests\\test_Bay_rule_approval_edit.py:110: AssertionError",
+    "timestamp": "2025-08-19 17:50:04",
+    "file": "tests/test_Bay_rule_approval_edit.py",
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_rule_approval_edit.py F.                                  [100%]\n\n================================== FAILURES ===================================\n________________________ test_approval_rules_register _________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/approve-rule-management?name=%5B%EC%88%98%EC%A0%95%5D+%EA%B7%9C%EC%B9%99+%EB%93%B1%EB%A1%9D+%ED%85%8C%EC%8A%A4%ED%8A%B8'>\n\n    def test_approval_rules_register(page:Page):\n        bay_login(page)\n        page.goto(URLS[\"bay_approval_rule\"])\n        page.wait_for_timeout(2000)\n    \n        name = \"규칙 등록 테스트\"\n        edit_name = \"[수정] 규칙 등록 테스트\"\n        approval_1 = \"권정의\"\n        referrer_1 = \"QA 계정\"\n        edit_approval = \"김수연\"\n        edit_referrer = \"김사라\"\n    \n        page.locator(\"data-testid=input_search\").fill(name)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(2000)\n    \n        rows = page.locator(\"table tbody tr\")\n        first_row = rows.nth(0)\n        last_cell = first_row.locator(\"td\").last\n    \n        edit_button = last_cell.locator('[data-testid=\"btn_edit\"]')\n        edit_button.click()\n        page.wait_for_selector(\"data-testid=input_rule_name\", timeout=3000)\n    \n        # 규칙명 수정\n        page.locator(\"data-testid=input_rule_name\").fill(edit_name)\n        page.wait_for_timeout(1000)\n    \n        # 승인자 변경 (1: 권정의 > 김수연, 2: QA 계정 > 권정의 3: QA 계정)\n        page.locator(\"data-testid=drop_approver_trigger\").nth(0).click()\n        page.wait_for_selector(\"data-testid=drop_approver_search\", timeout=3000)\n        page.locator(\"data-testid=drop_approver_search\").fill(edit_approval)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_approver_item\", has_text=edit_approval).click()\n        page.wait_for_timeout(1000)\n    \n        page.locator(\"data-testid=drop_approver_trigger\").nth(1).click()\n        page.wait_for_selector(\"data-testid=drop_approver_search\", timeout=3000)\n        page.locator(\"data-testid=drop_approver_search\").fill(approval_1)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_approver_item\", has_text=approval_1).click()\n        page.wait_for_timeout(1000)\n    \n        page.locator(\"data-testid=btn_add_approver\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_approver_trigger\").last.click()\n        page.wait_for_selector(\"data-testid=drop_approver_search\", timeout=3000)\n        page.locator(\"data-testid=drop_approver_search\").fill(referrer_1)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_approver_item\", has_text=referrer_1).click()\n        page.wait_for_timeout(1000)\n    \n        # 참조자 변경 (1: QA 계정 > 김사라, 2: 권정의 > QA 계정, 3: 권정의)\n        page.evaluate(\"window.scrollTo(0, document.body.scrollHeight)\")\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_referrer_trigger\").first.click()\n        page.wait_for_selector(\"data-testid=drop_referrer_search\", timeout=3000)\n        page.locator(\"data-testid=drop_referrer_search\").fill(edit_referrer)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_referrer_item\", has_text=edit_referrer).click()\n        page.wait_for_timeout(1000)\n    \n        page.locator(\"data-testid=drop_referrer_trigger\").nth(1).click()\n        page.wait_for_selector(\"data-testid=drop_referrer_search\", timeout=3000)\n        page.locator(\"data-testid=drop_referrer_search\").fill(referrer_1)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_referrer_item\", has_text=referrer_1).click()\n        page.wait_for_timeout(1000)\n    \n        page.locator(\"data-testid=btn_add_referrer\").click()\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_referrer_trigger\").last.click()\n        page.wait_for_selector(\"data-testid=drop_referrer_search\", timeout=3000)\n        page.locator(\"data-testid=drop_referrer_search\").fill(approval_1)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=drop_referrer_item\", has_text=approval_1).click()\n        page.wait_for_timeout(1000)\n    \n        # 저장 후 이름 수정 반영 확인\n        page.evaluate(\"window.scrollTo(0, 0)\")\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_save\").click()\n        expect(page.locator(\"data-testid=toast_edit\")).to_have_text(\"승인 규칙이 수정되었습니다.\", timeout=3000)\n        page.wait_for_timeout(1000)\n    \n        page.locator(\"data-testid=input_search\").fill(edit_name)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_search\").click()\n        page.wait_for_timeout(1000)\n    \n        rows = page.locator('table tbody tr')\n        name_cell = rows.nth(0).locator('td:nth-child(1)') # 1행 1열 (규칙명)\n        name_text = name_cell.inner_text()\n        assert name_text == edit_name, f\"\\u274c \\ub4f1\\ub85d\\ud55c \\uc2b9\\uc778 \\uaddc\\uce59\\uc774 \\ub9ac\\uc2a4\\ud2b8\\uc5d0 \\uc5c6\\uc74c(\\ub4f1\\ub85d\\ud55c \\uac12: {edit_name}, \\uc2e4\\uc81c \\ub178\\ucd9c \\uac12: {name_text})\"\n        page.wait_for_timeout(1000)\n    \n        # 결재 인원 변경 확인\n        approval_cell = rows.nth(0).locator('td:nth-child(2)') # 1행 2열 (승인자)\n        approval_text = approval_cell.inner_text()\n        assert approval_text == edit_approval+\" \\uc678 2\\uba85\", f\"\\u274c \\ub4f1\\ub85d\\ud55c \\uc2b9\\uc778\\uc790 \\ub300\\ud45c\\uac00 \\uc544\\ub2d8(\\ub4f1\\ub85d\\ud55c \\uac12: {edit_approval}, \\uc2e4\\uc81c \\ub178\\ucd9c \\uac12: {approval_text})\"\n        page.wait_for_timeout(1000)\n    \n        referrer_cell = rows.nth(0).locator('td:nth-child(3)') # 1행 3열 (참조자)\n        referrer_text = referrer_cell.inner_text()\n>       assert referrer_text == edit_referrer+\" \\uc678 2\\uba85\", f\"\\u274c \\ub4f1\\ub85d\\ud55c \\ucc38\\uc870\\uc790 \\ub300\\ud45c\\uac00 \\uc544\\ub2d8(\\ub4f1\\ub85d\\ud55c \\uac12: {edit_referrer}, \\uc2e4\\uc81c \\ub178\\ucd9c \\uac12: {referrer_text})\"\nE       AssertionError: \\u274c \\ub4f1\\ub85d\\ud55c \\ucc38\\uc870\\uc790 \\ub300\\ud45c\\uac00 \\uc544\\ub2d8(\\ub4f1\\ub85d\\ud55c \\uac12: \\uae40\\uc0ac\\ub77c, \\uc2e4\\uc81c \\ub178\\ucd9c \\uac12: QA \\uacc4\\uc815 \\uc678 2\\uba85)\nE       assert 'QA 계정 외 2명' == '김사라 외 2명'\nE         \nE         - 김사라 외 2명\nE         + QA 계정 외 2명\n\ntests\\test_Bay_rule_approval_edit.py:110: AssertionError\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_rule_approval_edit.py::test_approval_rules_register - A...\n======================== 1 failed, 1 passed in 51.48s =========================\n",
+    "duration": "52.71초"
   },
   {
     "test_name": "test_Bay_stock_in",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:39:57",
+    "timestamp": "2025-08-19 17:52:22",
     "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "85.58초"
+    "duration": "137.92초"
   },
   {
     "test_name": "test_Bay_stock_out",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-08-12 14:40:52",
+    "timestamp": "2025-08-19 17:55:20",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "55.59초"
+    "duration": "178.55초"
   },
   {
     "test_name": "test_Bay_stock_batch",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:05:43",
+    "timestamp": "2025-08-19 18:00:38",
     "file": "tests/test_Bay_stock_batch.py",
     "stack": "",
-    "duration": "1490.58초"
+    "duration": "318.07초"
   },
   {
-    "test_name": "test_Bay_order_status_request_cancel",
+    "test_name": "test_Bay_stock_manual",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:06:09",
-    "file": "tests/test_Bay_order_status_request_cancel.py",
+    "timestamp": "2025-08-19 18:02:17",
+    "file": "tests/test_Bay_stock_manual.py",
     "stack": "",
-    "duration": "25.76초"
+    "duration": "98.36초"
   },
   {
-    "test_name": "test_Bay_order_status_request",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:07:06",
-    "file": "tests/test_Bay_order_status_request.py",
-    "stack": "",
-    "duration": "57.60초"
+    "test_name": "test_Bay_order_pending",
+    "status": "FAIL",
+    "message": "FAILED tests/test_Bay_order_pending.py::test_edit_history_bulk - AssertionErr...",
+    "timestamp": "2025-08-19 18:03:20",
+    "file": "tests/test_Bay_order_pending.py",
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 2 items\n\ntests\\test_Bay_order_pending.py F.                                       [100%]\n\n================================== FAILURES ===================================\n___________________________ test_edit_history_bulk ____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/pending?start_date=2025-08-19&end_date=2025-08-19&order_rules=3c7af0cd-f07f-423b-933c-69d44b1526a4&product_name=%EB%B0%9C%EC%A3%BC+%EA%B1%B0%EC%A0%88+%EC%A0%9C%ED%92%88+3'>\n\n    def test_edit_history_bulk(page:Page):\n        bay_login(page)\n        page.goto(URLS[\"bay_order_pending\"])\n        page.wait_for_timeout(2000)\n    \n        # 발주 거절 제품_3 수정\n        search_order_pending_history(page, order_rule[1], reject_products[2])\n        rows = page.locator('table tbody tr')\n        target_row = rows.filter(has=page.locator(\"td:nth-child(2)\", has_text=reject_products[2])).first\n    \n        last_cell = target_row.locator(\"td\").last\n    \n        edit_button = last_cell.locator('[data-testid=\"btn_edit\"]').first\n        edit_button.click()\n    \n        edit_cell = target_row.locator(\"td\").nth(3).locator(\"input\")\n        qty_cell=target_row.locator(\"td\").nth(4).locator(\"input\")\n        amount_cell=target_row.locator(\"td\").nth(5)\n        amount = amount_cell.inner_text().strip()\n    \n        edit_cell.fill(\"10000\")\n        page.wait_for_timeout(1000)\n        # 최소 발주 수량 토스트 확인\n        qty_cell.fill(\"0\")\n        page.wait_for_timeout(1000)\n        edit_button.click()\n        expect(page.locator(\"data-testid=toast_order_min\")).to_have_text(\"발주 수량은 최소 1개 이상이어야 합니다.\", timeout=5000)\n    \n        # 수정 중입니다 토스트 확인\n        page.locator(\"data-testid=btn_search\").click()\n        expect(page.locator(\"data-testid=toast_editing\")).to_have_text(\"현재 수정 중입니다.\", timeout=5000)\n    \n        qty_cell.fill(\"10\")\n        page.wait_for_timeout(1000)\n        edit_button.click()\n        page.wait_for_timeout(1000)\n>       expect(edit_cell).to_have_text(\"10,000\", timeout=3000)\nE       AssertionError: Locator expected to have text '10,000'\nE       Actual value: <element(s) not found> \nE       Call log:\nE         - LocatorAssertions.to_have_text with timeout 3000ms\nE         -   - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"발주 거절 제품 3\")).first.locator(\"td\").nth(3).locator(\"input\")\n\ntests\\test_Bay_order_pending.py:54: AssertionError\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_pending.py::test_edit_history_bulk - AssertionErr...\n=================== 1 failed, 1 passed in 62.46s (0:01:02) ====================\n",
+    "duration": "63.60초"
   },
   {
-    "test_name": "test_Bay_order_status_progress_delivery",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:08:11",
-    "file": "tests/test_Bay_order_status_progress_delivery.py",
-    "stack": "",
-    "duration": "64.55초"
-  },
-  {
-    "test_name": "test_Bay_order_status_progress_complete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:08:46",
-    "file": "tests/test_Bay_order_status_progress_complete.py",
-    "stack": "",
-    "duration": "35.63초"
-  },
-  {
-    "test_name": "test_Bay_order_status_delivery",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:09:20",
-    "file": "tests/test_Bay_order_status_delivery.py",
-    "stack": "",
-    "duration": "33.32초"
-  },
-  {
-    "test_name": "test_Bay_order_status_complete",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:09:53",
-    "file": "tests/test_Bay_order_status_complete.py",
-    "stack": "",
-    "duration": "33.38초"
-  },
-  {
-    "test_name": "test_Bay_order_status_fail",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:10:07",
-    "file": "tests/test_Bay_order_status_fail.py",
-    "stack": "",
-    "duration": "13.94초"
-  },
-  {
-    "test_name": "test_Bay_order_status_batch",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-08-12 15:14:02",
-    "file": "tests/test_Bay_order_status_batch.py",
-    "stack": "",
-    "duration": "234.90초"
+    "test_name": "test_Bay_order_approval",
+    "status": "FAIL",
+    "message": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
+    "timestamp": "2025-08-19 18:06:16",
+    "file": "tests/test_Bay_order_approval.py",
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 4 items\n\ntests\\test_Bay_order_approval.py FFFF                                    [100%]\n\n================================== FAILURES ===================================\n_____________________________ test_approve_order ______________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/approve-request?product-name=%25EC%259E%2590%25EB%258F%2599%25ED%259...%259C%25EB%25B3%2584%25EC%25A0%259C%25ED%2592%2588_1&start-date=2025-08-19&end-date=2025-08-19&status=APPROVED&page=1'>\n\n    def test_approve_order(page:Page):\n        bay_login(page, account=\"qaje\") #로그인할 계정\n        page.goto(URLS[\"bay_approval\"])\n        page.wait_for_timeout(2000)\n    \n>       check_approval_status_buttons(page, \"승인 대기\", products[0], order_rule[0], bulk=False, approve=True)\n\ntests\\test_Bay_order_approval.py:24: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nhelpers\\approve_utils.py:136: in check_approval_status_buttons\n    product_text = product_cell.inner_text().strip()\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:16878: in inner_text\n    self._sync(self._impl_obj.inner_text(timeout=timeout))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:444: in inner_text\n    return await self._frame.inner_text(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:618: in inner_text\n    return await self._channel.send(\"innerText\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000002211C55FE00>\ncb = <function Channel.send.<locals>.<lambda> at 0x000002211C663560>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"자동화개별제품_1\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n___________________________ test_approve_bulk_order ___________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/approve-request?product-name=%25EC%259E%2590%25EB%258F%2599%25ED%2599%2594%25EC%25A0%259C%25ED%2592%2588_1&start-date=2025-08-19&end-date=2025-08-19&status=APPROVED&page=1'>\n\n    def test_approve_bulk_order(page:Page):\n        bay_login(page, account=\"qaje\")\n        page.goto(URLS[\"bay_approval\"])\n        page.wait_for_timeout(2000)\n    \n>       check_approval_status_buttons(page, \"승인 대기\", bulk_products[0], order_rule[1], bulk=True, approve=True)\n\ntests\\test_Bay_order_approval.py:103: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nhelpers\\approve_utils.py:136: in check_approval_status_buttons\n    product_text = product_cell.inner_text().strip()\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:16878: in inner_text\n    self._sync(self._impl_obj.inner_text(timeout=timeout))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:444: in inner_text\n    return await self._frame.inner_text(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:618: in inner_text\n    return await self._channel.send(\"innerText\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000002211C55FE00>\ncb = <function Channel.send.<locals>.<lambda> at 0x000002211C5F9F80>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"자동화제품_1\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n______________________________ test_reject_order ______________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/approve-request?product-name=%25EB%25B0%259C%25EC%25A3%25BC%2520%25E...%25EC%25A0%2588%2520%25EC%25A0%259C%25ED%2592%2588_3&start-date=2025-08-19&end-date=2025-08-19&status=APPROVED&page=1'>\n\n    def test_reject_order(page:Page):\n        bay_login(page, account=\"qaje\")\n        page.goto(URLS[\"bay_approval\"])\n        page.wait_for_timeout(2000)\n    \n>       check_approval_status_buttons(page, \"승인 대기\", reject_products[2], order_rule[0], bulk=False, approve=True)\n\ntests\\test_Bay_order_approval.py:147: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nhelpers\\approve_utils.py:136: in check_approval_status_buttons\n    product_text = product_cell.inner_text().strip()\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:16878: in inner_text\n    self._sync(self._impl_obj.inner_text(timeout=timeout))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:444: in inner_text\n    return await self._frame.inner_text(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:618: in inner_text\n    return await self._channel.send(\"innerText\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000002211C55FE00>\ncb = <function Channel.send.<locals>.<lambda> at 0x000002211C9EBEC0>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"발주 거절 제품_3\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n___________________________ test_reject_bulk_order ____________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/approve-request?product-name=%25EB%25B0%259C%25EC%25A3%25BC%2520%25E...%25EC%25A0%2588%2520%25EC%25A0%259C%25ED%2592%2588_1&start-date=2025-08-19&end-date=2025-08-19&status=APPROVED&page=1'>\n\n    def test_reject_bulk_order(page:Page):\n        bay_login(page, account=\"qaje\")\n        page.goto(URLS[\"bay_approval\"])\n        page.wait_for_timeout(2000)\n>       check_approval_status_buttons(page, \"승인 대기\", reject_products[0], order_rule[1], bulk=False, approve=True)\n\ntests\\test_Bay_order_approval.py:235: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nhelpers\\approve_utils.py:136: in check_approval_status_buttons\n    product_text = product_cell.inner_text().strip()\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:16878: in inner_text\n    self._sync(self._impl_obj.inner_text(timeout=timeout))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_locator.py:444: in inner_text\n    return await self._frame.inner_text(\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:618: in inner_text\n    return await self._channel.send(\"innerText\", locals_to_params(locals()))\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:61: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000002211C55FE00>\ncb = <function Channel.send.<locals>.<lambda> at 0x000002211CA97CE0>\nis_internal = False\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(task, \"__pw_stack__\", inspect.stack())\n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"발주 거절 제품_1\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_approval.py::test_approve_order - playwright._imp...\nFAILED tests/test_Bay_order_approval.py::test_approve_bulk_order - playwright...\nFAILED tests/test_Bay_order_approval.py::test_reject_order - playwright._impl...\nFAILED tests/test_Bay_order_approval.py::test_reject_bulk_order - playwright....\n======================== 4 failed in 174.63s (0:02:54) ========================\n",
+    "duration": "175.84초"
   }
 ]

@@ -6,11 +6,11 @@ from helpers.approve_status_data import approve_status_map
 from helpers.approve_utils import (
     search_order_pending_history, check_approval_status_buttons, get_approve_id_from_approve_list
 )
-products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"]
+products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3", "수동 발주 제품 1"]
 bulk_products = ["자동화제품_1", "자동화제품_2", "자동화제품_3", 
             "자동화제품_4", "자동화제품_5", "자동화제품_6", 
-            "자동화제품_7", "자동화제품_8", "자동화제품_9"]
-reject_products = ["발주 거절 제품_1","발주 거절 제품_2","발주 거절 제품_3"] 
+            "자동화제품_7", "자동화제품_8", "자동화제품_9", "수동 발주 제품 2"]
+reject_products = ["발주 거절 제품 1","발주 거절 제품 2","발주 거절 제품 3"] 
 approval_rules = ["승인규칙_1명", "승인규칙_n명", "자동 승인"]
 order_rule = ["자동화규칙_개별", "자동화규칙_묶음"]
 approver = ["qaje@medisolveai.com", "qasr@medisolveai.com", "qasy@medisolveai.com", "qa@medisolveai.com", "stg@medisolveai.com"]

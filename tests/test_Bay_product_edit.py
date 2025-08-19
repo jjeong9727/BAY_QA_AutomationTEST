@@ -42,15 +42,15 @@ def test_edit_products(page):
         row_count = rows.count()
 
         for i in range(row_count):
-            edit_button = rows.nth(i).locator("td:nth-child(12) >> text=수정")
+            edit_button = rows.nth(i).locator("td:last-child >> text=수정")
             if edit_button.is_visible():
-                print(f"✅ {i}번째 행의 수정 버튼 클릭")
+                print(f"✅ {i+1}번째 행의 수정 버튼 클릭")
                 edit_button.click()
+                page.wait_for_selector("data-testid=input_prdname_kor", timeout=3000)
                 break
 
         # 4. 제품명, 제조사 수정
-        page.wait_for_timeout(2000)
-        input_kor = page.locator('input[data-testid="input_prdname_kor"]')
+        input_kor = page.locator("data-testid=input_prdname_kor")
         origin_name = input_kor.input_value()
         new_name = f"[수정]{origin_name}"
         input_kor.fill(new_name)

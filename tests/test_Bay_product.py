@@ -22,9 +22,9 @@ def test_register_multiple_products(page: Page):
         type_options = ["의약품", "의료기기", "소모품"]
         group_options = ["주사제", "연고", "보톡스"]
         maker_options = ["메디톡스", "루트로닉", "휴메딕스"]
-        supplier_1 = "자동화업체, 권정의A" 
-        supplier_2 = "자동화업체, 권정의B"
-        supplier_3 = "자동화업체, 권정의C"
+        supplier_1 = "자동화업체A, 권정의A" 
+        supplier_2 = "자동화업체B, 권정의B"
+        supplier_3 = "자동화업체C, 권정의C"
         supplier_4 = "자동화업체, 권정의"
 
         for idx in range(num_products):

@@ -1,58 +1,16 @@
 [
-    {
-        "kor": "[수정]등록테스트_0801_04",
-        "eng": "TestProduct_0801_04",
-        "supplier": "자동화업체, 권정의 010-6275-4153",
-        "order_rule": "발주 규칙 등록 테스트_46",
-        "type": "소모품",
-        "group": "주사제",
-        "maker": "중복테스트",
-        "safety": 5,
-        "auto_order": 10,
-        "order_flag": 1,
-        "stock_qty": 13,
-        "delivery_status": 6
-    },
-    {
-        "kor": "[수정]등록테스트_0812_13",
-        "eng": "TestProduct_0812_13",
-        "supplier": "자동화업체, 권정의A 010-6275-4153",
-        "order_rule": "자동화규칙_개별",
-        "type": "의약품",
-        "group": "주사제",
-        "maker": "중복테스트",
-        "safety": 5,
-        "auto_order": 10,
-        "order_flag": 0,
-        "stock_qty": 10,
-        "delivery_status": 7
-    },
-    {
-        "kor": "등록테스트_0812_17",
-        "eng": "TestProduct_0812_17",
-        "supplier": "자동화업체, 권정의 010-6275-4153",
-        "order_rule": "자동화규칙_개별",
-        "type": "의약품",
-        "group": "주사제",
-        "maker": "휴메딕스",
-        "safety": 5,
-        "auto_order": 10,
-        "order_flag": 0,
-        "stock_qty": 0,
-        "delivery_status": 5
-    },
-    {
-        "kor": "등록테스트_0812_15",
-        "eng": "TestProduct_0812_15",
-        "supplier": "자동화업체, 권정의C 010-6275-4153",
-        "order_rule": "자동화규칙_개별",
-        "type": "의료기기",
-        "group": "보톡스",
-        "maker": "휴메딕스",
-        "safety": 5,
-        "auto_order": 10,
-        "order_flag": 0,
-        "stock_qty": 10,
-        "delivery_status": 4
-    }
+  {
+    "kor": "[수정]등록테스트_0801_04",
+    "eng": "TestProduct_0801_04",
+    "supplier": "자동화업체, 권정의 010-6275-4153",
+    "order_rule": "발주 규칙 등록 테스트_46",
+    "type": "소모품",
+    "group": "주사제",
+    "maker": "중복테스트",
+    "safety": 5,
+    "auto_order": 10,
+    "order_flag": 1,
+    "stock_qty": 13,
+    "delivery_status": 6
+  }
 ]
