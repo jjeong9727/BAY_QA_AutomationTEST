@@ -11,42 +11,9 @@ from helpers.common_utils import bay_login
 suppliers = ["자동화업체A, 권정의A 010-6275-4153", "자동화업체B, 권정의B 010-6275-4153", "자동화업체C, 권정의C 010-6275-4153"]
 product_name = "자동화개별제품_2"
 
-# def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int, stock_quantity=int):
-#     try:
-#         with open('product_name.json', 'r', encoding='utf-8') as f:
-#             products = json.load(f)
-
-#         for product in products:
-#             if product['kor'] == product_name:
-#                 product['delivery_status'] = delivery_status
-#                 product['order_flag'] = order_flag  # order_flag 값을 0으로 설정
-#                 product['stock_qty'] = stock_quantity
-#                 break
-
-#         with open('product_name.json', 'w', encoding='utf-8') as f:
-#             json.dump(products, f, ensure_ascii=False, indent=4)
-
-#     except Exception as e:
-#         error_message = f"Error updating product status in JSON: {str(e)}"
-#         raise
-
-
 def test_order_receive_from_delivery(page: Page):
     try:
-        # # product.json에서 delivery_status가 3인 제품들 찾기
-        # with open('product_name.json', 'r', encoding='utf-8') as f:
-        #     products = json.load(f)
         status_name = "배송 진행"
-
-        # # delivery_status가 3인 제품들만 필터링
-        # eligible_products = [product for product in products if product.get('delivery_status') == 3]
-
-        # if not eligible_products:
-        #     raise ValueError("배송 진행 상태인 제품이 없다")
-
-        # # delivery_status가 3 제품 중 랜덤으로 하나 선택
-        # target_product = random.choice(eligible_products)
-        # product_name = target_product['kor']
 
         bay_login(page)
         page.goto(URLS["bay_stock"])
@@ -140,19 +107,13 @@ def test_order_receive_from_delivery(page: Page):
         current_stock = int(current_stock_text.strip())
 
         # JSON 파일에 있던 재고 수량 + 입고 수량 계산 후 비교
-        expected_stock =  previous_stock_text+ int(stock_inflow)
-
-        # # 수령 완료 상태 확인 후 delivery_status 값을 4로 업데이트 (수령 완료 상태) 
-        # # 그리고 order_flag는 0으로 설정
-        # update_product_status_in_json(product_name, delivery_status=4, order_flag=0, stock_quantity=expected_stock)  # delivery_status를 4로 업데이트, order_flag를 0으로 설정
-
+        expected_stock =  int(previous_stock_text)+ int(stock_inflow)
 
         assert current_stock == expected_stock, f"[FAIL] 현 재고량이 예상치와 다릅니다. 예상: {expected_stock}, 실제: {current_stock}"
         print(f"[PASS] 현 재고량 확인 완료 → 예상: {expected_stock}, 실제: {current_stock}")
 
-        # 수령완료 후 승인 요청 내역의 "수령완료"상태 확인
-        check_approval_status_buttons(page, "수령 완료", product_name, "승인규칙_n명", False, False)
-
+        # 수령완료 후 발주 예정 내역의 "수령완료"상태 확인
+        check_approval_status_buttons(page, "수령 완료", product_name, "자동화규칙_개별", False, False)
 
 
     except Exception as e:

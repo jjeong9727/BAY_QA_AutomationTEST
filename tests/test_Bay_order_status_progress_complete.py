@@ -13,36 +13,11 @@ from helpers.common_utils import bay_login
 
 suppliers = ["자동화업체A, 권정의A 010-6275-4153", "자동화업체B, 권정의B 010-6275-4153", "자동화업체C, 권정의C 010-6275-4153"]
 product_name = "자동화개별제품_3"
-# def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int):
-#     try:
-#         with open('product_name.json', 'r', encoding='utf-8') as f:
-#             products = json.load(f)
-
-#         for product in products:
-#             if product['kor'] == product_name:
-#                 product['delivery_status'] = delivery_status
-#                 product['order_flag'] = order_flag
-#                 break
-
-#         with open('product_name.json', 'w', encoding='utf-8') as f:
-#             json.dump(products, f, ensure_ascii=False, indent=4)
-
-#     except Exception as e:
-#         raise RuntimeError(f"Error updating product status in JSON: {str(e)}")
-
 
 def test_order_receive_from_progress(page: Page):
     try:
-        # # delivery_status가 2인 제품 필터링
-        # eligible_products = filter_products_by_delivery_status(2)
-        # if not eligible_products:
-        #     raise ValueError("발주 진행 상태인 제품이 없습니다.")
-        status_name = "발주 진행"
 
-        # # 대상 제품 선택
-        # target_product = random.choice(eligible_products)
-        # product_name = target_product['kor']
-        # previous_stock = target_product.get('stock_qty', 0)
+        status_name = "발주 진행"
 
         bay_login(page)
         page.goto(URLS["bay_stock"])
@@ -94,7 +69,6 @@ def test_order_receive_from_progress(page: Page):
         page.click("button[data-testid='btn_confirm']")  # 수령 확인 버튼 클릭
         page.wait_for_timeout(2000)
         
-
         # 수령 상태 확인
         page.locator("data-testid=btn_reset").click()
         page.wait_for_timeout(1000) 
@@ -118,8 +92,6 @@ def test_order_receive_from_progress(page: Page):
         if not found:
             raise AssertionError(f"[FAIL] 발주 내역에서 제품 '{product_name}'을 찾을 수 없습니다.")
 
-        # # JSON 상태 업데이트
-        # update_product_status_in_json(product_name, delivery_status=7, order_flag=0)
 
         # 재고 관리 → 재고 확인
         page.goto(URLS["bay_stock"])
@@ -132,26 +104,13 @@ def test_order_receive_from_progress(page: Page):
         current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()
         current_stock = int(current_stock_text.strip())
 
-        expected_stock = previous_stock + stock_inflow
+        expected_stock = int(previous_stock) + stock_inflow
         assert current_stock == expected_stock, f"[FAIL] 재고 불일치: 예상 {expected_stock}, 실제 {current_stock}"
         print(f"[PASS] 재고 확인 완료 → 예상: {expected_stock}, 실제: {current_stock}")
 
-            
-        # 수령완료 후 승인 요청 내역의 "수령완료" 상태 확인
-        check_approval_status_buttons(page, "수령 완료", product_name, "승인규칙_n명", False, False)    
+        # 수령완료 후 발주 예정 내역의 "수령완료"상태 확인
+        check_approval_status_buttons(page, "수령 완료", product_name, "자동화규칙_개별", False, False)   
 
-        # # JSON 재고량 업데이트
-        # with open('product_name.json', 'r', encoding='utf-8') as f:
-        #     products = json.load(f)
-
-        # for product in products:
-        #     if product['kor'] == product_name:
-        #         product['stock_qty'] = current_stock
-        #         break
-
-        # with open('product_name.json', 'w', encoding='utf-8') as f:
-        #     json.dump(products, f, ensure_ascii=False, indent=4)
-        # print("[PASS] JSON 파일 재고량 업데이트 완료")
 
     except Exception as e:
         print(f"❌ Error in test_order_receive_and_inventory_check: {str(e)}")

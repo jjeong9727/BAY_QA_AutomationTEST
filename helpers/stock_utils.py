@@ -112,9 +112,9 @@ class StockManager:
         raise Exception(f"{self.product_name} 제품을 찾을 수 없습니다.")
     def get_current_stock(self):
         self.page.goto(URLS["bay_prdList"])
-        self.page.wait_for_timeout(2000)
+        self.page.wait_for_selector("data-testid=btn_del_bulk", timeout=5000)
         self.page.fill("data-testid=input_search", self.product_name)
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=btn_search").click()
         self.page.wait_for_timeout(2000)  # 충분한 대기 시간 추가
 
@@ -134,11 +134,9 @@ class StockManager:
     def perform_inflow(self, quantity: int):
         txt_inflow = f"재고 입고가 완료되었습니다."
         self.page.goto(URLS["bay_stock"])
-        self.page.wait_for_timeout(2000)
+        self.page.wait_for_selector("data-testid=btn_stockadd", timeout=5000)
         self.page.click("data-testid=btn_stockadd")
-        self.page.wait_for_timeout(2000)
-        self.page.wait_for_url(URLS["bay_stockadd"])
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_selector("data-testid=drop_status_trigger", timeout=5000)
         
         # 상태 드롭다운 옵션 클릭
         self.page.locator("data-testid=drop_status_trigger").click()
@@ -147,28 +145,26 @@ class StockManager:
 
         # 제품명선택 
         self.page.locator("data-testid=drop_prdname_trigger").click()
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=drop_prdname_search").fill(self.product_name)
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=drop_prdname_item", has_text=self.product_name).click()
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         
         self.page.fill("data-testid=input_qty", str(quantity))
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.fill("data-testid=input_memo", "30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=btn_save").click()
         expect(self.page.locator("data-testid=toast_inflow")).to_have_text(txt_inflow, timeout=3000)
-        self.page.wait_for_timeout(3000)
+        self.page.wait_for_timeout(1000)
 
     def perform_outflow(self, quantity: int):
         txt_outflow = "재고가 안전 재고보다 적은 경우 발주 규칙에 따라 발주됩니다."
         self.page.goto(URLS["bay_stock"])
-        self.page.wait_for_timeout(2000)
+        self.page.wait_for_selector("data-testid=btn_stockadd", timeout=5000)
         self.page.click("data-testid=btn_stockadd")
-        self.page.wait_for_timeout(2000)
-        self.page.wait_for_url(URLS["bay_stockadd"])
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_selector("data-testid=drop_status_trigger", timeout=5000)
 
         self.page.locator("data-testid=drop_status_trigger").click()
         self.page.wait_for_timeout(500)
@@ -176,17 +172,16 @@ class StockManager:
         self.page.wait_for_timeout(500)
         # 제품명선택 
         self.page.locator("data-testid=drop_prdname_trigger").click()
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=drop_prdname_search").fill(self.product_name)
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=drop_prdname_item", has_text=self.product_name).click()
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.fill("data-testid=input_qty", str(quantity))
         self.page.wait_for_timeout(500)
         memo_input = self.page.get_by_placeholder("최대 30자 입력")
         memo_input.fill("30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
-        self.page.wait_for_timeout(1000)
+        self.page.wait_for_timeout(500)
         self.page.locator("data-testid=btn_save").click()
-        # 출고 시 배치에 따른 발주 안내 토스트 변경
         expect(self.page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
-        self.page.wait_for_timeout(3000)
+        self.page.wait_for_timeout(1000)

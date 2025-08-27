@@ -20,7 +20,7 @@ def test_order_rules_register(page: Page):
 
     page.locator("data-testid=drop_cycle_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_cycle_item_1").click()
+    page.locator("data-testid=drop_cycle_2").click()
     page.wait_for_timeout(1000)
 
     expect(page.locator("data-testid=drop_weekday_trigger")).to_be_visible(timeout=3000)
@@ -43,12 +43,12 @@ def test_order_rules_register(page: Page):
 
     page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_hour_item_"][data-value="16"]').click()
+    page.locator("data-testid=drop_hour_16").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_minute_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_minute_item_"][data-value="30"]').click()
+    page.locator("data-testid=drop_minute_4").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=input_memo").fill(MEMO_TEXT)
@@ -58,7 +58,7 @@ def test_order_rules_register(page: Page):
     expect(page.locator("data-testid=toast_register")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
-    search_and_check_rule(page, rule_name_1, "매주 월,수,금 / 16:30", "0개 제품", MEMO_TEXT)
+    search_and_check_rule(page, rule_name_1, "매주 월, 수, 금 / 15:30", "0개 제품", MEMO_TEXT)
     page.wait_for_timeout(1000)
 
     # ✅ 두 번째 규칙: 매일
@@ -69,7 +69,7 @@ def test_order_rules_register(page: Page):
 
     page.locator("data-testid=drop_cycle_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_cycle_item_0").click()
+    page.locator("data-testid=drop_cycle_1").click()
     page.wait_for_timeout(1000)
 
     expect(page.locator("data-testid=drop_weekday_trigger")).not_to_be_visible(timeout=3000)
@@ -77,12 +77,12 @@ def test_order_rules_register(page: Page):
 
     page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_hour_item_"][data-value="20"]').click()
+    page.locator("data-testid=drop_hour_21").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_minute_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_minute_item_"][data-value="50"]').click()
+    page.locator("data-testid=drop_minute_6").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=input_memo").fill(MEMO_TEXT)

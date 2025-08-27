@@ -47,10 +47,10 @@ def run_order_status_check(page: Page, delivery_status: int, product_name:str):
 
 
 def test_order_status_complete_bf(page: Page):
-    run_order_status_check(page, delivery_status=7, product=filtered_products[1])
+    run_order_status_check(page, delivery_status=7, product_name=filtered_products[1])
     
     
 
 def test_order_status_complete_af(page: Page):
-    run_order_status_check(page, delivery_status=4, product=filtered_products[0])
+    run_order_status_check(page, delivery_status=4, product_name=filtered_products[0])
 

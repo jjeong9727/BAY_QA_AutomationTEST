@@ -2,7 +2,7 @@ import pytest
 import random
 import json
 from pathlib import Path
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from config import URLS, Account
 from helpers.product_utils import remove_products_from_json
 from helpers.common_utils import bay_login
@@ -59,9 +59,9 @@ def delete_product_and_verify(page: Page, row_index: int):
 
 
         page.click("data-testid=btn_del")
+        
+        expect(page.locator("data-testid=txt_nosearch")).to_have_text("일치하는 항목이 없습니다", timeout=5000)
         page.wait_for_timeout(1000)
-        page.reload()
-        page.wait_for_timeout(2000)
 
         if check_delete(page, product_name):
             msg = f"[PASS][제품관리] 제품 삭제 테스트 (삭제된 제품: '{product_display_name}')"
@@ -98,8 +98,7 @@ def test_delete_product(page):
 
         rows = page.locator("table tbody tr")
         if rows.count() == 0:
-            msg = f"❌ 제품 '{target_name}' 을(를) 찾을 수 없습니다."
-            print(msg)
+            print(f"❌ 제품 '{target_name}' 을(를) 찾을 수 없습니다.")
             return
 
         delete_product_and_verify(page, row_index=0)

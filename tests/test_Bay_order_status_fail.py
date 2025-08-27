@@ -16,7 +16,6 @@ def test_order_status_fail(page: Page):
     expected = order_status_map[status_name]
 
     try:
-        # delivery_status == 6인 제품 목록 필터링
         filtered_products = filter_products_by_delivery_status(6)
         if not filtered_products:
             raise ValueError(f"[FAIL] '{status_name}' 상태의 제품이 없습니다.")
@@ -40,14 +39,13 @@ def test_order_status_fail(page: Page):
         page.locator("[data-testid=btn_search]").click()
         page.wait_for_timeout(2000)
 
-        # order_id 가져오기
-        search_order_history(page, product_name, "발주 실패")
-        order_id = get_order_id_from_order_list(page, product_name)
-        if not order_id:
-            raise ValueError(f"[FAIL] 발주 내역에서 제품 '{product_name}'의 order_id를 찾을 수 없습니다.")
-
         # 상태 확인
-        check_order_status_by_order_id(page, status_name, order_id, expected)
+        expect(page.locator("[data-testid=btn_receive]")).to_be_disabled(timeout=3000)
+        expect(page.locator("data-testid=btn_resend")).to_be_enabled(timeout=3000)
+        expect(page.locator("data-testid=btn_order_cancel")).to_be_enabled(timeout=3000)
+
+
+        
 
     except Exception as e:
         error_message = f"❌ Error in test_order_status_fail: {str(e)}"

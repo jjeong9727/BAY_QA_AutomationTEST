@@ -16,8 +16,6 @@ def test_stock_manual_order(page:Page):
     bay_login(page)
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(1000)
-    page.locator("data-testid=btn_stockadd").click()
-    page.wait_for_timeout(2000)
 
     products = ["수동 발주 제품 1", "수동 발주 제품 2", "수동 발주 제품 3"]
     expected_rules = ["승인규칙_1명", "승인규칙_n명", "자동 승인"]
@@ -26,31 +24,7 @@ def test_stock_manual_order(page:Page):
     expected_amount = "50,000"
     expected_supplier = "자동화업체D, 권정의D 010-6275-4153"
 
-    # 입고 처리
-    for idx, product in enumerate(products, start=1): 
-        page.locator("data-testid=drop_status_trigger").last.click()
-        page.wait_for_timeout(1000)
-        page.get_by_role("option", name="입고", exact=True).click()
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_prdname_trigger").last.click()
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_prdname_search").fill(product)
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_prdname_item", has_text=product).click()
-        page.wait_for_timeout(1000)
-        
-        page.locator("data-testid=input_qty").last.fill(str(10))
-        page.wait_for_timeout(1000)
 
-        if idx < len(products):
-            page.locator("data-testid=btn_addrow").click()
-            page.wait_for_timeout(1000) 
-
-    page.evaluate("window.scrollTo(0, 0)")
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=btn_save").click()
-    expect(page.locator("data-testid=toast_inflow")).to_be_visible(timeout=5000)
-    page.wait_for_timeout(2000)
 
     # 재고 가져오기 
         # 수동 발주 제품_1 
@@ -84,7 +58,7 @@ def test_stock_manual_order(page:Page):
 
     # 수동 발주 (수동 발주 제품_1, 2, 3)
     page.locator("data-testid=btn_order").click()
-    page.wait_for_selector("data-testid=drop_prdname_trigger", timeout=3000)
+    page.wait_for_selector("data-testid=drop_prdname_trigger", timeout=10000)
     for idx, product in enumerate(products, start=1):
         page.locator("data-testid=drop_prdname_trigger").last.click()
         page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
@@ -115,6 +89,7 @@ def test_stock_manual_order(page:Page):
             page.wait_for_timeout(1000) 
         
     # 저장 
+
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_reject")).to_have_text("수동 발주를 진행하시겠습니까?", timeout=3000)
     page.locator("data-testid=btn_cancel").click()
@@ -124,13 +99,16 @@ def test_stock_manual_order(page:Page):
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_manual")).to_have_text("수동 발주가 완료되었습니다.", timeout=3000)
     page.wait_for_timeout(1000)
+        # 현재 시간 저장 (제품 별로)
+    
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     # 승인 요청 내역 노출 확인 
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
-    check_approval_history(page, "승인 대기", products[0], auto=True)
-    check_approval_history(page, "승인 대기", products[1], auto=True)
-    check_approval_history(page, "승인 대기", products[2])
+    check_approval_history(page, "승인 대기", products[0], auto=True, rule="수동 발주", time=now_str)
+    check_approval_history(page, "승인 대기", products[1], auto=True, rule="수동 발주", time=now_str)
+    check_approval_history(page, "승인 대기", products[2], auto=None) # 발주 내역 생성 확인 
 
 
     

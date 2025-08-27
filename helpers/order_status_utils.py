@@ -81,13 +81,13 @@ def check_order_status_by_order_id(page: Page, status_name: str, order_id: str, 
                             expect(resend_button).to_be_disabled()
 
                     if key == "tracking_text":
-                        td_tracking = row.locator("td").nth(7)
+                        td_tracking = row.locator("td").nth(8) 
                         text = td_tracking.text_content().strip()
                         print(f"[디버깅] 운송장 텍스트: '{text}'")
                         assert value in text, f"운송장 칸에 '{value}'가 없음. 실제 값: '{text}'"
 
                     if key == "tracking_enabled":
-                        td_tracking = row.locator("td").nth(7)
+                        td_tracking = row.locator("td").nth(8)
                         tracking_button = td_tracking.locator("[data-testid=btn_check_tracking]")
                         if tracking_button.count() > 0:
                             if value:
@@ -146,13 +146,13 @@ def check_order_status_by_order_id_bulk(page: Page, status_name: str, order_id: 
                             expect(resend_button).to_be_disabled()
 
                     if key == "tracking_text":
-                        td_tracking = row.locator("td").nth(8)
+                        td_tracking = row.locator("td").nth(9) # 9열 
                         text = td_tracking.text_content().strip()
                         print(f"[디버깅] 운송장 텍스트: '{text}'")
                         assert value in text, f"운송장 칸에 '{value}'가 없음. 실제 값: '{text}'"
 
                     if key == "tracking_enabled":
-                        td_tracking = row.locator("td").nth(8)
+                        td_tracking = row.locator("td").nth(9)
                         tracking_button = td_tracking.locator("[data-testid=btn_check_tracking]")
                         if tracking_button.count() > 0:
                             if value:

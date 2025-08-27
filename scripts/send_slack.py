@@ -29,38 +29,13 @@ def load_version():
 
 # 테스트 파일명 → 한글 매핑
 test_file_to_korean = {
-    "test_Bay_login": "로그인 확인",
-    "test_Bay_alert" : "공통 토스트 팝업 및 검색 기능 확인",
-    "test_Bay_order_status_request_cancel": "발주 취소 상태 확인",
-    "test_Bay_order_status_request": "발주 요청 상태 확인",
-    "test_Bay_order_status_progress_delivery": "발주 진행 상태에서 운송장 등록 확인",
-    "test_Bay_order_status_progress_complete": "발주 진행 상태에서 수령 확인",
-    "test_Bay_order_status_delivery": "배송 진행 상태 확인",
-    "test_Bay_order_status_complete": "수령 완료 상태 확인",
-    "test_Bay_order_status_fail": "발주 실패 상태 확인",
-    "test_Bay_product_delete": "제품 삭제 확인",
-    "test_Bay_product_edit": "제품 수정 확인",
-    "test_Bay_product_val": "제품 등록 유효성 검사",
-    "test_Bay_product": "제품 등록 확인",
-    "test_Bay_prdctg_delete": "카테고리 삭제 확인",
-    "test_Bay_prdctg_val": "카테고리 등록 유효성 검사",
-    "test_Bay_prdctg_edit": "카테고리 수정 확인",
-    "test_Bay_prdctg": "카테고리 등록 확인",
-    "test_Bay_supplier": "업체 등록 확인",
-    "test_Bay_supplier_val": "업체 등록 유효성 검사",
-    "test_Bay_supplier_delete": "업체 삭제 확인",
-    "test_Bay_stock_in": "재고 입고 확인",
+    "test_Bay_stock_manual": "수동 발주 확인",
     "test_Bay_stock_out": "재고 출고 확인",
-    "test_Bay_stock_history":"재고 상세 내역 확인",
-    "test_Bay_order_status_batch":"규칙 발주 내역 확인",
-    "test_Bay_stock_batch":"여러 제품 규칙 발주 확인",
-    "test_Bay_rule_order_register":"발주 규칙 등록 확인",
-    "test_Bay_rule_order_edit":"발주 규칙 수정 확인",
-    "test_Bay_order_approval":"발주 승인 요청 내역 확인",
-    "test_Bay_order_pending":"발주 예정 내역 확인",
-    "test_Bay_rule_approval_register":"승인 규칙 등록 확인",
-    "test_Bay_rule_approval_edit":"승인 규칙 수정 확인",
-    "test_Bay_stock_manual":"수동 발주 확인",
+    "test_Bay_stock_in": "재고 입고 확인",
+    "test_Bay_order_pending": "발주 예정 내역 확인",
+    "test_Bay_order_approval": "발주 승인 요청 내역 확인",
+    "test_Bay_stock_batch": "여러 제품 규칙 발주 확인",
+    # 필요시 다른 파일도 계속 추가...
 }
 
 def load_test_results(file_path):
@@ -82,6 +57,34 @@ def get_total_duration_from_results(results):
             continue
     return format_duration(total)
 
+def format_stack(stack: str) -> str:
+    """stack 문자열에서 핵심 부분만 요약"""
+    if not stack:
+        return ""
+
+    lines = stack.strip().splitlines()
+    summary = []
+
+    # 1) "FAILED tests/..." 줄 추출
+    fail_line = next((l for l in lines if l.strip().startswith("FAILED tests/")), "")
+    if fail_line:
+        summary.append(fail_line.strip())
+
+    # 2) AssertionError / TimeoutError 줄 추출
+    error_line = next(
+        (l for l in lines if "AssertionError" in l or "TimeoutError" in l), ""
+    )
+    if error_line:
+        summary.append(error_line.strip())
+
+    # 3) Call log 앞 3줄
+    if "Call log:" in stack:
+        idx = lines.index(next(l for l in lines if "Call log:" in l))
+        summary.append("Call log:")
+        summary.extend([l.strip() for l in lines[idx+1:idx+4]])
+
+    return "\n".join(summary)
+
 def build_slack_message(test_results):
     version = load_version()
     success_count = 0
@@ -92,34 +95,39 @@ def build_slack_message(test_results):
     for idx, result in enumerate(test_results, 1):
         test_name = result.get("test_name")
         status = result.get("status")
-        message = result.get("message", "")
+        stack = result.get("stack", "")
+
+        # 실패 시 stack 요약
+        stack_summary = format_stack(stack) if status == "FAIL" else ""
 
         korean_name = test_file_to_korean.get(test_name, test_name)
 
         if status == "PASS":
             success_count += 1
-            detail_lines.append(f"{idx}. ✅[PASS] {korean_name}")
+            detail_lines.append(f"{idx}. ✅ [PASS] {korean_name}")
         elif status == "FAIL":
             fail_count += 1
-            detail_lines.append(f"{idx}. ❌[FAIL] {korean_name}\n   {message}")
+            detail_lines.append(
+                f"{idx}. ❌ [FAIL] {korean_name}\n"
+                f"   🔎 {result.get('file', '')}\n"
+                f"   📋 Log:\n{stack_summary}"
+            )
         elif status == "SKIP":
             skip_count += 1
-            detail_lines.append(f"{idx}. [SKIP] {korean_name}")
+            detail_lines.append(f"{idx}. ⚪ [SKIP] {korean_name}")
 
     total_time = get_total_duration_from_results(test_results)
 
     slack_message = f":mega: *[CenturionBay] 자동화 테스트 결과* ({seoul_time})\n"
     slack_message += f"버전: :centurionlogo: `{version}`\n"
-    slack_message += f"Total: {len(test_results)} | ✅PASS: {success_count} | FAIL: ❌{fail_count} \n"
+    slack_message += f"Total: {len(test_results)} | ✅ PASS: {success_count} | ❌ FAIL: {fail_count} | ⚪ SKIP: {skip_count}\n"
     slack_message += f":stopwatch: 전체 수행 시간: {total_time}\n\n"
     slack_message += "\n".join(detail_lines)
 
     return slack_message
 
 def send_slack_message(message):
-    payload = {
-        "text": message
-    }
+    payload = {"text": message}
     response = requests.post(SLACK_WEBHOOK_URL, json=payload)
     if response.status_code != 200:
         raise Exception(f"Error sending message to Slack: {response.status_code}, {response.text}")

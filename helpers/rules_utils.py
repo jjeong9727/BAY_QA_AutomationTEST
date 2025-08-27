@@ -14,8 +14,8 @@ def search_and_check_rule(page: Page, rule_name: str, order_cycle:str, product:s
     expect(row.locator("td").nth(0)).to_have_text(rule_name)
 
     # 발주 주기 (예: "매주 월, 수, 금 / 03:30")
-    for part in order_cycle.replace(" / ", ",").split(","):
-        expect(row.locator("td").nth(1)).to_contain_text(part.strip())
+    
+    expect(row.locator("td").nth(1)).to_have_text(order_cycle)
 
     # 제품 수 (예: "0개 제품")
     expect(row.locator("td").nth(2)).to_have_text(product)

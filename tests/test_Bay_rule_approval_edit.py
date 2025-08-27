@@ -137,5 +137,5 @@ def test_delete_approval_rule(page:Page):
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     
-    expect(page.locator("data-testid=txt_nosearch")).to_have_text("일치하는 항목이 없습니다.", timeout=5000)
+    expect(page.locator("data-testid=txt_nosearch")).to_have_text("일치하는 항목이 없습니다", timeout=5000)
     page.wait_for_timeout(1000)

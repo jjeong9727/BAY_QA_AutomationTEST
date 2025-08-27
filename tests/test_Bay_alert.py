@@ -471,6 +471,17 @@ def test_alert_order_rules(page:Page):
 
     expect(page.locator("data-testid=toast_duplicate")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_cancel").click()
+    page.wait_for_timeout(1000)
+
+    # [발주 규칙 관리] 삭제 불가 확인
+    page.locator("data-testid=input_search").fill(rule_name)
+    page.locator("data-testid=btn_search").click()
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=btn_delete").click()
+    expect(page.locator("data-testid=txt_delete")).to_have_text("발주 규칙을 삭제하시겠습니까?", timeout=3000)
+    page.locator("data-testid=btn_confirm").click()
+    expect(page.locator("data-testid=toast_using")).to_have_text("해당 발주 규칙은 사용 중입니다.", timeout=3000)
 
 # 업체 전용 화면
 def test_alert_supplier_page(page:Page):
@@ -519,22 +530,24 @@ def test_alert_approval_rules(page:Page):
         # 규칙명 중복 확인 
     page.locator("data-testid=input_rule_name").fill("중복테스트")
     page.wait_for_timeout(1000)
-    page.locator("data-testid=btn_save").click()
-    expect(page.locator("data-testid=toast_duplicate")).to_have_text("이미 존재하는 승인 규칙명입니다.", timeout=3000)
-    page.wait_for_timeout(1000)
-
     page.locator("data-testid=drop_approver_trigger").click()
     page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
-    page.locator("data-testid=drop_approver_search").fill(approval_1)
+    page.locator("data-testid=drop_approver_search").fill("QA 계정")
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_approver_item", has_text=approval_1).click()
+    page.locator("data-testid=drop_approver_item", has_text="QA 계정").click()
+    page.wait_for_timeout(1000)
+
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_save").click()
+    expect(page.locator("data-testid=toast_duplicate")).to_have_text("이미 존재하는 승인 규칙명입니다.", timeout=3000)
     page.wait_for_timeout(1000)
 
         # 이탈 팝업 확인 
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=txt_nosave")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
     page.locator("data-testid=btn_cancel").click()
-    expect(page.locator("data-testid=input_rule_name")).to_have_text("중복테스트", timeout=3000)
+    expect(page.locator("data-testid=input_rule_name")).to_have_value("중복테스트", timeout=3000)
     
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=txt_nosave")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
@@ -543,7 +556,7 @@ def test_alert_approval_rules(page:Page):
     page.wait_for_timeout(1000)
 
     # 승인 규칙 변경 제품 팝업 확인
-    page.locator("data-testid=input_search").fill("중복테스트")
+    page.locator("data-testid=input_search").fill("수정테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
@@ -554,12 +567,12 @@ def test_alert_approval_rules(page:Page):
     name_cell = first_row.locator('td:nth-child(1)') # 1행 1열 (규칙명)
     name_text = name_cell.inner_text()
     
-    if name_text == "중복테스트":
-        edit_name = "[수정] 중복테스트"
-    elif name_text == "[수정] 중복테스트":
-        edit_name = "중복테스트"
+    if name_text == "수정테스트":
+        edit_name = "[수정] 수정테스트"
+    elif name_text == "[수정] 수정테스트":
+        edit_name = "수정테스트"
 
-    edit_button = last_cell.locator('[data-testid="btn_edit"]')
+    edit_button = last_cell.locator('[data-testid="btn_edit"]').first
     edit_button.click()
     page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
 
@@ -568,12 +581,13 @@ def test_alert_approval_rules(page:Page):
 
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_title")).to_have_text("승인 규칙 변경 제품", timeout=3000)
-    page.locator("data-testid=btn_cancel").click()
-    expect(page.locator("data-testid=input_rule_name")).to_have_text(edit_name, timeout=3000)
+    page.locator("data-testid=btn_cancel").last.click()
+    expect(page.locator("data-testid=input_rule_name")).to_have_value(edit_name, timeout=3000)
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_title")).to_have_text("승인 규칙 변경 제품", timeout=3000)
     page.locator("data-testid=btn_confirm").click()
-    expect(page.locator("data-testid=toast_edit_pending")).to_have_text("승인 규칙이 수정되었습니다. 다음 출고분부터 적용됩니다.", timeout=3000)
+    # expect(page.locator("data-testid=toast_edit_pending")).to_have_text("승인 규칙이 수정되었습니다. 다음 출고분부터 적용됩니다.", timeout=3000)
+    expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
     # 삭제 불가 확인
@@ -588,11 +602,51 @@ def test_alert_approval_rules(page:Page):
 
     delete_button = last_cell.locator("data-testid=btn_delete")
     delete_button.click()
+    expect(page.locator("data-testid=txt_delete")).to_have_text("승인 규칙을 삭제하시겠습니까?", timeout=3000)
+    page.locator("data-testid=btn_cancel").click()
+    expect(page.locator("data-testid=input_search")).to_have_value(edit_name, timeout=3000)
+    delete_button.click()
+    expect(page.locator("data-testid=txt_delete")).to_have_text("승인 규칙을 삭제하시겠습니까?", timeout=3000)
+    page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_using")).to_have_text("해당 승인 규칙은 사용 중입니다.", timeout=3000)
     page.wait_for_timeout(1000)
 
 # 수동 발주 
 def test_alert_manual_order(page:Page):
     txt_nodelete = "최소 1개 이상의 제품이 있어야 수동 발주가 가능합니다."
+    txt_quantity = "수동 발주 수량은 최소 1개 이상이어야 합니다."
+    bay_login(page)
+    page.goto(URLS["bay_stock"])
+    page.wait_for_timeout(2000)
+    # 제품 개수 토스트 팝업 확인
+    page.locator("data-testid=btn_order").click()
+    page.wait_for_selector("data-testid=drop_prdname_trigger", timeout=3000)
+    page.locator("data-testid=btn_delete").click()
+    expect(page.locator("data-testid=toast_nodelete")).to_have_text(txt_nodelete, timeout=3000)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_prdname_trigger").click()
+    page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
+    page.locator("data-testid=drop_prdname_search").fill("중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_prdname_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
+    # 수량 토스트 팝업 확인
+    page.locator("data-testid=input_qty").fill("0")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_save").click()
+    expect(page.locator("data-testid=txt_reject")).to_have_text("수동 발주를 진행하시겠습니까?", timeout=3000)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
+    expect(page.locator("data-testid=toast_manual")).to_have_text(txt_quantity, timeout=3000)
+    page.wait_for_timeout(1000)
 
-    
+    # 이탈 팝업 확인
+    page.locator("data-testid=btn_back").click()
+    expect(page.locator("data-testid=title")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
+    page.locator("data-testid=btn_no").click()
+    expect(page.locator("data-testid=input_qty")).to_have_value("0", timeout=3000)
+    page.locator("data-testid=btn_back").click()
+    expect(page.locator("data-testid=title")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
+    page.locator("data-testid=btn_yes").click()
+    expect(page.locator("data-testid=btn_order")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)

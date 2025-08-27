@@ -34,14 +34,18 @@ approve_status_map = {
         "edit_enabled": False,
         "delete_enabled": False,
     },
-    # 공통
-    "승인 대기": {   
-        "status_text": "승인 대기", # 공통
-        "status_enabled": False, # 발주 예정 내역
-        "edit_enabled": False, # 발주 예정 내역
-        "delete_enabled": False, # 발주 예정 내역
-        "approve_enabled": True, # 승인 요청 내역
-        "reject_enabled": True, # 승인 요청 내역
+    # 발주 예정 내역
+    "승인 대기(발주예정)": {   
+        "status_text": "승인 대기", 
+        "status_enabled": False, 
+        "edit_enabled": False, 
+        "delete_enabled": False, 
+    },    
+    # 승인 요청 내역
+    "승인 대기(승인요청)": {   
+        "status_text": "승인 대기", 
+        "approve_enabled": True, 
+        "reject_enabled": True, 
     },    
     # 승인 요청 내역
     "발주 승인":{  

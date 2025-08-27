@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from helpers.order_status_data import order_status_map
 from helpers.order_status_utils import search_order_history,get_order_id_from_order_list, check_order_status_by_order_id_bulk
 from helpers.common_utils import bay_login
+from helpers.approve_utils import check_approval_status_buttons
 from playwright.sync_api import Page, expect
 import json
 from pathlib import Path
@@ -378,3 +379,5 @@ def test_receive_with_tracking(page:Page):
     expected_status_conditions = order_status_map["수령 완료(배송후)"]
     check_order_status_by_order_id_bulk(page, "수령 완료", order_id, expected_status_conditions)
 
+    # 수령완료 후 발주 예정 내역의 "수령완료"상태 확인
+    check_approval_status_buttons(page, "수령 완료", product_list[8], "자동화규칙_묶음", True, False)

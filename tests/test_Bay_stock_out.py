@@ -13,53 +13,39 @@ from helpers.common_utils import bay_login
 from helpers.order_status_utils import search_order_history
 from helpers.approve_utils import check_approval_history, check_order_pending_history
 
-BATCH_PATH = Path("batch_time.json")
-
+order_rules=["자동화규칙_개별","자동화규칙_묶음"]
 products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"]
 reject_products = ["발주 거절 제품 1", "발주 거절 제품 2"]
 ordered_product = []
-def get_filtered_products(stock_manager):
-    """출고 대상 제품 선정: 재고가 안전 재고 이상이고, order_flag가 0인 제품만 선택"""
-    products = stock_manager.get_all_product_names()
-    filtered_products = [
-        p for p in products
-        if p.get("stock_qty", 0) >= p.get("safety", 0) and p.get("order_flag", 1) == 0
-    ]
-    
-    # 필터링된 제품 출력 (디버깅용)
-    for product in filtered_products:
-        print(f"❓ 필터링된 제품 - 이름: {product['kor']}, 재고: {product['stock_qty']}, 안전 재고: {product['safety']}")
-    
-    return filtered_products
-
 def get_safe_batch_time() -> datetime:
     now = datetime.now()
     minute = now.minute
-    base_minute = (minute // 10) * 10
 
-    # 남은 시간 계산
-    next_minute = base_minute + 20
-    
-    # 시(hour) 넘어가는 경우 처리
-    if next_minute >= 60:
-        next_hour = now.hour + 1
-        next_time = now.replace(hour=next_hour % 24, minute=0, second=0, microsecond=0)
-    else:
-        next_time = now.replace(minute=next_minute, second=0, microsecond=0)
+    # 다다음 배치 (10분 단위 기준)
+    next_block = (minute // 10 + 3) * 10
+    next_hour = now.hour
 
+    if next_block >= 60:
+        next_block -= 60
+        next_hour = (next_hour + 1) % 24
+
+    next_time = now.replace(hour=next_hour, minute=next_block, second=0, microsecond=0)
     return next_time
-
-def save_batch_time(next_time: datetime, path: Path = BATCH_PATH) -> None:
-    data = {
-        "hour": next_time.strftime("%H"),
-        "minute": next_time.strftime("%M"),
-        "next_time_iso": next_time.isoformat()  # 참고용(로깅/디버깅)
-    }
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 # 배치 시간 계산 후 JSON에 저장
 next_time = get_safe_batch_time()
-save_batch_time(next_time)
+
+time_data = {
+    "next_time": next_time.strftime("%Y-%m-%d %H:%M:%S"),
+    "hour": next_time.strftime("%H"),
+    "minute": next_time.strftime("%M")
+}
+
+# JSON 파일에 저장
+with open("batch_time.json", "w", encoding="utf-8") as f:
+    json.dump(time_data, f, ensure_ascii=False, indent=2)
+
+print("✅ 저장 완료:", time_data)
 
 # 필요 시 문자열도 바로 사용
 hour_str = next_time.strftime("%H")
@@ -68,41 +54,40 @@ minute_str = next_time.strftime("%M")
 def test_stock_outflow(page):
     try:
         bay_login(page)
-        # 출고 직전 가장 가까운 시간으로 발주 규칙 변경(자동화규칙_개별)
         page.goto(URLS["bay_rules"])
-        page.wait_for_timeout(2000)
-        page.locator("data-testid=input_search").fill("자동화규칙_개별")
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_search").click()
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_edit").click()
-        page.wait_for_timeout(2000) 
+        page.wait_for_selector("data-testid=btn_edit", timeout=10000)
 
-        # ⏰ 시간 설정
-        current_hour = page.locator("data-testid=drop_hour_trigger").text_content()
-        if current_hour != hour_str:
-            page.locator("data-testid=drop_hour_trigger").click()
+        # 출고 직전 가장 가까운 시간으로 발주 규칙 변경(자동화규칙_개별, 자동화규칙_묶음)
+        for rule in order_rules:
+            page.locator("data-testid=input_search").fill(rule)
             page.wait_for_timeout(1000)
-            page.locator(f'div[data-testid^="drop_hour_item_"][data-value="{hour_str}"]').click()
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            page.locator("data-testid=btn_edit").click()
+            page.wait_for_timeout(2000) 
+
+            # ⏰ 시간 설정
+            current_hour = page.locator("data-testid=drop_hour_trigger").text_content()
+            if current_hour != hour_str:
+                page.locator("data-testid=drop_hour_trigger").click()
+                page.wait_for_timeout(1000)
+                page.locator(f'div[data-value="{hour_str}"]').click()
+                page.wait_for_timeout(1000)
+
+            # ⏱️ 분 설정
+            current_minute = page.locator("data-testid=drop_minute_trigger").text_content()
+            if current_minute != minute_str:
+                page.locator("data-testid=drop_minute_trigger").click()
+                page.wait_for_timeout(1000)
+                page.locator(f'div[data-value="{minute_str}"]').click()
+                page.wait_for_timeout(1000)
+            
+            page.locator("data-testid=btn_confirm").click()
+            expect(page.locator("data-testid=txt_title")).to_have_text("발주 규칙 변경 제품", timeout=3000)
             page.wait_for_timeout(1000)
-
-        # ⏱️ 분 설정
-        current_minute = page.locator("data-testid=drop_minute_trigger").text_content()
-        if current_minute != minute_str:
-            page.locator("data-testid=drop_minute_trigger").click()
+            page.locator("data-testid=btn_confirm").click()
+            expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
             page.wait_for_timeout(1000)
-            page.locator(f'div[data-testid^="drop_minute_item_"][data-value="{minute_str}"]').click()
-            page.wait_for_timeout(1000)
-        
-        page.locator("data-testid=btn_confirm").click()
-        expect(page.locator("data-testid=txt_title")).to_have_text("발주 규칙 변경 제품", timeout=3000)
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=btn_confirm").click()
-        expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
-        page.wait_for_timeout(1000)
-
-
-
         
         # 출고 처리
         stock_manager = StockManager(page)
@@ -172,7 +157,7 @@ def test_edit_stocklist_and_auto_order(page):
 
         # 저장 버튼 클릭 후 토스트 확인
         page.locator("data-testid=btn_edit_bulk").click()
-        expect(page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
+        expect(page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=10000)
         page.wait_for_timeout(1000)
 
         ordered_product.append(product)

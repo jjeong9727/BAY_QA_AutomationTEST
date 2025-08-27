@@ -1,5 +1,7 @@
 import json
 import random
+from datetime import datetime, timedelta
+import time
 from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import (
@@ -9,45 +11,37 @@ from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
 
 product_name = "자동화개별제품_1"
-# def update_product_status_in_json(product_name: str, delivery_status: int, order_flag: int):
-#     try:
-#         with open('product_name.json', 'r', encoding='utf-8') as f:
-#             products = json.load(f)
 
-#         for product in products:
-#             if product['kor'] == product_name:
-#                 product['delivery_status'] = delivery_status
-#                 product['order_flag'] = order_flag
-#                 break
+def wait_until_batch_ready(json_path="batch_time.json"):
+    # JSON 불러오기
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-#         with open('product_name.json', 'w', encoding='utf-8') as f:
-#             json.dump(products, f, ensure_ascii=False, indent=4)
+    # next_time 문자열 → datetime 변환
+    next_time = datetime.strptime(data["next_time"], "%Y-%m-%d %H:%M:%S")
+    deadline = next_time + timedelta(minutes=1)
 
-#     except Exception as e:
-#         error_message = f"Error updating product status in JSON: {str(e)}"
-#         raise
+    now = datetime.now()
+    print(f"⏳ 현재 시간: {now.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"📌 배치 기준 시간: {next_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"📌 최소 실행 시간: {deadline.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    # deadline(=next_time+1분) 전이면 기다리고, 지나면 바로 실행
+    if now < deadline:
+        wait_seconds = (deadline - now).total_seconds()
+        print(f"⌛ {wait_seconds:.0f}초 대기 후 테스트 시작")
+        time.sleep(wait_seconds)
+
+    print("✅ 조건 충족! 테스트를 진행합니다.")
 
 
 def test_order_cancel(page: Page):
     try:
-        # # JSON 파일에서 제품명 불러오기
-        # with open('product_name.json', 'r', encoding='utf-8') as f:
-        #     products = json.load(f)
+        # 배치 발주 시간+1분 까지 대기 
+        wait_until_batch_ready("batch_time.json")
 
-        # # delivery_status가 1인 제품들 필터링
-        # eligible_products = [product for product in products if product.get('delivery_status') == 1]
-
-        # if not eligible_products:
-        #     raise ValueError("No product found with delivery_status 1")
-
-        # # delivery_status가 1인 제품 중 랜덤으로 하나 선택
-        # target_product = random.choice(eligible_products)
-        # product_name = target_product['kor']
-        # status_name = "발주 요청"
-
-        # 발주 내역 화면으로 이동하여 제품명 검색 후 order_id 가져오기
         bay_login(page)
-        
+
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(2000)
         search_order_history(page, product_name, "발주 요청")

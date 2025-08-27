@@ -33,5 +33,6 @@ Account = {
     "testid_stg" : "stg@medisolveai.com", # QA 계정 
     "testid_qa" : "stg@medisolveai.com", # 법인폰 010-8514-8780
     "testpw": "12341234",
+    "wrongid" : "jekwon@medisolveai.com",
     "wrongpw": "0000"
 }

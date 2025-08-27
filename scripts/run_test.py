@@ -59,30 +59,32 @@ all_tests = [
     # "tests/test_Bay_rule_order_register.py",
     # "tests/test_Bay_rule_order_edit.py",
 
-    "tests/test_Bay_rule_approval_register.py",
-    "tests/test_Bay_rule_approval_edit.py",
+    # "tests/test_Bay_rule_approval_register.py",
+    # "tests/test_Bay_rule_approval_edit.py",
 
     # "tests/test_Bay_product.py",
     # "tests/test_Bay_product_val.py",
     # "tests/test_Bay_product_edit.py",
     # "tests/test_Bay_product_delete.py",
 
-    "tests/test_Bay_stock_in.py",
-    "tests/test_Bay_stock_out.py",
-    "tests/test_Bay_stock_batch.py",
-    "tests/test_Bay_stock_manual.py",
-    "tests/test_Bay_order_pending.py",
-    "tests/test_Bay_order_approval.py",
+    # "tests/test_Bay_stock_in.py",
+    # "tests/test_Bay_stock_manual.py",
+
+    # "tests/test_Bay_stock_out.py",
+    # "tests/test_Bay_stock_batch.py",
+    # "tests/test_Bay_order_pending.py",
+    # "tests/test_Bay_order_approval.py",
 
 
-    # "tests/test_Bay_order_status_request_cancel.py",
-    # "tests/test_Bay_order_status_request.py",
-    # "tests/test_Bay_order_status_progress_delivery.py",
-    # "tests/test_Bay_order_status_progress_complete.py",
-    # "tests/test_Bay_order_status_delivery.py",
-    # "tests/test_Bay_order_status_complete.py",
-    # "tests/test_Bay_order_status_fail.py", 
-    # "tests/test_Bay_order_status_batch.py",
+    "tests/test_Bay_order_status_request_cancel.py",
+    "tests/test_Bay_order_status_request.py",
+    "tests/test_Bay_order_status_progress_delivery.py",
+    "tests/test_Bay_order_status_progress_complete.py",
+    "tests/test_Bay_order_status_delivery.py",
+    "tests/test_Bay_order_status_complete.py",
+    "tests/test_Bay_order_status_fail.py", 
+    "tests/test_Bay_order_status_batch.py",
+
     # "tests/test_Bay_stock_history.py",
 
 
@@ -170,11 +172,7 @@ for test_file in all_tests:
         if os.path.exists(TEST_RESULTS_FILE):
             with open(TEST_RESULTS_FILE, "r", encoding="utf-8") as f:
                 results = json.load(f)
-            for r in results:
-                if r["test_name"] == "test_Bay_stock_out" and r["status"] == "FAIL":
-                    stock_out_failed = True
-                    print("⚠️ 출고 테스트 실패 감지 → 발주 테스트 스킵 모드 활성화")
-                    break
+            
 
 print("\n🎯 모든 테스트 완료")
 

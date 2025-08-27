@@ -32,53 +32,22 @@ if not is_target_passed_now(hour_str, minute_str):
     target = now.replace(hour=int(hour_str), minute=int(minute_str), second=0, microsecond=0)
     time.sleep(max(0, (target - now).total_seconds()) + 60)  # +60s 여유
 
-# 발주 진행 상태 코드
-    # 1: 발주 요청
-    # 2: 발주 진행
-    # 3: 배송 진행 
-    # 4: 수령 완료(운송장O) 3 -> 4
-    # 5: 발주 취소
-    # 6: 발주 실패
-    # 7: 수령 완료(운송장X) 2 -> 7
-
-# def update_product_status_in_json(product_name: str, delivery_status: int):
-#     try:
-#         with open('product_name.json', 'r', encoding='utf-8') as f:
-#             products = json.load(f)
-
-#         for product in products:
-#             if product['kor'] == product_name:
-#                 product['delivery_status'] = delivery_status
-#                 break
-
-#         with open('product_name.json', 'w', encoding='utf-8') as f:
-#             json.dump(products, f, ensure_ascii=False, indent=4)
-
-#     except Exception as e:
-#         raise RuntimeError(f"Error updating product status in JSON: {str(e)}")
 
 
 def test_order_acceptance(page: Page):
-    # # 발주 요청 상태(1)인 제품 2개 선택
-    # eligible_products = filter_products_by_delivery_status(1)
-    # if len(eligible_products) < 2:
-    #     raise ValueError("delivery_status가 1인 제품이 2개 미만입니다.")
     
 
     status_name = "발주 요청"
     selected_products = ["자동화개별제품_2", "자동화개별제품_3"]
+    names = ["권정의B", "권정의C"]
+    phone = "01062754153"
 
     for product in selected_products:
-        product_name = product['kor']
-        stock = product['stock_qty']
-        supplier = product['supplier']
-        match = re.search(r",\s*(.*?)\s+(\d{3}-\d{4}-\d{4})", supplier)
-        if match:
-            name = match.group(1)
-            phone = match.group(2)
+        product_name = product
+        if product == "자동화개별제품_2":
+            name = names[0]
         else:
-            name = ""
-            phone = ""
+            name = names[1]
 
         try:
             # 로그인
