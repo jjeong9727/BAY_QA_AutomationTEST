@@ -1,82 +1,74 @@
 import pytest
-import random
 from playwright.sync_api import Page, expect
-from config import URLS, Account
-from helpers.product_utils import update_product_name
+from config import URLS
 from helpers.common_utils import bay_login
 
 
-def generate_name(prefix):
-    return f"{prefix}{random.randint(1000, 9999)}"
-
-
 def login_and_go_to_add_page(page: Page):
-    try:
-        bay_login(page)
-        
-        page.goto(URLS["bay_category"])
-        page.wait_for_timeout(3000)
-        page.wait_for_url(URLS["bay_category"])
-        
-    except Exception as e:
-        error_message = f"Error during login and navigation: {str(e)}"
-        raise
+    bay_login(page)
+    page.goto(URLS["bay_category"])
+    page.wait_for_timeout(3000)
+    page.wait_for_url(URLS["bay_category"])
 
 
-@pytest.mark.parametrize("tab,testid_kor,testid_eng,require_eng", [
-    ("tab_type", "input_kor", "input_eng", True),     # 구분
-    ("tab_category", "input_kor", "input_eng", True), # 종류
-    ("tab_maker", "input_kor", "input_eng", False),   # 제조사
+@pytest.mark.parametrize("tab,testid_kor,testid_eng,require_eng,expected_msg,txt_nosave", [
+    ("tab_type", "input_kor", "input_eng", True, "구분 저장이 완료되었습니다.", "사용 중인 구분명을 수정하시겠습니까?"),
+    ("tab_category", "input_kor", "input_eng", True, "종류 저장이 완료되었습니다.", "사용 중인 종류명을 수정하시겠습니까?"),
+    ("tab_maker", "input_kor", "input_eng", False, "제조사 저장이 완료되었습니다.", "사용 중인 제조사명을 수정하시겠습니까?"),
 ])
-def test_edit_category_each(page, tab, testid_kor, testid_eng, require_eng):
-
-    
+def test_edit_category_each(page, tab, testid_kor, testid_eng, require_eng, expected_msg, txt_nosave):
     try:
+        # 카테고리 관리 페이지 진입
         login_and_go_to_add_page(page)
         page.click(f"data-testid={tab}")
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(2000)
 
-        # '자동화등록'으로 시작하는 항목 찾기
-        name_kr_locator = page.locator(f"input[data-testid='{testid_kor}']")
+        # 해당 탭의 모든 한국어 입력란 가져오기
+        name_kr_locators = page.locator(f"input[data-testid='{testid_kor}']")
+        row_count = name_kr_locators.count()
 
         item_to_edit = None
-        item_value_to_edit = None  # 수정할 항목의 값을 저장할 변수
-        for i in range(name_kr_locator.count()):
-            item_text = name_kr_locator.nth(i).input_value()
-            if item_text.startswith("자동화등록"):
-                item_to_edit = name_kr_locator.nth(i)
-                item_value_to_edit = item_text  # 항목의 값을 저장
-                row_index = i  # 해당 항목이 몇 번째 행인지 저장
-                
+        current_value = None
+
+        # '중복테스트' 또는 '[수정] 중복테스트' 항목 찾기
+        for i in range(row_count):
+            value = name_kr_locators.nth(i).input_value().strip()
+            if value.startswith("중복테스트") or value.startswith("[수정] 중복테스트"):
+                item_to_edit = name_kr_locators.nth(i)
+                current_value = value
                 break
 
-        if item_to_edit:
-            # 기존 값에 "_수정"을 추가하여 새로운 값으로 수정
-            new_value = f"{item_value_to_edit}_수정"
-            
-            item_to_edit.fill(new_value)  # 새로운 값으로 수정
+        if not item_to_edit:
+            pytest.fail("⚠️ '중복테스트' 또는 '[수정] 중복테스트' 항목을 찾을 수 없습니다.")
 
-            # 수정 후 저장 버튼 클릭
-            
-            page.locator("data-testid=btn_save").click() 
-            expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=3000)
-            page.wait_for_timeout(1500)
+        print(f"✅ 현재 값: {current_value}")
 
-
-            # 정확한 항목을 선택하여 값을 확인 (wait_for_selector 추가)
-            edited_item = page.locator(f"input[data-testid='{testid_kor}']").nth(row_index)
-            edited_item.wait_for(state="visible")  # 항목이 visible 상태일 때까지 대기
-            
-            assert edited_item.input_value() == new_value, f"❌ 수정된 값이 제대로 반영되지 않았습니다. 기대값: {new_value}, 실제값: {edited_item.input_value()}"
-
-            msg = f"[PASS][카테고리] {tab} 항목 수정 성공 ({new_value})"
-            print(msg)
-            update_product_name(item_value_to_edit, new_value)
+        # 현재 값 확인 후 토글 값 결정
+        if current_value.startswith("[수정]"):
+            new_value = current_value.replace("[수정] ", "", 1)
         else:
-            error_message = "❌ '자동화등록' 항목을 찾을 수 없습니다."
-            print(error_message)
+            new_value = f"[수정] {current_value}"
+
+        print(f"🔄 변경할 값: {new_value}")
+
+        # 입력 후 저장
+        item_to_edit.fill(new_value)
+        page.wait_for_timeout(500)
+        page.locator("body").click(position={"x": 0, "y": 0})
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_save").click()
+        page.wait_for_timeout(500)
+        
+        # 중간 팝업 처리 (사용 중인 항목 수정 여부)
+        if page.locator("data-testid=txt_nosave").is_visible(timeout=3000):
+            expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
+            page.locator("data-testid=btn_confirm").click()
+
+        # 저장 완료 토스트 검증
+        expect(page.locator("data-testid=alert_register")).to_have_text(expected_msg, timeout=5000)
+
+        print(f"🎉 저장 완료: {new_value}")
 
     except Exception as e:
-        error_message = f"❌ Error in test_edit_category_each: {str(e)}"
-        print(error_message)
+        print(f"❌ Error in test_edit_category_each ({tab}): {e}")
         raise

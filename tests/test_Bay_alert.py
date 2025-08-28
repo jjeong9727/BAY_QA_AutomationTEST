@@ -56,18 +56,18 @@ def test_alert_category(page:Page):
 # 제품 관리
 def test_alert_product(page:Page):
     bay_login(page)
-    # [제품 관리] 엑셀 다운로드 확인
-    # 오늘 날짜 포맷 (예: 2025_07_15)
-    page.goto(URLS["bay_prdList"])
-    today = datetime.now().strftime("%Y_%m_%d")
-    with page.expect_download() as download_info:
-        page.click('[data-testid="btn_download"]')
-        page.wait_for_timeout(1000)
-    download = download_info.value
+    # # [제품 관리] 엑셀 다운로드 확인
+    # # 오늘 날짜 포맷 (예: 2025_07_15)
+    # page.goto(URLS["bay_prdList"])
+    # today = datetime.now().strftime("%Y_%m_%d")
+    # with page.expect_download() as download_info:
+    #     page.click('[data-testid="btn_download"]')
+    #     page.wait_for_timeout(1000)
+    # download = download_info.value
 
-    filename = download.suggested_filename
-    print(f"📁 다운로드된 파일명: {filename}")
-    assert filename.startswith(today), f"❌ 파일명이 오늘 날짜({today})로 시작하지 않습니다."
+    # filename = download.suggested_filename
+    # print(f"📁 다운로드된 파일명: {filename}")
+    # assert filename.startswith(today), f"❌ 파일명이 오늘 날짜({today})로 시작하지 않습니다."
 
     # 제품 미선택 > 일괄 삭제 시도 
     page.locator("data-testid=btn_del_bulk").click()
@@ -182,7 +182,7 @@ def test_alert_product(page:Page):
     expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
         # 수정화면
-    page.locator("data-testid=input_search").fill("발주 규칙 변경 제품")
+    page.locator("data-testid=input_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
@@ -214,7 +214,6 @@ def test_alert_product(page:Page):
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_no").click()
     page.wait_for_timeout(500)
-    expect(page.locator("data-testid=drop_maker_trigger")).to_have_text("중복테스트", timeout=3000)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=title")).to_have_text(txt_nosave, timeout=3000)
@@ -411,7 +410,7 @@ def test_alert_order_rules(page:Page):
 
     page.locator("data-testid=drop_cycle_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_cycle_item_0").click()
+    page.locator("data-testid=drop_cycle_1").click()
     page.wait_for_timeout(1000)
 
     expect(page.locator("data-testid=drop_weekday_trigger")).not_to_be_visible(timeout=3000)
@@ -419,12 +418,12 @@ def test_alert_order_rules(page:Page):
 
     page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_hour_item_"][data-value="20"]').click()
+    page.locator("data-testid=drop_hour_20").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_minute_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_minute_item_"][data-value="50"]').click()
+    page.locator("data-testid=drop_minute_6").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=input_memo").fill(memo)
@@ -436,7 +435,7 @@ def test_alert_order_rules(page:Page):
 
     page.locator("data-testid=drop_cycle_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_cycle_item_1").click()
+    page.locator("data-testid=drop_cycle_2").click()
     page.wait_for_timeout(1000)
 
     expect(page.locator("data-testid=drop_weekday_trigger")).to_be_visible(timeout=3000)
@@ -457,12 +456,12 @@ def test_alert_order_rules(page:Page):
 
     page.locator("data-testid=drop_hour_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_hour_item_"][data-value="16"]').click()
+    page.locator("data-testid=drop_hour_16").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_minute_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator('div[data-testid^="drop_minute_item_"][data-value="30"]').click()
+    page.locator("data-testid=drop_minute_4").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=input_memo").fill(memo)

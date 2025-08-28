@@ -22,10 +22,8 @@ def test_register_multiple_products(page: Page):
         type_options = ["의약품", "의료기기", "소모품"]
         group_options = ["주사제", "연고", "보톡스"]
         maker_options = ["메디톡스", "루트로닉", "휴메딕스"]
-        supplier_1 = "자동화업체A, 권정의A" 
-        supplier_2 = "자동화업체B, 권정의B"
-        supplier_3 = "자동화업체C, 권정의C"
-        supplier_4 = "자동화업체, 권정의"
+        suppliers = ["자동화업체", "자동화업체A", "자동화업체B", "자동화업체C" ] 
+        managers = ["권정의 010-6275-4153", "권정의A 010-6275-4153", "권정의B 010-6275-4153", "권정의C 010-6275-4153"]
 
         for idx in range(num_products):
             page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
@@ -75,32 +73,35 @@ def test_register_multiple_products(page: Page):
 
             page.locator("data-testid=drop_supplier_trigger").last.click()
             page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_supplier_search").last.fill("자동화업체")
-            page.wait_for_timeout(1000)
+            
             if idx == 0: #제품1
-                txt_manager = "권정의A 010-6275-4153"
-                supplier = supplier_1 + " 010-6275-4153"
-                page.locator("data-testid=drop_supplier_item_2", has_text=supplier_1).click()
-                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.locator("data-testid=drop_supplier_search").last.fill(suppliers[1])
                 page.wait_for_timeout(1000)
+                page.locator("data-testid=drop_supplier_item", has_text=suppliers[1]).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(managers[1], timeout=3000)
+                page.wait_for_timeout(1000)
+                supplier = f"{suppliers[1]}, {managers[1]}"
             elif idx == 1: #제품2
-                txt_manager = "권정의B 010-6275-4153"
-                supplier = supplier_2 + " 010-6275-4153"
-                page.locator("data-testid=drop_supplier_item_3", has_text=supplier_2).click()
-                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.locator("data-testid=drop_supplier_search").last.fill(suppliers[2])
                 page.wait_for_timeout(1000)
+                page.locator("data-testid=drop_supplier_item", has_text=suppliers[2]).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(managers[2], timeout=3000)
+                page.wait_for_timeout(1000)
+                supplier = f"{suppliers[2]}, {managers[2]}"
             elif idx == 2: #제품3
-                txt_manager = "권정의C 010-6275-4153"
-                supplier = supplier_3 + " 010-6275-4153"
-                page.locator("data-testid=drop_supplier_item_4", has_text=supplier_3).click()
-                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.locator("data-testid=drop_supplier_search").last.fill(suppliers[3])
                 page.wait_for_timeout(1000)
+                page.locator("data-testid=drop_supplier_item", has_text=suppliers[3]).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(managers[3], timeout=3000)
+                page.wait_for_timeout(1000)
+                supplier = f"{suppliers[3]}, {managers[3]}"
             else: #제품 4, 5, 6
-                txt_manager = "권정의 010-6275-4153"
-                supplier = supplier_4 + " 010-6275-4153"
-                page.locator("data-testid=drop_supplier_item_1", has_text=supplier_4).click()
-                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
+                page.locator("data-testid=drop_supplier_search").last.fill(suppliers[0])
                 page.wait_for_timeout(1000)
+                page.locator("data-testid=drop_supplier_item", has_text=suppliers[0]).click()
+                expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(managers[0], timeout=3000)
+                page.wait_for_timeout(1000)
+                supplier = f"{suppliers[0]}, {managers[0]}"
 
             # 발주 규칙 선택
             rule = "자동화규칙_개별"

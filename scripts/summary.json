@@ -1,0 +1,212 @@
+[
+  {
+    "name": "[자동화][로그인] 로그인 확인 테스트 실패",
+    "file": "tests/test_Bay_login.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 공통 토스트 팝업 및 검색 기능 확인 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][업체관리] 업체 등록 확인 테스트 실패",
+    "file": "tests/test_Bay_supplier.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][업체관리] 업체 등록 유효성 검사 테스트 실패",
+    "file": "tests/test_Bay_supplier_val.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 카테고리 등록 확인 테스트 실패",
+    "file": "tests/test_Bay_prdctg.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 카테고리 등록 유효성 검사 테스트 실패",
+    "file": "tests/test_Bay_prdctg_val.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 카테고리 수정 확인 테스트 실패",
+    "file": "tests/test_Bay_prdctg_edit.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 카테고리 삭제 확인 테스트 실패",
+    "file": "tests/test_Bay_prdctg_delete.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 발주 규칙 등록 확인 테스트 실패",
+    "file": "tests/test_Bay_rule_order_register.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 발주 규칙 수정 확인 테스트 실패",
+    "file": "tests/test_Bay_rule_order_edit.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 승인 규칙 등록 확인 테스트 실패",
+    "file": "tests/test_Bay_rule_approval_register.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] 승인 규칙 수정 확인 테스트 실패",
+    "file": "tests/test_Bay_rule_approval_edit.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][제품관리] 제품 등록 확인 테스트 실패",
+    "file": "tests/test_Bay_product.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][제품관리] 제품 등록 유효성 검사 테스트 실패",
+    "file": "tests/test_Bay_product_val.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][제품관리] 제품 수정 확인 테스트 실패",
+    "file": "tests/test_Bay_product_edit.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][제품관리] 제품 삭제 확인 테스트 실패",
+    "file": "tests/test_Bay_product_delete.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][재고관리] 재고 입고 확인 테스트 실패",
+    "file": "tests/test_Bay_stock_in.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][재고관리] 수동 발주 확인 테스트 실패",
+    "file": "tests/test_Bay_stock_manual.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][재고관리] 재고 출고 확인 테스트 실패",
+    "file": "tests/test_Bay_stock_out.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][재고관리] 여러 제품 규칙 발주 확인 테스트 실패",
+    "file": "tests/test_Bay_stock_batch.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 발주 예정 내역 확인 테스트 실패",
+    "file": "tests/test_Bay_order_pending.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 발주 승인 요청 내역 확인 테스트 실패",
+    "file": "tests/test_Bay_order_approval.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 발주 취소 상태 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_request_cancel.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 발주 요청 상태 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_request.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 발주 진행 상태에서 운송장 등록 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_progress_delivery.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 발주 진행 상태에서 수령 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_progress_complete.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 배송 진행 상태 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_delivery.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 수령 완료 상태 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_complete.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 발주 실패 상태 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_fail.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][발주관리] 규칙 발주 내역 확인 테스트 실패",
+    "file": "tests/test_Bay_order_status_batch.py",
+    "status": "FAIL",
+    "message": "helpers\\order_status_utils.py:243: AssertionError",
+    "stack_summary": "E       AssertionError: Locator expected to be visible"
+  }
+]

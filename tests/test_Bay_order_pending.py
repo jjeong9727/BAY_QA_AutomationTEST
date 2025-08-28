@@ -13,7 +13,7 @@ target_products = ["배치 확인 제품 3", "배치 확인 제품 6", "배치 �
 approve_time_products = ["배치 확인 제품 2", "배치 확인 제품 3","배치 확인 제품 5", "배치 확인 제품 6", "배치 확인 제품 8", "배치 확인 제품 9"]
 edit_product = "발주 거절 제품 3"
 delete_product = "발주 삭제 제품 1"
-reject_product = ["발주 거절 제품 1", "발주 거절 제품 3"]
+reject_product = ["발주 거절 제품 1", "발주 거절 제품 2"]
 approval_rules = ["승인규칙_1명", "승인규칙_n명", "자동 승인"]
 order_rule = ["자동화규칙_개별", "자동화규칙_묶음"]
 approver = ["qaje@medisolveai.com", "qasr@medisolveai.com", "qasy@medisolveai.com", "qa@medisolveai.com", "stg@medisolveai.com"]
@@ -88,7 +88,7 @@ def test_check_status_request(page:Page):
         page.locator("data-testid=btn_request").click()
         expect(page.locator("data-testid=toast_request")).to_have_text("발주 승인 요청이 완료되었습니다.", timeout=3000)
                 # 현재 시간 저장 (제품 별로)
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+        now_str = datetime.now().strftime("%Y. %m. %d %H:%M")
         request_times[product] = now_str
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_reset").click()
@@ -156,7 +156,7 @@ def test_check_status_request_bulk(page:Page):
                 page.locator("data-testid=btn_request").click()
                 expect(page.locator("data-testid=toast_request")).to_have_text("발주 승인 요청이 완료되었습니다.", timeout=3000)
                 # 현재 시간 저장 (제품 별로)
-                now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+                now_str = datetime.now().strftime("%Y. %m. %d %H:%M")
                 request_times[product_text] = now_str            
             elif status_text == "자동 승인":
                 expect(approval_button).to_have_text("자동 승인", timeout=3000)

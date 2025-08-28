@@ -15,26 +15,7 @@ import json
 from pathlib import Path
 import time
 
-BATCH_PATH = Path("batch_time.json")
-def load_batch_time(path: Path = BATCH_PATH) -> tuple[str, str]:
-    obj = json.loads(path.read_text(encoding="utf-8"))
-    return obj["hour"], obj["minute"]  # "HH", "MM"
-hour_str, minute_str = load_batch_time()
-def is_target_passed_now(hour_str: str, minute_str: str) -> bool:
-    now = datetime.now()
-    target_today = now.replace(
-        hour=int(hour_str), minute=int(minute_str), second=0, microsecond=0
-    )
-    return now >= target_today
-
-if not is_target_passed_now(hour_str, minute_str):
-    # 아직 안 지났으면 목표 시각 + 1분까지 대기
-    
-    now = datetime.now()
-    target = now.replace(hour=int(hour_str), minute=int(minute_str), second=0, microsecond=0)
-    time.sleep(max(0, (target - now).total_seconds()) + 60)  # +60s 여유
-
-product_list = [f"자동화제품_{i}" for i in range(1, 10)]
+product_list = [f"배치 확인 제품 {i}" for i in range(1, 10)]
 
 def accept_order(page:Page, order_id:str, manager:str):
     accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
@@ -89,7 +70,7 @@ def test_cancel_batch_history(page:Page):
     search_order_history(page, product_list[2],"발주 요청")
     
     # 대표 내역 확인 후 order_id 추출 
-    products = ["자동화제품_1", "자동화제품_2", "자동화제품_3"]
+    products = ["배치 확인 제품 1", "배치 확인 제품 2", "배치 확인 제품 3"]
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
     order_cell = rows.nth(0).locator('td:nth-child(2)')
@@ -168,7 +149,7 @@ def test_cancel_batch_history(page:Page):
 def test_receive_without_tracking(page:Page):
 
     # 대표 내역 확인 후 order_id 추출 
-    products = ["자동화제품_4", "자동화제품_5", "자동화제품_6"]
+    products = ["배치 확인 제품 4", "배치 확인 제품 5", "배치 확인 제품 6"]
 
     bay_login(page)
     page.goto(URLS["bay_orderList"])
@@ -276,7 +257,7 @@ def test_receive_without_tracking(page:Page):
 
 # ✅ 배송 진행 -> 일부 수령 -> 수령 완료    
 def test_receive_with_tracking(page:Page):
-    products = ["자동화제품_7", "자동화제품_8", "자동화제품_9"]
+    products = ["배치 확인 제품 7", "배치 확인 제품 8", "배치 확인 제품 9"]
 
     bay_login(page)
     page.goto(URLS["bay_orderList"])

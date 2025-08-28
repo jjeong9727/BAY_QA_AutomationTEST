@@ -15,7 +15,7 @@ rule_name_2 = "규칙명 등록 테스트_매주"
 
 new_name = "[수정]규칙명 등록 테스트_매주"
 edit_info_1 = "매일 / 20:00"
-edit_info_2 = "매주 월,수,목,금 / 15:30"
+edit_info_2 = "매주 월, 수, 목, 금 / 15:30"
 product_name = "발주 규칙 변경 제품"
 def test_order_rules_edit(page:Page):
     bay_login(page)
@@ -110,8 +110,14 @@ def test_order_rules_edit(page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_weekday_trigger").click()
     page.wait_for_timeout(1000)
-    page.locator(f'div[data-value="목요일"]').click()
-    page.wait_for_timeout(1000)
+    dropdown_items = page.locator('div[data-testid="drop_weekday_item"] div[data-value]')
+    count = dropdown_items.count()
+
+    for i in range(count):
+        text = dropdown_items.nth(i).inner_text().strip()
+        if text in ["목요일"]:
+            dropdown_items.nth(i).click()
+            page.wait_for_timeout(1000)
 
 
     page.locator("data-testid=btn_confirm").click()
@@ -142,7 +148,7 @@ def test_order_rules_delete(page:Page):
     expect(page.locator("data-testid=txt_nosearch")).to_have_text("일치하는 항목이 없습니다", timeout=5000)
     page.wait_for_timeout(1000)
     # 사용중 토스트 확인
-    page.locator("data-testid=input_search").fill("자동화규칙_개별")
+    page.locator("data-testid=input_search").fill(rule_name_1)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)

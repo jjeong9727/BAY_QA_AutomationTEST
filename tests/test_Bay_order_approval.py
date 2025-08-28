@@ -145,11 +145,11 @@ def test_reject_order(page:Page):
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
 
-    check_approval_status_buttons(page, "승인 대기(승인요청)", reject_products[2], order_rule[1], bulk=False, approve=True)
+    check_approval_status_buttons(page, "승인 대기(승인요청)", reject_products[1], order_rule[1], bulk=False, approve=True)
     page.wait_for_timeout(2000)
     
     rows = page.locator("table tbody tr")
-    test_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=reject_products[2])).last
+    test_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=reject_products[1])).last
     approve_button = test_row.locator("data-testid=btn_approve")
     approve_button.click()
     expect(page.locator("data-testid=txt_approve")).to_have_text("발주를 승인하시겠습니까?", timeout=5000)
@@ -157,22 +157,22 @@ def test_reject_order(page:Page):
     expect(page.locator("data-testid=toast_approve")).to_have_text("발주 승인이 완료되었습니다.", timeout=5000)  
 
     # 승인 요청 내역
-    check_approval_status_buttons(page, "발주 승인", reject_products[2], order_rule[1], bulk=False, approve=True)
+    check_approval_status_buttons(page, "발주 승인", reject_products[1], order_rule[1], bulk=False, approve=True)
     # 발주 예정 내역
     page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
-    check_approval_status_buttons(page, "승인 대기(발주예정)", reject_products[2], order_rule[1], bulk=False, approve=False)
+    check_approval_status_buttons(page, "승인 대기(발주예정)", reject_products[1], order_rule[1], bulk=False, approve=False)
 
     # 2번째 결재자 
     bay_login(page, account="stg")
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
 
-    check_approval_status_buttons(page, "승인 대기(승인요청)", reject_products[2], order_rule[1], bulk=False, approve=True)
+    check_approval_status_buttons(page, "승인 대기(승인요청)", reject_products[1], order_rule[1], bulk=False, approve=True)
     page.wait_for_timeout(2000)
 
     rows = page.locator("table tbody tr")
-    test_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=reject_products[2])).last
+    test_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=reject_products[1])).last
     approve_button = test_row.locator("data-testid=btn_reject")
     approve_button.click()
     expect(page.locator("data-testid=txt_reject")).to_have_text("발주를 거절하시겠습니까?", timeout=5000)
@@ -182,11 +182,11 @@ def test_reject_order(page:Page):
     # 승인 요청 내역
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
-    check_approval_status_buttons(page, "발주 거절", reject_products[2], order_rule[1], bulk=False, approve=True)
+    check_approval_status_buttons(page, "발주 거절", reject_products[1], order_rule[1], bulk=False, approve=True)
     # 발주 예정 내역
     page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
-    check_approval_status_buttons(page, "승인 거절", reject_products[2], order_rule[1], bulk=False, approve=False)
+    check_approval_status_buttons(page, "승인 거절", reject_products[1], order_rule[1], bulk=False, approve=False)
 
 # 개별 내역 바로 거절  
 def test_reject_bulk_order(page:Page):

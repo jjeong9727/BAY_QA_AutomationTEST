@@ -7,7 +7,7 @@ import re
 from helpers.order_status_utils import search_order_history
 from helpers.approve_status_data import approve_status_map
 def assert_time_equal(expected: str, actual: str):
-    fmt = "%Y-%m-%d %H:%M"
+    fmt = "%Y. %m. %d %H:%M"
     expected_dt = datetime.strptime(expected, fmt)
     actual_dt = datetime.strptime(actual, fmt)
     diff = abs((expected_dt - actual_dt).total_seconds())
