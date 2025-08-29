@@ -101,7 +101,7 @@ def test_stock_manual_order(page:Page):
     page.wait_for_timeout(1000)
         # 현재 시간 저장 (제품 별로)
     
-    now_str = datetime.now().strftime("%Y.%m.%d %H:%M")
+    now_str = datetime.now().strftime("%Y. %m. %d %H:%M")
     
     # 승인 요청 내역 노출 확인 
     page.goto(URLS["bay_approval"])

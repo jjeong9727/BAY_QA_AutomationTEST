@@ -62,7 +62,7 @@ def test_edit_history_bulk(page:Page):
         search_order_pending_history(page, order_rule[0], product)
 
         rows = page.locator('table tbody tr')
-        target_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=edit_product)).last
+        target_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=product)).last
         target_row.locator("data-testid=btn_approval").click()
 
         expect(page.locator("data-testid=txt_approval")).to_have_text("발주 승인을 요청하시겠습니까?", timeout=3000)

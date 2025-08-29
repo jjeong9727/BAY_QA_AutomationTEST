@@ -8,12 +8,19 @@ from helpers.order_status_utils import search_order_history
 from helpers.approve_status_data import approve_status_map
 def assert_time_equal(expected: str, actual: str):
     fmt = "%Y. %m. %d %H:%M"
+
+    # UI 값 정리 (NBSP → 일반 공백, 여러 공백을 하나로)
+    actual = actual.replace("\xa0", " ").strip()
+    actual = re.sub(r"\s+", " ", actual)
+
     expected_dt = datetime.strptime(expected, fmt)
     actual_dt = datetime.strptime(actual, fmt)
-    diff = abs((expected_dt - actual_dt).total_seconds())
-    assert diff <= 60, f"승인 요청일 차이 발생 (기대: {expected}, 실제: {actual}, 차이 {diff}초)"
 
-# 발주 예정 내역 
+    assert expected_dt == actual_dt, (
+        f"❌ 승인 요청일 불일치\n기대: {expected_dt}, 실제: {actual_dt}"
+    )
+
+    assert expected_dt == actual_dt, f"❌ 승인 요청 시간 불일치 (expected={expected}, actual={actual})"
 def check_order_pending_history(page:Page, rule:str, product:str, status:str, manual:bool, group:Optional[bool]=None):
     page.wait_for_timeout(3000)
     page.locator("data-testid=drop_rules_trigger").click()
