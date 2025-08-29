@@ -6,6 +6,7 @@ from config import URLS
 from pathlib import Path
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from pathlib import Path
+from playwright.sync_api import Page, expect
 
 PRODUCT_FILE_PATH = Path("product_name.json")
 
@@ -379,3 +380,83 @@ def select_from_dropdown(page, trigger_id: str, search_id: str, item_id: str, ke
     page.locator(f"[data-testid='{item_id}']", has_text=keyword).click()
     page.wait_for_timeout(1000)
     return keyword
+
+def check_rule_for_products(page, products, col_index: int, expected_key: str, label: str):
+    
+    for product in products:
+        page.locator("data-testid=input_search").fill(product["kor"])  # 제품명 검색
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(2000)
+
+        rows = page.locator("table tbody tr")
+        first_row = rows.nth(0)
+        rule_cell = first_row.locator(f"td:nth-child({col_index})")  # 지정한 열 가져오기
+        rule_text = rule_cell.inner_text().strip()
+
+        # 기대값: json key 기반 vs 고정 값
+        expected_value = product[expected_key] if expected_key else "자동 승인"
+
+        assert rule_text == expected_value, \
+            f"{label} 불일치 → 기대: {expected_value}, 실제: {rule_text}"
+
+        print(f"✅ {label} 확인 완료: {product['kor']} ({rule_text})")
+        page.wait_for_timeout(1000)
+
+def edit_approval_rules_and_check(page, products):
+    for product in products:
+        product_name = product["kor"]
+        register_type = product.get("register")
+
+        # register 값에 따라 승인 규칙 결정
+        if register_type == "excel":
+            approval_rule = "규칙 적용 1"
+        elif register_type == "manual":
+            approval_rule = "규칙 적용 2"
+        else:
+            raise ValueError(f"❌ 알 수 없는 register 값: {register_type}")
+
+        # 1. 제품 검색
+        page.locator("data-testid=input_search").fill(product_name)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(2000)
+
+        rows = page.locator("table tbody tr")
+        first_row = rows.nth(0)
+        edit_button = first_row.locator("td:last-child >> text=수정")
+        edit_button.click()
+        page.wait_for_timeout(2000)
+
+        # 2. 승인 규칙 드롭다운 선택
+        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+        page.wait_for_timeout(500)
+        page.locator("data-testid=drop_rule_trigger").click()
+        page.wait_for_timeout(500)
+        page.locator("data-testid=drop_rule_search").fill(approval_rule)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=drop_rule_item", has_text=approval_rule).click()
+        page.wait_for_timeout(500)
+
+        # 3. 저장 → 토스트 확인
+        page.evaluate("window.scrollTo(0, 0)")
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_save").click()
+        expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
+        page.wait_for_timeout(1000)
+
+        # 4. 다시 제품 리스트에서 검색하여 승인 규칙 확인
+        page.locator("data-testid=input_search").fill(product_name)
+        page.wait_for_timeout(500)
+        page.locator("data-testid=btn_search").click()
+        page.wait_for_timeout(2000)
+
+        rows = page.locator("table tbody tr")
+        first_row = rows.nth(0)
+        approval_cell = first_row.locator("td:nth-child(12)")  # 승인 규칙명 열
+        approval_text = approval_cell.inner_text().strip()
+
+        assert approval_text == approval_rule, \
+            f"승인 규칙 적용 실패 → 기대: {approval_rule}, 실제: {approval_text}"
+
+        print(f"✅ {product_name} ({register_type}) → {approval_rule} 적용 확인 완료")
