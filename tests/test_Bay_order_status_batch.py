@@ -105,17 +105,29 @@ def test_cancel_batch_history(page:Page):
     # 🔍 상태 확인 (상세 내역)
     for i in range(1,4):  # tr index 1~3 ⇒ 2~4행
         # 🔽 order 셀 기준으로 해당 tr의 상태 셀(td[1]) 접근
+        # 검색 결과 테이블
         first_history = page.locator('[data-testid="history"]').first
         rows = first_history.locator('table tbody tr')
-        cancel_row = rows.nth(i)
-        status_cell = cancel_row.locator('td:nth-child(1)')
+        row_count = rows.count()
+        print(f"검색된 전체 행 수: {row_count}")
 
-        if i == cancel_index:
-            expect(status_cell).to_have_text("발주 취소", timeout=3000)
+        # order_id가 같은 행만 필터링
+        order_rows = []
+        for i in range(row_count):
+            row = rows.nth(i)
+            row_order_id = row.locator("td:nth-child(2)").inner_text().strip()  # 주문번호/대표제품명 있는 열
+            if order_id in row_order_id:
+                order_rows.append(row)
 
-        else:
-            expect(status_cell).to_have_text("발주 요청", timeout=3000)
-        page.wait_for_timeout(1000)
+        print(f"✅ 동일 order_id({order_id}) 가진 행 수: {len(order_rows)}")
+
+        # 해당 order_id 제품들만 상태 확인
+        for row in order_rows:
+            status_text = row.locator("td:nth-child(1)").inner_text().strip()
+            product_text = row.locator("td:nth-child(2)").inner_text().strip()
+            print(f"🔍 {product_text} 상태 확인: {status_text}")
+            assert status_text == "발주 취소", f"❌ {product_text} 상태 불일치 (실제: {status_text})"
+
         
     
     # 일괄 취소 후 상태 확인

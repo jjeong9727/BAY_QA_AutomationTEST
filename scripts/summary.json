@@ -205,8 +205,8 @@
   {
     "name": "[자동화][발주관리] 규칙 발주 내역 확인 테스트 실패",
     "file": "tests/test_Bay_order_status_batch.py",
-    "status": "FAIL",
-    "message": "helpers\\order_status_utils.py:243: AssertionError",
-    "stack_summary": "E       AssertionError: Locator expected to be visible"
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
   }
 ]

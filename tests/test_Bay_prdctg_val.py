@@ -33,7 +33,7 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         count = name_kr_locator.count()
         for i in reversed(range(count)):
             item_text = name_kr_locator.nth(i).input_value()
-            if item_text.startswith("중복테스트"):
+            if "중복테스트" in item_text:
                 item_to_delete = name_kr_locator.nth(i)
                 item_value_to_delete = item_text
                 row_index = i
@@ -60,7 +60,7 @@ def test_duplicate_category_names(page):
     page.wait_for_url(URLS["bay_category"], timeout=6000)
     page.wait_for_timeout(1500)
 
-    name_kr = "중복테스트"
+    name_kr = "중복 확인용"
     name_en1 = "DupOne"
     name_en2 = "DupTwo"
 
