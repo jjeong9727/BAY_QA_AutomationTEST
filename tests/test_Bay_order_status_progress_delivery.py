@@ -52,8 +52,8 @@ def test_order_delivery(page: Page):
         # 배송사 선택 드롭다운 열기
         carrier_name = "일양로지스"
         tracking = "1234567890"
-        new_carrier = "CJ대한통운"
-        new_tracking = "0987654321"
+        new_carrier = "직접 배송"
+        new_tracking = "직접 배송은 운송장번호가 필요하지 않습니다"
         page.locator("data-testid=drop_shipping_trigger").click()
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_shipping_search").fill(carrier_name)
@@ -103,11 +103,14 @@ def test_order_delivery(page: Page):
         page.wait_for_timeout(1000)
         expect(page.locator("data-testid=txt_tracking_num")).to_have_text(tracking, timeout=3000)
         page.wait_for_timeout(1000)
+
+        page.locator("data-testid=btn_copy").click()
+        expect(page.locator("data-testid=toast_copy")).to_have_text("운송장 번호가 복사되었습니다.", timeout=3000)
+
         page.locator("data-testid=btn_confirm").click()
         page.wait_for_timeout(1000)
 
-        # 운송정보 수정 후 확인
-        # 1.2.0 에서 직접 발주로 변경 
+        # 운송정보 수정 후 확인 (직접 발주로 변경)
         page.goto(tracking_url)
         expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
         page.wait_for_timeout(1000)
@@ -126,8 +129,7 @@ def test_order_delivery(page: Page):
         page.locator("data-testid=drop_shipping_item", has_text=new_carrier).click()
         page.wait_for_timeout(1000)
         
-        page.fill("input[data-testid='input_tracking']", new_tracking)
-        page.wait_for_timeout(3000)
+        expect(page.locator("input[data-testid='input_tracking']")).to_have_text(new_tracking, timeout=3000)
         page.locator("button[data-testid='btn_confirm']").last.click()
         expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)
@@ -145,19 +147,21 @@ def test_order_delivery(page: Page):
         expect(page.locator("data-testid=txt_tracking")).to_have_text(new_carrier, timeout=3000)
         page.wait_for_timeout(1000)
         expect(page.locator("data-testid=txt_tracking_num")).to_have_text(new_tracking, timeout=3000)
-        page.wait_for_timeout(1000)
+
+        # 기획 확인 후 확정 필요 
+        # expect(page.locator("data-testid=toast_copy")).not_to_be_visible(timeout=3000)
+        page.locator("data-testid=btn_copy").click()
+        expect(page.locator("data-testid=toast_copy")).to_have_text("운송장 번호가 복사되었습니다.", timeout=3000)
+
         page.locator("data-testid=btn_confirm").click()
         page.wait_for_timeout(1000)
 
         if not found:
             raise AssertionError(f"[FAIL] 발주 내역에서 제품 '{product_name}'을 찾을 수 없습니다.")
 
-
-
     except Exception as e:
         print(f"❌ Error in test_order_delivery: {str(e)}")
         raise
-
 
 def main():
     with sync_playwright() as p:
@@ -165,7 +169,6 @@ def main():
 
         test_order_delivery(page)
         page.close()
-
 
 if __name__ == "__main__":
     main()
