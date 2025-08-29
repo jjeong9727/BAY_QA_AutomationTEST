@@ -45,3 +45,20 @@ Account = {
 
     "": "",
 }
+
+HEADER_MAP = {
+    "구분명": "col_type",
+    "구분명(영문)": "col_type_en",
+    "종류명": "col_group",
+    "종류명(영문)": "col_group_en",
+    "제품명": "col_product",
+    "제품명(영문)": "col_product_en",
+    "제조사명": "col_maker",
+    "제조사명(영문)": "col_maker_en",
+    "단가": "col_price",
+    "안전 재고": "col_safe_qty",
+    "자동 발주 수량": "col_order_qty",
+    "업체명": "col_supplier",
+    "업체 담당자명": "col_manager",
+    "업체 담당자 연락처": "col_contact",
+}
