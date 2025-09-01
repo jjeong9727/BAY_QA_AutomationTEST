@@ -10,7 +10,7 @@ def generate_name(prefix):
 
 def login_and_go_to_add_page(page: Page):
     try:
-        bay_login(page)
+        bay_login(page, "admin")
         page.goto(URLS["bay_category"])
         page.wait_for_timeout(2000)
         page.wait_for_url(URLS["bay_category"])

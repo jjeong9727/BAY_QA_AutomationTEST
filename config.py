@@ -39,11 +39,14 @@ Account = {
     "testid_stg" : "stg@medisolveai.com", # QA 계정 
     "testid_qa" : "stg@medisolveai.com", # 법인폰 010-8514-8780
     # 본사 계정
+    "testid_admin": "admin@medisolveai.com", # admin 운영본부장 010-8514-8780
     
-
     # 지점 계정
+    "testid_je": "jekwon@medisolveai.com", # 권정의 원장 010-6275-4153 
+    "testid_emp": "emp@medisolveai.com", # 황우디 대표원장 010-8514-8780 
 
-    "": "",
+    
+    "": "", # 
 }
 
 HEADER_MAP = {

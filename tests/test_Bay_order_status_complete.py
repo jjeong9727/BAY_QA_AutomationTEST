@@ -27,7 +27,7 @@ def run_order_status_check(page: Page, delivery_status: int, product_name:str):
 
     try:
         
-        bay_login(page)
+        bay_login(page, "jekwon")
 
         # 발주 내역 검색
         page.goto(URLS["bay_orderList"])

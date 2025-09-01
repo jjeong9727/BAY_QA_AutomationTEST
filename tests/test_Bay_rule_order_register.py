@@ -7,7 +7,7 @@ from helpers.rules_utils import search_and_check_rule
 MEMO_TEXT = "✔️ Memo 테스트 123!@# 한글과 English 포함하여 총 100자를 맞춘 예시입니다. 여기에 더 추가하면 100자가 딱 됩니다!!! 딱 맞아 떨어지는 100자는 여기까지이후 문자는 삭제 되어야 합니다."
 
 def test_order_rules_register(page: Page):
-    bay_login(page)
+    bay_login(page, "admin")
     page.goto(URLS["bay_rules"])
     page.wait_for_timeout(2000)
     rule_name_1 = "규칙명 등록 테스트_매주"

@@ -13,7 +13,7 @@ import time
 # 수동 발주/승인 규칙O : "발주 예정 내역" 미노출, "발주 승인 요청 내역" 노출
 # 수동 발주/승인 규칙X : "발주 예정 내역" 미노출, "발주 승인 요청 내역" 미노출
 def test_stock_manual_order(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(1000)
 

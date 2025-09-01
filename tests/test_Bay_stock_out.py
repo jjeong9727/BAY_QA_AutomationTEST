@@ -53,7 +53,7 @@ minute_str = next_time.strftime("%M")
 
 def test_stock_outflow(page):
     try:
-        bay_login(page)
+        bay_login(page, "jekwon")
         page.goto(URLS["bay_rules"])
         page.wait_for_selector("data-testid=btn_edit", timeout=10000)
 
@@ -117,7 +117,7 @@ def test_stock_outflow(page):
         raise
 
 def test_edit_stocklist_and_auto_order(page):
-    bay_login(page)
+    bay_login(page, "jekwon")
 
     stock_manager = StockManager(page)
 

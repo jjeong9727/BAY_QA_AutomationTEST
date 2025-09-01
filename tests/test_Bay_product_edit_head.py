@@ -7,7 +7,7 @@ from helpers.common_utils import bay_login
 edit_product = "수정 확인 제품"
 # 제품 수정 확인
 def test_edit_products(page):
-    bay_login(page)
+    bay_login(page, "admin")
 
     page.goto(URLS["bay_prdList"])
     page.wait_for_selector("data-testid=btn_addprd", timeout=5000)

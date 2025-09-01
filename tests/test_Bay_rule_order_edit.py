@@ -18,7 +18,7 @@ edit_info_1 = "매일 / 20:00"
 edit_info_2 = "매주 월, 수, 목, 금 / 15:30"
 product_name = "발주 규칙 변경 제품"
 def test_order_rules_edit(page:Page):
-    bay_login(page)
+    bay_login(page, "admin")
     # 제품에 규칙 연결 후 수정 확인
     page.goto(URLS["bay_prdList"])
     page.wait_for_timeout(3000)
@@ -127,8 +127,27 @@ def test_order_rules_edit(page:Page):
     search_and_check_rule(page, new_name, edit_info_2, "0개 제품", MEMO_TEXT)
     page.wait_for_timeout(1000)
 
+# 지점 발주 규칙 확인
+def test_order_rule_branch(page:Page):
+    bay_login(page, "jekwon")
+    page.goto(URLS["bay_rules"])
+    page.wait_for_selector("data-testid=input_search", timeout=5000)
+    
+    page.locator("data-testid=input_search").fill(new_name)
+    page.wait_for_timeout(2000)
+    
+    rows = page.locator("table tbody tr")
+    name_cell = rows.nth(0).locator("td:nth-child(1)")
+    name_text = name_cell.inner_text().strip()
+    assert new_name == name_text, "지점에서 발주 규칙 확인 불가"
+
+    detail_btn = rows.nth(0).locator("data-testid=btn_detail")
+    detail_btn.click()
+
+    expect(page.locator("data-testid=txt_title")).to_have_text("발주 규칙 상세", timeout=5000)
+    
 def test_order_rules_delete(page:Page):
-    bay_login(page)
+    bay_login(page, "admin")
     page.goto(URLS["bay_rules"])
     page.wait_for_timeout(2000)
     txt_delete = "발주 규칙을 삭제하시겠습니까?"
@@ -218,4 +237,5 @@ def test_order_rules_delete(page:Page):
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_delete")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
+
 

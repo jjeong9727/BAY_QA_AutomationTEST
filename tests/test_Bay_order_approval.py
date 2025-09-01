@@ -18,7 +18,7 @@ approver = ["qaje@medisolveai.com", "qasr@medisolveai.com", "qasy@medisolveai.co
 # 개별 내역 승인 
 def test_approve_order(page:Page):
     for product in products:
-        bay_login(page, account="qaje") #로그인할 계정 
+        bay_login(page, account="jekwon") #로그인할 계정 
         page.goto(URLS["bay_approval"])
         page.wait_for_timeout(2000)
         if product == "수동 발주 제품 2":
@@ -68,7 +68,7 @@ def test_approve_order(page:Page):
             check_approval_status_buttons(page, "승인 대기(발주예정)", product, order_rule[0], bulk=False, approve=False)
 
         # 2번째 승인자 결재 
-        bay_login(page, account="stg")
+        bay_login(page, account="emp")
         page.goto(URLS["bay_approval"])
         page.wait_for_timeout(2000)
         if product == products[3]:
@@ -115,7 +115,7 @@ def test_approve_order(page:Page):
 
 # 통합 내역 승인 (요청 내역에서 바로 승인)
 def test_approve_bulk_order(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     for product in bulk_products:
         
         page.goto(URLS["bay_approval"])
@@ -141,7 +141,7 @@ def test_approve_bulk_order(page:Page):
 
 # 개별 내역 한번 승인 후 거절  
 def test_reject_order(page:Page):
-    bay_login(page, account="qaje")
+    bay_login(page, account="jekwon")
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
 
@@ -164,7 +164,7 @@ def test_reject_order(page:Page):
     check_approval_status_buttons(page, "승인 대기(발주예정)", reject_products[1], order_rule[0], bulk=False, approve=False)
 
     # 2번째 결재자 
-    bay_login(page, account="stg")
+    bay_login(page, account="emp")
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
 
@@ -191,7 +191,7 @@ def test_reject_order(page:Page):
 # 개별 내역 바로 거절  
 def test_reject_bulk_order(page:Page):
     
-    bay_login(page, account="qaje")
+    bay_login(page, account="jekwon")
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)   
     check_approval_status_buttons(page, "승인 대기(승인요청)", reject_products[0], order_rule[0], bulk=False, approve=True)

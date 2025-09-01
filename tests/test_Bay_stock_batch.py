@@ -9,7 +9,7 @@ from helpers.approve_utils import check_approval_history, check_order_pending_hi
 
 
 def test_inflow (page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_stockadd").click()
@@ -50,7 +50,7 @@ def test_inflow (page:Page):
     page.wait_for_timeout(2000)
 
 def test_outflow(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     # 출고 처리 (발주 규칙은 test_Bay_stock_out.py 에서)
     txt_outflow = "재고가 안전 재고보다 적은 경우 발주 규칙에 따라 발주됩니다."
     page.goto(URLS["bay_stock"])

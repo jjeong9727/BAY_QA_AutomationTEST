@@ -36,6 +36,7 @@ def append_product_name(
     order_rule: str,
     supplier: str,
     approve_rule: str,
+    register: str,
     safety: int = 0,
     auto_order : int =0,
     order_flag : int = 0,
@@ -65,7 +66,8 @@ def append_product_name(
         "order_flag" : order_flag,
         "stock_qty" : stock_qty,
         "delivery_status" : delivery_status,
-        "approve_rule" : approve_rule
+        "approve_rule" : approve_rule,
+        "register": register
     })
 
     with open(PRODUCT_FILE_PATH, "w", encoding="utf-8") as f:
@@ -410,9 +412,9 @@ def edit_approval_rules_and_check(page, products):
 
         # register 값에 따라 승인 규칙 결정
         if register_type == "excel":
-            approval_rule = "규칙 적용 1"
+            approval_rule = "승인규칙_1명"
         elif register_type == "manual":
-            approval_rule = "규칙 적용 2"
+            approval_rule = "승인규칙_n명"
         else:
             raise ValueError(f"❌ 알 수 없는 register 값: {register_type}")
 
@@ -453,7 +455,7 @@ def edit_approval_rules_and_check(page, products):
 
         rows = page.locator("table tbody tr")
         first_row = rows.nth(0)
-        approval_cell = first_row.locator("td:nth-child(12)")  # 승인 규칙명 열
+        approval_cell = first_row.locator("td:nth-child(12)")  # 승인 규칙명 12열
         approval_text = approval_cell.inner_text().strip()
 
         assert approval_text == approval_rule, \

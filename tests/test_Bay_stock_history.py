@@ -46,7 +46,7 @@ def get_last_column_of_history2(page: Page) -> str:
 
 # ✅ 지난 날짜 재고 수정 및 상세 확인 
 def test_inflow_past(page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
     today = datetime.today()
@@ -168,7 +168,7 @@ def test_inflow_past(page):
 
 # ✅ 재고 일괄 수정 및 상세 확인 
 def test_stock_bulk_edit(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
     today = datetime.today()

@@ -51,7 +51,7 @@ def test_order_acceptance(page: Page):
 
         try:
             # 로그인
-            bay_login(page)
+            bay_login(page, "jekwon")
 
             # 발주 내역 검색
             page.goto(URLS["bay_orderList"])

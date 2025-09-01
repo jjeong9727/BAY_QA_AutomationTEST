@@ -12,7 +12,7 @@ from helpers.common_utils import bay_login
 def test_delete_category_each(page, tab, testid_kor, testid_eng, require_eng):
 
     try:
-        bay_login(page)
+        bay_login(page, "admin")
         page.goto(URLS["bay_category"])
         page.wait_for_selector(f"data-testid={tab}", timeout=10000)
         page.wait_for_timeout(2000)

@@ -13,7 +13,7 @@ def generate_edit_name():
 
 def test_register_supplier(page):
     try:
-        bay_login(page)
+        bay_login(page, "admin")
         
         page.goto(URLS["bay_supplier"])
         page.wait_for_url(URLS["bay_supplier"], timeout=60000)

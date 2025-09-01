@@ -19,7 +19,7 @@ def test_order_receive_from_progress(page: Page):
 
         status_name = "발주 진행"
 
-        bay_login(page)
+        bay_login(page, "jekwon")
         page.goto(URLS["bay_stock"])
         page.wait_for_timeout(3000)
         page.fill("data-testid=input_search", product_name)

@@ -11,7 +11,7 @@ def test_duplicate_product_name(page):
         prdname_kor = "중복테스트"
         prdname_eng = "Duplicate Test"
 
-        bay_login(page)
+        bay_login(page, "admin")
 
         page.goto(URLS["bay_prdList"])
         expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=7000)

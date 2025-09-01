@@ -3,7 +3,7 @@ from helpers.common_utils import bay_login
 from config import URLS
 
 def test_approval_rules_register(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_approval_rule"])
     page.wait_for_timeout(2000)
 

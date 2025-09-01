@@ -6,7 +6,7 @@ from helpers.common_utils import bay_login
 from helpers.product_utils import select_from_dropdown, generate_product_name
 
 def test_prep_category_and_supplier (page:Page):
-    bay_login(page)
+    bay_login(page, "admin")
 
     page.goto(URLS["bay_category"])
     page.wait_for_timeout(1000)
@@ -134,7 +134,7 @@ def test_prep_category_and_supplier (page:Page):
 
 
 def test_prep_register_rules (page:Page):
-    bay_login(page)
+    bay_login(page, "admin")
 
     # 승인 규칙 등록
     page.goto(URLS["bay_approval_rule"])
@@ -280,7 +280,7 @@ def test_prep_register_rules (page:Page):
         page.wait_for_timeout(1000)
 
 def test_prep_product (page:Page):
-    bay_login(page)
+    bay_login(page, "admin")
     # 수동 발주 제품 / 발주 승인 거절 테스트용 제품 등록 
     # (수동 발주 제품_1, 2, 3 / 발주 거절 제품_1, 2, 3)
     names = ["수동 발주 제품 1", "수동 발주 제품 2", "수동 발주 제품 3", "발주 거절 제품 1", "발주 거절 제품 2", "발주 거절 제품 3"]
@@ -369,25 +369,6 @@ def test_prep_product (page:Page):
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(1000)
 
-                # 승인 규칙 선택
-        rule1 = "승인규칙_1명"
-        rule2 = "승인규칙_n명"
-        auto  = "자동 승인"
-
-        if idx in (1, 4, 6): # 수동 발주 제품 1, 발주 거절 제품 1, 발주 거절 제품 3
-            approve_rule = rule1
-        elif idx in (2, 5): # 수동 발주 제품 2, 발주 거절 제품 2
-            approve_rule = rule2
-        elif idx == 3: # 수동 발주 제품 3
-            approve_rule = auto
-
-        page.locator("data-testid=drop_approval_trigger").click()
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_approval_search").fill(approve_rule)
-        page.wait_for_timeout(1000)
-        page.locator("data-testid=drop_approval_item", has_text=approve_rule).click()
-        page.wait_for_timeout(1000)
-
         if idx < num_products - 1:
             add_row_button = page.locator("data-testid=btn_addrow")
             add_row_button.scroll_into_view_if_needed()
@@ -458,18 +439,7 @@ def test_prep_product (page:Page):
     expect(page.locator("data-testid=input_stk_qty")).to_have_value("0",timeout=3000)
     page.locator("data-testid=drop_supplier_trigger").click()
     page.wait_for_timeout(1000)
-            # 승인 규칙 선택 
-    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-    page.wait_for_timeout(1000)
-
-    page.locator("data-testid=drop_approval_trigger").click()
-    page.wait_for_selector("data-testid=drop_approval_search",timeout=3000)
-    page.locator("data-testid=drop_approval_search").fill("자동 승인")
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_approval_item",has_text="자동 승인").click()
-    page.wait_for_timeout(1000)
-
-
+            
         # 제품추가 (발주 규칙 변경 제품)
     page.locator("data-testid=btn_addrow").click()
     page.wait_for_timeout(1000)
@@ -527,13 +497,6 @@ def test_prep_product (page:Page):
     page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
-        # 승인 규칙 선택
-    page.locator("data-testid=drop_approval_trigger").click()
-    page.wait_for_selector("data-testid=drop_approval_search",timeout=3000)
-    page.locator("data-testid=drop_approval_search").fill("자동 승인")
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_approval_item",has_text="자동 승인").click()
-    page.wait_for_timeout(1000)
         # 저장 
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(1000)
@@ -634,20 +597,7 @@ def test_prep_product (page:Page):
             page.wait_for_timeout(1000)
 
 
-                # 승인 규칙 선택 
-        page.locator("data-testid=drop_approval_trigger").click()
-        page.wait_for_selector("data-testid=drop_approval_search",timeout=3000)
-        if idx in (1, 4, 7): # 자동화제품_2, 5, 8
-            page.locator("data-testid=drop_approval_search").fill("승인 규칙_1명")
-            page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_approval_item",has_text="승인 규칙_1명").click()
-            page.wait_for_timeout(1000)
-        else:
-            page.locator("data-testid=drop_approval_search").fill(rule1)
-            page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_approval_item",has_text=rule1).click()
-            page.wait_for_timeout(1000)
-
+                
         if idx < num_products - 1:
             add_row_button = page.locator("data-testid=btn_addrow")
             add_row_button.scroll_into_view_if_needed()
@@ -665,7 +615,7 @@ def test_prep_product (page:Page):
 
 def test_prep_stock (page:Page):
     # 중복테스트 재고 등록(삭제 불가 확인용)
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_stockadd"])
     page.wait_for_timeout(2000)
     page.locator("data-testid=drop_status_trigger").click()

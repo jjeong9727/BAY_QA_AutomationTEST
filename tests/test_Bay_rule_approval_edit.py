@@ -3,7 +3,7 @@ from helpers.common_utils import bay_login
 from config import URLS
 
 def test_approval_rules_register(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_approval_rule"])
     page.wait_for_timeout(2000)
 
@@ -113,7 +113,7 @@ def test_approval_rules_register(page:Page):
 def test_delete_approval_rule(page:Page):
     delete_name = "[수정] 규칙 등록 테스트"
 
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_approval_rule"])
     page.wait_for_selector("data-testid=input_search", timeout=3000)
     page.locator("data-testid=input_search").fill(delete_name)

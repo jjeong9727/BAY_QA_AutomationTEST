@@ -63,7 +63,7 @@ def delivery_order(page:Page, order_id:str, manager:str):
 # ✅ 발주 요청 -> 개별 취소 / 일괄 취소 
 def test_cancel_batch_history(page:Page):
     
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
 
@@ -163,7 +163,7 @@ def test_receive_without_tracking(page:Page):
     # 대표 내역 확인 후 order_id 추출 
     products = ["배치 확인 제품 4", "배치 확인 제품 5", "배치 확인 제품 6"]
 
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
     search_order_history(page, product_list[5], "발주 요청")
@@ -271,7 +271,7 @@ def test_receive_without_tracking(page:Page):
 def test_receive_with_tracking(page:Page):
     products = ["배치 확인 제품 7", "배치 확인 제품 8", "배치 확인 제품 9"]
 
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_orderList"])
     page.wait_for_timeout(2000)
     search_order_history(page, product_list[8], "발주 요청")

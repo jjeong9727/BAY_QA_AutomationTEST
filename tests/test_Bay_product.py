@@ -4,12 +4,10 @@ from config import URLS, Account
 from helpers.product_utils import append_product_name, generate_product_names, verify_products_in_list, select_from_dropdown
 from helpers.common_utils import bay_login
 
-# 드롭다운 내 검색 추가 (prep으로 등록한 값 활용)
-# 저장 버튼 testid 추가
 
 def test_register_multiple_products(page: Page):
     try:
-        bay_login(page)
+        bay_login(page, "admin")
         page.goto(URLS["bay_prdList"])
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_addprd").click()
@@ -114,14 +112,8 @@ def test_register_multiple_products(page: Page):
             page.locator("data-testid=drop_rule_item", has_text=rule).click()
             page.wait_for_timeout(1000)
 
-            # 승인 규칙 선택
-            approve_rule = "승인규칙_n명"
-            page.locator("data-testid=drop_approval_trigger").click()
-            page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_approval_search").fill(approve_rule)
-            page.wait_for_timeout(1000)
-            page.locator("data-testid=drop_approval_item", has_text=approve_rule).click()
-            page.wait_for_timeout(1000)
+            # 승인 규칙 미노출 확인 
+            expect(page.locator("data-testid=drop_approval_trigger")).not_to_be_visible(timeout=3000)
             
             prd_data.append({
                 "prdname_kor": prdname_kor,
@@ -133,8 +125,8 @@ def test_register_multiple_products(page: Page):
                 "auto_order": auto_order,
                 "order_rule": rule,
                 "supplier" : supplier, # ("자동화업체, 권정의 010-6275-4153")
-                "approve_rule" : approve_rule, # (승인규칙_n명)
-
+                "approve_rule" : "자동 승인", 
+                "register": "manual"
             })
 
             if idx < num_products - 1:
@@ -154,7 +146,7 @@ def test_register_multiple_products(page: Page):
         for product in prd_data:
             append_product_name(**product)
 
-        verify_products_in_list(page, prdnames, URLS["bay_prdList"], 4)
+        verify_products_in_list(page, prdnames, URLS["bay_prdList"], 3)
         # verify_products_in_list(page, prdnames, URLS["bay_stock"], 4)
 
     except Exception as e:

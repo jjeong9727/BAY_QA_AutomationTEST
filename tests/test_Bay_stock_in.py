@@ -11,7 +11,7 @@ from playwright.sync_api import Page, expect
 products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3", "발주 거절 제품 1", "발주 거절 제품 2"]
 def test_stock_inflow(page):
     try:
-        bay_login(page)
+        bay_login(page, "jekwon")
         stock_manager = StockManager(page)
         if len(products) < 3:
             raise AssertionError(f"❌ 조건에 맞는 제품이 {len(products)}개만 존재합니다. 3개 이상이 필요합니다.")

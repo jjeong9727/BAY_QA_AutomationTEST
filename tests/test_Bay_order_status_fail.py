@@ -24,7 +24,7 @@ def test_order_status_fail(page: Page):
         product = random.choice(filtered_products)
         product_name = product["kor"]
 
-        bay_login(page)
+        bay_login(page, "jekwon")
          
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(2000)

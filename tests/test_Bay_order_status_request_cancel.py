@@ -40,7 +40,7 @@ def test_order_cancel(page: Page):
         # 배치 발주 시간+1분 까지 대기 
         wait_until_batch_ready("batch_time.json")
 
-        bay_login(page)
+        bay_login(page, "jekwon")
 
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(2000)

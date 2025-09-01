@@ -54,7 +54,7 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
 
 
 def test_duplicate_category_names(page):
-    bay_login(page)
+    bay_login(page, "admin")
 
     page.goto(URLS["bay_category"])
     page.wait_for_url(URLS["bay_category"], timeout=6000)

@@ -20,7 +20,7 @@ approver = ["qaje@medisolveai.com", "qasr@medisolveai.com", "qasy@medisolveai.co
 
 # 발주 예정 내역 수정 및 거절 제품 요청
 def test_edit_history_bulk(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
     
@@ -71,7 +71,7 @@ def test_edit_history_bulk(page:Page):
 
 # 승인 요청 버튼 확인 후 요청 동작 (개별 내역)
 def test_check_status_request(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     
     request_times = {}
     for product in products:
@@ -105,7 +105,7 @@ def test_check_status_request(page:Page):
 # 승인 요청 버튼 확인 후 요청 동작 (통합 내역)
 def test_check_status_request_bulk(page:Page):
     
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
     # 승인 요청 전 상태 확인 (통합내역 / 발주 요청 내역)
@@ -174,7 +174,7 @@ def test_check_status_request_bulk(page:Page):
         
 # 발주 예정 제품 삭제 
 def test_delete_history(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_order_pending"])
     page.wait_for_timeout(2000)
 

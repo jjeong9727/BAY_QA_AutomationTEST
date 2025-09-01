@@ -22,7 +22,7 @@ def test_order_delivery(page: Page):
     try:
 
         # 로그인
-        bay_login(page)
+        bay_login(page, "jekwon")
 
         # 발주 내역 검색
         page.goto(URLS["bay_orderList"])
@@ -134,7 +134,7 @@ def test_order_delivery(page: Page):
         expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)
 
-        bay_login(page)
+        bay_login(page, "jekwon")
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(3000)
         page.fill("data-testid=input_search", product_name)
@@ -146,12 +146,10 @@ def test_order_delivery(page: Page):
         page.locator("data-testid=btn_check_tracking").first.click()
         expect(page.locator("data-testid=txt_tracking")).to_have_text(new_carrier, timeout=3000)
         page.wait_for_timeout(1000)
-        expect(page.locator("data-testid=txt_tracking_num")).to_have_text(new_tracking, timeout=3000)
+        expect(page.locator("data-testid=txt_tracking_num")).to_have_text("-", timeout=3000)
 
-        # 기획 확인 후 확정 필요 
-        # expect(page.locator("data-testid=toast_copy")).not_to_be_visible(timeout=3000)
-        page.locator("data-testid=btn_copy").click()
-        expect(page.locator("data-testid=toast_copy")).to_have_text("운송장 번호가 복사되었습니다.", timeout=3000)
+        # 직접 배송인 경우 비활성화 
+        expect(page.locator("data-testid=toast_copy")).to_be_disabled(timeout=3000)
 
         page.locator("data-testid=btn_confirm").click()
         page.wait_for_timeout(1000)

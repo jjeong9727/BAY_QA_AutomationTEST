@@ -15,7 +15,7 @@ txt_nosave = "변경 사항을 저장하지 않으시겠습니까?"
 
 # 카테고리 관리
 def test_alert_category(page:Page):
-    bay_login(page)
+    bay_login(page, "admin")
         # [카테고리 관리] 이탈 팝업 확인
     page.goto(URLS["bay_category"])
     page.wait_for_timeout(2000)
@@ -55,19 +55,19 @@ def test_alert_category(page:Page):
 
 # 제품 관리
 def test_alert_product(page:Page):
-    bay_login(page)
-    # # [제품 관리] 엑셀 다운로드 확인
-    # # 오늘 날짜 포맷 (예: 2025_07_15)
-    # page.goto(URLS["bay_prdList"])
-    # today = datetime.now().strftime("%Y_%m_%d")
-    # with page.expect_download() as download_info:
-    #     page.click('[data-testid="btn_download"]')
-    #     page.wait_for_timeout(1000)
-    # download = download_info.value
+    bay_login(page, "jekwon")
+    # [제품 관리] 엑셀 다운로드 확인
+    # 오늘 날짜 포맷 (예: 2025_07_15)
+    page.goto(URLS["bay_prdList"])
+    today = datetime.now().strftime("%Y_%m_%d")
+    with page.expect_download() as download_info:
+        page.click('[data-testid="btn_download"]')
+        page.wait_for_timeout(1000)
+    download = download_info.value
 
-    # filename = download.suggested_filename
-    # print(f"📁 다운로드된 파일명: {filename}")
-    # assert filename.startswith(today), f"❌ 파일명이 오늘 날짜({today})로 시작하지 않습니다."
+    filename = download.suggested_filename
+    print(f"📁 다운로드된 파일명: {filename}")
+    assert filename.startswith(today), f"❌ 파일명이 오늘 날짜({today})로 시작하지 않습니다."
 
     # 제품 미선택 > 일괄 삭제 시도 
     page.locator("data-testid=btn_del_bulk").click()
@@ -159,14 +159,6 @@ def test_alert_product(page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_rule_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
-
-        # 승인 규칙
-    page.locator("data-testid=drop_approval_trigger").click()
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_approval_search").fill("중복테스트")
-    page.wait_for_timeout(1000)
-    page.locator("data-testid=drop_approval_item", has_text="중복테스트").click()
-    page.wait_for_timeout(1000)
     
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(2000)
@@ -224,7 +216,7 @@ def test_alert_product(page:Page):
 
 # 재고 관리
 def test_alert_stock(page:Page):
-    bay_login(page)
+    bay_login(page, "jekwon")
     # [재고관리] 이탈 팝업 확인
     # # 재고 등록화면
     txt_register = "해당 날짜로 재고 등록하시겠습니까?"
@@ -396,7 +388,7 @@ def test_alert_stock(page:Page):
 
 # 발주 규칙 관리
 def test_alert_order_rules(page:Page):
-    bay_login(page)
+    bay_login(page, "admin")
     # [발주 규칙 관리] 중복명 확인
     rule_name = "중복테스트"
     memo = "중복값 확인"
@@ -510,7 +502,7 @@ def test_alert_supplier_page(page:Page):
 # 승인 규칙 관리
 def test_alert_approval_rules(page:Page):
     approval_1 = "권정의"
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_approval_rule"])
     page.wait_for_timeout(2000)
 
@@ -614,7 +606,7 @@ def test_alert_approval_rules(page:Page):
 def test_alert_manual_order(page:Page):
     txt_nodelete = "최소 1개 이상의 제품이 있어야 수동 발주가 가능합니다."
     txt_quantity = "수동 발주 수량은 최소 1개 이상이어야 합니다."
-    bay_login(page)
+    bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
     # 제품 개수 토스트 팝업 확인

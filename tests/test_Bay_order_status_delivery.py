@@ -15,7 +15,7 @@ def test_order_receive_from_delivery(page: Page):
     try:
         status_name = "배송 진행"
 
-        bay_login(page)
+        bay_login(page, "jekwon")
         page.goto(URLS["bay_stock"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.wait_for_timeout(1000)
