@@ -22,7 +22,7 @@ def generate_product_names():
     prdname_eng = f"TestProduct_{date}_{count}"
     return prdname_kor, prdname_eng
 def generate_product_name(count:int):
-    prdname_kor = f"자동화제품_{count}"
+    prdname_kor = f"배치 확인 제품_{count}"
     prdname_eng = f"AutoProduct_{count}"
     return prdname_kor, prdname_eng
 

@@ -60,7 +60,7 @@ def test_duplicate_category_names(page):
     page.wait_for_url(URLS["bay_category"], timeout=6000)
     page.wait_for_timeout(1500)
 
-    name_kr = "중복 확인용"
+    name_kr = "중복테스트"
     name_en1 = "DupOne"
     name_en2 = "DupTwo"
 

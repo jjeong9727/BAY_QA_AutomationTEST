@@ -30,16 +30,16 @@ def test_edit_category_each(page, tab, testid_kor, testid_eng, require_eng, expe
         item_to_edit = None
         current_value = None
 
-        # '중복테스트' 또는 '[수정] 중복테스트' 항목 찾기
+        # '수정테스트' 또는 '[수정] 수정테스트' 항목 찾기
         for i in range(row_count):
             value = name_kr_locators.nth(i).input_value().strip()
-            if value.startswith("중복테스트") or value.startswith("[수정] 중복테스트"):
+            if value.startswith("수정테스트") or value.startswith("[수정] 수정테스트"):
                 item_to_edit = name_kr_locators.nth(i)
                 current_value = value
                 break
 
         if not item_to_edit:
-            pytest.fail("⚠️ '중복테스트' 또는 '[수정] 중복테스트' 항목을 찾을 수 없습니다.")
+            pytest.fail("⚠️ '수정테스트' 또는 '[수정] 수정테스트' 항목을 찾을 수 없습니다.")
 
         print(f"✅ 현재 값: {current_value}")
 

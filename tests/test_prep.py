@@ -503,7 +503,7 @@ def test_prep_product (page:Page):
     page.locator("data-testid=btn_save").click()
     page.wait_for_timeout(1000)
 
-        # 배치 발주 테스트용 제품 생성(9개)("자동화제품_1, 2, 3, ...")
+        # 배치 발주 테스트용 제품 생성(9개)("배치 확인 제품 1, 2, 3, ...")
     page.goto(URLS["bay_prdList"])
     page.wait_for_timeout(2000)
     page.locator("data-testid=btn_addprd").click()
