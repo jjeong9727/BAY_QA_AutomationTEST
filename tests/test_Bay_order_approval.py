@@ -13,7 +13,7 @@ approved_products = ["배치 확인 제품 1","배치 확인 제품 4","배치 �
 reject_products = ["발주 거절 제품 1","발주 거절 제품 2","발주 거절 제품 3"] 
 approval_rules = ["승인규칙_1명", "승인규칙_n명", "자동 승인"]
 order_rule = ["자동화규칙_개별", "자동화규칙_묶음"] 
-approver = ["qaje@medisolveai.com", "qasr@medisolveai.com", "qasy@medisolveai.com", "qa@medisolveai.com", "stg@medisolveai.com"]
+approver = ["jekwon@medisolveai.com", "emp@medisolveai.com"]
 
 # 개별 내역 승인 
 def test_approve_order(page:Page):
@@ -90,7 +90,7 @@ def test_approve_order(page:Page):
         page.wait_for_timeout(1000)
 
         # 2번째 승인자 결재 
-        page.locator("data-testid=input_email").fill(approver[4])
+        page.locator("data-testid=input_email").fill(approver[1])
         page.wait_for_timeout(1000)
         page.locator("data-testid=input_pw").fill(Account["testpw"])
         page.wait_for_timeout(1000)

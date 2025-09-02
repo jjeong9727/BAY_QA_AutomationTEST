@@ -57,7 +57,7 @@ def test_edit_history_bulk(page:Page):
     page.wait_for_timeout(3000)
     target_cell = target_row.locator("td").nth(5)
     expect(target_cell).to_have_text("100,000", timeout=3000)
-
+    # 발주 거절 제품_1, 2 승인 요청 
     for product in reject_product:
         search_order_pending_history(page, order_rule[0], product)
 

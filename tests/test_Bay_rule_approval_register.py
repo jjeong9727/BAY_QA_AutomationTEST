@@ -9,8 +9,8 @@ def test_approval_rules_register(page:Page):
 
     name = "규칙 등록 테스트"
     approval_1 = "권정의"
-    approval_2 = "QA 계정"
-    referrer_1 = "QA 계정"
+    approval_2 = "황우디"
+    referrer_1 = "황우디"
     referrer_2 = "권정의"
     txt_register = "승인 규칙 등록이 완료되었습니다."
 

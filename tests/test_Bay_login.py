@@ -16,7 +16,7 @@ def test_login_wrong_password(page):
         login_button = page.locator("data-testid=btn_login")
 
         # 2. 아이디와 비밀번호를 입력
-        page.fill("data-testid=input_id", Account["testid"])
+        page.fill("data-testid=input_id", Account["testid_je"])
         page.wait_for_timeout(1000)
         page.fill("data-testid=input_pw", Account["wrongpw"])  # 잘못된 비밀번호 입력
         page.wait_for_timeout(1000)
@@ -33,7 +33,7 @@ def test_login_wrong_password(page):
         print("[PASS] 비밀번호 불일치 테스트 성공")
 
         # 아이디, 비밀번호 입력 후 로그인 버튼 클릭
-        page.fill("data-testid=input_id", Account["testid"])  # 아이디 입력
+        page.fill("data-testid=input_id", Account["testid_je"])  # 아이디 입력
         page.wait_for_timeout(1000)
         page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
         page.wait_for_timeout(1000)
@@ -47,10 +47,6 @@ def test_login_wrong_password(page):
         version_text = version_span.text_content().strip().splitlines()[-1].strip().strip('"')
 
         print(f"버전: {version_text}")
-
-        version_data = {
-            "version": version_text
-        }
 
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump({"version": version_text}, f, ensure_ascii=False, indent=2)

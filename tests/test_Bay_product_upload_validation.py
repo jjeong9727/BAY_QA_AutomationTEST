@@ -37,7 +37,8 @@ def test_upload_product_validation(page: Page):
     auto_order_zero_count = 0
     contact_length_error_count = 0
     total_rows = 0
-    seen_combinations = set() # 엑셀 중복인 경우를 위한 세팅
+    seen_combinations = {} 
+    excel_dup_candidates = set() # 엑셀 중복인 경우를 위한 세팅
     both_dup_keys = set() # 서버 중복 + 엑셀 중복인 경우를 위한 세팅 
     registered_products = {("중복테스트", "중복테스트"),("배치 확인 제품 1", "자동화업체D")} # 서버 중복인 경우를 위한 값
     errors = [] # Fail 건 수집용 (모든 에러 케이스 확인 후 최종 Fail 처리)
@@ -64,63 +65,86 @@ def test_upload_product_validation(page: Page):
             # dict 저장
             row_data[header_name] = str(cell_value) if cell_value is not None else ""
 
-        # --- 미입력 에러 체크 ---
+        # --- ▶️ 미입력 에러 체크 ---
         if "" in row_data.values():
             placeholder_count += 1
             error_tag = table_row.locator("[data-testid=tag_error]")
             if not error_tag.is_visible():
-                errors.append(f"{row_idx+1}행: 미입력 에러 미노출")
+                errors.append(f"{row_idx+1}행: 미입력 에러 태그 미노출")
             else:
                 error_tag.hover()
                 tooltip_text = page.locator("[data-testid=error_tooltip]").text_content().strip()
-                # 실패 처리 하지 않고 모든 항목 확인 후 한번에 실패 처리
+                
+                # 누락된 헤더 수집
+                missing_headers = [k for k, v in row_data.items() if v == ""]
                 if "필수 입력 항목" not in tooltip_text:
+                   # 실패 처리 하지 않고 모든 항목 확인 후 한번에 실패 처리
                     errors.append(f"🔔 {row_idx+1}행: 미입력 문구 불일치 | 실제 노출: {tooltip_text}")
                 else :
                     print("✅ 미입력 유효성 문구 확인")
 
-        # --- 중복 에러 체크 ---
+                # 유효성 문구 내 헤더 값 확인 
+                missing_not_in_tooltip = [h for h in missing_headers if h not in tooltip_text]
+                if missing_not_in_tooltip:
+                    errors.append(
+                        f"{row_idx+1}행: {missing_not_in_tooltip} 미포함 | 실제 노출: {tooltip_text}"
+                    )
+                else:
+                    print(f"✅ {row_idx+1}행: 미입력 항목 모두 노출 확인")            
+
+        # --- ▶️ 1차 루프: 중복 후보 수집 ---
         combo_key = (row_data.get("제품명"), row_data.get("업체명"))
         error_tag = table_row.locator("[data-testid=tag_error]")
 
-        excel_dup = combo_key in seen_combinations
+        # 등장 횟수 기록
+        seen_combinations[combo_key] = seen_combinations.get(combo_key, 0) + 1
         server_dup = combo_key in registered_products
 
-        if excel_dup or server_dup:
+        # 엑셀 중복 후보 (⚠️ 2번째부터 잡지만, 2차 루프에서 첫 번째도 포함 처리)
+        if seen_combinations[combo_key] >= 2:
+            excel_dup_candidates.add(combo_key)
+
+        # 서버 중복만 있는 경우 → 즉시 확인
+        if server_dup:
             if not error_tag.is_visible():
-                errors.append(f"{row_idx+1}행: 중복 에러 태그 미노출")
+                errors.append(f"{row_idx+1}행: 서버 중복 태그 미노출")
             else:
                 error_tag.hover()
-                tooltip_text = page.locator("[data-testid=error_tooltip]").text_content().strip()
-                lines = [t.strip() for t in tooltip_text.splitlines() if t.strip()]
+                tooltip = page.locator("[data-testid=error_tooltip]").text_content().strip()
+                if "이미 존재하는" not in tooltip:
+                    errors.append(f"{row_idx+1}행: 서버 중복 문구 불일치 | 실제 노출: {tooltip}")
 
-                if excel_dup:
-                    duplicate_excel_count += 1
-                    if not any("엑셀 파일에 중복된" in t for t in lines):
-                        errors.append(f"🔔 {row_idx+1}행: 엑셀 중복 문구 불일치 | 실제 노출: {lines}")
+        # 서버+엑셀 중복 후보 저장
+        if server_dup and combo_key in excel_dup_candidates:
+            both_dup_keys.add(combo_key)
+
+
+        # --- ▶️ 2차 루프: 엑셀 중복 확정 (첫 번째 포함 전부 에러 처리) ---
+        for dup_key in excel_dup_candidates:
+            for j in range(total_rows):
+                combo_j = (
+                    sheet.cell(j+2, headers.index("제품명")+1).value,
+                    sheet.cell(j+2, headers.index("업체명")+1).value
+                )
+                if combo_j == dup_key:
+                    row_j = page.locator("table tbody tr").nth(j)
+                    error_tag = row_j.locator("[data-testid=tag_error]")
+                    if not error_tag.is_visible():
+                        errors.append(f"{j+1}행: 엑셀 중복 태그 미노출")
                     else:
-                        print(f"✅ {row_idx+1}행: 엑셀 중복 유효성 문구 확인")
+                        error_tag.hover()
+                        tooltip = page.locator("[data-testid=error_tooltip]").text_content().strip()
+                        if "엑셀 파일에 중복된" not in tooltip:
+                            errors.append(f"{j+1}행: 엑셀 중복 문구 불일치 | 실제 노출: {tooltip}")
 
-                if server_dup:
-                    duplicate_server_count += 1
-                    if not any("이미 존재하는" in t for t in lines):
-                        errors.append(f"🔔 {row_idx+1}행: 서버 중복 문구 불일치 | 실제 노출: {lines}")
-                    else:
-                        print(f"✅ {row_idx+1}행: 서버 중복 유효성 문구 확인")
 
-                # 서버 + 엑셀 중복 케이스라면 재검증 대상으로 추가
-                if excel_dup and server_dup:
-                    both_dup_keys.add(combo_key)
-
-        # seen_combinations 는 무조건 업데이트
-        seen_combinations.add(combo_key)
-
-        # --- 서버+엑셀 중복 케이스 재검증 ---
+        # --- ▶️ 3차 루프: 서버+엑셀 중복 확정 ---
         for dup_key in both_dup_keys:
             for j in range(total_rows):
-                # j행의 제품/업체 조합 추출
-                combo_j = (sheet.cell(j+2, headers.index("제품명")+1).value,
-                        sheet.cell(j+2, headers.index("업체명")+1).value)
+                combo_j = (
+                    sheet.cell(j+2, headers.index("제품명")+1).value,
+                    sheet.cell(j+2, headers.index("업체명")+1).value
+                )
                 if combo_j == dup_key:
                     row_j = page.locator("table tbody tr").nth(j)
                     error_tag = row_j.locator("[data-testid=tag_error]")
@@ -128,13 +152,12 @@ def test_upload_product_validation(page: Page):
                         errors.append(f"{j+1}행: 서버+엑셀 중복 태그 미노출")
                     else:
                         error_tag.hover()
-                        tooltip_text = page.locator("[data-testid=error_tooltip]").text_content().strip()
-                        if not ("엑셀 파일에 중복된" in tooltip_text and "이미 존재하는" in tooltip_text):
-                            errors.append(f"🔔 {j+1}행: 서버+엑셀 중복 문구 불일치 | 실제 노출: {tooltip_text}")
-                        else:
-                            print(f"✅ {j+1}행: 서버+엑셀 중복 문구 모두 확인")
+                        tooltip = page.locator("[data-testid=error_tooltip]").text_content().strip()
+                        if not ("엑셀 파일에 중복된" in tooltip and "이미 존재하는" in tooltip):
+                            errors.append(f"{j+1}행: 서버+엑셀 중복 문구 불일치 | 실제 노출: {tooltip}")
 
-        # --- 자동 발주 수량 0 에러 체크 ---
+
+        # --- ▶️ 자동 발주 수량 0 에러 체크 ---
         if row_data.get("자동 발주 수량") == "0":
             auto_order_zero_count += 1
             error_tag = table_row.locator("[data-testid=tag_error]")
@@ -150,7 +173,7 @@ def test_upload_product_validation(page: Page):
                 else:
                     print("✅ 자동 발주 수량 유효성 문구 확인")
 
-        # --- 연락처 길이 에러 체크 ---
+        # --- ▶️ 연락처 길이 에러 체크 ---
         contact_value = row_data.get("연락처", "")
         digits_only = re.sub(r"\D", "", contact_value)
         if digits_only and len(digits_only) == 10:

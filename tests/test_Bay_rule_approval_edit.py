@@ -10,8 +10,8 @@ def test_approval_rules_register(page:Page):
     name = "규칙 등록 테스트"
     edit_name = "[수정] 규칙 등록 테스트"
     approval_1 = "권정의"
-    referrer_1 = "QA 계정"
-    edit_approval = "김수연"
+    referrer_1 = "황우디"
+    edit_approval = "" # 지점 승인 권한 있는 계정으로 수정 필요 
     edit_referrer = "김사라"
 
     page.locator("data-testid=input_search").fill(name)
@@ -31,7 +31,7 @@ def test_approval_rules_register(page:Page):
     page.locator("data-testid=input_rule_name").fill(edit_name)
     page.wait_for_timeout(1000)
 
-    # 승인자 변경 (1: 권정의 > 김수연, 2: QA 계정 > 권정의 3: QA 계정)
+    # 승인자 변경 (1: 권정의 > OOO, 2: 황우디 > 권정의 3: 황우디)
     page.locator("data-testid=drop_approver_trigger").nth(0).click()
     page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(edit_approval)
@@ -55,7 +55,7 @@ def test_approval_rules_register(page:Page):
     page.locator("data-testid=drop_approver_item", has_text=referrer_1).click()
     page.wait_for_timeout(1000)
     
-    # 참조자 변경 (1: QA 계정 > 김사라, 2: 권정의 > QA 계정, 3: 권정의)
+    # 참조자 변경 (1: 황우디 > 김사라, 2: 권정의 > 황우디, 3: 권정의)
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").first.click()
