@@ -51,7 +51,13 @@ def test_login_wrong_password(page):
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump({"version": version_text}, f, ensure_ascii=False, indent=2)
 
-
+        # 로그아웃 확인
+        page.locator("data-testid=btn_logout").click()
+        expect(page.locator("data-testid=txt_title")).to_have_text("로그아웃 하시겠습니까?", timeout=3000)
+        page.locator("data-testid=btn_confirm").click()
+        expect(page.locator("data-testid=toast_logout")).to_have_text("로그아웃이 완료되었습니다.", timeout=3000)
+        expect(page.locator("data-testid=input_id")).to_be_visible(timeout=3000)
+        
 
     except Exception as e:
         error_message = f"❌ 비밀번호 불일치 테스트 실패! 오류: {str(e)}"
