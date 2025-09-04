@@ -38,7 +38,7 @@ def test_edit_history_bulk(page:Page):
     qty_cell=target_row.locator("td").nth(4).locator("input")
     amount_cell=target_row.locator("td").nth(5)
     
-    edit_cell.fill("10000")
+    edit_cell.fill("123456")
     page.wait_for_timeout(1000)
     # 최소 발주 수량 토스트 확인
     qty_cell.fill("0")
@@ -50,13 +50,13 @@ def test_edit_history_bulk(page:Page):
     page.locator("data-testid=btn_search").click()
     expect(page.locator("data-testid=toast_editing")).to_have_text("현재 수정 중입니다.", timeout=5000)
 
-    qty_cell.fill("10")
+    qty_cell.fill("15")
     page.wait_for_timeout(1000)
     edit_button.click()
     expect(page.locator("data-testid=toast_edit")).to_have_text("발주 예정 내역 수정이 완료되었습니다.",timeout=3000)
     page.wait_for_timeout(3000)
     target_cell = target_row.locator("td").nth(5)
-    expect(target_cell).to_have_text("100,000", timeout=3000)
+    expect(target_cell).to_have_text("1,851,840", timeout=3000)
     # 발주 거절 제품_1, 2 승인 요청 
     for product in reject_product:
         search_order_pending_history(page, order_rule[0], product)
@@ -179,8 +179,8 @@ def test_delete_history(page:Page):
     page.wait_for_timeout(2000)
 
     # 삭제 전 상태 확인 
-    check_approval_status_buttons(page, status="승인 요청", product=delete_product, 
-                                order_rule=order_rule[1], bulk=True, approve=False)
+    check_approval_status_buttons(page, status="자동 승인", product=delete_product, 
+                                order_rule=order_rule[1], bulk=False, approve=False)
     
     # 삭제 확인
     rows = page.locator('table tbody tr')

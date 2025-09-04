@@ -247,8 +247,6 @@ def update_product_flag(name_kor: str, **flags):
         json.dump(products, f, ensure_ascii=False, indent=2)
 
 
-
-
 # 저장된 제품명 목록 불러오기
 def load_saved_product_names():
     path = "product_name.json"
@@ -297,12 +295,6 @@ def verify_product_update(page, product_name):
         print(f"❌ 제품 관리 페이지에서 수정 확인 실패: {name}")
         return False  # 수정된 제품명이 UI에 반영되지 않으면 False 반환
     return True  # 모든 제품명이 일치하면 True 반환
-
-
-
-    
-    
-
 
 # 특정 제품의 현 재고량 찾기
 def get_product_stock(page, product_name):
@@ -389,7 +381,7 @@ def check_rule_for_products(page, products, col_index: int, expected_key: str, l
         page.locator("data-testid=input_search").fill(product["kor"])  # 제품명 검색
         page.wait_for_timeout(500)
         page.locator("data-testid=btn_search").click()
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(1000)
 
         rows = page.locator("table tbody tr")
         first_row = rows.nth(0)
@@ -398,7 +390,7 @@ def check_rule_for_products(page, products, col_index: int, expected_key: str, l
 
         # 기대값: json key 기반 vs 고정 값
         expected_value = product[expected_key] if expected_key else "자동 승인"
-
+        
         assert rule_text == expected_value, \
             f"{label} 불일치 → 기대: {expected_value}, 실제: {rule_text}"
 
@@ -433,17 +425,19 @@ def edit_approval_rules_and_check(page, products):
         # 2. 승인 규칙 드롭다운 선택
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(500)
-        page.locator("data-testid=drop_rule_trigger").click()
+        page.locator("data-testid=drop_approval_trigger").click()
         page.wait_for_timeout(500)
-        page.locator("data-testid=drop_rule_search").fill(approval_rule)
+        page.locator("data-testid=drop_approval_search").fill(approval_rule)
         page.wait_for_timeout(500)
-        page.locator("data-testid=drop_rule_item", has_text=approval_rule).click()
+        page.locator("data-testid=drop_approval_item", has_text=approval_rule).click()
         page.wait_for_timeout(500)
 
         # 3. 저장 → 토스트 확인
         page.evaluate("window.scrollTo(0, 0)")
         page.wait_for_timeout(500)
         page.locator("data-testid=btn_save").click()
+        expect(page.locator("data-testid=txt_edit")).to_have_text("제품을 수정하시겠습니까?", timeout=3000)
+        page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=toast_edit")).to_be_visible(timeout=3000)
         page.wait_for_timeout(1000)
 
@@ -462,3 +456,4 @@ def edit_approval_rules_and_check(page, products):
             f"승인 규칙 적용 실패 → 기대: {approval_rule}, 실제: {approval_text}"
 
         print(f"✅ {product_name} ({register_type}) → {approval_rule} 적용 확인 완료")
+

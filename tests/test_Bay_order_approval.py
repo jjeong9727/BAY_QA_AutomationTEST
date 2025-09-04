@@ -21,7 +21,7 @@ def test_approve_order(page:Page):
         bay_login(page, account="jekwon") #로그인할 계정 
         page.goto(URLS["bay_approval"])
         page.wait_for_timeout(2000)
-        if product == "수동 발주 제품 2":
+        if product == products[3]:
             check_approval_status_buttons(page, "승인 대기(승인요청)", product, "수동 발주", bulk=False, approve=True)
         else:
             check_approval_status_buttons(page, "승인 대기(승인요청)", product, order_rule[0], bulk=False, approve=True)
@@ -104,7 +104,10 @@ def test_approve_order(page:Page):
         page.goto(URLS["bay_approval"])
         page.wait_for_timeout(2000)
         # 승인 요청 내역
-        check_approval_status_buttons(page, "발주 승인", product, order_rule[0], bulk=False, approve=True)
+        if product == products[3]:
+            check_approval_status_buttons(page, "발주 승인", product, "수동 발주", bulk=False, approve=True)
+        else:
+            check_approval_status_buttons(page, "발주 승인", product, order_rule[0], bulk=False, approve=True)
         # 발주 예정 내역
         if product == products[3]:
             continue
@@ -172,7 +175,7 @@ def test_reject_order(page:Page):
     page.wait_for_timeout(2000)
 
     rows = page.locator("table tbody tr")
-    test_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=reject_products[0])).last
+    test_row = rows.filter(has=page.locator("td:nth-child(2)", has_text=reject_products[1])).last
     approve_button = test_row.locator("data-testid=btn_reject")
     approve_button.click()
     expect(page.locator("data-testid=txt_reject")).to_have_text("발주를 거절하시겠습니까?", timeout=5000)
@@ -221,8 +224,16 @@ def test_reject_bulk_order(page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_login").click()
     expect(page.locator("data-testid=toast_rejected")).to_have_text("발주 거절 완료된 발주입니다.", timeout=3000)
+    # 이후 결재자 로그인 불가 확인
+    page.locator("data-testid=input_email").fill(approver[1])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=input_pw").fill(Account["testpw"])
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_login").click()
+    expect(page.locator("data-testid=toast_wrong")).to_have_text("로그인 정보가 올바르지 않습니다.", timeout=3000)
     
     # 승인 요청 내역
+    bay_login(page, account="jekwon")
     page.goto(URLS["bay_approval"])
     page.wait_for_timeout(2000)
     check_approval_status_buttons(page, "발주 거절", reject_products[0], order_rule[0], bulk=False, approve=True)

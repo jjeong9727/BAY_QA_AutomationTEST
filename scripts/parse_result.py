@@ -4,47 +4,33 @@ import re
 
 # 테스트 이름 한글 매핑
 full_name_mapping = {
-    "test_Bay_login": "로그인 확인",
-    "test_Bay_alert" : "공통 토스트 팝업 및 검색 기능 확인",
+    "test_Bay_login": "[로그인] 로그인 로그아웃 확인",
+    "test_Bay_alert" : "[공통] 화면 이탈 및 검색 확인",
+    "test_Bay_supplier": "[업체관리] 업체 등록 및 중복 확인",
+    "test_Bay_prdctg": "[카테고리관리] 카테고리 등록 수정 삭제 확인",
+    "test_Bay_rule_order":"[발주규칙관리] 발주 규칙 등록 수정 삭제 확인",
 
-    "test_Bay_order_status_request_cancel": "발주 취소 상태 확인",
-    "test_Bay_order_status_request": "발주 요청 상태 확인",
-    "test_Bay_order_status_progress_delivery": "발주 진행 상태에서 운송장 등록 확인",
-    "test_Bay_order_status_progress_complete": "발주 진행 상태에서 수령 확인",
-    "test_Bay_order_status_delivery": "배송 진행 상태 확인",
-    "test_Bay_order_status_complete": "수령 완료 상태 확인",
-    "test_Bay_order_status_fail": "발주 실패 상태 확인",
-    "test_Bay_order_status_batch":"규칙 발주 내역 확인",
+    "test_Bay_rule_approval":"[승인규칙관리] 승인 규칙 등록 수정 삭제 확인",
+    "test_Bay_product": "[제품관리] 본사 제품 등록 확인",
+    "test_Bay_product_upload_validation": "[제품관리] 엑셀 데이터 유효성 검사",
+    "test_Bay_product_upload": "[제품관리] 본사 엑셀 업로드 유효성 검사",
+    "test_Bay_rule_order_apply_bulk.py": "[발주규칙] 발주 규칙 일괄 적용 확인",
 
-    "test_Bay_order_approval":"발주 승인 요청 내역 확인",
-    "test_Bay_order_pending":"발주 예정 내역 확인",
+    "test_Bay_product_edit": "[제품관리] 본사 수정, 지점 수정 삭제 복구 확인",
+    "test_Bay_stock_in": "[재고관리] 재고 입고 확인",
+    "test_Bay_stock_out": "[재고관리] 수동 발주 및 재고 출고 확인",
+    "test_Bay_order_pending":"[발주규칙관리] 발주 규칙 등록 수정 삭제 확인",
+    "test_Bay_order_approval":"[승인규칙관리] 승인 규칙 등록 수정 삭제 확인",
 
-    "test_Bay_product_delete": "제품 삭제 확인",
-    "test_Bay_product_edit": "제품 수정 확인",
-    "test_Bay_product_val": "제품 등록 유효성 검사",
-    "test_Bay_product": "제품 등록 확인",
+    "test_Bay_order_status_cancel": "[발주내역] 발주 취소, 발주 실패 상태 확인",
+    "test_Bay_order_status_request": "[발주내역] 발주 수락 확인",
+    "test_Bay_order_status_delivery": "[발주내역] 운송장 등록 확인",
+    "test_Bay_order_status_receive": "[발주내역] 발주, 배송 진행 상태에서 수령 확인",
+    "test_Bay_order_status_complete": "[발주내역] 수령 완료 상태 확인",
+    
+    "test_Bay_order_status_batch":"[발주 내역] 통합 내역 확인",
+    "test_Bay_stock_history":"[재고관리] 재고 상세 내역 과거 이력 확인",
 
-    "test_Bay_prdctg_delete": "카테고리 삭제 확인",
-    "test_Bay_prdctg_val": "카테고리 등록 유효성 검사",
-    "test_Bay_prdctg_edit": "카테고리 수정 확인",
-    "test_Bay_prdctg": "카테고리 등록 확인",
-
-    "test_Bay_supplier": "업체 등록 확인",
-    "test_Bay_supplier_val": "업체 등록 유효성 검사",
-    "test_Bay_supplier_delete": "업체 삭제 확인",
-
-    "test_Bay_stock_in": "재고 입고 확인",
-    "test_Bay_stock_out": "재고 출고 확인",
-    "test_Bay_stock_history":"재고 상세 내역 확인",
-    "test_Bay_stock_batch":"여러 제품 규칙 발주 확인",
-    "test_Bay_stock_manual":"수동 발주 확인",
-
-
-    "test_Bay_rule_order_register":"발주 규칙 등록 확인",
-    "test_Bay_rule_order_edit":"발주 규칙 수정 확인",
-
-    "test_Bay_rule_approval_register":"승인 규칙 등록 확인",
-    "test_Bay_rule_approval_edit":"승인 규칙 수정 확인",
 }
 
 category_prefix = {

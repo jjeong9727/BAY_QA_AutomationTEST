@@ -51,47 +51,31 @@ all_tests = [
     "tests/test_Bay_login.py",
     "tests/test_Bay_alert.py",
     "tests/test_Bay_supplier.py",
-    "tests/test_Bay_supplier_val.py",
     "tests/test_Bay_prdctg.py",
-    "tests/test_Bay_prdctg_val.py",
-    "tests/test_Bay_prdctg_edit.py",
-    "tests/test_Bay_prdctg_delete.py",
-    "tests/test_Bay_rule_order_register.py",
-    "tests/test_Bay_rule_order_edit.py",
+    "tests/test_Bay_rule_order.py",
 
-    "tests/test_Bay_rule_approval_register.py",
-    "tests/test_Bay_rule_approval_edit.py",
-
+    "tests/test_Bay_rule_approval.py",
     "tests/test_Bay_product.py",
-    "tests/test_Bay_product_val.py",
+    "tests/test_Bay_product_upload_validation.py",
+    "tests/test_Bay_product_upload.py",
+    "tests/test_Bay_rule_order_apply_bulk.py",
+
     "tests/test_Bay_product_edit.py",
-    "tests/test_Bay_product_delete.py",
-
     "tests/test_Bay_stock_in.py",
-    "tests/test_Bay_stock_manual.py",
-
     "tests/test_Bay_stock_out.py",
-    "tests/test_Bay_stock_batch.py",
     "tests/test_Bay_order_pending.py",
     "tests/test_Bay_order_approval.py",
 
-
-    "tests/test_Bay_order_status_request_cancel.py",
+    "tests/test_Bay_order_status_cancel.py",
     "tests/test_Bay_order_status_request.py",
-    "tests/test_Bay_order_status_progress_delivery.py",
-    "tests/test_Bay_order_status_progress_complete.py",
     "tests/test_Bay_order_status_delivery.py",
+    "tests/test_Bay_order_status_receive.py",
     "tests/test_Bay_order_status_complete.py",
-    "tests/test_Bay_order_status_fail.py", 
-    "tests/test_Bay_order_status_batch.py",
-
-    # "tests/test_Bay_stock_history.py",
-
-
-
-
-
     
+    "tests/test_Bay_order_status_batch.py",
+    "tests/test_Bay_stock_history.py",
+
+
 ]
 
 # 발주 관련 테스트 목록

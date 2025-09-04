@@ -24,7 +24,7 @@ def update_order_rule(prdname_list):
 
     print(f"📝 JSON 업데이트 완료: {updated}건 수정됨")
 
-def load_excel_products(json_path="data/product_name.json"):
+def load_excel_products(json_path="product_name.json"):
     with open(json_path, "r", encoding="utf-8") as f:
         products = json.load(f)
 
@@ -53,17 +53,21 @@ def test_apply_rule_order_bulk(page:Page):
 
     today = datetime.date.today()
     mmdd = today.strftime("%m%d")
-    today_products = f"엑셀 업로드 제품_{mmdd}"
+    # today_products = f"엑셀 업로드 제품_{mmdd}"
+    today_products = "배치 확인 제품"
 
     page.locator("data-testid=input_search").fill(today_products)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     rows = page.locator("table tbody tr")
-    excel_products = load_excel_products()
-    excel_count = len(excel_products)
+    # excel_products = load_excel_products()
+    # excel_count = len(excel_products)
+    excel_count = "9"
 
-    prdname_list = [product.get("kor") for product in excel_products]
+    # prdname_list = [product.get("kor") for product in excel_products]
+    prdname_list = ["배치 확인 제품 1", "배치 확인 제품 2", "배치 확인 제품 3", "배치 확인 제품 4", 
+                    "배치 확인 제품 5", "배치 확인 제품 6", "배치 확인 제품 7", "배치 확인 제품 8", "배치 확인 제품 9"]
     row_count = rows.count()
     found = False
 
@@ -87,8 +91,8 @@ def test_apply_rule_order_bulk(page:Page):
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_save").click()
-    expect(page.locator("data-testid=txt_title")).to_have_text(f"{excel_count}개의 제품의 발주 규칙을 일괄 적용하시겠습니까?", timeout=3000)
-    expect(page.locator("data-testid=txt_subtitle")).to_have_text("확인 시, 일괄 적용되며 발주/승인 중 제품은 다음 출고부터 적용됩니다.", timeout=3000)
+    expect(page.locator("data-testid=txt_title")).to_have_text(f"{excel_count}개 제품의 발주 규칙을 일괄 적용하시겠습니까?", timeout=3000)
+    expect(page.locator("data-testid=txt_subtitle")).to_have_text("일괄 적용되며, 승인 및 발주 중인 제품은 다음 출고부터 적용됩니다.", timeout=3000)
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_rule_bulk")).to_have_text("발주 규칙 일괄 적용이 완료되었습니다.", timeout=3000)
     page.wait_for_timeout(1000)

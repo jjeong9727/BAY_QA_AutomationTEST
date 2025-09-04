@@ -74,7 +74,7 @@ def test_alert_product(page:Page):
     search_list = ["status", "type", "group", "maker", "name"]
     search_name = "중복테스트"
     col_map = {"type": 1, "group": 2, "name": 3, "maker": 4, "status": -1}
-    status_options = ["사용", "미사용"]
+    status_options = ["사용 제품", "삭제 제품"]
 
     for search in search_list:
         if search == "status":
@@ -89,11 +89,21 @@ def test_alert_product(page:Page):
                 rows= page.locator("table tbody tr")
                 row_count = rows.count()
                 num = col_map[search]
-                expected_button = "삭제" if option == "사용" else "복구"
+                expected_button = "삭제" if option == "사용 제품"  else "복구"
 
                 for i in range(row_count):
                     delete_button = rows.nth(i).locator("td").nth(num).locator("button").nth(1).inner_text().strip() # 삭제 버튼 확인 
                     assert delete_button == expected_button, f"검색 결과 상이함. 검색 값: {expected_button}, 노출 값: {delete_button}" 
+        elif search == "name":
+            page.locator("data-testid=input_search").fill(search_name)
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            rows = page.locator("table tbody tr")
+            first_row = rows.nth(0)
+            raw_name_text = first_row.locator("td").nth(num).inner_text().strip()
+            name_text = raw_name_text.partition("\n")[0]
+            assert name_text == search_name, f"검색 결과 상이함 검색 값: {search_name}, 노출 값: {name_text}"
         else:
             page.locator(f"data-testid=drop_{search}_trigger").click()
             page.wait_for_selector(f"data-testid=drop_{search}_search", timeout=3000)
@@ -108,8 +118,10 @@ def test_alert_product(page:Page):
             row_count = rows.count()
             num = col_map[search]
             for i in range(row_count):
-                kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
-                assert kor_name == search_name, f"검색 결과 상이함. 검색 값:{search_name}, 노출 값: {kor_name}"  
+                raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
+                kor_name = raw_kor_name.partition("\n")[0]
+                assert kor_name == search_name, f"검색 결과 상이함. 검색 값: {search_name}, 노출 값: {kor_name}"
+                page.wait_for_timeout(1000)  
 
         page.locator("data-testid=btn_reset").click()
         page.wait_for_timeout(2000)
@@ -168,21 +180,33 @@ def test_alert_product(page:Page):
     col_map = {"type": 0, "group": 1, "name": 2, "maker": 3}
 
     for search in search_list:
-        page.locator(f"data-testid=drop_{search}_trigger").click()
-        page.wait_for_selector(f"data-testid=drop_{search}_search", timeout=3000)
-        page.locator(f"data-testid=drop_{search}_search").fill(search_name)
-        page.wait_for_timeout(500)
-        page.locator(f"data-testid=drop_{search}_item", has_text=search_name).click()
-        page.wait_for_timeout(500)
-        page.locator("data-testid=btn_search").click()
-        page.wait_for_timeout(2000)
-        rows= page.locator("table tbody tr")
-        row_count = rows.count()
-        num = col_map[search]
+        if search == "name":
+            page.locator("data-testid=input_search").fill(search_name)
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            rows = page.locator("table tbody tr")
+            first_row = rows.nth(0)
+            raw_name_text = first_row.locator("td").nth(2).inner_text().strip()
+            name_text = raw_name_text.partition("\n")[0]
+            assert name_text == search_name, f"검색 결과 상이함 검색 값: {search_name}, 노출 값: {name_text}"
+        else: 
+            page.locator(f"data-testid=drop_{search}_trigger").click()
+            page.wait_for_selector(f"data-testid=drop_{search}_search", timeout=3000)
+            page.locator(f"data-testid=drop_{search}_search").fill(search_name)
+            page.wait_for_timeout(500)
+            page.locator(f"data-testid=drop_{search}_item", has_text=search_name).click()
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            rows= page.locator("table tbody tr")
+            row_count = rows.count()
+            num = col_map[search]
 
-        for i in range(row_count):
-            kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
-            assert kor_name == search_name, f"검색 결과 상이함. 검색 값:{search_name}, 노출 값: {kor_name}"
+            for i in range(row_count):
+                raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
+                kor_name = raw_kor_name.partition("\n")[0]
+                assert kor_name == search_name, f"검색 결과 상이함. 검색 값:{search_name}, 노출 값: {kor_name}"
         
         page.locator("data-testid=btn_reset").click()
         page.wait_for_timeout(2000)
@@ -313,8 +337,7 @@ def test_alert_product(page:Page):
 
     download = download_info.value
     suggested_filename = download.suggested_filename
-
-    today = datetime.date.today().strftime("%Y_%m_%d")
+    today = datetime.now().strftime("%Y_%m_%d")
     expected_filename = f"{today}_제품목록.xlsx"
 
     assert suggested_filename == expected_filename, (
@@ -340,13 +363,16 @@ def test_alert_product(page:Page):
 
     # --- 파일 업로드 유효성 검사 ---
     empty = "data/empty_file.xlsx"
-    image = "data/image_file.jpg"
+    image = "data/image_file.png"
+    txt = "data/text_file.txt"
     video = "data/video_file.mp4"
     template = "data/wrong_template.xlsx"
+    
 
     test_cases = [
         {"file": empty, "toast": "toast_empty", "msg": "업로드하신 파일에 정보가 없습니다."},
         {"file": template, "toast": "toast_template", "msg": "업로드하신 파일이 제공된 엑셀 템플릿과 형식이 다릅니다."},
+        {"file": txt, "toast": "toast_format", "msg": "지원하지 않는 파일 형식입니다."},
         {"file": image, "toast": "toast_format", "msg": "지원하지 않는 파일 형식입니다."},
         {"file": video, "toast": "toast_format", "msg": "지원하지 않는 파일 형식입니다."},
     ]
@@ -354,7 +380,6 @@ def test_alert_product(page:Page):
     def upload_and_check(page: Page, file_path: str, toast_id: str, expected_msg: str):
         page.locator("data-testid=btn_excel").hover()
         page.wait_for_selector("data-testid=btn_upload", timeout=3000)
-        page.locator("data-testid=btn_upload").click()
         page.wait_for_timeout(3000)
         # 파일 업로드
         page.set_input_files("input[type='file']", file_path)
@@ -445,25 +470,25 @@ def test_alert_stock(page:Page):
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
     assert start_text == week_ago_str, f"시작일 값이 일주일 전이 아님 → {start_text}"
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(1000)
 
     # 이번달 확인
     page.click('[data-testid="btn_month"]')
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(1000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
     assert start_text == month_start_str, f"❌ 시작일이 이번 달 1일이 아님 → {start_text}"
     assert end_text == today_str, f"❌ 종료일이 이번 달 말일이 아님 → {end_text}"
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(1000)
 
     # 오늘 날짜 확인
     page.locator("data-testid=btn_today").click()    
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(1000)
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
     assert start_text == today_str, f"시작일 값이 오늘이 아님 → {start_text}"
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(1000)
 
     # 월별 버튼 확인    
     today = datetime.now()
@@ -487,7 +512,7 @@ def test_alert_stock(page:Page):
     # 활성 월 버튼 클릭 → 시작일/종료일 확인
     for month_name in active_month_buttons:
         page.locator(f"data-testid=btn_month_{month_name}").click()
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(500)
         
         start_text = page.locator('[data-testid="select_startday"] span').text_content()
         end_text = page.locator('[data-testid="select_endday"] span').text_content()
@@ -498,7 +523,7 @@ def test_alert_stock(page:Page):
     # 다시 클릭해서 해제
     for month_name in active_month_buttons:
         page.locator(f"data-testid=btn_month_{month_name}").click()
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(500)
 
     # 시작일/종료일 → 오늘 날짜 확인
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
@@ -528,7 +553,8 @@ def test_alert_stock(page:Page):
         num = col_map[search]
 
         for i in range(row_count):
-            kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
+            raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
+            kor_name = raw_kor_name.partition("\n")[0]
             assert kor_name == search_name, f"검색 결과 상이함. 검색 값:{search_name}, 노출 값: {kor_name}"
         
         page.locator("data-testid=btn_reset").click()
@@ -562,7 +588,9 @@ def test_alert_stock(page:Page):
     expect(page.locator("data-testid=drop_prdname_trigger")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
-# 발주 규칙 관리
+ # 발주 규칙 관리
+
+# 발주 규칙 
 def test_alert_order_rules(page:Page):
     bay_login(page, "admin")
     # [발주 규칙 관리] 중복명 확인
@@ -650,30 +678,30 @@ def test_alert_order_rules(page:Page):
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_using")).to_have_text("해당 발주 규칙은 사용 중입니다.", timeout=3000)
 
-# # 업체 전용 화면 🚫데이터 생성 후 조건 변경 필요🚫
-# def test_alert_supplier_page(page:Page):
-#     bay_login(page, "jekwon")
-#     # [업체 전용 화면] 지난 발주 건 진입 불가 확인
-#     order_id_complete = "38"
-#     order_id_cancel = "34"
+# 업체 전용 화면 
+def test_alert_supplier_page(page:Page):
+    bay_login(page, "jekwon")
+    # [업체 전용 화면] 지난 발주 건 진입 불가 확인
+    order_id_complete = "969"
+    order_id_cancel = "966"
 
-#     accept_url = f"{URLS['base_accept_url']}/{order_id_complete}/accept"
-#     tracking_url = f"{URLS['base_accept_url']}/{order_id_cancel}/delivery"
-#     page.goto(accept_url)
-#     expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
-#     page.fill("input[data-testid='input_name']", "권정의")
-#     page.fill("input[data-testid='input_contact']", "01062754153")
-#     page.locator("button[data-testid='btn_confirm']").last.click()
-#     expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
-#     page.wait_for_timeout(1000)
+    accept_url = f"{URLS['base_accept_url']}/{order_id_complete}/accept"
+    tracking_url = f"{URLS['base_accept_url']}/{order_id_cancel}/delivery"
+    page.goto(accept_url)
+    expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
+    page.fill("input[data-testid='input_name']", "권정의")
+    page.fill("input[data-testid='input_contact']", "01062754153")
+    page.locator("button[data-testid='btn_confirm']").last.click()
+    expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
 
-#     page.goto(tracking_url)
-#     expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
-#     page.fill("input[data-testid='input_name']", "권정의")
-#     page.fill("input[data-testid='input_contact']", "01062754153")
-#     page.locator("button[data-testid='btn_confirm']").last.click()
-#     expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
-#     page.wait_for_timeout(1000)
+    page.goto(tracking_url)
+    expect(page.locator("data-testid=input_name")).to_be_visible(timeout=8000)
+    page.fill("input[data-testid='input_name']", "짱구")
+    page.fill("input[data-testid='input_contact']", "01023032620")
+    page.locator("button[data-testid='btn_confirm']").last.click()
+    expect(page.locator("data-testid=toast_expired")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
 
 # 승인 규칙 관리
 def test_alert_approval_rules(page:Page):
@@ -753,8 +781,8 @@ def test_alert_approval_rules(page:Page):
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_title")).to_have_text("승인 규칙 변경 제품", timeout=3000)
     page.locator("data-testid=btn_confirm").click()
-    # expect(page.locator("data-testid=toast_edit_pending")).to_have_text("승인 규칙이 수정되었습니다. 다음 출고분부터 적용됩니다.", timeout=3000)
-    expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=toast_edit_pending")).to_have_text("승인 규칙이 수정되었습니다. 다음 출고분부터 적용됩니다.", timeout=3000)
+    # expect(page.locator("data-testid=toast_edit_pending")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
 
     # 삭제 불가 확인
@@ -817,3 +845,73 @@ def test_alert_manual_order(page:Page):
     page.locator("data-testid=btn_yes").click()
     expect(page.locator("data-testid=btn_order")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
+
+# 발주 규칙 일괄 적용
+def test_alert_order_rule(page:Page):
+    bay_login(page, "admin")
+    
+    page.goto(URLS["bay_rules"])
+    page.wait_for_selector("data-testid=btn_register_bulk", timeout=5000)
+    
+    page.locator("data-testid=btn_register_bulk").click()
+    page.wait_for_selector("data-testid=drop_rule_trigger", timeout=5000)
+
+    # 필터 검색 확인 
+    search_list = ["type", "group", "maker", "name"]
+    search_name = "중복테스트"
+    col_map = {"type": 1, "group": 2, "name": 3, "maker": 4}
+
+    for search in search_list:
+        if search == "name":
+            page.locator("data-testid=input_search").fill(search_name)
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            rows = page.locator("table tbody tr")
+            first_row = rows.nth(0)
+            raw_name_text = first_row.locator("td").nth(num).inner_text().strip()
+            name_text = raw_name_text.partition("\n")[0]
+            assert name_text == search_name, f"검색 결과 상이함 검색 값: {search_name}, 노출 값: {name_text}"
+        else:
+            page.locator(f"data-testid=drop_{search}_trigger").click()
+            page.wait_for_selector(f"data-testid=drop_{search}_search", timeout=3000)
+            page.locator(f"data-testid=drop_{search}_search").fill(search_name)
+            page.wait_for_timeout(500)
+            page.locator(f"data-testid=drop_{search}_item", has_text=search_name).click()
+            page.wait_for_timeout(500)
+            
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            rows= page.locator("table tbody tr")
+            row_count = rows.count()
+            num = col_map[search]
+            for i in range(row_count):
+                raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
+                kor_name = raw_kor_name.partition("\n")[0]
+                assert kor_name == search_name, f"검색 결과 상이함. 검색 값: {search_name}, 노출 값: {kor_name}"
+                page.wait_for_timeout(1000)  
+
+        page.locator("data-testid=btn_reset").click()
+        page.wait_for_timeout(2000)
+
+    # 화면 이탈 확인 
+    page.locator("data-testid=drop_rule_trigger").click()
+    page.wait_for_selector("data-testid=drop_rule_search", timeout=3000)
+    page.locator("data-testid=drop_rule_search").fill(search_name)
+    page.wait_for_timeout(500)
+    page.locator(f"data-testid=drop_rule_item", has_text=search_name).click()
+    page.wait_for_timeout(500)
+
+    page.locator("data-testid=btn_back").click()
+    expect(page.locator("data-testid=txt_nosave")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
+    expect(page.locator("data-testid=subtitle")).to_have_text("이동 시, 수정한 내용이 저장되지 않습니다.", timeout=3000)
+    page.locator("data-testid=btn_cancel").last.click()
+    expect(page.locator("data-testid=drop_rule_trigger")).to_have_text(search_name, timeout=3000)
+    page.wait_for_timeout(500)
+
+    page.locator("data-testid=btn_cancel").click()
+    expect(page.locator("data-testid=txt_nosave")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
+    expect(page.locator("data-testid=subtitle")).to_have_text("이동 시, 수정한 내용이 저장되지 않습니다.", timeout=3000)
+    page.locator("data-testid=btn_confirm").click()
+    expect(page.locator("data-testid=btn_register")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(500)

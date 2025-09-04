@@ -5,7 +5,7 @@ import time
 from playwright.sync_api import Page, sync_playwright, expect
 from config import URLS, Account
 from helpers.order_status_utils import (
-    search_order_history, get_order_id_from_order_list, check_order_status_by_order_id
+    filter_products_by_delivery_status, search_order_history, get_order_id_from_order_list, check_order_status_by_order_id
 )
 from helpers.order_status_data import order_status_map
 from helpers.common_utils import bay_login
@@ -33,8 +33,7 @@ def wait_until_batch_ready(json_path="batch_time.json"):
         time.sleep(wait_seconds)
 
     print("✅ 조건 충족! 테스트를 진행합니다.")
-
-
+# 발주 취소 확인 
 def test_order_cancel(page: Page):
     try:
         # 배치 발주 시간+1분 까지 대기 
@@ -96,17 +95,50 @@ def test_order_cancel(page: Page):
         print(error_message)
         raise  # Reraise the exception to maintain test flow
 
-
 def main():
     with sync_playwright() as p:
         page = p.chromium.launch(headless=False)
-
-
         # 발주 수락과 상태 업데이트 작업을 하나의 함수에서 처리
         test_order_cancel(page)
-        
+    
         page.close()
-
 
 if __name__ == "__main__":
     main()
+
+
+# 발주 실패 확인 
+def test_order_status_fail(page: Page):
+    status_name = "발주 실패"
+    try:
+        filtered_products = filter_products_by_delivery_status(6)
+        if not filtered_products:
+            raise ValueError(f"[FAIL] '{status_name}' 상태의 제품이 없습니다.")
+
+        # 무작위 제품 선택
+        product = random.choice(filtered_products)
+        product_name = product["kor"]
+
+        bay_login(page, "jekwon")
+         
+        page.goto(URLS["bay_orderList"])
+        page.wait_for_timeout(2000)
+        page.locator("data-testid=drop_status_trigger").click()
+        expect(page.locator("data-testid=drop_status_item")).to_be_visible(timeout=5000)
+        page.locator('[role="option"]').filter(has_text="발주 실패").click()
+        page.wait_for_timeout(1000)
+        # 제품명 입력
+        page.locator("data-testid=input_search").fill(product_name)
+        page.wait_for_timeout(500)
+        # 검색 버튼 클릭
+        page.locator("[data-testid=btn_search]").click()
+        page.wait_for_timeout(2000)
+
+        # 상태 확인
+        expect(page.locator("[data-testid=btn_receive]")).to_be_disabled(timeout=3000)
+        expect(page.locator("data-testid=btn_resend")).to_be_enabled(timeout=3000)
+        expect(page.locator("data-testid=btn_order_cancel")).to_be_enabled(timeout=3000)
+    except Exception as e:
+        error_message = f"❌ Error in test_order_status_fail: {str(e)}"
+        print(error_message)
+        raise  # 예외 재전파로 테스트 실패 처리

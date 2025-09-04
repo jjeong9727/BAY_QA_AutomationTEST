@@ -38,7 +38,7 @@ def test_login_wrong_password(page):
         page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
         page.wait_for_timeout(1000)
         page.click("data-testid=btn_login")  # 로그인 버튼 클릭
-        expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=5000)
+        expect(page.locator("data-testid=btn_download")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
         print("[PASS] 로그인 테스트 성공")
 
@@ -53,14 +53,14 @@ def test_login_wrong_password(page):
 
         # 로그아웃 확인
         page.locator("data-testid=btn_logout").click()
-        expect(page.locator("data-testid=txt_title")).to_have_text("로그아웃 하시겠습니까?", timeout=3000)
+        expect(page.locator("data-testid=title")).to_have_text("로그아웃 하시겠습니까?", timeout=3000)
         page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=toast_logout")).to_have_text("로그아웃이 완료되었습니다.", timeout=3000)
         expect(page.locator("data-testid=input_id")).to_be_visible(timeout=3000)
         
 
     except Exception as e:
-        error_message = f"❌ 비밀번호 불일치 테스트 실패! 오류: {str(e)}"
+        error_message = f"❌ 로그인 테스트 실패: {str(e)}"
         print(error_message)
 
         # 실패한 테스트 결과를 저장

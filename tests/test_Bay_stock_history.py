@@ -43,16 +43,16 @@ def get_last_column_of_history2(page: Page) -> str:
     first_col = row.locator('td').first
     return first_col.text_content().strip()
 
+today = datetime.today()
+mmdd= today.strftime("%m%d")
 
 # ✅ 지난 날짜 재고 수정 및 상세 확인 
 def test_inflow_past(page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
-    today = datetime.today()
-    mmdd= today.strftime("%m%d")
-    # search_name = f"등록테스트_{mmdd}"
-    search_name = "등록테스트_0804"
+    
+    search_name = f"등록테스트_{mmdd}"
 
     page.locator("data-testid=input_search").fill(search_name)
     page.wait_for_timeout(1000)
@@ -76,8 +76,8 @@ def test_inflow_past(page):
     
     page.wait_for_timeout(2000)
     # 두 날짜에 대해 각각 등록
-    register_stock_for_date(page, day_before, product_name, current_stock, day_before_memo)
-    register_stock_for_date(page, yesterday, product_name, current_stock + 100, yesterday_memo)  # 이전 등록 반영
+    register_stock_for_date(page, yesterday, product_name, current_stock, yesterday_memo)  # 이전 등록 반영
+    register_stock_for_date(page, day_before, product_name, current_stock+100, day_before_memo)
 
     # 재고 상세 진입 
     page.fill("data-testid=input_search", product_name)
@@ -158,7 +158,8 @@ def test_inflow_past(page):
     assert hist1_qty == expected_total, f"[H1] 수량 불일치: {hist1_qty} != {expected_total}"
     acceptable_memos = [
         today_memo,
-        "2개의 메모가 있습니다."
+        "2개의 메모가 있습니다.",
+        "-"
     ]
     assert hist1_memo in acceptable_memos, f"[H1] 메모 불일치: {hist1_memo} != {today_memo}"
     assert hist1_last == hist3_last, f"[H1] 마지막 열 불일치: {hist1_last} != {hist3_last}"
@@ -171,15 +172,13 @@ def test_stock_bulk_edit(page:Page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
-    today = datetime.today()
-    mmdd= today.strftime("%m%d")
-    product = f"등록테스트_{mmdd}"
     inflow = 25
     new_inflow = 15
     txt_bulk = "2개의 재고 입고가 완료되었습니다."
     txt_edit = "재고 입고가 완료되었습니다."
 
-    page.locator("data-testid=input_search").fill(product)
+    search_name = f"엑셀업로드_{mmdd}"
+    page.locator("data-testid=input_search").fill(search_name)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(1000)

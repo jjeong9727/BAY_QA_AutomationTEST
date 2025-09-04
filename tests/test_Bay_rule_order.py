@@ -1,10 +1,3 @@
-# 새로 생성한 규칙(연결 제품 없는 상태) 수정 시 "발주 규칙 변경 제품" 팝업 미노출 확인
-# 실제 수정 후 수정값 반영 확인 (제품 등록 시 규칙 드롭다운 / 발주 규칙 리스트 화면)
-# "규칙 연결 확인 제품"에 생성한 규칙 연결 후 수정 완료
-# 발주 규칙 에서 연결 제품 확인 후 수정 시 발주 규칙 변경 제품 확인
-# 등록한 제품 수정 화면으로 이동 해서 "자동화 규칙" 으로 수정
-# 이후 새로 생성한 규칙 삭제까지 확인
-
 from playwright.sync_api import Page, expect
 from helpers.common_utils import bay_login
 from config import URLS
@@ -17,6 +10,96 @@ new_name = "[수정]규칙명 등록 테스트_매주"
 edit_info_1 = "매일 / 20:00"
 edit_info_2 = "매주 월, 수, 목, 금 / 15:30"
 product_name = "발주 규칙 변경 제품"
+
+# 규칙 등록 
+def test_order_rules_register(page: Page):
+    bay_login(page, "admin")
+    page.goto(URLS["bay_rules"])
+    page.wait_for_timeout(2000)
+    # ✅ 첫 번째 규칙: 매주
+    page.locator("data-testid=btn_register").click()
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=input_rule_name").fill(rule_name_2)
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_cycle_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_cycle_2").click()
+    page.wait_for_timeout(1000)
+
+    expect(page.locator("data-testid=drop_weekday_trigger")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_weekday_trigger").click()
+    page.wait_for_timeout(1000)
+    dropdown_items = page.locator('div[data-testid="drop_weekday_item"] div[data-value]')
+    count = dropdown_items.count()
+
+    for i in range(count):
+        text = dropdown_items.nth(i).inner_text().strip()
+        if text in ["월요일", "수요일", "금요일"]:
+            dropdown_items.nth(i).click()
+            page.wait_for_timeout(1000)
+
+
+
+    page.locator("data-testid=drop_weekday_trigger").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_hour_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_hour_16").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_minute_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_minute_4").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=input_memo").fill(MEMO_TEXT)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
+
+    expect(page.locator("data-testid=toast_register")).to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+
+    search_and_check_rule(page, rule_name_2, "매주 월, 수, 금 / 15:30", "0개 제품", MEMO_TEXT)
+    page.wait_for_timeout(1000)
+
+    # ✅ 두 번째 규칙: 매일
+    page.locator("data-testid=btn_register").click()
+    page.wait_for_timeout(2000)
+    page.locator("data-testid=input_rule_name").fill(rule_name_1)
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_cycle_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_cycle_1").click()
+    page.wait_for_timeout(1000)
+
+    expect(page.locator("data-testid=drop_weekday_trigger")).not_to_be_visible(timeout=3000)
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_hour_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_hour_21").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=drop_minute_trigger").click()
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_minute_6").click()
+    page.wait_for_timeout(1000)
+
+    page.locator("data-testid=input_memo").fill(MEMO_TEXT)
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=btn_confirm").click()
+
+    expect(page.locator("data-testid=toast_register")).to_be_visible(timeout=3000)
+
+    search_and_check_rule(page, rule_name_1, "매일 / 20:50", "0개 제품", MEMO_TEXT)
+    page.wait_for_timeout(1000)
+
+
+# 규칙 수정 
 def test_order_rules_edit(page:Page):
     bay_login(page, "admin")
     # 제품에 규칙 연결 후 수정 확인
@@ -133,19 +216,22 @@ def test_order_rule_branch(page:Page):
     page.goto(URLS["bay_rules"])
     page.wait_for_selector("data-testid=input_search", timeout=5000)
     
-    page.locator("data-testid=input_search").fill(new_name)
+    page.locator("data-testid=input_search").fill(rule_name_1)
+    page.wait_for_timeout(500)
+    page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     
     rows = page.locator("table tbody tr")
     name_cell = rows.nth(0).locator("td:nth-child(1)")
     name_text = name_cell.inner_text().strip()
-    assert new_name == name_text, "지점에서 발주 규칙 확인 불가"
+    assert rule_name_1 == name_text, "지점에서 발주 규칙 확인 불가"
 
     detail_btn = rows.nth(0).locator("data-testid=btn_detail")
     detail_btn.click()
 
     expect(page.locator("data-testid=txt_title")).to_have_text("발주 규칙 상세", timeout=5000)
     
+# 삭제 확인 
 def test_order_rules_delete(page:Page):
     bay_login(page, "admin")
     page.goto(URLS["bay_rules"])
@@ -191,7 +277,7 @@ def test_order_rules_delete(page:Page):
     row_count = rows.count()
 
     for i in range(row_count):
-        edit_button = rows.nth(i).locator("td:nth-child(12) >> text=수정")
+        edit_button = rows.nth(i).locator("td:last-child >> text=수정")
         if edit_button.is_visible():
             print(f"✅ {i}번째 행의 수정 버튼 클릭")
             edit_button.click()
