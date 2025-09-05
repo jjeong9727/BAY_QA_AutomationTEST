@@ -240,5 +240,5 @@ def search_order_history(page:Page, product_name: str, status:str):
     # 검색 버튼 클릭
     page.locator("[data-testid=btn_search]").click()
     page.wait_for_timeout(2000)
-    expect(page.locator("data-testid=history")).to_be_visible(timeout=100000)
+    page.wait_for_selector("data-testid=history").is_visible(timeout=5000)
     page.wait_for_timeout(1000)

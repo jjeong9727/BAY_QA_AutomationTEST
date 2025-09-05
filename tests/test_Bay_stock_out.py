@@ -113,7 +113,7 @@ def test_stock_manual_order(page):
     page.wait_for_timeout(2000)
     check_approval_history(page, "승인 대기", products[0], auto=True, rule="수동 발주", time=now_str)
     check_approval_history(page, "승인 대기", products[1], auto=True, rule="수동 발주", time=now_str)
-    check_approval_history(page, "승인 대기", products[2], auto=None) # 발주 내역 생성 확인 
+    check_approval_history(page, "승인 대기", products[2], auto=None, rule="수동 발주") # 발주 내역 생성 확인 
 
 # 배치 시간 계산 후 JSON에 저장
 def get_safe_batch_time() -> datetime:
@@ -280,7 +280,6 @@ def test_outflow_for_batch_order(page):
     page.wait_for_timeout(2000)
     page.locator("data-testid=btn_stockadd").click()
     page.wait_for_timeout(2000)
-    # product_list = [f"자동화제품_{i}" for i in range(1, 10)]  # 1~9번 제품 리스트 생성
     product_list = [f"배치 확인 제품 {i}" for i in range(1, 10)]  # 1~9번 제품 리스트 생성
 
     product_list.extend(["발주 거절 제품 3", "발주 삭제 제품 1"])
@@ -357,9 +356,9 @@ def test_outflow_for_batch_order(page):
     for idx, product in enumerate(product_list, start=1):
         if idx in (3, 6, 9): 
             check_order_pending_history(page, "자동화규칙_묶음", product, "승인 요청", False, True)
-        elif idx == 10:
+        elif idx == 10: # 발주 거절 제품 1
             check_order_pending_history(page, "자동화규칙_묶음", product, "승인 요청", False, False)
-        elif idx in (11, 12):
+        elif idx == 11: # 발주 삭제 제품 1
             check_order_pending_history(page, "자동화규칙_묶음", product, "승인 요청", False, True)
         else:
             continue

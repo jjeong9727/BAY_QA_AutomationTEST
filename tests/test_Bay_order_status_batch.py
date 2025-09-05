@@ -143,7 +143,7 @@ def test_cancel_batch_history(page:Page):
     page.wait_for_timeout(2000)
 
     search_order_history(page, product_list[2],"발주 취소")
-    page.wait_for_selector("[data-testid='history']", timeout=5000)
+    page.wait_for_timeout(2000)
 
     for i in range(4):  # → 1~4행
         first_history = page.locator('[data-testid="history"]').first

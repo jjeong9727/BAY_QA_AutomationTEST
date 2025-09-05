@@ -7,6 +7,7 @@ from pathlib import Path
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from pathlib import Path
 from playwright.sync_api import Page, expect
+import openpyxl
 
 PRODUCT_FILE_PATH = Path("product_name.json")
 
@@ -457,3 +458,29 @@ def edit_approval_rules_and_check(page, products):
 
         print(f"✅ {product_name} ({register_type}) → {approval_rule} 적용 확인 완료")
 
+# 엑셀 파일 업로드 + 업로드 성공 확인 + 엑셀 행 수 vs UI 행 수 비교까지 한 번에 처리
+def upload_and_verify_excel(page: Page, file_path: str, table_selector: str = "table tbody tr"):
+    # 업로드
+    page.wait_for_selector("data-testid=btn_excel", timeout=5000)
+    page.locator("data-testid=btn_excel").hover()
+    page.wait_for_selector("data-testid=btn_upload", timeout=5000)
+
+    page.set_input_files("input[type='file']", file_path)
+    print(f"📂 업로드 요청: {file_path}")
+
+    page.wait_for_selector("data-testid=col_type", timeout=10000)
+    expect(page.locator("data-testid=btn_save")).to_be_disabled(timeout=3000)
+    print(f"⬆️ 업로드 완료: {file_path}")
+
+    # 엑셀 파일 로드해서 행 수 확인
+    workbook = openpyxl.load_workbook(file_path)
+    sheet = workbook.active
+    headers = [cell.value for cell in sheet[1] if cell.value is not None]
+    excel_rows = sum(1 for row in sheet.iter_rows(min_row=2, values_only=True) if any(row))
+
+    # UI 테이블 행 수 확인
+    ui_rows = page.locator(table_selector).count()
+    assert excel_rows == ui_rows, f"엑셀 {excel_rows}행 vs UI {ui_rows}행 불일치"
+    print(f"✅ {file_path}: 엑셀 {excel_rows}행 = UI {ui_rows}행 일치")
+
+    return headers, excel_rows

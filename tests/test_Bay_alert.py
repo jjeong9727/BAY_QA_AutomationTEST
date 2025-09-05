@@ -540,22 +540,33 @@ def test_alert_stock(page:Page):
     col_map = {"type": 1, "group": 2, "name": 3, "maker": 4}
 
     for search in search_list:
-        page.locator(f"data-testid=drop_{search}_trigger").click()
-        page.wait_for_selector(f"data-testid=drop_{search}_search", timeout=3000)
-        page.locator(f"data-testid=drop_{search}_search").fill(search_name)
-        page.wait_for_timeout(500)
-        page.locator(f"data-testid=drop_{search}_item", has_text=search_name).click()
-        page.wait_for_timeout(500)
-        page.locator("data-testid=btn_search").click()
-        page.wait_for_timeout(2000)
-        rows= page.locator("table tbody tr")
-        row_count = rows.count()
-        num = col_map[search]
+        if search == "name":
+            page.locator("data-testid=input_search").fill(search_name)
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            rows = page.locator("table tbody tr")
+            first_row = rows.nth(0)
+            raw_name_text = first_row.locator("td").nth(num).inner_text().strip()
+            name_text = raw_name_text.partition("\n")[0]
+            assert name_text == search_name, f"검색 결과 상이함 검색 값: {search_name}, 노출 값: {name_text}"
+        else:    
+            page.locator(f"data-testid=drop_{search}_trigger").click()
+            page.wait_for_selector(f"data-testid=drop_{search}_search", timeout=3000)
+            page.locator(f"data-testid=drop_{search}_search").fill(search_name)
+            page.wait_for_timeout(500)
+            page.locator(f"data-testid=drop_{search}_item", has_text=search_name).click()
+            page.wait_for_timeout(500)
+            page.locator("data-testid=btn_search").click()
+            page.wait_for_timeout(2000)
+            rows= page.locator("table tbody tr")
+            row_count = rows.count()
+            num = col_map[search]
 
-        for i in range(row_count):
-            raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
-            kor_name = raw_kor_name.partition("\n")[0]
-            assert kor_name == search_name, f"검색 결과 상이함. 검색 값:{search_name}, 노출 값: {kor_name}"
+            for i in range(row_count):
+                raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
+                kor_name = raw_kor_name.partition("\n")[0]
+                assert kor_name == search_name, f"검색 결과 상이함. 검색 값:{search_name}, 노출 값: {kor_name}"
         
         page.locator("data-testid=btn_reset").click()
         page.wait_for_timeout(2000)
@@ -767,8 +778,7 @@ def test_alert_approval_rules(page:Page):
     elif name_text == "[수정] 수정테스트":
         edit_name = "수정테스트"
 
-    edit_button = last_cell.locator('[data-testid="btn_edit"]').first
-    edit_button.click()
+    page.locator('[data-testid="btn_edit"]').first.click()
     page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
 
     page.locator("data-testid=input_rule_name").fill(edit_name)

@@ -16,8 +16,9 @@ def assert_time_equal(expected: str, actual: str):
     expected_dt = datetime.strptime(expected, fmt)
     actual_dt = datetime.strptime(actual, fmt)
 
+    diff = abs((expected_dt - actual_dt).total_seconds())
     assert expected_dt == actual_dt, (
-        f"❌ 승인 요청일 불일치\n기대: {expected_dt}, 실제: {actual_dt}"
+        f"❌ 승인 요청일 불일치, 기대: {expected_dt}, 실제: {actual_dt}"
     )
 
     assert expected_dt == actual_dt, f"❌ 승인 요청 시간 불일치 (expected={expected}, actual={actual})"
@@ -103,6 +104,18 @@ def check_approval_history(page: Page, status: str, product: str,
         page.wait_for_timeout(2000)
 
         search_order_history(page, product, "발주 요청")
+        target_row = page.locator("table tbody tr")
+        product_cell = target_row.locator('td:nth-child(2)') 
+        rule_cell = target_row.locator('td:nth-child(7)')
+        amount_cell = target_row.locator('td:nth-child(5)') 
+
+        product_text = product_cell.inner_text().strip()
+        rule_text = rule_cell.inner_text().strip()
+        amount_text = amount_cell.inner_text().strip()
+
+        assert product_text == product, f"수동 발주 내역 제품명 다름, 노출값:{product_text}"
+        assert rule_text == rule, f"수동 발주 내역 발주규칙 다름, 노출값:{rule_text}"
+        assert amount_text == "50,000", f"수동 발주 내역 금액 다름, 노출값:{amount_text}"
 
 # 발주 예정 내역 검색 
 def search_order_pending_history(page:Page, order_rule: str, product: str):

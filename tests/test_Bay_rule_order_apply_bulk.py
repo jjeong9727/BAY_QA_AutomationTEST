@@ -3,7 +3,7 @@ from helpers.common_utils import bay_login
 from config import URLS
 import json
 import datetime
-PRODUCT_FILE_PATH = "data/product_name.json"
+PRODUCT_FILE_PATH = "product_name.json"
 
 def update_order_rule(prdname_list):
     try:
@@ -14,7 +14,7 @@ def update_order_rule(prdname_list):
 
     updated = 0
     for product in products:
-        if product.get("kor") in prdname_list:
+        if product.get("kor").strip() in [p.strip() for p in prdname_list]:
             product["order_rule"] = "일괄 적용 확인 규칙"
             updated += 1
 
@@ -53,21 +53,18 @@ def test_apply_rule_order_bulk(page:Page):
 
     today = datetime.date.today()
     mmdd = today.strftime("%m%d")
-    # today_products = f"엑셀 업로드 제품_{mmdd}"
-    today_products = "배치 확인 제품"
+    today_products = f"엑셀업로드_{mmdd}"
 
     page.locator("data-testid=input_search").fill(today_products)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     rows = page.locator("table tbody tr")
-    # excel_products = load_excel_products()
-    # excel_count = len(excel_products)
-    excel_count = "9"
+    excel_products = load_excel_products()
+    excel_count = len(excel_products)
+    
 
-    # prdname_list = [product.get("kor") for product in excel_products]
-    prdname_list = ["배치 확인 제품 1", "배치 확인 제품 2", "배치 확인 제품 3", "배치 확인 제품 4", 
-                    "배치 확인 제품 5", "배치 확인 제품 6", "배치 확인 제품 7", "배치 확인 제품 8", "배치 확인 제품 9"]
+    prdname_list = [product.get("kor") for product in excel_products]
     row_count = rows.count()
     found = False
 

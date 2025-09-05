@@ -180,8 +180,6 @@ def test_edit_category_all(page: Page):
 
             item_to_edit.fill(new_value)
             page.wait_for_timeout(500)
-            page.locator("body").click(position={"x": 0, "y": 0})
-            page.wait_for_timeout(500)
             page.locator("data-testid=btn_save").click()
             page.wait_for_timeout(500)
 

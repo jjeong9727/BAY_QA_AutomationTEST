@@ -53,7 +53,7 @@ def test_order_delivery(page: Page):
         carrier_name = "일양로지스"
         tracking = "1234567890"
         new_carrier = "직접 배송"
-        new_tracking = "직접 배송은 운송장번호가 필요하지 않습니다"
+        new_tracking = "직접 배송은 운송장 번호가 불필요합니다"
         page.locator("data-testid=drop_shipping_trigger").click()
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_shipping_search").fill(carrier_name)
