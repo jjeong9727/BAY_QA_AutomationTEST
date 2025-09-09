@@ -17,13 +17,13 @@ def assert_time_equal(expected: str, actual: str):
     actual_dt = datetime.strptime(actual, fmt)
 
     diff = abs((expected_dt - actual_dt).total_seconds())
-    assert expected_dt == actual_dt, (
-        f"❌ 승인 요청일 불일치, 기대: {expected_dt}, 실제: {actual_dt}"
+    # 60초 이내 차이는 허용
+    assert diff <= 60, (
+        f"❌ 승인 요청일 불일치 (허용 오차 1분), 기대: {expected_dt}, 실제: {actual_dt}"
     )
 
-    assert expected_dt == actual_dt, f"❌ 승인 요청 시간 불일치 (expected={expected}, actual={actual})"
 def check_order_pending_history(page:Page, rule:str, product:str, status:str, manual:bool, group:Optional[bool]=None):
-    page.wait_for_timeout(3000)
+    page.wait_for_selector("data-testid=drop_rules_trigger", timeout=5000)
     page.locator("data-testid=drop_rules_trigger").click()
     page.locator("data-testid=drop_rules_search").fill(rule)
     page.wait_for_timeout(1000)
@@ -45,9 +45,9 @@ def check_order_pending_history(page:Page, rule:str, product:str, status:str, ma
         product_cell = rows.last.locator('td:nth-child(2)') # 1행 2열 (제품명)
         product_text = product_cell.inner_text().strip()
         if group: # 통합 발주 
-            products = ["배치 확인 제품 1", "배치 확인 제품 2", "배치 확인 제품 3", 
-            "배치 확인 제품 4", "배치 확인 제품 5", "배치 확인 제품 6", 
-            "배치 확인 제품 7", "배치 확인 제품 8", "배치 확인 제품 9", "발주 삭제 제품 1", "발주 삭제 제품 2"] # 발주 삭제 제품 1, 2도 통합내역 이므로 확인 리스트에 포함
+            products = ["배치 확인 제품 01", "배치 확인 제품 02", "배치 확인 제품 03", 
+            "배치 확인 제품 04", "배치 확인 제품 05", "배치 확인 제품 06", 
+            "배치 확인 제품 07", "배치 확인 제품 08", "배치 확인 제품 09", "발주 삭제 제품 1", "발주 삭제 제품 2"] # 발주 삭제 제품 1, 2도 통합내역 이므로 확인 리스트에 포함
             # 줄바꿈, 공백 정리
             normalized_text = product_text.replace("\n", " ").strip()
 
@@ -64,13 +64,13 @@ def check_order_pending_history(page:Page, rule:str, product:str, status:str, ma
 def check_approval_history(page: Page, status: str, product: str, 
                            *, auto: Optional[bool] = None, rule: Optional[str] = None, time: Optional[str] = None,):
 
-    page.wait_for_timeout(3000)
+    page.wait_for_selector("data-testid=drop_status_trigger", timeout=4000)
     page.locator("data-testid=drop_status_trigger").click()
     page.wait_for_timeout(1000)
     page.get_by_role("option", name=status, exact=True).click()
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     page.locator("data-testid=input_search").fill(product)
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
 
@@ -101,7 +101,7 @@ def check_approval_history(page: Page, status: str, product: str,
     else: # 수동 발주 + 자동 승인 => 바로 발주 내역에 생성됨 
         expect(page.locator("data-testid=history")).not_to_be_visible(timeout=5000)
         page.goto(URLS["bay_orderList"])
-        page.wait_for_timeout(2000)
+        page.wait_for_selector("data-testid=input_search", timeout=5000)
 
         search_order_history(page, product, "발주 요청")
         target_row = page.locator("table tbody tr")

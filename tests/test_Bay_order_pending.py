@@ -6,11 +6,11 @@ from helpers.approve_status_data import approve_status_map
 from helpers.approve_utils import search_order_pending_history, check_approval_status_buttons, check_approval_history
 
 products = ["자동화개별제품_1", "자동화개별제품_2", "자동화개별제품_3"] #
-bulk_products = ["배치 확인 제품 1", "배치 확인 제품 2", "배치 확인 제품 3", 
-            "배치 확인 제품 4", "배치 확인 제품 5", "배치 확인 제품 6", 
-            "배치 확인 제품 7", "배치 확인 제품 8", "배치 확인 제품 9"]
-target_products = ["배치 확인 제품 3", "배치 확인 제품 6", "배치 확인 제품 9"]
-approve_time_products = ["배치 확인 제품 2", "배치 확인 제품 3","배치 확인 제품 5", "배치 확인 제품 6", "배치 확인 제품 8", "배치 확인 제품 9"]
+bulk_products = ["배치 확인 제품 01", "배치 확인 제품 02", "배치 확인 제품 03", 
+            "배치 확인 제품 04", "배치 확인 제품 05", "배치 확인 제품 06", 
+            "배치 확인 제품 07", "배치 확인 제품 08", "배치 확인 제품 09"]
+target_products = ["배치 확인 제품 03", "배치 확인 제품 06", "배치 확인 제품 09"]
+approve_time_products = ["배치 확인 제품 02", "배치 확인 제품 03","배치 확인 제품 05", "배치 확인 제품 06", "배치 확인 제품 08", "배치 확인 제품 09"]
 edit_product = "발주 거절 제품 3"
 delete_product = "발주 삭제 제품 1"
 reject_product = ["발주 거절 제품 1", "발주 거절 제품 2"]

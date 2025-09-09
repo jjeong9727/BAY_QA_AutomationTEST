@@ -3,198 +3,198 @@
     "test_name": "test_Bay_login",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 15:51:56",
+    "timestamp": "2025-09-09 13:19:43",
     "file": "tests/test_Bay_login.py",
     "stack": "",
-    "duration": "12.39초"
+    "duration": "24.82초"
   },
   {
     "test_name": "test_Bay_alert",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 15:58:17",
+    "timestamp": "2025-09-09 13:26:15",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "381.11초"
+    "duration": "392.45초"
   },
   {
     "test_name": "test_Bay_supplier",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 15:59:15",
+    "timestamp": "2025-09-09 13:27:13",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "57.90초"
+    "duration": "57.61초"
   },
   {
     "test_name": "test_Bay_prdctg",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:01:08",
+    "timestamp": "2025-09-09 13:29:08",
     "file": "tests/test_Bay_prdctg.py",
     "stack": "",
-    "duration": "112.83초"
+    "duration": "115.39초"
   },
   {
     "test_name": "test_Bay_rule_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:03:55",
+    "timestamp": "2025-09-09 13:31:28",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "166.86초"
+    "duration": "140.13초"
   },
   {
     "test_name": "test_Bay_rule_approval",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:05:21",
+    "timestamp": "2025-09-09 13:32:55",
     "file": "tests/test_Bay_rule_approval.py",
     "stack": "",
-    "duration": "85.62초"
+    "duration": "86.39초"
   },
   {
     "test_name": "test_Bay_product",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:07:38",
+    "timestamp": "2025-09-09 13:35:09",
     "file": "tests/test_Bay_product.py",
     "stack": "",
-    "duration": "137.16초"
+    "duration": "134.57초"
   },
   {
     "test_name": "test_Bay_product_upload_validation",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:08:07",
+    "timestamp": "2025-09-09 13:36:49",
     "file": "tests/test_Bay_product_upload_validation.py",
     "stack": "",
-    "duration": "29.22초"
+    "duration": "99.95초"
   },
   {
     "test_name": "test_Bay_product_upload",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:08:38",
+    "timestamp": "2025-09-09 13:37:20",
     "file": "tests/test_Bay_product_upload.py",
     "stack": "",
-    "duration": "31.06초"
+    "duration": "30.70초"
   },
   {
     "test_name": "test_Bay_rule_order_apply_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:09:01",
+    "timestamp": "2025-09-09 13:37:45",
     "file": "tests/test_Bay_rule_order_apply_bulk.py",
     "stack": "",
-    "duration": "23.01초"
+    "duration": "25.07초"
   },
   {
     "test_name": "test_Bay_product_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:10:59",
+    "timestamp": "2025-09-09 13:41:35",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "117.94초"
+    "duration": "229.92초"
   },
   {
     "test_name": "test_Bay_stock_in",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:13:24",
+    "timestamp": "2025-09-09 13:44:44",
     "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "144.75초"
+    "duration": "188.55초"
   },
   {
     "test_name": "test_Bay_stock_out",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:18:31",
+    "timestamp": "2025-09-09 13:50:50",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "307.42초"
+    "duration": "366.16초"
   },
   {
     "test_name": "test_Bay_order_pending",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:23:13",
+    "timestamp": "2025-09-09 13:54:53",
     "file": "tests/test_Bay_order_pending.py",
     "stack": "",
-    "duration": "282.11초"
+    "duration": "242.81초"
   },
   {
     "test_name": "test_Bay_order_approval",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:32:29",
+    "timestamp": "2025-09-09 14:04:52",
     "file": "tests/test_Bay_order_approval.py",
     "stack": "",
-    "duration": "556.05초"
+    "duration": "599.37초"
   },
   {
     "test_name": "test_Bay_order_status_cancel",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:41:36",
+    "timestamp": "2025-09-09 14:11:36",
     "file": "tests/test_Bay_order_status_cancel.py",
     "stack": "",
-    "duration": "546.85초"
+    "duration": "403.82초"
   },
   {
     "test_name": "test_Bay_order_status_request",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:42:34",
+    "timestamp": "2025-09-09 14:12:35",
     "file": "tests/test_Bay_order_status_request.py",
     "stack": "",
-    "duration": "58.11초"
+    "duration": "58.69초"
   },
   {
     "test_name": "test_Bay_order_status_delivery",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:43:22",
+    "timestamp": "2025-09-09 14:13:23",
     "file": "tests/test_Bay_order_status_delivery.py",
     "stack": "",
-    "duration": "47.86초"
+    "duration": "48.01초"
   },
   {
     "test_name": "test_Bay_order_status_receive",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:44:59",
+    "timestamp": "2025-09-09 14:14:59",
     "file": "tests/test_Bay_order_status_receive.py",
     "stack": "",
-    "duration": "96.56초"
+    "duration": "96.64초"
   },
   {
     "test_name": "test_Bay_order_status_complete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:45:35",
+    "timestamp": "2025-09-09 14:15:35",
     "file": "tests/test_Bay_order_status_complete.py",
     "stack": "",
-    "duration": "36.51초"
+    "duration": "35.92초"
   },
   {
     "test_name": "test_Bay_order_status_batch",
-    "status": "PASS",
-    "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:48:52",
+    "status": "FAIL",
+    "message": "tests\\test_Bay_order_status_batch.py:154: AssertionError",
+    "timestamp": "2025-09-09 14:19:42",
     "file": "tests/test_Bay_order_status_batch.py",
-    "stack": "",
-    "duration": "196.21초"
+    "stack": "============================= test session starts =============================\nplatform win32 -- Python 3.13.2, pytest-8.3.5, pluggy-1.5.0\nrootdir: C:\\Users\\kjeon\\OneDrive\\Desktop\\QA\\Bay\nconfigfile: pytest.ini\nplugins: base-url-2.1.0, html-4.1.1, json-0.4.0, json-report-1.5.0, metadata-3.1.1, ordering-0.6, playwright-0.7.0\ncollected 3 items\n\ntests\\test_Bay_order_status_batch.py F..                                 [100%]\n\n================================== FAILURES ===================================\n__________________________ test_cancel_batch_history __________________________\n\npage = <Page url='https://stg.bay.centurion.ai.kr/orders/history?page=1&start_date=2025-09-09&end_date=2025-09-09&order_status=CANCELED&product_name=%EB%B0%B0%EC%B9%98+%ED%99%95%EC%9D%B8+%EC%A0%9C%ED%92%88+03'>\n\n    def test_cancel_batch_history(page:Page):\n    \n        bay_login(page, \"jekwon\")\n        page.goto(URLS[\"bay_orderList\"])\n        page.wait_for_timeout(2000)\n    \n        search_order_history(page, product_list[2],\"발주 요청\")\n    \n        # 대표 내역 확인 후 order_id 추출\n        products = [\"배치 확인 제품 01\", \"배치 확인 제품 02\", \"배치 확인 제품 03\"]\n        first_history = page.locator('[data-testid=\"history\"]').first\n        rows = first_history.locator('table tbody tr')\n        order_cell = rows.nth(0).locator('td:nth-child(2)')\n        main_product_name = order_cell.inner_text()\n        order_id = get_order_id_from_order_list(page, main_product_name)\n    \n        print(f\"orderID : {order_id}\")\n        page.wait_for_timeout(1000)\n    \n        rows.nth(0).locator(\"[data-testid='btn_detail']\").click()\n        page.wait_for_timeout(1000)\n    \n        cancel_index = random.randint(1, 3)  # (2~4행)\n        cancel_target = products[cancel_index - 1]\n        print(f\"취소 대상 제품: {cancel_target} \")\n        cancel_txt = \"발주를 취소하시겠습니까?\"\n    \n        # 1개만 취소 후 상태 확인\n        for i, product_name in enumerate(products, start=1):  # tr 1~3 (2~4행)\n            cancel_row = rows.nth(i)\n    \n            if i == cancel_index:\n                # \\U0001f53d \\ud574\\ub2f9 \\ud589\\uc758 \\ucde8\\uc18c \\ubc84\\ud2bc \\ud074\\ub9ad\n                rows.nth(i).locator('[data-testid=\"btn_order_cancel\"]').click()\n                expect(page.locator(\"data-testid=txt_cancel\")).to_have_text(cancel_txt, timeout=3000)\n    \n                page.wait_for_timeout(1000)\n                page.locator(\"data-testid=btn_confirm\").click()\n                expect(page.locator(\"data-testid=toast_cancel\")).to_be_visible(timeout=3000)\n                page.wait_for_timeout(1000)\n    \n        # \\U0001f50d \\uc0c1\\ud0dc \\ud655\\uc778 (\\uc0c1\\uc138 \\ub0b4\\uc5ed)\n        for i in range(1,4):  # tr index 1~3 ⇒ 2~4행\n            # \\U0001f53d order \\uc140 \\uae30\\uc900\\uc73c\\ub85c \\ud574\\ub2f9 tr\\uc758 \\uc0c1\\ud0dc \\uc140(td[1]) \\uc811\\uadfc\n            # 검색 결과 테이블\n            first_history = page.locator('[data-testid=\"history\"]').first\n            rows = first_history.locator('table tbody tr')\n            row_count = rows.count()\n            print(f\"검색된 전체 행 수: {row_count}\")\n    \n            # order_id가 같은 행만 필터링\n            order_rows = []\n            for i in range(row_count):\n                row = rows.nth(i)\n                row_order_id = row.locator(\"td:nth-child(2)\").inner_text().strip()  # 주문번호/대표제품명 있는 열\n                if order_id in row_order_id:\n                    order_rows.append(row)\n    \n            print(f\"\\u2705 \\ub3d9\\uc77c order_id({order_id}) \\uac00\\uc9c4 \\ud589 \\uc218: {len(order_rows)}\")\n    \n            # 해당 order_id 제품들만 상태 확인\n            for row in order_rows:\n                status_text = row.locator(\"td:nth-child(1)\").inner_text().strip()\n                product_text = row.locator(\"td:nth-child(2)\").inner_text().strip()\n                print(f\"\\U0001f50d {product_text} \\uc0c1\\ud0dc \\ud655\\uc778: {status_text}\")\n                assert status_text == \"\\ubc1c\\uc8fc \\ucde8\\uc18c\", f\"\\u274c {product_text} \\uc0c1\\ud0dc \\ubd88\\uc77c\\uce58 (\\uc2e4\\uc81c: {status_text})\"\n    \n    \n    \n        # 일괄 취소 후 상태 확인\n        bulk_cancel_txt = \"발주를 일괄 취소하시겠습니까?\"\n        page.locator(\"data-testid=btn_order_cancel\").nth(0).click()\n        expect(page.locator(\"data-testid=txt_cancel_bulk\")).to_have_text(bulk_cancel_txt, timeout=3000)\n        page.wait_for_timeout(1000)\n        page.locator(\"data-testid=btn_confirm\").click()\n        expect(page.locator(\"data-testid=toast_cancel_bulk\")).to_be_visible(timeout=3000)\n        page.wait_for_timeout(3000)\n    \n        page.locator(\"data-testid=btn_reset\").click()\n        page.wait_for_timeout(2000)\n    \n        search_order_history(page, product_list[2],\"발주 취소\")\n        page.wait_for_timeout(2000)\n    \n        for i in range(4):  # → 1~4행\n            first_history = page.locator('[data-testid=\"history\"]').first\n            rows = first_history.locator('table tbody tr')\n            order_row = rows.nth(i)\n            status_cell = order_row.locator('td:nth-child(1)')\n>           expect(status_cell).to_have_text(\"발주 취소\", timeout=3000)\nE           AssertionError: Locator expected to have text '발주 취소'\nE           Actual value: <element(s) not found> \nE           Call log:\nE             - LocatorAssertions.to_have_text with timeout 3000ms\nE             -   - waiting for locator(\"[data-testid=\\\"history\\\"]\").first.locator(\"table tbody tr\").nth(1).locator(\"td:nth-child(1)\")\n\ntests\\test_Bay_order_status_batch.py:154: AssertionError\n---------------------------- Captured stdout call -----------------------------\n\\U0001f50d \\uac80\\uc0c9\\ub41c \\uc81c\\ud488\\uba85: \\ubc30\\uce58 \\ud655\\uc778 \\uc81c\\ud488 02\\n\\xa0\\uc678\\xa02 \\uac74\\n\\u2705 \\ucc3e\\uc740 order_id: 1103\\norderID : 1103\\n\\ucde8\\uc18c \\ub300\\uc0c1 \\uc81c\\ud488: \\ubc30\\uce58 \\ud655\\uc778 \\uc81c\\ud488 02 \\n\\uac80\\uc0c9\\ub41c \\uc804\\uccb4 \\ud589 \\uc218: 4\\n\\u2705 \\ub3d9\\uc77c order_id(1103) \\uac00\\uc9c4 \\ud589 \\uc218: 0\\n\\uac80\\uc0c9\\ub41c \\uc804\\uccb4 \\ud589 \\uc218: 4\\n\\u2705 \\ub3d9\\uc77c order_id(1103) \\uac00\\uc9c4 \\ud589 \\uc218: 0\\n\\uac80\\uc0c9\\ub41c \\uc804\\uccb4 \\ud589 \\uc218: 4\\n\\u2705 \\ub3d9\\uc77c order_id(1103) \\uac00\\uc9c4 \\ud589 \\uc218: 0\n--------------------------------- JSON report ---------------------------------\nreport saved to: .report.json\n=========================== short test summary info ===========================\nFAILED tests/test_Bay_order_status_batch.py::test_cancel_batch_history - Asse...\n=================== 1 failed, 2 passed in 245.05s (0:04:05) ===================\n",
+    "duration": "246.58초"
   },
   {
     "test_name": "test_Bay_stock_history",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-05 16:50:25",
+    "timestamp": "2025-09-09 14:21:06",
     "file": "tests/test_Bay_stock_history.py",
     "stack": "",
-    "duration": "93.27초"
+    "duration": "84.22초"
   }
 ]

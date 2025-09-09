@@ -70,7 +70,7 @@ def test_order_acceptance(page: Page):
 
             # 재발송 확인
             txt_resend = "재발송하시겠습니까?"
-            page.locator("data-testid=btn_resend").click()
+            page.locator("data-testid=btn_resend").first.click()
             expect(page.locator("data-testid=txt_resend")).to_have_text(txt_resend, timeout=3000)
             page.wait_for_timeout(500)
             page.locator("data-testid=btn_confirm").click()

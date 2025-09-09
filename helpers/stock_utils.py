@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from socket import timeout
 from config import URLS
 from datetime import datetime
 from playwright.sync_api import Page, expect
@@ -95,7 +96,7 @@ class StockManager:
         self.product_name = product_name  # 제품명 저장
         # 'product_name'을 기준으로 검색을 실행
         self.page.goto(URLS["bay_prdList"])
-        self.page.wait_for_timeout(2000)
+        self.page.wait_for_selector("data-testid=input_search", timeout=5000)
         self.page.fill("[data-testid='input_search']", self.product_name)
         self.page.wait_for_timeout(1000)
         self.page.click("[data-testid='btn_search']")

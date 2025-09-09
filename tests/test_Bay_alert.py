@@ -544,7 +544,7 @@ def test_alert_stock(page:Page):
             page.locator("data-testid=input_search").fill(search_name)
             page.wait_for_timeout(500)
             page.locator("data-testid=btn_search").click()
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(3000)
             rows = page.locator("table tbody tr")
             first_row = rows.nth(0)
             raw_name_text = first_row.locator("td").nth(num).inner_text().strip()
@@ -611,7 +611,7 @@ def test_alert_order_rules(page:Page):
     page.wait_for_timeout(2000)
 
     page.locator("data-testid=btn_register").click()
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_rule_name", timeout=7000)
     page.locator("data-testid=input_rule_name").fill(rule_name)
     page.wait_for_timeout(1000)
 
@@ -719,11 +719,11 @@ def test_alert_approval_rules(page:Page):
     approver_1 = "권정의"
     bay_login(page, "jekwon")
     page.goto(URLS["bay_approval_rule"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=btn_register", timeout=7000)
 
     # 승인 규칙 등록 화면 중복값, 이탈 확인
     page.locator("data-testid=btn_register").click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
+    page.wait_for_selector("data-testid=input_rule_name", timeout=7000)
 
         # 승인자/참조자 삭제
     page.locator("data-testid=btn_delete_approver").click()
@@ -753,7 +753,7 @@ def test_alert_approval_rules(page:Page):
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=txt_nosave")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
     page.locator("data-testid=btn_cancel").click()
-    expect(page.locator("data-testid=input_rule_name")).to_have_value("중복테스트", timeout=3000)
+    expect(page.locator("data-testid=input_rule_name")).to_have_value("중복테스트", timeout=5000)
     
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=txt_nosave")).to_have_text("변경 사항을 저장하지 않으시겠습니까?", timeout=3000)
@@ -779,7 +779,7 @@ def test_alert_approval_rules(page:Page):
         edit_name = "수정테스트"
 
     page.locator('[data-testid="btn_edit"]').first.click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
+    page.wait_for_selector("data-testid=input_rule_name", timeout=5000)
 
     page.locator("data-testid=input_rule_name").fill(edit_name)
     page.wait_for_timeout(1000)
@@ -787,7 +787,7 @@ def test_alert_approval_rules(page:Page):
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_title")).to_have_text("승인 규칙 변경 제품", timeout=3000)
     page.locator("data-testid=btn_cancel").last.click()
-    expect(page.locator("data-testid=input_rule_name")).to_have_value(edit_name, timeout=3000)
+    expect(page.locator("data-testid=input_rule_name")).to_have_value(edit_name, timeout=5000)
     page.locator("data-testid=btn_save").click()
     expect(page.locator("data-testid=txt_title")).to_have_text("승인 규칙 변경 제품", timeout=3000)
     page.locator("data-testid=btn_confirm").click()
@@ -876,7 +876,7 @@ def test_alert_order_rule(page:Page):
             page.locator("data-testid=input_search").fill(search_name)
             page.wait_for_timeout(500)
             page.locator("data-testid=btn_search").click()
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(3000)
             rows = page.locator("table tbody tr")
             first_row = rows.nth(0)
             raw_name_text = first_row.locator("td").nth(num).inner_text().strip()

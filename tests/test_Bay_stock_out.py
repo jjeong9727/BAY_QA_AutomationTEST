@@ -22,7 +22,7 @@ ordered_product = []
 def test_stock_manual_order(page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
-    page.wait_for_timeout(1000)
+    page.wait_for_selector("data-testid=input_search", timeout=5000)
 
     products = ["수동 발주 제품 1", "수동 발주 제품 2", "수동 발주 제품 3"]
     expected_rules = ["승인규칙_1명", "승인규칙_n명", "자동 승인"]
@@ -34,7 +34,7 @@ def test_stock_manual_order(page):
     # 재고 가져오기 
         # 수동 발주 제품_1 
     page.locator("data-testid=input_search").fill(products[0])
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     rows = page.locator('table tbody tr')
@@ -43,7 +43,7 @@ def test_stock_manual_order(page):
 
         # 수동 발주 제품_2
     page.locator("data-testid=input_search").fill(products[1])
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     rows = page.locator('table tbody tr')
@@ -52,7 +52,7 @@ def test_stock_manual_order(page):
 
     # 수동 발주 제품_3
     page.locator("data-testid=input_search").fill(products[2])
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
     rows = page.locator('table tbody tr')
@@ -245,7 +245,7 @@ def test_edit_stocklist_and_auto_order(page):
         cell_8 = row.locator("td").nth(7)
         value_8 = int(cell_8.inner_text().strip())
 
-        page.locator("data-testid=btn_edit").first.click()
+        row.locator("data-testid=btn_edit").click()
         page.wait_for_timeout(1000)
 
         # 8번째 셀(출고)의 input에 출고량 입력
@@ -280,7 +280,7 @@ def test_outflow_for_batch_order(page):
     page.wait_for_timeout(2000)
     page.locator("data-testid=btn_stockadd").click()
     page.wait_for_timeout(2000)
-    product_list = [f"배치 확인 제품 {i}" for i in range(1, 10)]  # 1~9번 제품 리스트 생성
+    product_list = [f"배치 확인 제품 {i:02d}" for i in range(1, 10)]  # 01~09번 제품 리스트 생성
 
     product_list.extend(["발주 거절 제품 3", "발주 삭제 제품 1"])
 
@@ -341,7 +341,7 @@ def test_outflow_for_batch_order(page):
     page.locator('[role="option"]').filter(has_text="발주 요청").click()
     page.wait_for_timeout(1000)
 
-    page.locator("data-testid=input_search").fill("배치 확인 제품 3")
+    page.locator("data-testid=input_search").fill("배치 확인 제품 03")
     page.wait_for_timeout(500)
 
     page.locator("[data-testid=btn_search]").click()

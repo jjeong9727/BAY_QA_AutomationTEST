@@ -259,7 +259,7 @@ def load_saved_product_names():
 def verify_product_update(page, product_name):
     name = product_name
     page.goto(URLS["bay_prdList"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_search", timeout=5000)
     page.fill("data-testid=input_search", name)
     page.wait_for_timeout(500)
     page.click("data-testid=btn_search")
@@ -301,7 +301,7 @@ def verify_product_update(page, product_name):
 def get_product_stock(page, product_name):
     from config import URLS
     page.goto(URLS["bay_stock"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_search", timeout=5000)
     page.fill("input[placeholder='제품명 검색']", product_name)
     page.wait_for_timeout(500)
     page.click("data-testid=btn_search")

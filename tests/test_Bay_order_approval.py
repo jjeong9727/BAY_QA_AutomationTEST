@@ -7,9 +7,9 @@ from helpers.approve_utils import (
     search_order_pending_history, check_approval_status_buttons, get_approve_id_from_approve_list
 )
 products = [ "자동화개별제품_1","자동화개별제품_2", "자동화개별제품_3", "수동 발주 제품 2"] #
-bulk_products = [ "배치 확인 제품 2", "배치 확인 제품 3", "배치 확인 제품 5", "배치 확인 제품 6", "배치 확인 제품 8", "배치 확인 제품 9"] 
+bulk_products = [ "배치 확인 제품 02", "배치 확인 제품 03", "배치 확인 제품 05", "배치 확인 제품 06", "배치 확인 제품 08", "배치 확인 제품 09"] 
 # 제품 1, 4, 7은 자동 승인이라 제외
-approved_products = ["배치 확인 제품 1","배치 확인 제품 4","배치 확인 제품 7",]
+approved_products = ["배치 확인 제품 01","배치 확인 제품 04","배치 확인 제품 07",]
 reject_products = ["발주 거절 제품 1","발주 거절 제품 2","발주 거절 제품 3"] 
 approval_rules = ["승인규칙_1명", "승인규칙_n명", "자동 승인"]
 order_rule = ["자동화규칙_개별", "자동화규칙_묶음"] 

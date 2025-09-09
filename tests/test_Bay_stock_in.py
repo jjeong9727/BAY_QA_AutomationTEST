@@ -39,31 +39,30 @@ def test_stock_inflow(page):
 def test_inflow_bulk (page:Page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
-    page.wait_for_timeout(1000)
+    page.wait_for_selector("data-testid=btn_stockadd", timeout=7000)
     page.locator("data-testid=btn_stockadd").click()
-    page.wait_for_timeout(2000)
-    # product_list = [f"자동화제품_{i}" for i in range(1, 10)]  # 1~9번 제품 리스트 생성
-    product_list = [f"배치 확인 제품 {i}" for i in range(1, 10)]  # 1~9번 제품 리스트 생성
+    page.wait_for_selector("data-testid=drop_status_trigger", timeout=5000)
+    product_list = [f"배치 확인 제품 {i:02d}" for i in range(1, 10)]  # 01~09번 제품 리스트 생성
     product_list.extend(["발주 거절 제품 3", "발주 삭제 제품 1"])
     for idx, product in enumerate(product_list):
         page.locator("data-testid=drop_status_trigger").last.click()
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.get_by_role("option", name="입고", exact=True).click()
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=drop_prdname_trigger").last.click()
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=drop_prdname_search").fill(product)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=drop_prdname_item", has_text=product).click()
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         
         # 입고량 계산 
         inflow_qty = 10
 
         page.locator("data-testid=input_qty").last.fill(str(inflow_qty))
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=input_memo").last.fill(f"{product} 제품 입고")
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
 
         if idx < len(product_list) - 1:
                 add_row_button = page.locator("data-testid=btn_addrow")

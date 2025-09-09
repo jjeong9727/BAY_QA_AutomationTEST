@@ -9,6 +9,7 @@ from helpers.common_utils import bay_login
 from playwright.sync_api import Page, expect
 from config import URLS, Account
 filtered_products = ["자동화개별제품_2", "자동화개별제품_3"] 
+alim_talk_product = "수동 발주 제품 3"
 
 def run_order_status_check(page: Page, delivery_status: int, product_name:str):
     status_name = "수령 완료"
@@ -43,14 +44,33 @@ def run_order_status_check(page: Page, delivery_status: int, product_name:str):
     except Exception as e:
         print(f"❌ Error in test_order_status_complete: {str(e)}")
         raise
-
-
-
+# 발주 진행 상태에서 수령 확정 (운송장 X)
 def test_order_status_complete_bf(page: Page):
     run_order_status_check(page, delivery_status=7, product_name=filtered_products[1])
     
-    
-
+# 배송 진행 상태에서 수령 확정 (운송장 O)
 def test_order_status_complete_af(page: Page):
     run_order_status_check(page, delivery_status=4, product_name=filtered_products[0])
 
+# 재발송 버튼 확인
+def test_resend_alimtalk(page:Page):
+    bay_login(page, "jekwon")
+    page.goto(URLS["bay_orderList"])
+    page.wait_for_selector("data-testid=input_search", timeout=5000)
+    search_order_history(page, alim_talk_product, "발주 요청")
+
+    for i in range(1, 6):  # 1~5회 시도
+        page.wait_for_selector("data-testid=btn_resend", timeout=5000)
+        page.locator("data-testid=btn_resend").first.click()
+
+        expect(page.locator("data-testid=txt_resend")).to_have_text("재발송하시겠습니까?", timeout=5000)
+        page.locator("data-testid=btn_confirm").click()
+
+        if i <= 3:
+            # 1~3회차 → 정상 재발송 완료 토스트
+            expect(page.locator("data-testid=toast_resend")).to_have_text("재발송이 완료되었습니다.", timeout=5000)
+            print(f"✅ {i}회차: 재발송 성공")
+        else:
+            # 4회차 이후 → 최대 횟수 초과 토스트
+            expect(page.locator("data-testid=toast_resend_max")).to_have_text("재발송은 최대 3회까지만 가능합니다.", timeout=5000)
+            print(f"⚠️ {i}회차: 재발송 최대 횟수 초과")

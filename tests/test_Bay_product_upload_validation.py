@@ -7,6 +7,35 @@ import re
 OPTIONAL_HEADERS = {"제품명(영문)", "제조사명(영문)"}
 CATEGORY_MAP = {"의약품": "Medications", "보톡스": "botox", "메디톡스": "Medytox", "의료기기": "Medical Devices", "주사제": "Injection"}
 
+def check_tooltip_order(tooltip: str, row_num: int):
+    # 줄바꿈/마침표 단위 분리
+    parts = [p.strip() for p in re.split(r"[.\n]", tooltip) if p.strip()]
+
+    # PRIORITY_ORDER 키워드가 포함된 부분만 추출
+    tooltip_order = []
+    for p in parts:
+        for key in PRIORITY_ORDER:
+            if key in p and key not in tooltip_order:  # 중복 방지
+                tooltip_order.append(key)
+
+    # 실제 tooltip에서 감지된 키워드
+    detected = [key for key in PRIORITY_ORDER if key in "".join(parts)]
+
+    # 기대 순서는 detected (PRIORITY_ORDER에 맞춘 순서)
+    expected_order = detected
+
+    print(f"   📝 {row_num}행 Tooltip 검증")
+    print(f"      - 원본 parts: {parts}")
+    print(f"      - 추출된 오류 키워드 순서: {tooltip_order}")
+    print(f"      - 기대 순서: {expected_order}")
+
+    # 순서 비교
+    assert tooltip_order == expected_order, (
+        f"{row_num}행 Tooltip 순서 불일치\n"
+        f"  실제: {tooltip_order}\n"
+        f"  기대: {expected_order}"
+    )
+
 #  validation_1.xlsx 확인 [미입력 | [제품명+업체] 중복 | 업체 담당자 연락처 | 자동 발주 수량 0]
 def test_upload_product_validation_first(page: Page):
     bay_login(page, "admin")
@@ -412,35 +441,6 @@ def test_upload_product_validation_second(page: Page):
         print("✅ [최대 값 입력 제한 | 영문 입력 필드 | 숫자 입력 필드] 유효성 검증 통과")
 
 #  validation_3.xlsx 확인 [성공 / 오류 필터 선택 후 개수 확인]
-def check_tooltip_order(tooltip: str, row_num: int):
-    # 줄바꿈/마침표 단위 분리
-    parts = [p.strip() for p in re.split(r"[.\n]", tooltip) if p.strip()]
-
-    # PRIORITY_ORDER 키워드가 포함된 부분만 추출
-    tooltip_order = []
-    for p in parts:
-        for key in PRIORITY_ORDER:
-            if key in p and key not in tooltip_order:  # 중복 방지
-                tooltip_order.append(key)
-
-    # 실제 tooltip에서 감지된 키워드
-    detected = [key for key in PRIORITY_ORDER if key in "".join(parts)]
-
-    # 기대 순서는 detected (PRIORITY_ORDER에 맞춘 순서)
-    expected_order = detected
-
-    print(f"   📝 {row_num}행 Tooltip 검증")
-    print(f"      - 원본 parts: {parts}")
-    print(f"      - 추출된 오류 키워드 순서: {tooltip_order}")
-    print(f"      - 기대 순서: {expected_order}")
-
-    # 순서 비교
-    assert tooltip_order == expected_order, (
-        f"{row_num}행 Tooltip 순서 불일치\n"
-        f"  실제: {tooltip_order}\n"
-        f"  기대: {expected_order}"
-    )
-
 def test_upload_product_validation_third(page: Page):
     bay_login(page, "admin")
     page.goto(URLS["bay_prdList"])
@@ -454,7 +454,8 @@ def test_upload_product_validation_third(page: Page):
     error_count = error_rows.count()
     success_count = total_count - error_count
 
-    print(f"📊 총 행 수: {total_count}")
+    assert row_count == total_count, (f"❌ 엑셀({row_count})건과 UI({total_count})건 불일치")
+    print(f"✅ 엑셀({row_count})건과 UI({total_count})건 일치")
     print(f"✅ 성공 행 수: {success_count}, ❌ 오류 행 수: {error_count}")
 
     # --- 1) 성공 필터 ---

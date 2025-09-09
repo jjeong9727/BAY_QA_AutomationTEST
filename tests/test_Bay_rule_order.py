@@ -15,10 +15,10 @@ product_name = "발주 규칙 변경 제품"
 def test_order_rules_register(page: Page):
     bay_login(page, "admin")
     page.goto(URLS["bay_rules"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=btn_register", timeout=5000)
     # ✅ 첫 번째 규칙: 매주
     page.locator("data-testid=btn_register").click()
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
     page.locator("data-testid=input_rule_name").fill(rule_name_2)
     page.wait_for_timeout(1000)
 
@@ -67,7 +67,7 @@ def test_order_rules_register(page: Page):
 
     # ✅ 두 번째 규칙: 매일
     page.locator("data-testid=btn_register").click()
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
     page.locator("data-testid=input_rule_name").fill(rule_name_1)
     page.wait_for_timeout(1000)
 
@@ -104,7 +104,7 @@ def test_order_rules_edit(page:Page):
     bay_login(page, "admin")
     # 제품에 규칙 연결 후 수정 확인
     page.goto(URLS["bay_prdList"])
-    page.wait_for_timeout(3000)
+    page.wait_for_selector("data-testid=input_search", timeout=3000)
     
     page.locator("data-testid=input_search").fill(product_name)
     page.wait_for_timeout(1000)
@@ -151,13 +151,13 @@ def test_order_rules_edit(page:Page):
 
     # 첫번째 규칙 수정 (발주 규칙 변경 제품 팝업 확인)
     page.goto(URLS["bay_rules"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_search", timeout=3000)
     page.locator("data-testid=input_search").fill(rule_name_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_edit").first.click()
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=drop_minute_trigger", timeout=3000)
 
     page.locator("data-testid=drop_minute_trigger").click()
     page.wait_for_timeout(1000)
@@ -235,7 +235,8 @@ def test_order_rule_branch(page:Page):
 def test_order_rules_delete(page:Page):
     bay_login(page, "admin")
     page.goto(URLS["bay_rules"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_search", timeout=3000)
+
     txt_delete = "발주 규칙을 삭제하시겠습니까?"
     # 삭제 확인
     page.locator("data-testid=input_search").fill(rule_name_2)
@@ -309,7 +310,8 @@ def test_order_rules_delete(page:Page):
     page.wait_for_timeout(1000)
 
     page.goto(URLS["bay_rules"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_search", timeout=3000)
+
     txt_delete = "발주 규칙을 삭제하시겠습니까?"
     # 삭제 확인
     page.locator("data-testid=input_search").fill(rule_name_1)

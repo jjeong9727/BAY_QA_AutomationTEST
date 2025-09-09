@@ -181,7 +181,7 @@ def test_edit_category_all(page: Page):
             item_to_edit.fill(new_value)
             page.wait_for_timeout(500)
             page.locator("data-testid=btn_save").click()
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
 
             if page.locator("data-testid=txt_nosave").is_visible(timeout=3000):
                 expect(page.locator("data-testid=txt_nosave")).to_have_text(txt_nosave, timeout=3000)
@@ -212,7 +212,7 @@ def test_delete_category_all(page: Page):
     for tab, testid_kor, testid_eng, require_eng in test_cases:
         try:
             page.click(f"data-testid={tab}")
-            page.wait_for_timeout(2000)
+            page.wait_for_selector(f"input[data-testid='{testid_kor}']", timeout=5000)
 
             name_kr_locator = page.locator(f"input[data-testid='{testid_kor}']")
             item_to_delete = None
@@ -233,7 +233,7 @@ def test_delete_category_all(page: Page):
                 target_button = delete_buttons.nth(row_index)
                 target_button.wait_for(state="visible")
                 target_button.click()
-                page.wait_for_timeout(1000)
+                page.wait_for_selector("data-testid=btn_confirm", timeout=5000)
 
                 confirm_btn = page.locator("data-testid=btn_confirm")
                 if confirm_btn.is_visible(timeout=3000):

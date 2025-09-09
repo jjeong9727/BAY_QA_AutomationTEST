@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 import time
 
-product_list = [f"배치 확인 제품 {i}" for i in range(1, 10)]
+product_list = [f"배치 확인 제품 {i:02d}" for i in range(1, 10)]
 
 def accept_order(page:Page, order_id:str, manager:str):
     accept_url = f"{URLS['base_accept_url']}/{order_id}/accept"
@@ -60,6 +60,7 @@ def delivery_order(page:Page, order_id:str, manager:str):
     page.locator("button[data-testid='btn_confirm']").last.click()
     expect(page.locator("data-testid=toast_tracking")).to_be_visible(timeout=3000)
     page.wait_for_timeout(1000)
+    
 # ✅ 발주 요청 -> 개별 취소 / 일괄 취소 
 def test_cancel_batch_history(page:Page):
     
@@ -70,7 +71,7 @@ def test_cancel_batch_history(page:Page):
     search_order_history(page, product_list[2],"발주 요청")
     
     # 대표 내역 확인 후 order_id 추출 
-    products = ["배치 확인 제품 1", "배치 확인 제품 2", "배치 확인 제품 3"]
+    products = ["배치 확인 제품 01", "배치 확인 제품 02", "배치 확인 제품 03"]
     first_history = page.locator('[data-testid="history"]').first
     rows = first_history.locator('table tbody tr')
     order_cell = rows.nth(0).locator('td:nth-child(2)')
@@ -143,7 +144,12 @@ def test_cancel_batch_history(page:Page):
     page.wait_for_timeout(2000)
 
     search_order_history(page, product_list[2],"발주 취소")
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("[data-testid='history']", timeout=5000)
+
+    first_history = page.locator('[data-testid="history"]').first
+    rows = first_history.locator('table tbody tr')
+    rows.nth(0).locator('[data-testid="btn_detail"]').click()
+    page.wait_for_timeout(1000)
 
     for i in range(4):  # → 1~4행
         first_history = page.locator('[data-testid="history"]').first
@@ -161,7 +167,7 @@ def test_cancel_batch_history(page:Page):
 def test_receive_without_tracking(page:Page):
 
     # 대표 내역 확인 후 order_id 추출 
-    products = ["배치 확인 제품 4", "배치 확인 제품 5", "배치 확인 제품 6"]
+    products = ["배치 확인 제품 04", "배치 확인 제품 05", "배치 확인 제품 06"]
 
     bay_login(page, "jekwon")
     page.goto(URLS["bay_orderList"])
@@ -269,7 +275,7 @@ def test_receive_without_tracking(page:Page):
 
 # ✅ 배송 진행 -> 일부 수령 -> 수령 완료    
 def test_receive_with_tracking(page:Page):
-    products = ["배치 확인 제품 7", "배치 확인 제품 8", "배치 확인 제품 9"]
+    products = ["배치 확인 제품 07", "배치 확인 제품 08", "배치 확인 제품 09"]
 
     bay_login(page, "jekwon")
     page.goto(URLS["bay_orderList"])

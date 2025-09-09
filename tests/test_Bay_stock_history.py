@@ -1,4 +1,5 @@
 import random
+import json
 from config import URLS, Account
 from datetime import datetime, timedelta
 from helpers.stock_utils import StockManager, register_stock_for_date
@@ -42,6 +43,18 @@ def get_last_column_of_history2(page: Page) -> str:
     row = page.locator('(//div[@data-testid="history"])[2]//table//tbody/tr').nth(0)
     first_col = row.locator('td').first
     return first_col.text_content().strip()
+def get_manual_product():
+    with open("product_name.json", "r", encoding="utf-8") as f:
+        products = json.load(f)
+
+    # "register": "manual" 인 제품만 필터링
+    manual_products = [p["kor"] for p in products if p.get("register") == "manual"]
+
+    if not manual_products:
+        raise ValueError("❌ 'register=manual' 제품을 찾을 수 없습니다.")
+
+    # 랜덤으로 하나 선택
+    return random.choice(manual_products)
 
 today = datetime.today()
 mmdd= today.strftime("%m%d")
@@ -52,7 +65,7 @@ def test_inflow_past(page):
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
     
-    search_name = f"등록테스트_{mmdd}"
+    search_name = get_manual_product()
 
     page.locator("data-testid=input_search").fill(search_name)
     page.wait_for_timeout(1000)
@@ -76,8 +89,8 @@ def test_inflow_past(page):
     
     page.wait_for_timeout(2000)
     # 두 날짜에 대해 각각 등록
-    register_stock_for_date(page, yesterday, product_name, current_stock, yesterday_memo)  # 이전 등록 반영
-    register_stock_for_date(page, day_before, product_name, current_stock+100, day_before_memo)
+    register_stock_for_date(page, yesterday, search_name, current_stock, yesterday_memo)  
+    register_stock_for_date(page, day_before, search_name, current_stock+100, day_before_memo)
 
     # 재고 상세 진입 
     page.fill("data-testid=input_search", product_name)

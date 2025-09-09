@@ -19,8 +19,8 @@ full_name_mapping = {
     "test_Bay_product_edit": "[제품관리] 본사 수정, 지점 수정 삭제 복구 확인",
     "test_Bay_stock_in": "[재고관리] 재고 입고 확인",
     "test_Bay_stock_out": "[재고관리] 수동 발주 및 재고 출고 확인",
-    "test_Bay_order_pending":"[발주규칙관리] 발주 규칙 등록 수정 삭제 확인",
-    "test_Bay_order_approval":"[승인규칙관리] 승인 규칙 등록 수정 삭제 확인",
+    "test_Bay_order_pending":"[발주예정내역] 발주 승인 요청 및 예정 내역 수정 삭제",
+    "test_Bay_order_approval":"[발주승인요청내역] 승인 거절 확인",
 
     "test_Bay_order_status_cancel": "[발주내역] 발주 취소, 발주 실패 상태 확인",
     "test_Bay_order_status_request": "[발주내역] 발주 수락 확인",

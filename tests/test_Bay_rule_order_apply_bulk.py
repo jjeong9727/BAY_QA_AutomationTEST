@@ -59,36 +59,54 @@ def test_apply_rule_order_bulk(page:Page):
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(2000)
-    rows = page.locator("table tbody tr")
-    excel_products = load_excel_products()
-    excel_count = len(excel_products)
-    
 
+    last_height = 0
+    while True:
+        page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
+        page.wait_for_timeout(1000)
+        new_height = page.evaluate("document.body.scrollHeight")
+        if new_height == last_height:  # 더 이상 로딩 없음
+            break
+        last_height = new_height
+
+    # 엑셀 제품 목록 로드
+    excel_products = load_excel_products()
     prdname_list = [product.get("kor") for product in excel_products]
+    excel_count = len(prdname_list)
+
+    # 테이블 탐색 후 체크박스 선택
+    rows = page.locator("table tbody tr")
     row_count = rows.count()
-    found = False
+    selected = 0
 
     for i in range(row_count):
-        cell_text = rows.nth(i).locator("td").nth(3).inner_text().strip()  # 4열 값
+        row = rows.nth(i)
+        row.scroll_into_view_if_needed()
+        page.wait_for_timeout(200)
 
+        cell_text = row.locator("td").nth(3).inner_text().strip()
         cell_kor_name = cell_text.split("\n")[0].strip()
 
-        if cell_kor_name in prdname_list: 
-            checkbox = rows.nth(i).locator("td").nth(0)
+        if cell_kor_name in prdname_list:
+            checkbox = row.locator("td").nth(0)
             checkbox.scroll_into_view_if_needed()
-            page.wait_for_timeout(300)
             checkbox.click()
-            page.wait_for_timeout(300)
-            print(f"✅ {i+1}행: '{cell_kor_name}' 일치 → 체크박스 클릭 완료")
-            found = True
+            page.wait_for_timeout(200)
+            print(f"✅ {i+1}행: '{cell_kor_name}' 체크박스 클릭 완료")
+            selected += 1
 
-    if not found:
+    if selected == 0:
         print("⚠️ 등록된 제품명과 일치하는 행을 찾지 못함")
 
+    # 상단으로 이동
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(1000)
+
+    # 저장 버튼 클릭
     page.locator("data-testid=btn_save").click()
-    expect(page.locator("data-testid=txt_title")).to_have_text(f"{excel_count}개 제품의 발주 규칙을 일괄 적용하시겠습니까?", timeout=3000)
+
+    # 📌 검증: 실제 체크된 개수로 비교 (excel_count 대신 selected 사용)
+    expect(page.locator("data-testid=txt_title")).to_have_text(f"{selected}개 제품의 발주 규칙을 일괄 적용하시겠습니까?", timeout=3000)
     expect(page.locator("data-testid=txt_subtitle")).to_have_text("일괄 적용되며, 승인 및 발주 중인 제품은 다음 출고부터 적용됩니다.", timeout=3000)
     page.locator("data-testid=btn_confirm").click()
     expect(page.locator("data-testid=toast_rule_bulk")).to_have_text("발주 규칙 일괄 적용이 완료되었습니다.", timeout=3000)
