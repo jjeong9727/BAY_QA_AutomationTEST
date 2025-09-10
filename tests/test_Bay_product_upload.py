@@ -5,7 +5,7 @@
 from playwright.sync_api import Page, expect 
 from config import URLS, Account, HEADER_MAP
 from helpers.common_utils import bay_login
-from helpers.product_utils import append_product_name, verify_products_in_list
+from helpers.product_utils import append_product_name, verify_products_in_list, update_product_names
 import openpyxl  # 엑셀 업로드를 위해
 
 def normalize_excel_value(header_name: str, cell_value):
@@ -15,8 +15,10 @@ def normalize_excel_value(header_name: str, cell_value):
     return str(cell_value).strip()
 
 def test_upload_excel_file(page: Page):
-    bay_login(page, "admin")
+    update_product_names("data/success.xlsx") # 엑셀 업로드 파일 갱신
 
+    bay_login(page, "admin")
+    
     page.goto(URLS["bay_prdList"])
     page.wait_for_selector("data-testid=btn_excel", timeout=5000)
     page.locator("data-testid=btn_excel").hover()

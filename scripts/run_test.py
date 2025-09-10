@@ -51,7 +51,7 @@ all_tests = [
     "tests/test_Bay_login.py",
     "tests/test_Bay_alert.py",
     "tests/test_Bay_supplier.py",
-    "tests/test_Bay_prdctg.py",
+    "tests/test_Bay_category.py",
     "tests/test_Bay_rule_order.py",
 
     "tests/test_Bay_rule_approval.py",

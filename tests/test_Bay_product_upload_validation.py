@@ -274,8 +274,8 @@ def test_upload_product_validation_second(page: Page):
         if cell_value is None:
             return ""
         if isinstance(cell_value, (int, float)):
-            # return f"{int(cell_value):,}"  # 천 단위 콤마 적용
-            return f"{int(cell_value)}"  # 콤마 없이 노출
+            return f"{int(cell_value):,}"  # 천 단위 콤마 적용
+            # return f"{int(cell_value)}"  # 콤마 없이 노출
         return str(cell_value).strip()
 
     def expect_cell_value(cell_locator, expected_value, timeout=3000):

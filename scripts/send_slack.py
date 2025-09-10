@@ -32,7 +32,7 @@ test_file_to_korean = {
     "test_Bay_login": "[로그인] 로그인 로그아웃 확인",
     "test_Bay_alert" : "[공통] 화면 이탈 및 검색 확인",
     "test_Bay_supplier": "[업체관리] 업체 등록 및 중복 확인",
-    "test_Bay_prdctg": "[카테고리관리] 카테고리 등록 수정 삭제 확인",
+    "test_Bay_category": "[카테고리관리] 카테고리 등록 수정 삭제 확인",
     "test_Bay_rule_order":"[발주규칙관리] 발주 규칙 등록 수정 삭제 확인",
 
     "test_Bay_rule_approval":"[승인규칙관리] 승인 규칙 등록 수정 삭제 확인",

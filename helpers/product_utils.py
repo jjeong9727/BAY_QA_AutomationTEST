@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from datetime import datetime
 from helpers.common_utils import get_daily_count
 from config import URLS
@@ -484,3 +485,31 @@ def upload_and_verify_excel(page: Page, file_path: str, table_selector: str = "t
     print(f"✅ {file_path}: 엑셀 {excel_rows}행 = UI {ui_rows}행 일치")
 
     return headers, excel_rows
+
+def update_product_names(file_path="data/success.xlsx"):
+    today = datetime.today().strftime("%m%d")
+    workbook = openpyxl.load_workbook(file_path)
+    sheet = workbook.active
+
+    # E열 = 제품명, F열 = 제품명(영문)
+    col_kor, col_eng = 5, 6  
+
+    # --- 현재 엑셀에 있는 마지막 숫자 찾기 ---
+    last_num = 0
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        kor_name = row[col_kor-1]
+        if kor_name and str(kor_name).startswith(f"엑셀업로드_{today}"):
+            m = re.search(r"_(\d+)$", kor_name)
+            if m:
+                last_num = max(last_num, int(m.group(1)))
+
+    # --- 새 번호 이어붙이기 ---
+    new_num = last_num + 1
+    for i, row in enumerate(sheet.iter_rows(min_row=2, max_col=col_eng, values_only=False), start=1):
+        if row[col_kor-1].value:  # 제품명 있으면 업데이트
+            row[col_kor-1].value = f"엑셀업로드_{today}_{new_num:02d}"
+            row[col_eng-1].value = f"upload_product_{today}_{new_num:02d}"
+            new_num += 1
+
+    workbook.save(file_path)
+    print(f"✅ 제품명 업데이트 완료 (마지막 번호: {new_num-1})")

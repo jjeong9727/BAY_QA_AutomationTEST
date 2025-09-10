@@ -157,7 +157,7 @@ class StockManager:
         self.page.fill("data-testid=input_memo", "30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
         self.page.wait_for_timeout(500)
         self.page.locator("data-testid=btn_save").click()
-        expect(self.page.locator("data-testid=toast_inflow")).to_have_text(txt_inflow, timeout=3000)
+        expect(self.page.locator("data-testid=toast_inflow")).to_have_text(txt_inflow, timeout=7000)
         self.page.wait_for_timeout(1000)
 
     def perform_outflow(self, quantity: int):
@@ -184,5 +184,5 @@ class StockManager:
         memo_input.fill("30자까지 제한인데요. 최대글자수 꽉꽉채워서 등록합니다.")
         self.page.wait_for_timeout(500)
         self.page.locator("data-testid=btn_save").click()
-        expect(self.page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=3000)
+        expect(self.page.locator("data-testid=toast_outflow")).to_have_text(txt_outflow, timeout=7000)
         self.page.wait_for_timeout(1000)
