@@ -486,30 +486,24 @@ def upload_and_verify_excel(page: Page, file_path: str, table_selector: str = "t
 
     return headers, excel_rows
 
+# 엑셀 업로드를 위한 엑셀 데이터 업데이트
 def update_product_names(file_path="data/success.xlsx"):
-    today = datetime.today().strftime("%m%d")
+    now = datetime.now()
+    date = now.strftime("%m%d")
+
     workbook = openpyxl.load_workbook(file_path)
     sheet = workbook.active
 
-    # E열 = 제품명, F열 = 제품명(영문)
-    col_kor, col_eng = 5, 6  
+    col_kor, col_eng = 5, 6  # E열=제품명, F열=제품명(영문)
 
-    # --- 현재 엑셀에 있는 마지막 숫자 찾기 ---
-    last_num = 0
-    for row in sheet.iter_rows(min_row=2, values_only=True):
-        kor_name = row[col_kor-1]
-        if kor_name and str(kor_name).startswith(f"엑셀업로드_{today}"):
-            m = re.search(r"_(\d+)$", kor_name)
-            if m:
-                last_num = max(last_num, int(m.group(1)))
+    for i, row in enumerate(sheet.iter_rows(min_row=2, max_col=col_eng, values_only=False)):
+        # ✅ 1열(A열)에 값이 있을 때만 처리
+        if row[0].value:
+            cnt = get_daily_count()  # 날짜별 카운터 가져오기
+            count = f"{cnt:02d}"
 
-    # --- 새 번호 이어붙이기 ---
-    new_num = last_num + 1
-    for i, row in enumerate(sheet.iter_rows(min_row=2, max_col=col_eng, values_only=False), start=1):
-        if row[col_kor-1].value:  # 제품명 있으면 업데이트
-            row[col_kor-1].value = f"엑셀업로드_{today}_{new_num:02d}"
-            row[col_eng-1].value = f"upload_product_{today}_{new_num:02d}"
-            new_num += 1
+            row[col_kor-1].value = f"엑셀업로드_{date}_{count}"
+            row[col_eng-1].value = f"upload_product_{date}_{count}"
 
     workbook.save(file_path)
-    print(f"✅ 제품명 업데이트 완료 (마지막 번호: {new_num-1})")
+    print(f"✅ 제품명 업데이트 완료 ({date}, 마지막 번호 {count})")

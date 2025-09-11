@@ -37,12 +37,12 @@ def load_excel_products(json_path="product_name.json"):
 def test_apply_rule_order_bulk(page:Page):
     bay_login(page, "admin")
     page.goto(URLS["bay_rules"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_search", timeout=10000)
 
     rule_name = "일괄 적용 확인 규칙"
 
     page.locator("data-testid=btn_register_bulk").click()
-    page.wait_for_selector("data-testid=drop_rule_trigger", timeout=5000)
+    page.wait_for_selector("data-testid=drop_rule_trigger", timeout=10000)
 
     page.locator("data-testid=drop_rule_trigger").click()
     page.wait_for_selector("data-testid=drop_rule_search", timeout=3000)
@@ -82,7 +82,7 @@ def test_apply_rule_order_bulk(page:Page):
     for i in range(row_count):
         row = rows.nth(i)
         row.scroll_into_view_if_needed()
-        page.wait_for_timeout(200)
+        page.wait_for_timeout(2000)
 
         cell_text = row.locator("td").nth(3).inner_text().strip()
         cell_kor_name = cell_text.split("\n")[0].strip()

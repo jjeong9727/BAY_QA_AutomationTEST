@@ -282,9 +282,9 @@ def test_order_rules_delete(page:Page):
         if edit_button.is_visible():
             print(f"✅ {i}번째 행의 수정 버튼 클릭")
             edit_button.click()
-            page.wait_for_timeout(2000)
+            
             break
-
+    page.wait.for_selector("data-testid=drop_type_trigger", timeout=10000)
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_rule_trigger").click()
@@ -293,10 +293,6 @@ def test_order_rules_delete(page:Page):
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_rule_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
-    page.locator("data-testid=input_stk_safe").fill("5")
-    page.wait_for_timeout(500)
-    page.locator("data-testid=input_stk_qty").fill("10")
-    page.wait_for_timeout(500)
 
     txt_edit = "제품을 수정하시겠습니까?"
     page.evaluate("window.scrollTo(0, 0)")

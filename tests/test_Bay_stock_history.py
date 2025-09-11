@@ -63,7 +63,7 @@ mmdd= today.strftime("%m%d")
 def test_inflow_past(page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=btn_edit", timeout=10000)
     
     search_name = get_manual_product()
 
@@ -75,7 +75,8 @@ def test_inflow_past(page):
     product_column = page.locator("table tbody tr").first.locator("td").nth(3)
     stock_column = page.locator("table tbody tr").first.locator("td").nth(5)
     stock_text = stock_column.text_content().strip()
-    product_name = product_column.locator("div").first.text_content().strip()
+    raw_product = product_column.locator("div").first.text_content().strip()
+    product_name = raw_product.splitlines()[0].strip()
     current_stock = int(stock_text)
     print(f"재고량 : {stock_text}, 제품명 : {product_name}")
     yesterday_memo = "어제 날짜 입고 확인 테스트"
@@ -185,8 +186,8 @@ def test_stock_bulk_edit(page:Page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
     page.wait_for_timeout(2000)
-    inflow = 25
-    new_inflow = 15
+    inflow_data = 25
+    new_inflow_data = 15
     txt_bulk = "2개의 재고 입고가 완료되었습니다."
     txt_edit = "재고 입고가 완료되었습니다."
 
@@ -225,9 +226,11 @@ def test_stock_bulk_edit(page:Page):
     input_field1 = row1.locator("td").nth(6).locator("input")
     input_field2 = row2.locator("td").nth(6).locator("input")
 
-    input_field1.fill(str(inflow))
+    inflow_1 = int(inflow_data)+int(inflow_legacy1)
+    inflow_2 = int(inflow_data)+int(inflow_legacy2)
+    input_field1.fill(str(inflow_1))
     page.wait_for_timeout(500)
-    input_field2.fill(str(inflow))
+    input_field2.fill(str(inflow_2))
     page.wait_for_timeout(500)  
     change1 = datetime.now()
     page.locator("data-testid=btn_edit_bulk").click()
@@ -244,7 +247,7 @@ def test_stock_bulk_edit(page:Page):
     assert change_history1 == actual_history1, f"변경 이력 불일치: {change_history1} != {actual_history1}"
     page.wait_for_timeout(1000)
     inflow1 = int(get_table_cell_text(page, 1, 0, 3)) # 입출고 수량
-    assert inflow1 == inflow, f"입고량 불일치 : {inflow1} != {inflow}"
+    assert inflow1 == inflow_1, f"입고량 불일치 : {inflow1} != {inflow_1}"
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_back").click()
     page.wait_for_timeout(1000)
@@ -256,8 +259,8 @@ def test_stock_bulk_edit(page:Page):
     actual_history2 = history2.split(',')[0].strip()
     assert change_history1 == actual_history2, f"변경 이력 불일치: {change_history1} != {actual_history2}"
     page.wait_for_timeout(1000)
-    inflow1 = int(get_table_cell_text(page, 1, 0, 3)) # 입출고 수량
-    assert inflow1 == inflow, f"입고량 불일치 : {inflow1} != {inflow}"
+    inflow2 = int(get_table_cell_text(page, 1, 0, 3)) # 입출고 수량
+    assert inflow2 == inflow_2, f"입고량 불일치 : {inflow2} != {inflow_2}"
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_back").click()
     page.wait_for_timeout(1000)
@@ -273,7 +276,7 @@ def test_stock_bulk_edit(page:Page):
 
     input_field1 = row1.locator("td").nth(6).locator("input")
 
-    input_field1.fill(str(new_inflow))
+    input_field1.fill(str(new_inflow_data))
     page.wait_for_timeout(500)
     change2 = datetime.now()
     page.locator("data-testid=btn_edit_bulk").click()
@@ -290,7 +293,7 @@ def test_stock_bulk_edit(page:Page):
     assert change_history2 == actual_history1, f"변경 이력 불일치: {change_history2} != {actual_history1}"
     page.wait_for_timeout(1000)
     inflow1 = int(get_table_cell_text(page, 1, 0, 3)) # 입출고 수량
-    assert inflow1 == new_inflow, f"입고량 불일치 : {inflow1} != {new_inflow}"
+    assert inflow1 == new_inflow_data, f"입고량 불일치 : {inflow1} != {new_inflow_data}"
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_back").click()
     page.wait_for_timeout(1000)
@@ -305,10 +308,10 @@ def test_stock_bulk_edit(page:Page):
     page.wait_for_timeout(1000)
     inflow2 = int(get_table_cell_text(page, 1, 0, 3)) # 입출고 수량
     # 두번째 수정 하지 않아 첫번째 입고량과 노출되는 값 비교
-    assert inflow2 == inflow, f"입고량 불일치 : {inflow2} != {inflow}"
+    assert inflow2 == inflow_2, f"입고량 불일치 : {inflow2} != {inflow_2}"
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_back").click()
     page.wait_for_timeout(1000)
 
-    update_product_flag(name_kor=product_name1, stock_qty=int(stock_text1)+int(new_inflow))
-    update_product_flag(name_kor=product_name2, stock_qty=int(stock_text2)+int(inflow))
+    update_product_flag(name_kor=product_name1, stock_qty=int(stock_text1)+int(new_inflow_data))
+    update_product_flag(name_kor=product_name2, stock_qty=int(stock_text2)+int(inflow_2))

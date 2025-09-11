@@ -273,10 +273,13 @@ def test_upload_product_validation_second(page: Page):
     def clean_excel_value(cell_value):
         if cell_value is None:
             return ""
-        if isinstance(cell_value, (int, float)):
-            return f"{int(cell_value):,}"  # 천 단위 콤마 적용
-            # return f"{int(cell_value)}"  # 콤마 없이 노출
-        return str(cell_value).strip()
+        try:
+            # 숫자로 변환 가능한 경우 (정수 or 소수 문자열 포함)
+            num = float(cell_value)
+            return f"{int(num):,}"   # 천단위 콤마 적용
+        except (ValueError, TypeError):
+            # 숫자가 아닌 경우 원본 문자열 사용
+            return str(cell_value).strip()
 
     def expect_cell_value(cell_locator, expected_value, timeout=3000):
         input_locator = cell_locator.locator("input")
@@ -326,6 +329,8 @@ def test_upload_product_validation_second(page: Page):
             clean_value = clean_excel_value(cell_value)
             ui_expected = clean_value if clean_value != "" else header_name
             row_data[header_name] = clean_value
+            
+            # print(f"[검증] {header_name}: 기대={ui_expected}")
             expect_cell_value(cell_locator, ui_expected)
 
             # --- 제품명 / 제품명(영문) → 100자 제한 ---
@@ -392,16 +397,19 @@ def test_upload_product_validation_second(page: Page):
                         msg = f"{ui_row_num}행 {header_name}: 영문 전용 오류"
                         errors.append(msg); summary.append(msg)
 
-            # --- 숫자 전용 컬럼에 문자열 입력 ---
+            # --- 숫자 전용 컬럼에 문자열 입력 (콤마 제외) ---
             if header_name in ("단가(원)", "안전 재고", "자동 발주 수량"):
-                if clean_value and not clean_value.isdigit():
-                    error_tag = table_row.locator("[data-testid=tag_error]")
-                    if error_tag.is_visible():
-                        error_tag.hover()
-                        tooltip = get_tooltip_text(ui_row_num)
-                        if "숫자만 입력할 수 있습니다" not in tooltip:
-                            msg = f"{ui_row_num}행 {header_name}: 숫자 전용 오류"
-                            errors.append(msg); summary.append(msg)
+                if clean_value:
+                    # 콤마 제거 후 숫자인지 확인
+                    digits_only = clean_value.replace(",", "")
+                    if not digits_only.isdigit():
+                        error_tag = table_row.locator("[data-testid=tag_error]")
+                        if error_tag.is_visible():
+                            error_tag.hover()
+                            tooltip = get_tooltip_text(ui_row_num)
+                            if "숫자만 입력할 수 있습니다" not in tooltip:
+                                msg = f"{ui_row_num}행 {header_name}: 숫자 전용 오류"
+                                errors.append(msg); summary.append(msg)
             # --- 카테고리 한글-영문 매칭 검증 ---
             if header_name in ("구분명", "종류명", "제조사명"):
                 # 대응되는 영문 헤더 찾기

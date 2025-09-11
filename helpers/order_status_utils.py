@@ -242,3 +242,5 @@ def search_order_history(page:Page, product_name: str, status:str):
     page.wait_for_timeout(2000)
     page.wait_for_selector("data-testid=history",timeout=5000)
     page.wait_for_timeout(1000)
+
+

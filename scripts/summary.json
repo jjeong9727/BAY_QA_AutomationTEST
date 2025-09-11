@@ -1,0 +1,65 @@
+[
+  {
+    "name": "[자동화][기타] test_login_wrong_password 테스트 실패",
+    "file": "tests/test_Bay_login.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] test_alert_category 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "FAIL",
+    "message": "failed",
+    "stack_summary": "tests\\test_Bay_alert.py:26: AssertionError"
+  },
+  {
+    "name": "[자동화][기타] test_alert_product 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "FAIL",
+    "message": "failed",
+    "stack_summary": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TargetClosedError"
+  },
+  {
+    "name": "[자동화][기타] test_alert_stock 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "FAIL",
+    "message": "failed",
+    "stack_summary": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TargetClosedError"
+  },
+  {
+    "name": "[자동화][기타] test_alert_order_rules 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] test_alert_supplier_page 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] test_alert_approval_rules 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "stack_summary": ""
+  },
+  {
+    "name": "[자동화][기타] test_alert_manual_order 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "FAIL",
+    "message": "failed",
+    "stack_summary": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TargetClosedError"
+  },
+  {
+    "name": "[자동화][기타] test_alert_order_rule 테스트 실패",
+    "file": "tests/test_Bay_alert.py",
+    "status": "FAIL",
+    "message": "failed",
+    "stack_summary": "..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TargetClosedError"
+  }
+]

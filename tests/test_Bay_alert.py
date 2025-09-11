@@ -857,7 +857,7 @@ def test_alert_manual_order(page:Page):
     page.wait_for_timeout(1000)
 
 # 발주 규칙 일괄 적용
-def test_alert_order_rule(page:Page):
+def test_alert_order_rule_bulk(page:Page):
     bay_login(page, "admin")
     
     page.goto(URLS["bay_rules"])
