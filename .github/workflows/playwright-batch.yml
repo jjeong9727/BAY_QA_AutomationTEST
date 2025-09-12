@@ -16,6 +16,7 @@ jobs:
       # 스크립트에서 os.getenv로 읽는 건 secret에서 가져와서 별도 설정 필요 없음
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       PYTHONUNBUFFERED: "1"
+      PYTHONPATH: ${{ github.workspace }} # 상대 경로 생성을 위한 추가 (루트 파일 지정)
       # 현재 Jira 이슈 등록은 제외된 상태로 추후 필요시 추가 예정  
     steps:
       - name: Checkout
