@@ -165,3 +165,7 @@ for test_file in all_tests:
                 stack_trace=err_out or std_out,
                 duration=f"{duration:.2f}초"
             )
+print("\n🎯 모든 테스트 완료")
+
+print("\n📤 슬랙 메시지 전송 중...")
+subprocess.run(["python", "scripts/send_slack.py"])

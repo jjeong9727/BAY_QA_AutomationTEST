@@ -3,549 +3,522 @@
     "test_name": "test_login_wrong_password",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:22:05",
+    "timestamp": "2025-09-12 16:45:30",
     "file": "tests/test_Bay_login.py",
     "stack": "",
-    "duration": "12.99초"
+    "duration": "13.39초"
   },
   {
     "test_name": "test_alert_category",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:43",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "17.90초"
+    "duration": "16.73초"
   },
   {
     "test_name": "test_alert_product",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:43",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "169.05초"
+    "duration": "169.80초"
   },
   {
     "test_name": "test_alert_stock",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:43",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "70.72초"
+    "duration": "71.87초"
   },
   {
     "test_name": "test_alert_order_rules",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:44",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "37.72초"
+    "duration": "39.65초"
   },
   {
     "test_name": "test_alert_supplier_page",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:44",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "8.38초"
+    "duration": "9.57초"
   },
   {
     "test_name": "test_alert_approval_rules",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:44",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "27.66초"
+    "duration": "28.92초"
   },
   {
     "test_name": "test_alert_manual_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:44",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "19.23초"
+    "duration": "17.98초"
   },
   {
     "test_name": "test_alert_order_rule_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:28:44",
+    "timestamp": "2025-09-12 16:52:13",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "43.23초"
+    "duration": "44.27초"
   },
   {
     "test_name": "test_register_supplier",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:29:39",
+    "timestamp": "2025-09-12 16:53:16",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "38.66초"
+    "duration": "45.83초"
   },
   {
     "test_name": "test_register_supplier_duplicate",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:29:39",
+    "timestamp": "2025-09-12 16:53:16",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "13.42초"
+    "duration": "13.77초"
   },
   {
     "test_name": "test_register_category_each",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:31:56",
+    "timestamp": "2025-09-12 16:55:09",
     "file": "tests/test_Bay_category.py",
     "stack": "",
-    "duration": "36.56초"
+    "duration": "34.98초"
   },
   {
     "test_name": "test_duplicate_category_names",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:31:56",
+    "timestamp": "2025-09-12 16:55:09",
     "file": "tests/test_Bay_category.py",
     "stack": "",
-    "duration": "33.86초"
+    "duration": "35.50초"
   },
   {
     "test_name": "test_edit_category_all",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:31:56",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 16:55:09",
     "file": "tests/test_Bay_category.py",
-    "stack": "E             -        - <div aria-hidden=\"true\" class=\"fixed inset-0 bg-black/60 transition-opacity\"></div> from <div role=\"dialog\" aria-modal=\"true\" id=\"navigation-blocker\" class=\"fixed inset-0 flex items-center justify-center z-modal\">…</div> subtree intercepts pointer events\nE             -      - retrying click action\nE             -        - waiting 500ms\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "47.28초"
+    "stack": "",
+    "duration": "23.80초"
   },
   {
     "test_name": "test_delete_category_all",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:31:56",
+    "timestamp": "2025-09-12 16:55:09",
     "file": "tests/test_Bay_category.py",
     "stack": "",
-    "duration": "16.60초"
+    "duration": "16.35초"
   },
   {
     "test_name": "test_order_rules_register",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:34:20",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 16:57:39",
     "file": "tests/test_Bay_rule_order.py",
-    "stack": "E       Call log:\nE         - LocatorAssertions.to_be_visible with timeout 3000ms\nE         -   - waiting for locator(\"data-testid=toast_register\")\n\ntests\\test_Bay_rule_order.py:96: AssertionError",
-    "duration": "39.91초"
+    "stack": "",
+    "duration": "43.45초"
   },
   {
     "test_name": "test_order_rules_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:34:20",
+    "timestamp": "2025-09-12 16:57:39",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "52.48초"
+    "duration": "53.44초"
   },
   {
     "test_name": "test_order_rule_branch",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:34:20",
+    "timestamp": "2025-09-12 16:57:39",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "8.38초"
+    "duration": "8.53초"
   },
   {
     "test_name": "test_order_rules_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:34:20",
+    "timestamp": "2025-09-12 16:57:39",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "40.36초"
+    "duration": "41.16초"
   },
   {
     "test_name": "test_approval_rules_register",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:35:46",
+    "timestamp": "2025-09-12 16:59:04",
     "file": "tests/test_Bay_rule_approval.py",
     "stack": "",
-    "duration": "32.24초"
+    "duration": "31.72초"
   },
   {
     "test_name": "test_approval_rules_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:35:46",
+    "timestamp": "2025-09-12 16:59:04",
     "file": "tests/test_Bay_rule_approval.py",
     "stack": "",
-    "duration": "36.35초"
+    "duration": "36.76초"
   },
   {
     "test_name": "test_delete_approval_rule",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:35:46",
+    "timestamp": "2025-09-12 16:59:04",
     "file": "tests/test_Bay_rule_approval.py",
     "stack": "",
-    "duration": "14.85초"
+    "duration": "14.32초"
   },
   {
     "test_name": "test_register_multiple_products",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:38:21",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:01:19",
     "file": "tests/test_Bay_product.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td:nth-child(3)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "118.08초"
+    "stack": "",
+    "duration": "102.66초"
   },
   {
     "test_name": "test_duplicate_product_name",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:38:21",
+    "timestamp": "2025-09-12 17:01:19",
     "file": "tests/test_Bay_product.py",
     "stack": "",
-    "duration": "34.42초"
+    "duration": "29.54초"
   },
   {
     "test_name": "test_upload_product_validation_first",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:40:25",
+    "timestamp": "2025-09-12 17:03:25",
     "file": "tests/test_Bay_product_upload_validation.py",
     "stack": "",
-    "duration": "33.47초"
+    "duration": "36.20초"
   },
   {
     "test_name": "test_upload_product_validation_second",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:40:25",
+    "timestamp": "2025-09-12 17:03:25",
     "file": "tests/test_Bay_product_upload_validation.py",
     "stack": "",
-    "duration": "48.61초"
+    "duration": "49.07초"
   },
   {
     "test_name": "test_upload_product_validation_third",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:40:25",
+    "timestamp": "2025-09-12 17:03:25",
     "file": "tests/test_Bay_product_upload_validation.py",
     "stack": "",
-    "duration": "38.38초"
+    "duration": "37.94초"
   },
   {
     "test_name": "test_upload_excel_file",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:40:44",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:03:58",
     "file": "tests/test_Bay_product_upload.py",
-    "stack": "E       Call log:\nE         - LocatorAssertions.to_have_text with timeout 7000ms\nE         -   - waiting for locator(\"data-testid=alert_prdadd\")\n\ntests\\test_Bay_product_upload.py:94: AssertionError",
-    "duration": "16.41초"
+    "stack": "",
+    "duration": "29.82초"
   },
   {
     "test_name": "test_apply_rule_order_bulk",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:41:38",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:04:42",
     "file": "tests/test_Bay_rule_order_apply_bulk.py",
-    "stack": "E             -        - element is not enabled\nE             -      - retrying click action\nE             -        - waiting 500ms\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "51.54초"
+    "stack": "",
+    "duration": "41.83초"
   },
   {
     "test_name": "test_edit_products",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:44:03",
+    "timestamp": "2025-09-12 17:08:28",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "15.31초"
+    "duration": "14.33초"
   },
   {
     "test_name": "test_edit_approval_rule",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:44:03",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:08:28",
     "file": "tests/test_Bay_product_edit.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td:nth-child(11)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "40.28초"
+    "stack": "",
+    "duration": "107.10초"
   },
   {
     "test_name": "test_delete_products",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:44:03",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:08:28",
     "file": "tests/test_Bay_product_edit.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td:last-child\").locator(\"text=삭제\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "46.37초"
+    "stack": "",
+    "duration": "55.85초"
   },
   {
     "test_name": "test_restore_products",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:44:03",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:08:28",
     "file": "tests/test_Bay_product_edit.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td:last-child\").locator(\"text=복구\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "38.98초"
+    "stack": "",
+    "duration": "45.72초"
   },
   {
     "test_name": "test_stock_inflow",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:47:09",
+    "timestamp": "2025-09-12 17:11:36",
     "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "82.39초"
+    "duration": "82.80초"
   },
   {
     "test_name": "test_inflow_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:47:09",
+    "timestamp": "2025-09-12 17:11:36",
     "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "100.85초"
+    "duration": "101.99초"
   },
   {
     "test_name": "test_stock_manual_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:52:06",
+    "timestamp": "2025-09-12 17:17:41",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "70.03초"
+    "duration": "69.93초"
   },
   {
     "test_name": "test_stock_outflow",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 14:52:06",
+    "timestamp": "2025-09-12 17:17:41",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "100.25초"
+    "duration": "97.26초"
   },
   {
     "test_name": "test_edit_stocklist_and_auto_order",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:52:06",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:17:41",
     "file": "tests/test_Bay_stock_out.py",
-    "stack": "E           Call log:\nE             - LocatorAssertions.to_be_visible with timeout 10000ms\nE             -   - waiting for locator(\"data-testid=history\").first\n\nhelpers\\approve_utils.py:41: AssertionError",
-    "duration": "38.97초"
+    "stack": "",
+    "duration": "66.12초"
   },
   {
     "test_name": "test_outflow_for_batch_order",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:52:06",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:17:41",
     "file": "tests/test_Bay_stock_out.py",
-    "stack": "E           Call log:\nE             - LocatorAssertions.to_be_visible with timeout 10000ms\nE             -   - waiting for locator(\"data-testid=history\").first\n\nhelpers\\approve_utils.py:41: AssertionError",
-    "duration": "83.64초"
+    "stack": "",
+    "duration": "128.30초"
   },
   {
     "test_name": "test_edit_history_bulk",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:55:07",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:21:40",
     "file": "tests/test_Bay_order_pending.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"발주 거절 제품 3\")).last.locator(\"td\").last.locator(\"[data-testid=\\\"btn_edit\\\"]\").first\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "44.28초"
+    "stack": "",
+    "duration": "36.24초"
   },
   {
     "test_name": "test_check_status_request",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:55:07",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:21:40",
     "file": "tests/test_Bay_order_pending.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"자동화개별제품_1\")).last.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "44.90초"
+    "stack": "",
+    "duration": "94.08초"
   },
   {
     "test_name": "test_check_status_request_bulk",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:55:07",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:21:40",
     "file": "tests/test_Bay_order_pending.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.click: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=btn_detail\").last\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "44.89초"
+    "stack": "",
+    "duration": "88.95초"
   },
   {
     "test_name": "test_delete_history",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:55:07",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:21:40",
     "file": "tests/test_Bay_order_pending.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"발주 삭제 제품 1\")).last.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "44.20초"
+    "stack": "",
+    "duration": "16.25초"
   },
   {
     "test_name": "test_approve_order",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:58:06",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:31:40",
     "file": "tests/test_Bay_order_approval.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"자동화개별제품_1\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "43.42초"
+    "stack": "",
+    "duration": "314.97초"
   },
   {
     "test_name": "test_approve_bulk_order",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:58:06",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:31:40",
     "file": "tests/test_Bay_order_approval.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"배치 확인 제품 02\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "44.94초"
+    "stack": "",
+    "duration": "168.20초"
   },
   {
     "test_name": "test_reject_order",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:58:06",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:31:40",
     "file": "tests/test_Bay_order_approval.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"발주 거절 제품 2\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "43.29초"
+    "stack": "",
+    "duration": "65.21초"
   },
   {
     "test_name": "test_reject_bulk_order",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 14:58:06",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:31:40",
     "file": "tests/test_Bay_order_approval.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").filter(has=locator(\"td:nth-child(2)\").filter(has_text=\"발주 거절 제품 1\")).first.locator(\"td:nth-child(2)\")\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "43.68초"
+    "stack": "",
+    "duration": "48.80초"
   },
   {
     "test_name": "test_order_cancel",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "796.81초"
+    "stack": "",
+    "duration": "584.71초"
   },
   {
     "test_name": "test_order_status_fail",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "E           Call log:\nE             - LocatorAssertions.to_be_disabled with timeout 3000ms\nE             -   - waiting for locator(\"[data-testid=btn_receive]\")\n\ntests\\test_Bay_order_status.py:132: AssertionError",
-    "duration": "16.71초"
+    "stack": "",
+    "duration": "16.56초"
   },
   {
     "test_name": "test_order_acceptance",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "23.09초"
+    "stack": "",
+    "duration": "57.32초"
   },
   {
     "test_name": "test_order_delivery",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "            if not order_id:\n>               raise ValueError(f\"{product_name} 제품의 order ID 확인 불가\")\nE               ValueError: 자동화개별제품_2 제품의 order ID 확인 불가\n\ntests\\test_Bay_order_status.py:248: ValueError",
-    "duration": "11.46초"
+    "stack": "",
+    "duration": "46.49초"
   },
   {
     "test_name": "test_order_receive_from_delivery",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "26.48초"
+    "stack": "",
+    "duration": "46.70초"
   },
   {
     "test_name": "test_order_receive_from_progress",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "29.94초"
+    "stack": "",
+    "duration": "51.51초"
   },
   {
     "test_name": "test_order_status_complete_bf",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "21.69초"
+    "stack": "",
+    "duration": "17.31초"
   },
   {
     "test_name": "test_order_status_complete_af",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:14:18",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "21.11초"
+    "stack": "",
+    "duration": "16.09초"
   },
   {
     "test_name": "test_resend_alimtalk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 15:14:18",
+    "timestamp": "2025-09-12 17:46:07",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "19.44초"
-  },
-  {
-    "test_name": "test_cancel_batch_history",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:15:31",
-    "file": "tests/test_Bay_order_status_batch.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "22.21초"
-  },
-  {
-    "test_name": "test_receive_without_tracking",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:15:31",
-    "file": "tests/test_Bay_order_status_batch.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "23.83초"
-  },
-  {
-    "test_name": "test_receive_with_tracking",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 15:15:31",
-    "file": "tests/test_Bay_order_status_batch.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 5000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"data-testid=history\") to be visible\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "23.58초"
+    "duration": "26.49초"
   },
   {
     "test_name": "test_inflow_past",
     "status": "FAIL",
     "message": "failed",
-    "timestamp": "2025-09-12 15:16:49",
+    "timestamp": "2025-09-12 17:52:03",
     "file": "tests/test_Bay_stock_history.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.text_content: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td\").nth(5)\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "40.22초"
+    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td\").nth(3)\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
+    "duration": "69.07초"
   },
   {
     "test_name": "test_stock_bulk_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 15:16:49",
+    "timestamp": "2025-09-12 17:52:03",
     "file": "tests/test_Bay_stock_history.py",
     "stack": "",
-    "duration": "35.01초"
+    "duration": "35.88초"
   }
 ]

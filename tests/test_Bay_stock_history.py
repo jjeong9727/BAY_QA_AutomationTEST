@@ -1,5 +1,6 @@
 import random
 import json
+from socket import timeout
 from config import URLS, Account
 from datetime import datetime, timedelta
 from helpers.stock_utils import StockManager, register_stock_for_date
@@ -97,13 +98,13 @@ def test_inflow_past(page):
     page.fill("data-testid=input_search", product_name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    page.wait_for_timeout(1000)
+    page.wait_for_selector(("table tbody tr"), timeout=5000)
     first_row_cell = page.locator("table tbody tr").first.locator("td").nth(3)
     cell_text = first_row_cell.inner_text().strip().split("\n")[0]
     assert cell_text == product_name, f"❌ 검색 결과가 일치하지 않음: {cell_text} != {product_name}"
     first_row_cell = page.locator("table tbody tr").first.locator("td").nth(3)
     first_row_cell.locator("div").first.click()
-    expect(page.locator("data-testid=btn_back")).to_be_visible(timeout=3000)
+    expect(page.locator("data-testid=btn_back")).to_be_visible(timeout=5000)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_back").click()
     expect(page.locator("data-testid=btn_stockadd")).to_be_visible(timeout=3000)
