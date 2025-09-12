@@ -179,7 +179,7 @@ def test_edit_category_all(page: Page):
             print(f"🔄 변경할 값: {new_value}")
 
             item_to_edit.fill(new_value)
-            page.wait_for_timeout(500)
+            page.wait_for_timeout(1000)
             page.locator("data-testid=btn_save").click()
             page.wait_for_timeout(1000)
 

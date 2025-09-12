@@ -284,7 +284,7 @@ def test_order_rules_delete(page:Page):
             edit_button.click()
             
             break
-    page.wait.for_selector("data-testid=drop_type_trigger", timeout=10000)
+    page.wait_for_selector("data-testid=drop_type_trigger", timeout=10000)
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_rule_trigger").click()
