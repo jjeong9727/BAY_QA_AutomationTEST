@@ -2,11 +2,10 @@ name: QA E2E (Playwright + Pytest)
 
 on:
   workflow_dispatch: {}          # 수동 실행
-  push:
-    branches: [ main ]           # 원하면 제거
-  schedule:
-    # 매일 01:00 KST 실행(= UTC 16:00). 필요 없으면 지우세요.
-    - cron: "0 16 * * *"
+  # push: # Main 에 push 할때마다 실행 하는 조건
+  #   branches: [ main ]           
+  # schedule: # 특정 시간에 자동 실행하는 조건 
+    # - cron: "0 16 * * *"
 
 jobs:
   e2e:
