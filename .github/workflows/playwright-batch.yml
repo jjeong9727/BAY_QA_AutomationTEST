@@ -39,11 +39,11 @@ jobs:
       - name: Install Playwright browsers & deps (Ubuntu)
         run: |
           python -m playwright install --with-deps
-          # 필요 브라우저만 고르려면 예: python -m playwright install chromium
+        # 필요 브라우저만 고르려면 예: python -m playwright install chromium
 
       - name: Run tests via run_test.py
         run: |
-          python run_test.py
+          python scripts/run_test.py
         # run_test.py 끝에서 scripts/send_slack.py를 호출하므로 별도 슬랙 스텝 불필요
 
       - name: Upload artifacts (results & logs)
