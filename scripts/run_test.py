@@ -89,6 +89,10 @@ for test_file in all_tests:
         err_out, std_out = "", ""
     except subprocess.CalledProcessError as e:
         print(f"❌ {test_file} 테스트 실패(프로세스 종료 코드 {e.returncode})")
+        print("---- stdout tail ----")
+        print((e.stdout or "")[-4000:])
+        print("---- stderr tail ----")
+        print((e.stderr or "")[-4000:])
         err_out = e.stderr or ""
         std_out = e.stdout or ""
     finally:
