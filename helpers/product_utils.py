@@ -114,7 +114,6 @@ def remove_products_from_json(deleted_names: list):
     except Exception as e:
         print(f"[ERROR] JSON 파일 업데이트 중 오류 발생: {e}")
 
-
 # 제품 등록 이후 해당 제품명 리스트 찾기
 def verify_products_in_list(page, product_names: list[str], url: str,  table_column_index: int):
     page.goto(url)
@@ -141,9 +140,6 @@ def verify_products_in_list(page, product_names: list[str], url: str,  table_col
 
         if not found:
             raise AssertionError(f"[FAIL] {name} → '{url}'에서 확인되지 않음")
-
-
-
 
 def is_product_exist(page, product_names) -> bool:
     if isinstance(product_names, str):
@@ -181,11 +177,6 @@ def is_product_exist(page, product_names) -> bool:
 
     return all_exist
 
-
-
-
-
-
 # 실제 등록된 리스트와 json 파일 비교 하여 업데이트
 def sync_product_names_with_server(page):
     product_list = get_all_product_names()
@@ -221,9 +212,6 @@ def update_product_name(old_kor: str, new_kor: str):
 
     print(f"[INFO] 제품명 업데이트 완료: {old_kor} → {new_kor}")
 
-
-
-
 # 제품 수정 후 json 파일 업데이트
 def update_product_flag(name_kor: str, **flags):
     """제품의 재고 및 플래그 값 업데이트"""
@@ -247,7 +235,6 @@ def update_product_flag(name_kor: str, **flags):
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(products, f, ensure_ascii=False, indent=2)
-
 
 # 저장된 제품명 목록 불러오기
 def load_saved_product_names():
@@ -333,31 +320,21 @@ def is_duplicate_supplier_from_product_file(manager: str, contact: str) -> bool:
         ):
             return True
     return False
+
 # 등록한 업체 정보 값 찾기(페이지네이션 포함)
 def find_supplier_in_paginated_list(page, supplier: str, manager: str, contact: str, memo : str) -> bool:
     # 검색
-    page.fill("input[placeholder='업체명 검색']", supplier)
+    page.locator("data-testid=input_search").fill(supplier)
     page.wait_for_timeout(1000)
     page.click("data-testid=btn_search")
     page.wait_for_timeout(1000)
-
-    while True:
-        rows = page.locator("table tbody tr")
-        for i in range(rows.count()):
-            row = rows.nth(i)
-            row_text = row.inner_text()
-            if supplier in row_text and manager in row_text and contact and memo in row_text:
-                return True
-
-        # 다음 페이지 버튼 활성화 여부 확인
-        next_button = page.locator("button:has-text('다음')")  # 또는 특정 테스트 ID가 있다면 사용
-        if next_button.is_enabled():
-            next_button.click()
-            page.wait_for_timeout(1000)
-        else:
-            break
-
-    return False
+    rows = page.locator("table tbody tr")
+    for i in range(rows.count()):
+        row = rows.nth(i)
+        row_text = row.inner_text()
+        if supplier in row_text and manager in row_text and contact and memo in row_text:
+            return True
+    
 # 출고 테스트를 위한 제품 0 아닌 제품 찾기
 def get_outflow_target_products():
     with open("product_name.json", "r", encoding="utf-8") as f:

@@ -3,522 +3,549 @@
     "test_name": "test_login_wrong_password",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:45:30",
+    "timestamp": "2025-09-15 10:27:50",
     "file": "tests/test_Bay_login.py",
     "stack": "",
-    "duration": "13.39초"
+    "duration": "12.16초"
   },
   {
     "test_name": "test_alert_category",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "16.73초"
+    "duration": "17.42초"
   },
   {
     "test_name": "test_alert_product",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "169.80초"
+    "duration": "169.91초"
   },
   {
     "test_name": "test_alert_stock",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "71.87초"
+    "duration": "71.38초"
   },
   {
     "test_name": "test_alert_order_rules",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "39.65초"
+    "duration": "38.26초"
   },
   {
     "test_name": "test_alert_supplier_page",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "9.57초"
+    "duration": "8.38초"
   },
   {
     "test_name": "test_alert_approval_rules",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "28.92초"
+    "duration": "26.08초"
   },
   {
     "test_name": "test_alert_manual_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "17.98초"
+    "duration": "17.29초"
   },
   {
     "test_name": "test_alert_order_rule_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:52:13",
+    "timestamp": "2025-09-15 10:34:26",
     "file": "tests/test_Bay_alert.py",
     "stack": "",
-    "duration": "44.27초"
+    "duration": "42.40초"
   },
   {
     "test_name": "test_register_supplier",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:53:16",
+    "timestamp": "2025-09-15 10:34:57",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "45.83초"
+    "duration": "14.17초"
   },
   {
     "test_name": "test_register_supplier_duplicate",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:53:16",
+    "timestamp": "2025-09-15 10:34:57",
     "file": "tests/test_Bay_supplier.py",
     "stack": "",
-    "duration": "13.77초"
+    "duration": "13.73초"
   },
   {
     "test_name": "test_register_category_each",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:55:09",
+    "timestamp": "2025-09-15 10:36:46",
     "file": "tests/test_Bay_category.py",
     "stack": "",
-    "duration": "34.98초"
+    "duration": "34.20초"
   },
   {
     "test_name": "test_duplicate_category_names",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:55:09",
+    "timestamp": "2025-09-15 10:36:46",
     "file": "tests/test_Bay_category.py",
     "stack": "",
-    "duration": "35.50초"
+    "duration": "34.06초"
   },
   {
     "test_name": "test_edit_category_all",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:55:09",
+    "timestamp": "2025-09-15 10:36:46",
     "file": "tests/test_Bay_category.py",
     "stack": "",
-    "duration": "23.80초"
+    "duration": "22.65초"
   },
   {
     "test_name": "test_delete_category_all",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:55:09",
+    "timestamp": "2025-09-15 10:36:46",
     "file": "tests/test_Bay_category.py",
     "stack": "",
-    "duration": "16.35초"
+    "duration": "15.14초"
   },
   {
     "test_name": "test_order_rules_register",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:57:39",
+    "timestamp": "2025-09-15 10:39:13",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "43.45초"
+    "duration": "42.61초"
   },
   {
     "test_name": "test_order_rules_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:57:39",
+    "timestamp": "2025-09-15 10:39:13",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "53.44초"
+    "duration": "52.50초"
   },
   {
     "test_name": "test_order_rule_branch",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:57:39",
+    "timestamp": "2025-09-15 10:39:13",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "8.53초"
+    "duration": "8.64초"
   },
   {
     "test_name": "test_order_rules_delete",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:57:39",
+    "timestamp": "2025-09-15 10:39:13",
     "file": "tests/test_Bay_rule_order.py",
     "stack": "",
-    "duration": "41.16초"
+    "duration": "40.77초"
   },
   {
     "test_name": "test_approval_rules_register",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:59:04",
+    "timestamp": "2025-09-15 10:40:37",
     "file": "tests/test_Bay_rule_approval.py",
     "stack": "",
-    "duration": "31.72초"
+    "duration": "31.40초"
   },
   {
     "test_name": "test_approval_rules_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:59:04",
+    "timestamp": "2025-09-15 10:40:37",
     "file": "tests/test_Bay_rule_approval.py",
     "stack": "",
-    "duration": "36.76초"
+    "duration": "36.82초"
   },
   {
     "test_name": "test_delete_approval_rule",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 16:59:04",
+    "timestamp": "2025-09-15 10:40:37",
     "file": "tests/test_Bay_rule_approval.py",
     "stack": "",
-    "duration": "14.32초"
+    "duration": "14.08초"
   },
   {
     "test_name": "test_register_multiple_products",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:01:19",
+    "timestamp": "2025-09-15 10:42:53",
     "file": "tests/test_Bay_product.py",
     "stack": "",
-    "duration": "102.66초"
+    "duration": "102.53초"
   },
   {
     "test_name": "test_duplicate_product_name",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:01:19",
+    "timestamp": "2025-09-15 10:42:53",
     "file": "tests/test_Bay_product.py",
     "stack": "",
-    "duration": "29.54초"
+    "duration": "30.36초"
   },
   {
     "test_name": "test_upload_product_validation_first",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:03:25",
+    "timestamp": "2025-09-15 10:44:52",
     "file": "tests/test_Bay_product_upload_validation.py",
     "stack": "",
-    "duration": "36.20초"
+    "duration": "31.68초"
   },
   {
     "test_name": "test_upload_product_validation_second",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:03:25",
+    "timestamp": "2025-09-15 10:44:52",
     "file": "tests/test_Bay_product_upload_validation.py",
     "stack": "",
-    "duration": "49.07초"
+    "duration": "48.54초"
   },
   {
     "test_name": "test_upload_product_validation_third",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:03:25",
+    "timestamp": "2025-09-15 10:44:52",
     "file": "tests/test_Bay_product_upload_validation.py",
     "stack": "",
-    "duration": "37.94초"
+    "duration": "36.61초"
   },
   {
     "test_name": "test_upload_excel_file",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:03:58",
+    "timestamp": "2025-09-15 10:45:24",
     "file": "tests/test_Bay_product_upload.py",
     "stack": "",
-    "duration": "29.82초"
+    "duration": "29.16초"
   },
   {
     "test_name": "test_apply_rule_order_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:04:42",
+    "timestamp": "2025-09-15 10:45:53",
     "file": "tests/test_Bay_rule_order_apply_bulk.py",
     "stack": "",
-    "duration": "41.83초"
+    "duration": "26.41초"
   },
   {
     "test_name": "test_edit_products",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:08:28",
+    "timestamp": "2025-09-15 10:49:35",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "14.33초"
+    "duration": "15.52초"
   },
   {
     "test_name": "test_edit_approval_rule",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:08:28",
+    "timestamp": "2025-09-15 10:49:35",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "107.10초"
+    "duration": "106.69초"
   },
   {
     "test_name": "test_delete_products",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:08:28",
+    "timestamp": "2025-09-15 10:49:35",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "55.85초"
+    "duration": "51.41초"
   },
   {
     "test_name": "test_restore_products",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:08:28",
+    "timestamp": "2025-09-15 10:49:35",
     "file": "tests/test_Bay_product_edit.py",
     "stack": "",
-    "duration": "45.72초"
+    "duration": "45.99초"
   },
   {
     "test_name": "test_stock_inflow",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:11:36",
+    "timestamp": "2025-09-15 10:52:36",
     "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "82.80초"
+    "duration": "79.76초"
   },
   {
     "test_name": "test_inflow_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:11:36",
+    "timestamp": "2025-09-15 10:52:36",
     "file": "tests/test_Bay_stock_in.py",
     "stack": "",
-    "duration": "101.99초"
+    "duration": "98.74초"
   },
   {
     "test_name": "test_stock_manual_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:17:41",
+    "timestamp": "2025-09-15 10:58:41",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "69.93초"
+    "duration": "73.37초"
   },
   {
     "test_name": "test_stock_outflow",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:17:41",
+    "timestamp": "2025-09-15 10:58:41",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "97.26초"
+    "duration": "97.34초"
   },
   {
     "test_name": "test_edit_stocklist_and_auto_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:17:41",
+    "timestamp": "2025-09-15 10:58:41",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "66.12초"
+    "duration": "66.25초"
   },
   {
     "test_name": "test_outflow_for_batch_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:17:41",
+    "timestamp": "2025-09-15 10:58:41",
     "file": "tests/test_Bay_stock_out.py",
     "stack": "",
-    "duration": "128.30초"
+    "duration": "124.73초"
   },
   {
     "test_name": "test_edit_history_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:21:40",
+    "timestamp": "2025-09-15 11:02:38",
     "file": "tests/test_Bay_order_pending.py",
     "stack": "",
-    "duration": "36.24초"
+    "duration": "36.31초"
   },
   {
     "test_name": "test_check_status_request",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:21:40",
+    "timestamp": "2025-09-15 11:02:38",
     "file": "tests/test_Bay_order_pending.py",
     "stack": "",
-    "duration": "94.08초"
+    "duration": "93.30초"
   },
   {
     "test_name": "test_check_status_request_bulk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:21:40",
+    "timestamp": "2025-09-15 11:02:38",
     "file": "tests/test_Bay_order_pending.py",
     "stack": "",
-    "duration": "88.95초"
+    "duration": "88.12초"
   },
   {
     "test_name": "test_delete_history",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:21:40",
+    "timestamp": "2025-09-15 11:02:38",
     "file": "tests/test_Bay_order_pending.py",
     "stack": "",
-    "duration": "16.25초"
+    "duration": "16.65초"
   },
   {
     "test_name": "test_approve_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:31:40",
+    "timestamp": "2025-09-15 11:12:33",
     "file": "tests/test_Bay_order_approval.py",
     "stack": "",
-    "duration": "314.97초"
+    "duration": "314.67초"
   },
   {
     "test_name": "test_approve_bulk_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:31:40",
+    "timestamp": "2025-09-15 11:12:33",
     "file": "tests/test_Bay_order_approval.py",
     "stack": "",
-    "duration": "168.20초"
+    "duration": "163.88초"
   },
   {
     "test_name": "test_reject_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:31:40",
+    "timestamp": "2025-09-15 11:12:33",
     "file": "tests/test_Bay_order_approval.py",
     "stack": "",
-    "duration": "65.21초"
+    "duration": "65.12초"
   },
   {
     "test_name": "test_reject_bulk_order",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:31:40",
+    "timestamp": "2025-09-15 11:12:33",
     "file": "tests/test_Bay_order_approval.py",
     "stack": "",
-    "duration": "48.80초"
+    "duration": "48.50초"
   },
   {
     "test_name": "test_order_cancel",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "584.71초"
+    "duration": "530.92초"
   },
   {
     "test_name": "test_order_status_fail",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "16.56초"
+    "duration": "14.87초"
   },
   {
     "test_name": "test_order_acceptance",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "57.32초"
+    "duration": "55.66초"
   },
   {
     "test_name": "test_order_delivery",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "46.49초"
+    "duration": "43.17초"
   },
   {
     "test_name": "test_order_receive_from_delivery",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "46.70초"
+    "duration": "44.95초"
   },
   {
     "test_name": "test_order_receive_from_progress",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "51.51초"
+    "duration": "47.85초"
   },
   {
     "test_name": "test_order_status_complete_bf",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "17.31초"
+    "duration": "15.66초"
   },
   {
     "test_name": "test_order_status_complete_af",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "16.09초"
+    "duration": "15.96초"
   },
   {
     "test_name": "test_resend_alimtalk",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:46:07",
+    "timestamp": "2025-09-15 11:25:45",
     "file": "tests/test_Bay_order_status.py",
     "stack": "",
-    "duration": "26.49초"
+    "duration": "19.74초"
+  },
+  {
+    "test_name": "test_cancel_batch_history",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-15 11:29:47",
+    "file": "tests/test_Bay_order_status_batch.py",
+    "stack": "",
+    "duration": "44.13초"
+  },
+  {
+    "test_name": "test_receive_without_tracking",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-15 11:29:47",
+    "file": "tests/test_Bay_order_status_batch.py",
+    "stack": "",
+    "duration": "86.61초"
+  },
+  {
+    "test_name": "test_receive_with_tracking",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-15 11:29:47",
+    "file": "tests/test_Bay_order_status_batch.py",
+    "stack": "",
+    "duration": "108.72초"
   },
   {
     "test_name": "test_inflow_past",
-    "status": "FAIL",
-    "message": "failed",
-    "timestamp": "2025-09-12 17:52:03",
+    "status": "PASS",
+    "message": "테스트 성공",
+    "timestamp": "2025-09-15 11:30:48",
     "file": "tests/test_Bay_stock_history.py",
-    "stack": "E           playwright._impl._errors.TimeoutError: Locator.inner_text: Timeout 30000ms exceeded.\nE           Call log:\nE             - waiting for locator(\"table tbody tr\").first.locator(\"td\").nth(3)\n\n..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:528: TimeoutError",
-    "duration": "69.07초"
+    "stack": "",
+    "duration": "22.86초"
   },
   {
     "test_name": "test_stock_bulk_edit",
     "status": "PASS",
     "message": "테스트 성공",
-    "timestamp": "2025-09-12 17:52:03",
+    "timestamp": "2025-09-15 11:30:48",
     "file": "tests/test_Bay_stock_history.py",
     "stack": "",
-    "duration": "35.88초"
+    "duration": "35.66초"
   }
 ]

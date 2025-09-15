@@ -1,8 +1,8 @@
 [
   {
-    "kor": "크레용 짱구 제품등록 0904 14:55 발/규있음 승/규 자동",
+    "kor": "크레용 짱구맹구 제품등록 0904 14:56발/규있음 승/규 자동",
     "eng": "",
-    "supplier": "크레용, 짱구 010-2303-2620",
+    "supplier": "크레용, 맹구 010-2303-2620",
     "order_rule": "짱구 규칙 목 15시 정각",
     "type": "의약품",
     "group": "주사제",
@@ -14,29 +14,29 @@
     "delivery_status": 6
   },
   {
-    "kor": "등록테스트_0912_19",
-    "eng": "TestProduct_0912_19",
+    "kor": "등록테스트_0915_01",
+    "eng": "TestProduct_0915_01",
     "supplier": "자동화업체A, 권정의A 010-6275-4153",
     "order_rule": "자동화규칙_개별",
-    "type": "의료기기",
+    "type": "의약품",
     "group": "주사제",
     "maker": "메디톡스",
     "safety": 5,
     "auto_order": 10,
     "order_flag": 0,
-    "stock_qty": 200,
+    "stock_qty": 0,
     "delivery_status": 0,
     "approve_rule": "자동 승인",
     "register": "manual"
   },
   {
-    "kor": "등록테스트_0912_20",
-    "eng": "TestProduct_0912_20",
+    "kor": "등록테스트_0915_02",
+    "eng": "TestProduct_0915_02",
     "supplier": "자동화업체B, 권정의B 010-6275-4153",
     "order_rule": "자동화규칙_개별",
     "type": "의약품",
     "group": "연고",
-    "maker": "휴메딕스",
+    "maker": "루트로닉",
     "safety": 5,
     "auto_order": 10,
     "order_flag": 0,
@@ -46,13 +46,13 @@
     "register": "manual"
   },
   {
-    "kor": "등록테스트_0912_21",
-    "eng": "TestProduct_0912_21",
+    "kor": "등록테스트_0915_03",
+    "eng": "TestProduct_0915_03",
     "supplier": "자동화업체C, 권정의C 010-6275-4153",
     "order_rule": "자동화규칙_개별",
     "type": "의약품",
     "group": "주사제",
-    "maker": "휴메딕스",
+    "maker": "루트로닉",
     "safety": 5,
     "auto_order": 10,
     "order_flag": 0,
@@ -62,8 +62,8 @@
     "register": "manual"
   },
   {
-    "kor": "엑셀업로드_0912_22",
-    "eng": "upload_product_0912_22",
+    "kor": "엑셀업로드_0915_04",
+    "eng": "upload_product_0915_04",
     "supplier": "자동화업체",
     "order_rule": "일괄 적용 확인 규칙",
     "type": "의약품",
@@ -78,8 +78,8 @@
     "register": "excel"
   },
   {
-    "kor": "엑셀업로드_0912_23",
-    "eng": "upload_product_0912_23",
+    "kor": "엑셀업로드_0915_05",
+    "eng": "upload_product_0915_05",
     "supplier": "자동화업체",
     "order_rule": "일괄 적용 확인 규칙",
     "type": "의약품",
@@ -94,8 +94,8 @@
     "register": "excel"
   },
   {
-    "kor": "엑셀업로드_0912_24",
-    "eng": "upload_product_0912_24",
+    "kor": "엑셀업로드_0915_06",
+    "eng": "upload_product_0915_06",
     "supplier": "자동화업체",
     "order_rule": "일괄 적용 확인 규칙",
     "type": "의약품",

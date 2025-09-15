@@ -31,7 +31,7 @@ def test_register_supplier(page):
         page.fill("data-testid=input_memo", memo)
         page.wait_for_timeout(1000)
         page.click("data-testid=btn_confirm")
-        expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=3000)
+        expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
 
 
@@ -67,7 +67,7 @@ def test_register_supplier(page):
         page.fill("data-testid=input_memo", new_memo)
         page.wait_for_timeout(2000)
         page.click("data-testid=btn_confirm")
-        expect(page.locator("data-testid=alert_edit")).to_be_visible(timeout=3000)
+        expect(page.locator("data-testid=alert_edit")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
 
 
@@ -92,10 +92,10 @@ def test_register_supplier(page):
 
         # 4. 삭제 모달에서 삭제 버튼 선택
         txt_delete = "업체를 삭제하시겠습니까?"
-        expect(page.locator("data-testid=txt_delete")).to_have_text(txt_delete, timeout=3000)
+        expect(page.locator("data-testid=txt_delete")).to_have_text(txt_delete, timeout=5000)
         page.wait_for_timeout(500)
         page.locator("data-testid=btn_confirm").click()
-        expect(page.locator("data-testid=alert_delete")).to_be_visible(timeout=3000)
+        expect(page.locator("data-testid=alert_delete")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
 
 

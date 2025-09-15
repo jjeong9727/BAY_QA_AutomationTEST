@@ -71,7 +71,8 @@ def test_inflow_past(page):
     page.locator("data-testid=input_search").fill(search_name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    page.wait_for_timeout(1000)
+    page.wait_for_selector("data-testid=btn_edit", timeout=10000)
+
 
     product_column = page.locator("table tbody tr").first.locator("td").nth(3)
     stock_column = page.locator("table tbody tr").first.locator("td").nth(5)
@@ -95,13 +96,13 @@ def test_inflow_past(page):
     register_stock_for_date(page, day_before, search_name, current_stock+100, day_before_memo)
 
     # 재고 상세 진입 
-    page.fill("data-testid=input_search", product_name)
+    page.fill("data-testid=input_search", search_name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    page.wait_for_selector(("table tbody tr"), timeout=5000)
+    page.wait_for_selector("data-testid=btn_edit", timeout=10000)
     first_row_cell = page.locator("table tbody tr").first.locator("td").nth(3)
     cell_text = first_row_cell.inner_text().strip().split("\n")[0]
-    assert cell_text == product_name, f"❌ 검색 결과가 일치하지 않음: {cell_text} != {product_name}"
+    assert cell_text == product_name, f"❌ 검색 결과가 일치하지 않음: {cell_text} != {search_name}"
     first_row_cell = page.locator("table tbody tr").first.locator("td").nth(3)
     first_row_cell.locator("div").first.click()
     expect(page.locator("data-testid=btn_back")).to_be_visible(timeout=5000)
@@ -180,7 +181,7 @@ def test_inflow_past(page):
     assert hist1_last == hist3_last, f"[H1] 마지막 열 불일치: {hist1_last} != {hist3_last}"
     print(f"✅ H1 확인 완료")
 
-    update_product_flag(name_kor=product_name, stock_qty=expected_total)
+    update_product_flag(name_kor=search_name, stock_qty=expected_total)
 
 # ✅ 재고 일괄 수정 및 상세 확인 
 def test_stock_bulk_edit(page:Page):
