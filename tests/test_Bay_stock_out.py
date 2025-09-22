@@ -148,6 +148,7 @@ print("✅ 저장 완료:", time_data)
 # 필요 시 문자열도 바로 사용
 hour_str = next_time.strftime("%H")
 minute_str = next_time.strftime("%M")
+print(f"배치 적용 시간: {hour_str}:{minute_str}")
 
 # 개별 내역 출고 
 def test_stock_outflow(page):

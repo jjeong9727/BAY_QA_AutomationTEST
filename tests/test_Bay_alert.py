@@ -77,6 +77,7 @@ def test_alert_product(page:Page):
     status_options = ["사용 제품", "삭제 제품"]
 
     for search in search_list:
+        num = col_map[search]
         if search == "status":
             for option in status_options:
                 page.locator(f"data-testid=drop_{search}_trigger").click()
@@ -88,7 +89,6 @@ def test_alert_product(page:Page):
                 page.wait_for_timeout(2000)
                 rows= page.locator("table tbody tr")
                 row_count = rows.count()
-                num = col_map[search]
                 expected_button = "삭제" if option == "사용 제품"  else "복구"
 
                 for i in range(row_count):
@@ -540,6 +540,7 @@ def test_alert_stock(page:Page):
     col_map = {"type": 1, "group": 2, "name": 3, "maker": 4}
 
     for search in search_list:
+        num = col_map[search]
         if search == "name":
             page.locator("data-testid=input_search").fill(search_name)
             page.wait_for_timeout(500)
@@ -561,7 +562,6 @@ def test_alert_stock(page:Page):
             page.wait_for_timeout(2000)
             rows= page.locator("table tbody tr")
             row_count = rows.count()
-            num = col_map[search]
 
             for i in range(row_count):
                 raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
@@ -872,6 +872,7 @@ def test_alert_order_rule_bulk(page:Page):
     col_map = {"type": 1, "group": 2, "name": 3, "maker": 4}
 
     for search in search_list:
+        num = col_map[search]
         if search == "name":
             page.locator("data-testid=input_search").fill(search_name)
             page.wait_for_timeout(500)
@@ -894,7 +895,6 @@ def test_alert_order_rule_bulk(page:Page):
             page.wait_for_timeout(2000)
             rows= page.locator("table tbody tr")
             row_count = rows.count()
-            num = col_map[search]
             for i in range(row_count):
                 raw_kor_name = rows.nth(i).locator("td").nth(num).locator("div").nth(0).inner_text().strip() # 셀의 한글명만 
                 kor_name = raw_kor_name.partition("\n")[0]

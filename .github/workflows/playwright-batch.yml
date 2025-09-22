@@ -1,4 +1,4 @@
-name: QA E2E (Playwright + Pytest)
+name: centurionbay QA Automation Test
 
 on:
   workflow_dispatch: {}          # 수동 실행
@@ -17,6 +17,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       PYTHONUNBUFFERED: "1"
       PYTHONPATH: ${{ github.workspace }} # 상대 경로 생성을 위한 추가 (루트 파일 지정)
+      TZ: Asia/Seoul
       # 현재 Jira 이슈 등록은 제외된 상태로 추후 필요시 추가 예정  
     steps:
       - name: Checkout
