@@ -165,13 +165,11 @@ def test_duplicate_product_name(page):
         page.goto(URLS["bay_prdList"])
         expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=7000)
         page.locator("data-testid=btn_addprd").click()
-        expect(page.locator("data-testid=drop_type_trigger")).to_be_visible(timeout=7000)
-        page.wait_for_timeout(500)
+        page.wait_for_locator("data-testid=drop_type_trigger", timeout=7000)
 
         # 구분 선택
         page.locator("data-testid=drop_type_trigger").last.click()
-        expect(page.locator("data-testid=drop_type_item")).to_be_visible(timeout=5000)
-        page.wait_for_timeout(1000)
+        page.wait_for_selector("data-testid=drop_type_item", timeout=3000)
         type_items = page.locator("data-testid=drop_type_item")
         type_index = random.randint(0, type_items.count() - 1)
         selected_type = type_items.nth(type_index).inner_text().strip()
@@ -181,8 +179,7 @@ def test_duplicate_product_name(page):
 
         # 종류 선택
         page.locator("data-testid=drop_group_trigger").last.click()
-        expect(page.locator("data-testid=drop_group_item")).to_be_visible(timeout=5000)
-        page.wait_for_timeout(500)
+        page.wait_for_selector("data-testid=drop_group_item", timeout=3000)
         group_items = page.locator("data-testid=drop_group_item")
         group_index = random.randint(0, group_items.count() - 1)
         selected_group = group_items.nth(group_index).inner_text().strip()
@@ -197,8 +194,7 @@ def test_duplicate_product_name(page):
 
         # 제조사 선택
         page.locator("data-testid=drop_maker_trigger").last.click()
-        expect(page.locator("data-testid=drop_maker_item")).to_be_visible(timeout=5000)
-        page.wait_for_timeout(1000)
+        page.wait_for_selector("data-testid=drop_maker_item", timeout=3000)
         maker_items = page.locator("data-testid=drop_maker_item")
         maker_index = random.randint(0, maker_items.count() - 1)
         selected_maker = maker_items.nth(maker_index).inner_text().strip()
@@ -223,7 +219,6 @@ def test_duplicate_product_name(page):
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_supplier_item", has_text="중복테스트").first.click()
         page.wait_for_timeout(1000)
-
 
         # 발주 규칙 선택 
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)") 

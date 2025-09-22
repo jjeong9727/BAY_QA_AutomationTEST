@@ -18,6 +18,7 @@ def login_and_go_to_add_page(page: Page):
     except Exception as e:
         error_message = f"Error in login_and_go_to_add_page: {str(e)}"
         raise
+
 def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_en: str):
     try:
         page.click(f"data-testid={tab_testid}")
@@ -63,7 +64,6 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
 
     except Exception as e:
         raise
-
 
 # ----- 카테고리 등록 확인 -----
 def test_register_category_each(page):
@@ -192,7 +192,6 @@ def test_edit_category_all(page: Page):
         except Exception as e:
             print(f"❌ Error in test_edit_category_all ({tab}): {e}")
             raise
-
 
 # ----- 삭제 확인 -----
 def test_delete_category_all(page: Page):
