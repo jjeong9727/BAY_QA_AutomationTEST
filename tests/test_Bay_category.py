@@ -187,6 +187,7 @@ def test_edit_category_all(page: Page):
             expect(page.locator("data-testid=alert_register")).to_have_text(expected_msg, timeout=5000)
 
             print(f"🎉 저장 완료 ({tab}): {new_value}")
+            page.wait_for_timeout(2000)
 
         except Exception as e:
             print(f"❌ Error in test_edit_category_all ({tab}): {e}")

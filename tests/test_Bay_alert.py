@@ -132,6 +132,12 @@ def test_alert_product(page:Page):
     page.wait_for_timeout(500)
 
     # 재고 있는 제품 삭제 불가 확인
+    page.locator("data-testid=drop_maker_trigger").click()
+    page.wait_for_selector("data-testid=drop_maker_search", timeout=3000)
+    page.locator("data-testid=drop_maker_search").fill("중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
     page.locator("data-testid=input_search").fill("중복테스트")
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
@@ -147,7 +153,7 @@ def test_alert_product(page:Page):
             page.wait_for_timeout(1000)
             expect(page.locator("data-testid=txt_delete")).to_have_text(txt_delete, timeout=3000)
             page.locator("data-testid=btn_del").click()
-            expect(page.locator("data-testid=toast_stock")).to_be_visible(timeout=3000)
+            expect(page.locator("data-testid=toast_stock")).to_have_text("해당 제품은 재고가 남아 있어 삭제할 수 없습니다.", timeout=5000)
             break
     page.wait_for_timeout(1000)
 
@@ -157,6 +163,12 @@ def test_alert_product(page:Page):
     page.wait_for_timeout(500)
 
     # 사용 상태의 제품 복구 불가 확인 
+    page.locator("data-testid=drop_maker_trigger").click()
+    page.wait_for_selector("data-testid=drop_maker_search", timeout=3000)
+    page.locator("data-testid=drop_maker_search").fill("중복테스트")
+    page.wait_for_timeout(1000)
+    page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
+    page.wait_for_timeout(1000)
     page.locator("data-testid=input_search").fill("중복테스트")
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
