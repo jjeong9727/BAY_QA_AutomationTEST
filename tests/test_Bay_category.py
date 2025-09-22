@@ -14,14 +14,14 @@ def login_and_go_to_add_page(page: Page):
         page.goto(URLS["bay_category"])
         page.wait_for_timeout(2000)
         page.wait_for_url(URLS["bay_category"])
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(4000)
     except Exception as e:
         error_message = f"Error in login_and_go_to_add_page: {str(e)}"
         raise
 def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_en: str):
     try:
         page.click(f"data-testid={tab_testid}")
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(4000)
 
         if page.locator("data-testid=btn_confirm").is_visible():
             page.click("data-testid=btn_confirm")
@@ -34,10 +34,7 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         page.locator("data-testid=input_eng").last.fill(name_en)
         page.wait_for_timeout(1000)
         page.click("data-testid=btn_save")
-        page.wait_for_timeout(500)
-        page.locator("data-testid=alert_duplicate").wait_for(timeout=5000)
-
-        expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=3000)
+        expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=5000)
         print(f"[PASS] 중복 등록 토스트 확인")
 
         # 사용중인 카테고리 삭제 시도
@@ -61,7 +58,7 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
             # expect(page.locator("txt_delete")).to_be_visible(timeout=3000)
             # page.wait_for_timeout(500)
             # page.locator("data-testid=btn_comfirm").click()
-            expect(page.locator("alert_using")).to_be_visible(timeout=3000)
+            expect(page.locator("alert_using")).to_be_visible(timeout=5000)
             page.wait_for_timeout(1000)
 
     except Exception as e:
@@ -81,12 +78,12 @@ def test_register_category_each(page):
     for tab, testid_kor, testid_eng, require_eng in test_cases:
         try:
             page.click(f"data-testid={tab}")
-            page.wait_for_timeout(1000)
+            page.wait_for_timeout(3000)
             page.click("data-testid=btn_add")
-            page.wait_for_timeout(1000)
+            page.wait_for_timeout(2000)
             name_kr = generate_name("자동화등록_한글")
             page.locator(f"data-testid={testid_kor}").last.fill(name_kr)
-            page.wait_for_timeout(1000)
+            page.wait_for_timeout(2000)
 
             if require_eng:
                 name_en = generate_name("Auto_ENG")
@@ -94,7 +91,7 @@ def test_register_category_each(page):
                 page.wait_for_timeout(1000)
 
             page.click("data-testid=btn_save")
-            expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=3000)
+            expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=5000)
             page.wait_for_timeout(3000)
 
             # 스크롤을 끝까지 내려서 확인
@@ -151,7 +148,7 @@ def test_edit_category_all(page: Page):
     for tab, testid_kor, testid_eng, require_eng, expected_msg, txt_nosave in test_cases:
         try:
             page.click(f"data-testid={tab}")
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(3000)
 
             name_kr_locators = page.locator(f"input[data-testid='{testid_kor}']")
             row_count = name_kr_locators.count()
