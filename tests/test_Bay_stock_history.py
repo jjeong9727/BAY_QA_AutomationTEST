@@ -71,8 +71,7 @@ def test_inflow_past(page):
     page.locator("data-testid=input_search").fill(search_name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    page.wait_for_selector("data-testid=btn_edit", timeout=10000)
-
+    page.wait_for_timeout(3000)
 
     product_column = page.locator("table tbody tr").first.locator("td").nth(3)
     stock_column = page.locator("table tbody tr").first.locator("td").nth(5)
@@ -99,7 +98,7 @@ def test_inflow_past(page):
     page.fill("data-testid=input_search", search_name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
-    page.wait_for_selector("data-testid=btn_edit", timeout=10000)
+    page.wait_for_timeout(3000)
     first_row_cell = page.locator("table tbody tr").first.locator("td").nth(3)
     cell_text = first_row_cell.inner_text().strip().split("\n")[0]
     assert cell_text == product_name, f"❌ 검색 결과가 일치하지 않음: {cell_text} != {search_name}"
@@ -129,8 +128,8 @@ def test_inflow_past(page):
     day2_str = select_date_range(page, yesterday)
 
     # 문구 확인
-    expect(page.locator('[data-testid="txt_today"]')).to_be_visible()
-    expect(page.locator('[data-testid="txt_date"]')).to_have_text(day2_str)
+    expect(page.locator('[data-testid="txt_today"]')).to_be_visible(timeout=3000)
+    expect(page.locator('[data-testid="txt_date"]')).to_have_text(day2_str, timeout=3000)
 
     # 값 추출
     value_day2 = get_last_column_of_history2(page)
@@ -138,13 +137,13 @@ def test_inflow_past(page):
 
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_reset").click()
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(3000)
 
     # 텍스트 문구 확인
-    expect(page.locator('[data-testid="txt_today"]')).to_have_text(today_str)
+    expect(page.locator('[data-testid="txt_today"]')).to_have_text(today_str, timeout=3000)
     txt_dates = page.locator('[data-testid="txt_date"]')
-    expect(txt_dates.nth(0)).to_have_text(yesterday_str)
-    expect(txt_dates.nth(1)).to_have_text(day_before_str)
+    expect(txt_dates.nth(0)).to_have_text(yesterday_str, timeout=3000)
+    expect(txt_dates.nth(1)).to_have_text(day_before_str, timeout=3000)
 
     # ✅ 3번째 history
     hist3_qty = int(get_table_cell_text(page, 3, 0, 2))  # 3번째 열 = index 2
