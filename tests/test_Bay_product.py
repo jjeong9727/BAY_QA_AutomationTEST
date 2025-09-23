@@ -32,7 +32,6 @@ def test_register_multiple_products(page: Page):
             selected_group = select_from_dropdown(
                 page, "drop_group_trigger", "drop_group_search", "drop_group_item", random.choice(group_options))
 
-
             page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
             page.wait_for_timeout(1000)
             # 제품명 입력 
@@ -54,7 +53,6 @@ def test_register_multiple_products(page: Page):
             price_input.fill(str(random.randint(1000, 10000)))
             page.wait_for_timeout(1000)
 
- 
            # 안전 재고 / 자동 발주 수량 입력 
             safety = 5
             auto_order = 10
@@ -146,7 +144,6 @@ def test_register_multiple_products(page: Page):
             append_product_name(**product)
 
         verify_products_in_list(page, prdnames, URLS["bay_prdList"], 3)
-        # verify_products_in_list(page, prdnames, URLS["bay_stock"], 4)
 
     except Exception as e:
         print(f"[FAIL] 여러 개 제품 등록 실패: {str(e)}")
@@ -175,7 +172,6 @@ def test_duplicate_product_name(page):
         selected_type = type_items.nth(type_index).inner_text().strip()
         type_items.nth(type_index).click()
         page.wait_for_timeout(1000)
-
 
         # 종류 선택
         page.locator("data-testid=drop_group_trigger").last.click()

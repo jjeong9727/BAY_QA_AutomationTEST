@@ -29,7 +29,7 @@ def test_approve_order(page:Page):
 
         # 승인 ID 가져오기 
         approve_id = get_approve_id_from_approve_list(page, product) 
-        approval_url = f"{URLS["base_approval_url"]}/{approve_id}/confirm"
+        approval_url = f"{URLS['base_approval_url']}/{approve_id}/confirm"
         page.goto(approval_url)
         page.wait_for_selector("data-testid=btn_login", timeout=5000)
 
@@ -202,7 +202,7 @@ def test_reject_bulk_order(page:Page):
     
         # 승인 ID 가져오기 
     approve_id = get_approve_id_from_approve_list(page, reject_products[0]) 
-    approval_url = f"{URLS["base_approval_url"]}/{approve_id}/confirm"
+    approval_url = f"{URLS['base_approval_url']}/{approve_id}/confirm"
     page.goto(approval_url)
     page.wait_for_selector("data-testid=btn_login", timeout=5000)
 
