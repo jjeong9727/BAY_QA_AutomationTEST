@@ -162,7 +162,7 @@ def test_duplicate_product_name(page):
         page.goto(URLS["bay_prdList"])
         expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=7000)
         page.locator("data-testid=btn_addprd").click()
-        page.wait_for_locator("data-testid=drop_type_trigger", timeout=7000)
+        page.wait_for_selector("data-testid=drop_type_trigger", timeout=7000)
 
         # 구분 선택
         page.locator("data-testid=drop_type_trigger").last.click()
