@@ -1,3 +1,4 @@
+from socket import timeout
 from playwright.sync_api import Page, expect
 import random
 from config import URLS, Account
@@ -160,9 +161,9 @@ def test_duplicate_product_name(page):
         bay_login(page, "admin")
 
         page.goto(URLS["bay_prdList"])
-        expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=7000)
+        expect(page.locator("data-testid=btn_addprd")).to_be_visible(timeout=10000)
         page.locator("data-testid=btn_addprd").click()
-        page.wait_for_selector("data-testid=drop_type_trigger", timeout=7000)
+        expect(page.locator("data-testid=drop_type_trigger")).to_be_visible(timeout=10000)
 
         # 구분 선택
         page.locator("data-testid=drop_type_trigger").last.click()

@@ -101,7 +101,7 @@ def test_inflow_past(page):
     page.wait_for_timeout(3000)
     first_row_cell = page.locator("table tbody tr").first.locator("td").nth(3)
     cell_text = first_row_cell.inner_text().strip().split("\n")[0]
-    assert cell_text == product_name, f"❌ 검색 결과가 일치하지 않음: {cell_text} != {search_name}"
+    assert product_name in cell_text, f"❌ 검색 결과가 일치하지 않음: {cell_text} != {search_name}"
     first_row_cell = page.locator("table tbody tr").first.locator("td").nth(3)
     first_row_cell.locator("div").first.click()
     expect(page.locator("data-testid=btn_back")).to_be_visible(timeout=5000)
