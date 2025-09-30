@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import random
 from datetime import datetime
 from helpers.common_utils import get_daily_count
 from config import URLS
@@ -17,11 +18,12 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # 제품명 생성 함수
 def generate_product_names():
     now = datetime.now()
-    cnt = get_daily_count()
-    date = now.strftime("%m%d")
-    count = f"{cnt:02d}"
-    prdname_kor = f"등록테스트_{date}_{count}"
-    prdname_eng = f"TestProduct_{date}_{count}"
+    date = now.strftime("%m%d")       # mmdd
+    time = now.strftime("%H%M%S")     # HHMMSS
+    rand = f"{random.randint(0, 99):02d}"  # 랜덤 2자리 (00~99)
+
+    prdname_kor = f"등록테스트 {date} {time} {rand}"
+    prdname_eng = f"TestProduct {date} {time} {rand}"
     return prdname_kor, prdname_eng
 def generate_product_name(count:int):
     prdname_kor = f"배치 확인 제품_{count}"
@@ -467,6 +469,7 @@ def upload_and_verify_excel(page: Page, file_path: str, table_selector: str = "t
 def update_product_names(file_path="data/success.xlsx"):
     now = datetime.now()
     date = now.strftime("%m%d")
+    time = now.strftime("%H%M%S")
 
     workbook = openpyxl.load_workbook(file_path)
     sheet = workbook.active
@@ -476,11 +479,10 @@ def update_product_names(file_path="data/success.xlsx"):
     for i, row in enumerate(sheet.iter_rows(min_row=2, max_col=col_eng, values_only=False)):
         # ✅ 1열(A열)에 값이 있을 때만 처리
         if row[0].value:
-            cnt = get_daily_count()  # 날짜별 카운터 가져오기
-            count = f"{cnt:02d}"
+            rand = f"{random.randint(0, 99):02d}"  # 랜덤 2자리
 
-            row[col_kor-1].value = f"엑셀업로드_{date}_{count}"
-            row[col_eng-1].value = f"upload_product_{date}_{count}"
+            row[col_kor-1].value = f"엑셀업로드_{date}_{time}_{rand}"
+            row[col_eng-1].value = f"upload_product_{date}_{time}_{rand}"
 
     workbook.save(file_path)
-    print(f"✅ 제품명 업데이트 완료 ({date}, 마지막 번호 {count})")
+    print(f"✅ 제품명 업데이트 완료 ({date}_{time})")
