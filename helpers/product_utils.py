@@ -480,7 +480,7 @@ def update_product_names(file_path="data/success.xlsx"):
         # ✅ 1열(A열)에 값이 있을 때만 처리
         if row[0].value:
             rand = f"{random.randint(0, 99):02d}"  # 랜덤 2자리
-
+            time = now.strftime("%H%M%S")
             row[col_kor-1].value = f"엑셀업로드_{date}_{time}_{rand}"
             row[col_eng-1].value = f"upload_product_{date}_{time}_{rand}"
 

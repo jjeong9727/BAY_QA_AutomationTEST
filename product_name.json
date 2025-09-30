@@ -108,5 +108,53 @@
     "delivery_status": 0,
     "approve_rule": "자동 승인",
     "register": "excel"
+  },
+  {
+    "kor": "엑셀업로드_0930_135751_43",
+    "eng": "upload_product_0930_135751_43",
+    "supplier": "자동화업체",
+    "order_rule": "규칙 없음",
+    "type": "의약품",
+    "group": "보톡스",
+    "maker": "메디톡스",
+    "safety": "5",
+    "auto_order": "10",
+    "order_flag": 0,
+    "stock_qty": 0,
+    "delivery_status": 0,
+    "approve_rule": "자동 승인",
+    "register": "excel"
+  },
+  {
+    "kor": "엑셀업로드_0930_135751_83",
+    "eng": "upload_product_0930_135751_83",
+    "supplier": "자동화업체",
+    "order_rule": "규칙 없음",
+    "type": "의약품",
+    "group": "보톡스",
+    "maker": "메디톡스",
+    "safety": "5",
+    "auto_order": "10",
+    "order_flag": 0,
+    "stock_qty": 0,
+    "delivery_status": 0,
+    "approve_rule": "자동 승인",
+    "register": "excel"
+  },
+  {
+    "kor": "엑셀업로드_0930_135751_11",
+    "eng": "upload_product_0930_135751_11",
+    "supplier": "자동화업체",
+    "order_rule": "규칙 없음",
+    "type": "의약품",
+    "group": "보톡스",
+    "maker": "메디톡스",
+    "safety": "5",
+    "auto_order": "10",
+    "order_flag": 0,
+    "stock_qty": 0,
+    "delivery_status": 0,
+    "approve_rule": "자동 승인",
+    "register": "excel"
   }
 ]
