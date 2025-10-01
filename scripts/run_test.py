@@ -69,13 +69,6 @@ all_tests = [
 for test_file in all_tests:
     print(f"\n🚀 {test_file} 테스트 실행 중...")
 
-    # ✅ 이전 리포트 제거 (섞임 방지)
-    if os.path.exists(JSON_REPORT_FILE):
-        try:
-            os.remove(JSON_REPORT_FILE)
-        except Exception:
-            pass
-
     start_time = datetime.now()
     try:
         subprocess.run(
