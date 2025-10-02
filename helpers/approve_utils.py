@@ -104,7 +104,7 @@ def check_approval_history(page: Page, status: str, product: str,
         page.wait_for_selector("data-testid=input_search", timeout=5000)
 
         search_order_history(page, product, "발주 요청")
-        target_row = page.locator("table tbody tr")
+        target_row = page.locator("table tbody tr").nth(0)
         product_cell = target_row.locator('td:nth-child(2)') 
         rule_cell = target_row.locator('td:nth-child(7)')
         amount_cell = target_row.locator('td:nth-child(5)') 
