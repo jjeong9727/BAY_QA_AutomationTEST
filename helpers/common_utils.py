@@ -92,14 +92,21 @@ def clean_product_json(file_path="product_name.json"):
 def bay_login(page: Page, account: Optional[str] = None,):
     page.goto(URLS["bay_login"])
     
-    # ✅ 로그인 페이지 로딩 확인: 최대 5초 대기
-    try:
-        page.wait_for_selector('[data-testid="input_id"]', timeout=5000)
-    except:
-        print("⚠️ input_id 요소가 5초 안에 로드되지 않아 새로고침 시도")
-        page.reload()
-        page.wait_for_selector('[data-testid="input_id"]', timeout=5000)
+    max_attempts = 5 # 새로고침 시도 횟수 제한 
 
+    # ✅ 로그인 페이지 로딩 확인: 최대 5초 대기
+    for attempt in range(1, max_attempts + 1):
+        try:
+            page.wait_for_selector('[data-testid="input_id"]', timeout=5000)
+            return
+        except Exception:
+            if attempt < max_attempts:
+                print(f"⚠️ 로그인 페이지 확인 실패 (시도 {attempt}/{max_attempts}) → 새로고침")
+                page.reload()
+            else:
+                raise TimeoutError(
+                    f"❌ 로그인 페이지 로딩 실패: {max_attempts}회 새로고침 후에도 로그인 화면 미노출"
+                )
 
     if account : 
         id = f"{account}@medisolveai.com"
@@ -113,3 +120,4 @@ def bay_login(page: Page, account: Optional[str] = None,):
     page.wait_for_timeout(1000)
     page.click('[data-testid="btn_login"]')
     page.wait_for_timeout(3000)
+    
