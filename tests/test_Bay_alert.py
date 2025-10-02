@@ -225,12 +225,12 @@ def test_alert_product(page:Page):
     
     # 등록화면 이탈 팝업 확인
     page.locator("data-testid=btn_addprd").click()
-    page.wait_for_timeout(2000)
+    page.wait_for_selector("data-testid=input_prdname_kor", timeout=10000)
     page.locator("data-testid=input_prdname_kor").fill(edit_name)
     page.locator("body").click(position={"x": 10, "y": 10})
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_back").click()
-    expect(page.locator("data-testid=title")).to_have_text(txt_nosave, timeout=3000)
+    expect(page.locator("data-testid=title")).to_have_text(txt_nosave, timeout=5000)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_no").click()
     expect(page.locator("data-testid=input_prdname_kor").first).to_have_value(edit_name, timeout=3000)
@@ -317,8 +317,7 @@ def test_alert_product(page:Page):
     expect(page.locator("data-testid=txt_edit")).to_have_text(txt_edit, timeout=3000)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_confirm").click()
-    page.wait_for_timeout
-    expect(page.locator('[data-testid="toast_order_min"]')).to_have_text(txt_toast, timeout=3000)
+    expect(page.locator('[data-testid="toast_order_min"]')).to_have_text(txt_toast, timeout=5000)
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_maker_trigger").click()

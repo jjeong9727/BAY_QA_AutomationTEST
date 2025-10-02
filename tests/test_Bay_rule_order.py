@@ -286,9 +286,9 @@ def test_order_rules_delete(page:Page):
             break
     page.wait_for_selector("data-testid=drop_type_trigger", timeout=10000)
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
     page.locator("data-testid=drop_rule_trigger").click()
-    page.wait_for_timeout(1000)
+    page.wait_for_selector("data-testid=drop_rule_search", timeout=3000)
     page.locator("data-testid=drop_rule_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_rule_item", has_text="중복테스트").click()
@@ -296,7 +296,7 @@ def test_order_rules_delete(page:Page):
 
     txt_edit = "제품을 수정하시겠습니까?"
     page.evaluate("window.scrollTo(0, 0)")
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
     page.locator("data-testid=btn_save").click()
     page.wait_for_timeout(1000)
     expect(page.locator("data-testid=txt_edit")).to_have_text(txt_edit, timeout=3000)

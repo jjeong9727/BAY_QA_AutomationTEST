@@ -393,7 +393,7 @@ def edit_approval_rules_and_check(page, products):
 
         # 1. 제품 검색
         page.locator("data-testid=input_search").fill(product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(2000)
 
@@ -401,21 +401,21 @@ def edit_approval_rules_and_check(page, products):
         first_row = rows.nth(0)
         edit_button = first_row.locator("td:last-child >> text=수정")
         edit_button.click()
-        page.wait_for_timeout(2000)
+        page.wait_for_selector("data-testid=drop_type_trigger", timeout=10000)
 
         # 2. 승인 규칙 드롭다운 선택
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=drop_approval_trigger").click()
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=drop_approval_search").fill(approval_rule)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=drop_approval_item", has_text=approval_rule).click()
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
 
         # 3. 저장 → 토스트 확인
         page.evaluate("window.scrollTo(0, 0)")
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(2000)
         page.locator("data-testid=btn_save").click()
         expect(page.locator("data-testid=txt_edit")).to_have_text("제품을 수정하시겠습니까?", timeout=3000)
         page.locator("data-testid=btn_confirm").click()
@@ -424,7 +424,7 @@ def edit_approval_rules_and_check(page, products):
 
         # 4. 다시 제품 리스트에서 검색하여 승인 규칙 확인
         page.locator("data-testid=input_search").fill(product_name)
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(1000)
         page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(2000)
 
