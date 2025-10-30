@@ -160,5 +160,18 @@ for test_file in all_tests:
             )
 print("\n🎯 모든 테스트 완료")
 
+# Jira 이슈 등록
+print("\n📝 Jira 이슈 등록 중...")
+subprocess.run(["python", "scripts/create_jira.py"], env=BASE_ENV)
+
+# Confluence 업로드
+print("\n📄 Confluence 리포트 업로드 중...")
+subprocess.run(["python", "scripts/upload_confluence.py"], env=BASE_ENV)
+
+# 해결된 이슈 검증
+print("\n🔍 Jira 해결 이슈 검증 중...")
+subprocess.run(["python", "scripts/verify_resolved_issues.py"], env=BASE_ENV)
+
+# Slack 알림 (모든 정보 포함)
 print("\n📤 슬랙 메시지 전송 중...")
-subprocess.run(["python", "scripts/send_slack.py"])
+subprocess.run(["python", "scripts/send_slack.py"], env=BASE_ENV)

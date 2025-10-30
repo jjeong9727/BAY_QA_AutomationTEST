@@ -6,3 +6,4 @@ pytest-json-report
 pytest-html
 pytest-playwright
 openpyxl
+anthropic>=0.18.0
