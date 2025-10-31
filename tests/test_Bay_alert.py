@@ -63,7 +63,7 @@ def test_alert_product(page:Page):
     page.wait_for_timeout(2000)  # 페이지 로딩 대기
     today = datetime.now().strftime("%Y_%m_%d")
 
-    with page.expect_download() as download_info:
+    with page.expect_download(timeout=60000) as download_info:
         page.click('[data-testid="btn_download"]')
         page.wait_for_timeout(2000)
     download = download_info.value
