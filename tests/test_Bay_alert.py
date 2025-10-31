@@ -60,10 +60,12 @@ def test_alert_product(page:Page):
     # 엑셀 다운로드 확인
     # 오늘 날짜 포맷 (예: 2025_07_15)
     page.goto(URLS["bay_prdList"])
+    page.wait_for_timeout(2000)  # 페이지 로딩 대기
     today = datetime.now().strftime("%Y_%m_%d")
+
     with page.expect_download() as download_info:
         page.click('[data-testid="btn_download"]')
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(2000)
     download = download_info.value
 
     filename = download.suggested_filename
@@ -535,12 +537,11 @@ def test_alert_stock(page:Page):
         page.locator(f"data-testid=btn_month_{month_name}").click()
         page.wait_for_timeout(500)
 
-    # 시작일/종료일 → 오늘 날짜 확인
+    # 시작일/종료일
     start_text = page.locator('[data-testid="select_startday"] span').text_content()
     end_text = page.locator('[data-testid="select_endday"] span').text_content()
-
-    assert start_text == today_str, f"❌시작일 오늘 아님 → {start_text}"
-    assert end_text == today_str, f"❌종료일 오늘 아님 → {end_text}"
+    assert start_text == today_str, f"❌시작일 예상치 않은 값 → {start_text}"
+    assert end_text == today_str, f"❌종료일 예상치 않은 값 → {end_text}"
     print("✅ 날짜 범위 버튼 테스트 성공")
     page.wait_for_timeout(1000)
 
