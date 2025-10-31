@@ -122,7 +122,7 @@ def bay_login(page: Page, account: Optional[str] = None,):
 
     # ✅ 로그인 성공 확인: Bay 시스템으로 이동했는지 확인
     try:
-        page.wait_for_selector('[data-testid="btn_logout"]', timeout=5000)
+        page.wait_for_selector('[data-testid="btn_logout"]', timeout=10000)
         page.wait_for_timeout(2000)  # 페이지 안정화 대기
         print(f"✅ 로그인 성공: {id} → {page.url}")
     except Exception as e:
