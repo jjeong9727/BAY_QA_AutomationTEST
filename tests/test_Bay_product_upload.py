@@ -20,13 +20,13 @@ def test_upload_excel_file(page: Page):
     bay_login(page, "admin")
     
     page.goto(URLS["bay_prdList"])
-    page.wait_for_selector("data-testid=btn_excel", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_excel\']", timeout=5000)
     page.locator("data-testid=btn_excel").hover()
-    page.wait_for_selector("data-testid=btn_upload", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_upload\']", timeout=5000)
     
     # --- 엑셀 업로드 ---
     page.set_input_files("input[type='file']", "data/success.xlsx")
-    page.wait_for_selector("data-testid=col_type", timeout=10000)
+    page.wait_for_selector("[data-testid=\'col_type\']", timeout=10000)
     print("🔔 엑셀 파일 업로드 성공")
 
     # --- 엑셀 값 로드 ---

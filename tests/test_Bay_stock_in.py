@@ -39,9 +39,9 @@ def test_stock_inflow(page):
 def test_inflow_bulk (page:Page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
-    page.wait_for_selector("data-testid=btn_stockadd", timeout=7000)
+    page.wait_for_selector("[data-testid=\'btn_stockadd\']", timeout=7000)
     page.locator("data-testid=btn_stockadd").click()
-    page.wait_for_selector("data-testid=drop_status_trigger", timeout=5000)
+    page.wait_for_selector("[data-testid=\'drop_status_trigger\']", timeout=5000)
     product_list = [f"배치 확인 제품 {i:02d}" for i in range(1, 10)]  # 01~09번 제품 리스트 생성
     product_list.extend(["발주 거절 제품 3", "발주 삭제 제품 1"])
     for idx, product in enumerate(product_list):

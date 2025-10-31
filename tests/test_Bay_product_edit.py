@@ -38,7 +38,7 @@ def test_edit_products(page):
     bay_login(page, "admin")
 
     page.goto(URLS["bay_prdList"])
-    page.wait_for_selector("data-testid=btn_addprd", timeout=10000)
+    page.wait_for_selector("[data-testid=\'btn_addprd\']", timeout=10000)
 
     page.locator("data-testid=input_search").fill(edit_product)
     page.wait_for_timeout(500)
@@ -56,7 +56,7 @@ def test_edit_products(page):
 
     edit_button = first_row.locator("td:last-child >> text=수정")
     edit_button.click()
-    page.wait_for_selector("data-testid=input_prdname_kor", timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_prdname_kor\']", timeout=5000)
 
     page.locator("data-testid=input_prdname_kor").fill(new_name)
     page.wait_for_timeout(500)
@@ -81,7 +81,7 @@ def test_edit_approval_rule(page: Page):
     bay_login(page, "jekwon")
 
     page.goto(URLS["bay_prdList"])
-    page.wait_for_selector("data-testid=btn_download", timeout=7000)
+    page.wait_for_selector("[data-testid=\'btn_download\']", timeout=7000)
     
     # 발주 규칙 확인 (11열, json의 order_rule 사용)
     check_rule_for_products(page, all_products, col_index=11, expected_key="order_rule", label="발주 규칙")
@@ -98,7 +98,7 @@ def test_delete_products(page:Page):
     # 삭제 전 규칙 적용 제품 수 확인 (발주 규칙, 승인 규칙)
     global order_num_text, approve_num_text
     page.goto(URLS["bay_rules"])
-    page.wait_for_selector("data-testid=btn_detail", timeout=10000)
+    page.wait_for_selector("[data-testid=\'btn_detail\']", timeout=10000)
     page.locator("data-testid=input_search").fill(order_rule)  
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
@@ -109,7 +109,7 @@ def test_delete_products(page:Page):
     order_num_text = order_num_cell.inner_text().strip()
 
     page.goto(URLS["bay_approval_rule"])
-    page.wait_for_selector("data-testid=btn_register", timeout=10000)
+    page.wait_for_selector("[data-testid=\'btn_register\']", timeout=10000)
     page.locator("data-testid=input_search").fill(approve_rule)  
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
@@ -121,7 +121,7 @@ def test_delete_products(page:Page):
 
     # ----- 개별 삭제 -----
     page.goto(URLS["bay_prdList"])
-    page.wait_for_selector("data-testid=btn_download", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_download\']", timeout=5000)
 
     for product in register_products:
         page.locator("data-testid=input_search").fill(product["kor"])
@@ -186,7 +186,7 @@ def test_delete_products(page:Page):
     
     # 재고관리 리스트 미노출 확인
     page.goto(URLS["bay_stock"])
-    page.wait_for_selector("data-testid=btn_stockadd", timeout=10000)
+    page.wait_for_selector("[data-testid=\'btn_stockadd\']", timeout=10000)
 
     page.locator("data-testid=input_search").fill(delete_products[0])
     page.wait_for_timeout(500)
@@ -195,25 +195,25 @@ def test_delete_products(page:Page):
     
     # 재고 등록, 수동 발주 미노출 확인
     page.locator("data-testid=btn_order").click()
-    page.wait_for_selector("data-testid=drop_prdname_trigger", timeout=5000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_trigger\']", timeout=5000)
     page.locator("data-testid=drop_prdname_trigger").click()
-    page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_search\']", timeout=3000)
     page.locator("data-testid=drop_prdname_search").fill(delete_products[1])
     page.wait_for_timeout(1000)
     expect(page.locator("data-testid=drop_prdname_item")).to_be_hidden(timeout=3000)
     page.locator("data-testid=btn_back").click()
-    page.wait_for_selector("data-testid=btn_stockadd", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_stockadd\']", timeout=5000)
     page.locator("data-testid=btn_stockadd").click()
-    page.wait_for_selector("data-testid=drop_prdname_trigger",timeout=5000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_trigger\']",timeout=5000)
     page.locator("data-testid=drop_prdname_trigger").click()
-    page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_search\']", timeout=3000)
     page.locator("data-testid=drop_prdname_search").fill(delete_products[2])
     page.wait_for_timeout(1000)
     expect(page.locator("data-testid=drop_prdname_item")).to_be_hidden(timeout=3000)
 
     # 적용 제품 수 확인 (발주 규칙: -1, 승인 규칙: 유지)
     page.goto(URLS["bay_rules"])
-    page.wait_for_selector("data-testid=btn_detail", timeout=10000)
+    page.wait_for_selector("[data-testid=\'btn_detail\']", timeout=10000)
     page.locator("data-testid=input_search").fill(order_rule)  
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
@@ -224,7 +224,7 @@ def test_delete_products(page:Page):
     new_order_num_text = new_order_num_cell.inner_text().strip()
 
     page.goto(URLS["bay_approval_rule"])
-    page.wait_for_selector("data-testid=btn_register", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_register\']", timeout=5000)
     page.locator("data-testid=input_search").fill(approve_rule)  
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
@@ -243,7 +243,7 @@ def test_restore_products(page:Page):
     bay_login(page, "jekwon")
 
     page.goto(URLS["bay_prdList"])
-    page.wait_for_selector("data-testid=btn_download", timeout=10000)
+    page.wait_for_selector("[data-testid=\'btn_download\']", timeout=10000)
     # -----개별 복구-----
     for product in register_products:
         page.locator("data-testid=input_search").fill(product["kor"])
@@ -306,7 +306,7 @@ def test_restore_products(page:Page):
 
     # 재고관리 리스트 노출 확인
     page.goto(URLS["bay_stock"])
-    page.wait_for_selector("data-testid=btn_stockadd", timeout=3000)
+    page.wait_for_selector("[data-testid=\'btn_stockadd\']", timeout=3000)
 
     page.locator("data-testid=input_search").fill(delete_products[0])
     page.wait_for_timeout(500)
@@ -323,25 +323,25 @@ def test_restore_products(page:Page):
 
     # 재고 등록, 수동 발주 노출 확인
     page.locator("data-testid=btn_order").click()
-    page.wait_for_selector("data-testid=drop_prdname_trigger", timeout=5000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_trigger\']", timeout=5000)
     page.locator("data-testid=drop_prdname_trigger").click()
-    page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_search\']", timeout=3000)
     page.locator("data-testid=drop_prdname_search").fill(delete_products[1])
     page.wait_for_timeout(1000)
     expect(page.locator("data-testid=drop_prdname_item")).to_be_visible(timeout=3000)
     page.locator("data-testid=btn_back").click()
-    page.wait_for_selector("data-testid=btn_stockadd", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_stockadd\']", timeout=5000)
     page.locator("data-testid=btn_stockadd").click()
-    page.wait_for_selector("data-testid=drop_prdname_trigger",timeout=5000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_trigger\']",timeout=5000)
     page.locator("data-testid=drop_prdname_trigger").click()
-    page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_search\']", timeout=3000)
     page.locator("data-testid=drop_prdname_search").fill(delete_products[2])
     page.wait_for_timeout(1000)
     expect(page.locator("data-testid=drop_prdname_item")).to_be_visible(timeout=3000)
 
         # 적용 제품 수 확인 (발주, 승인 규칙)
     page.goto(URLS["bay_rules"])
-    page.wait_for_selector("data-testid=btn_detail", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_detail\']", timeout=5000)
     page.locator("data-testid=input_search").fill(order_rule)  
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()
@@ -352,7 +352,7 @@ def test_restore_products(page:Page):
     new_order_num_text = new_order_num_cell.inner_text().strip()
 
     page.goto(URLS["bay_approval_rule"])
-    page.wait_for_selector("data-testid=btn_register", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_register\']", timeout=5000)
     page.locator("data-testid=input_search").fill(approve_rule)  
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()

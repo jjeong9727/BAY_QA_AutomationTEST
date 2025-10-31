@@ -133,7 +133,7 @@ def test_alert_product(page:Page):
 
     # 재고 있는 제품 삭제 불가 확인
     page.locator("data-testid=drop_maker_trigger").click()
-    page.wait_for_selector("data-testid=drop_maker_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_maker_search\']", timeout=3000)
     page.locator("data-testid=drop_maker_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
@@ -164,7 +164,7 @@ def test_alert_product(page:Page):
 
     # 사용 상태의 제품 복구 불가 확인 
     page.locator("data-testid=drop_maker_trigger").click()
-    page.wait_for_selector("data-testid=drop_maker_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_maker_search\']", timeout=3000)
     page.locator("data-testid=drop_maker_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
@@ -225,7 +225,7 @@ def test_alert_product(page:Page):
     
     # 등록화면 이탈 팝업 확인
     page.locator("data-testid=btn_addprd").click()
-    page.wait_for_selector("data-testid=input_prdname_kor", timeout=10000)
+    page.wait_for_selector("[data-testid=\'input_prdname_kor\']", timeout=10000)
     page.locator("data-testid=input_prdname_kor").fill(edit_name)
     page.locator("body").click(position={"x": 10, "y": 10})
     page.wait_for_timeout(1000)
@@ -307,7 +307,7 @@ def test_alert_product(page:Page):
     rows = page.locator("table tbody tr")
     row_count = rows.count()
     rows.locator("td:last-child >> text=수정").first.click()
-    page.wait_for_selector("data-testid=input_stk_safe", timeout=10000)
+    page.wait_for_selector("[data-testid=\'input_stk_safe\']", timeout=10000)
     page.locator("data-testid=input_stk_safe").fill("0")
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_stk_qty").fill("0")
@@ -341,7 +341,7 @@ def test_alert_product(page:Page):
     # --- 제품 목록 다운로드 ---
     with page.expect_download() as download_info:
         page.locator("data-testid=btn_excel").hover()
-        page.wait_for_selector("data-testid=btn_download_file", timeout=3000)
+        page.wait_for_selector("[data-testid=\'btn_download_file\']", timeout=3000)
         page.locator("data-testid=btn_download_file").click()
         page.wait_for_timeout(1000)
 
@@ -358,7 +358,7 @@ def test_alert_product(page:Page):
     # ---  템플릿 다운로드 ---
     with page.expect_download() as download_info:
         page.locator("data-testid=btn_excel").hover()
-        page.wait_for_selector("data-testid=btn_download_template", timeout=3000)
+        page.wait_for_selector("[data-testid=\'btn_download_template\']", timeout=3000)
         page.locator("data-testid=btn_download_template").click()
         page.wait_for_timeout(1000)
 
@@ -389,7 +389,7 @@ def test_alert_product(page:Page):
 
     def upload_and_check(page: Page, file_path: str, toast_id: str, expected_msg: str):
         page.locator("data-testid=btn_excel").hover()
-        page.wait_for_selector("data-testid=btn_upload", timeout=3000)
+        page.wait_for_selector("[data-testid=\'btn_upload\']", timeout=3000)
         page.wait_for_timeout(3000)
         # 파일 업로드
         page.set_input_files("input[type='file']", file_path)
@@ -621,7 +621,7 @@ def test_alert_order_rules(page:Page):
     page.wait_for_timeout(2000)
 
     page.locator("data-testid=btn_register").click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=7000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']", timeout=7000)
     page.locator("data-testid=input_rule_name").fill(rule_name)
     page.wait_for_timeout(1000)
 
@@ -729,11 +729,11 @@ def test_alert_approval_rules(page:Page):
     approver_1 = "권정의"
     bay_login(page, "jekwon")
     page.goto(URLS["bay_approval_rule"])
-    page.wait_for_selector("data-testid=btn_register", timeout=7000)
+    page.wait_for_selector("[data-testid=\'btn_register\']", timeout=7000)
 
     # 승인 규칙 등록 화면 중복값, 이탈 확인
     page.locator("data-testid=btn_register").click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=7000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']", timeout=7000)
 
         # 승인자/참조자 삭제
     page.locator("data-testid=btn_delete_approver").click()
@@ -747,7 +747,7 @@ def test_alert_approval_rules(page:Page):
     page.locator("data-testid=input_rule_name").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_trigger").click()
-    page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(approver_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=approver_1).click()
@@ -789,7 +789,7 @@ def test_alert_approval_rules(page:Page):
         edit_name = "수정테스트"
 
     page.locator('[data-testid="btn_edit"]').first.click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']", timeout=5000)
 
     page.locator("data-testid=input_rule_name").fill(edit_name)
     page.wait_for_timeout(1000)
@@ -835,12 +835,12 @@ def test_alert_manual_order(page:Page):
     page.wait_for_timeout(2000)
     # 제품 개수 토스트 팝업 확인
     page.locator("data-testid=btn_order").click()
-    page.wait_for_selector("data-testid=drop_prdname_trigger", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_trigger\']", timeout=3000)
     page.locator("data-testid=btn_delete").click()
     expect(page.locator("data-testid=toast_nodelete")).to_have_text(txt_nodelete, timeout=3000)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_prdname_trigger").click()
-    page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_search\']", timeout=3000)
     page.locator("data-testid=drop_prdname_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_prdname_item", has_text="중복테스트").click()
@@ -871,10 +871,10 @@ def test_alert_order_rule_bulk(page:Page):
     bay_login(page, "admin")
     
     page.goto(URLS["bay_rules"])
-    page.wait_for_selector("data-testid=btn_register_bulk", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_register_bulk\']", timeout=5000)
     
     page.locator("data-testid=btn_register_bulk").click()
-    page.wait_for_selector("data-testid=drop_rule_trigger", timeout=5000)
+    page.wait_for_selector("[data-testid=\'drop_rule_trigger\']", timeout=5000)
 
     # 필터 검색 확인 
     search_list = ["type", "group", "maker", "name"]
@@ -916,7 +916,7 @@ def test_alert_order_rule_bulk(page:Page):
 
     # 화면 이탈 확인 
     page.locator("data-testid=drop_rule_trigger").click()
-    page.wait_for_selector("data-testid=drop_rule_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_rule_search\']", timeout=3000)
     page.locator("data-testid=drop_rule_search").fill(search_name)
     page.wait_for_timeout(500)
     page.locator(f"data-testid=drop_rule_item", has_text=search_name).click()

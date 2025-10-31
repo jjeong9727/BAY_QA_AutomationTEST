@@ -146,22 +146,22 @@ def test_prep_register_rules (page:Page):
     name2 = "황우디" 
 
     # 승인 규칙 1(승인자/참조자 1명)
-    page.wait_for_selector("data-testid=btn_register",timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_register\']",timeout=5000)
     page.locator("data-testid=btn_register").click()
 
-    page.wait_for_selector("data-testid=input_rule_name",timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']",timeout=5000)
     page.locator("data-testid=input_rule_name").fill(rule1)
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_approver_trigger").click()
-    page.wait_for_selector("data-testid=drop_approver_search",timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']",timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(name1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=name1).click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_referrer_trigger").click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(name1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item",has_text=name1).click()
@@ -174,12 +174,12 @@ def test_prep_register_rules (page:Page):
     # 승인 규칙 2(승인자/참조자 n명)
     page.locator("data-testid=btn_register").click()
 
-    page.wait_for_selector("data-testid=input_rule_name",timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']",timeout=5000)
     page.locator("data-testid=input_rule_name").fill(rule2)
     page.wait_for_timeout(1000)
     # 승인자 선택
     page.locator("data-testid=drop_approver_trigger").click()
-    page.wait_for_selector("data-testid=drop_approver_search",timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']",timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(name1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=name1).click()
@@ -188,14 +188,14 @@ def test_prep_register_rules (page:Page):
     page.locator("data-testid=btn_add_approver").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_trigger").last.click()
-    page.wait_for_selector("data-testid=drop_approver_search",timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']",timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(name2)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=name2).click()
     page.wait_for_timeout(1000)
     # 참조자 선택
     page.locator("data-testid=drop_referrer_trigger").click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(name2)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item",has_text=name2).click()
@@ -205,7 +205,7 @@ def test_prep_register_rules (page:Page):
     page.locator("data-testid=btn_add_referrer").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").last.click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(name1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item",has_text=name1).click()
@@ -216,22 +216,22 @@ def test_prep_register_rules (page:Page):
     page.wait_for_timeout(1000)
     
     # "중복테스트"승인 규칙 
-    page.wait_for_selector("data-testid=btn_register",timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_register\']",timeout=5000)
     page.locator("data-testid=btn_register").click()
 
-    page.wait_for_selector("data-testid=input_rule_name",timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']",timeout=5000)
     page.locator("data-testid=input_rule_name").fill("중복테스트")
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_approver_trigger").click()
-    page.wait_for_selector("data-testid=drop_approver_search",timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']",timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(name1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=name1).click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_referrer_trigger").click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(name2)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item",has_text=name2).click()
@@ -286,9 +286,9 @@ def test_prep_product (page:Page):
     names = ["수동 발주 제품 1", "수동 발주 제품 2", "수동 발주 제품 3", "발주 거절 제품 1", "발주 거절 제품 2", "발주 거절 제품 3"]
     
     page.goto(URLS["bay_prdList"])
-    page.wait_for_selector("data-testid=btn_addprd", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_addprd\']", timeout=5000)
     page.locator("data-testid=btn_addprd").click()
-    page.wait_for_selector("data-testid=drop_type_trigger", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_type_trigger\']", timeout=3000)
 
     for idx, name in enumerate(names, start=1):
         page.locator("data-testid=drop_type_trigger").last.click()

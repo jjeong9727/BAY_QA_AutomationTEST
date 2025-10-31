@@ -31,7 +31,7 @@ def test_approve_order(page:Page):
         approve_id = get_approve_id_from_approve_list(page, product) 
         approval_url = f"{URLS['base_approval_url']}/{approve_id}/confirm"
         page.goto(approval_url)
-        page.wait_for_selector("data-testid=btn_login", timeout=5000)
+        page.wait_for_selector("[data-testid=\'btn_login\']", timeout=5000)
 
         page.locator("data-testid=input_email").fill(approver[0])
         page.wait_for_timeout(1000)
@@ -78,7 +78,7 @@ def test_approve_order(page:Page):
         page.wait_for_timeout(2000)
         
         page.goto(approval_url)
-        page.wait_for_selector("data-testid=btn_login", timeout=5000)
+        page.wait_for_selector("[data-testid=\'btn_login\']", timeout=5000)
 
         # 이전 승인자 로그인 불가 확인
         page.locator("data-testid=input_email").fill(approver[0])
@@ -139,7 +139,7 @@ def test_approve_bulk_order(page:Page):
         check_approval_status_buttons(page, "발주 승인", product, order_rule[1], bulk=True, approve=True)
         # 발주 예정 내역
         page.goto(URLS["bay_order_pending"])
-        page.wait_for_selector("data-testid=txt_product_num", timeout=10000)
+        page.wait_for_selector("[data-testid=\'txt_product_num\']", timeout=10000)
         check_approval_status_buttons(page, "승인 완료", product,  order_rule[1], bulk=True, approve=False)    
 
 # 개별 내역 한번 승인 후 거절  
@@ -204,7 +204,7 @@ def test_reject_bulk_order(page:Page):
     approve_id = get_approve_id_from_approve_list(page, reject_products[0]) 
     approval_url = f"{URLS['base_approval_url']}/{approve_id}/confirm"
     page.goto(approval_url)
-    page.wait_for_selector("data-testid=btn_login", timeout=5000)
+    page.wait_for_selector("[data-testid=\'btn_login\']", timeout=5000)
 
     page.locator("data-testid=input_email").fill(approver[0])
     page.wait_for_timeout(1000)

@@ -197,7 +197,7 @@ def test_edit_category_all(page: Page):
 def test_delete_category_all(page: Page):
     bay_login(page, "admin")
     page.goto(URLS["bay_category"])
-    page.wait_for_selector("data-testid=tab_type", timeout=10000)
+    page.wait_for_selector("[data-testid=\'tab_type\']", timeout=10000)
     page.wait_for_timeout(2000)
 
     test_cases = [
@@ -230,7 +230,7 @@ def test_delete_category_all(page: Page):
                 target_button = delete_buttons.nth(row_index)
                 target_button.wait_for(state="visible")
                 target_button.click()
-                page.wait_for_selector("data-testid=btn_confirm", timeout=5000)
+                page.wait_for_selector("[data-testid=\'btn_confirm\']", timeout=5000)
 
                 confirm_btn = page.locator("data-testid=btn_confirm")
                 if confirm_btn.is_visible(timeout=3000):

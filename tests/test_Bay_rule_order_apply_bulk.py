@@ -37,15 +37,15 @@ def load_excel_products(json_path="product_name.json"):
 def test_apply_rule_order_bulk(page:Page):
     bay_login(page, "admin")
     page.goto(URLS["bay_rules"])
-    page.wait_for_selector("data-testid=input_search", timeout=10000)
+    page.wait_for_selector("[data-testid=\'input_search\']", timeout=10000)
 
     rule_name = "일괄 적용 확인 규칙"
 
     page.locator("data-testid=btn_register_bulk").click()
-    page.wait_for_selector("data-testid=drop_rule_trigger", timeout=10000)
+    page.wait_for_selector("[data-testid=\'drop_rule_trigger\']", timeout=10000)
 
     page.locator("data-testid=drop_rule_trigger").click()
-    page.wait_for_selector("data-testid=drop_rule_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_rule_search\']", timeout=3000)
     page.locator("data-testid=drop_rule_search").fill(rule_name)
     page.wait_for_timeout(500)
     page.locator("data-testid=drop_rule_item", has_text=rule_name).click()
@@ -113,7 +113,7 @@ def test_apply_rule_order_bulk(page:Page):
     page.wait_for_timeout(1000)
 
     page.goto(URLS["bay_prdList"])
-    page.wait_for_selector("data-testid=input_search", timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_search\']", timeout=5000)
     page.locator("data-testid=input_search").fill(cell_kor_name)
     page.wait_for_timeout(500)
     page.locator("data-testid=btn_search").click()

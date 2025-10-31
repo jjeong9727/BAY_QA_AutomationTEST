@@ -98,7 +98,7 @@ def test_check_status_request(page:Page):
         check_approval_status_buttons(page, status="승인 대기(발주예정)", product=product, order_rule=order_rule[0], bulk=False, approve=False)
         # 요청 후 상태 확인 (승인 요청 내역)
         page.goto(URLS["bay_approval"])
-        page.wait_for_selector("data-testid=history", timeout=10000)
+        page.wait_for_selector("[data-testid=\'history\']", timeout=10000)
         check_approval_history(page, "승인 대기", product, auto=False, rule=order_rule[0], time = request_times[product])
         
 
@@ -168,7 +168,7 @@ def test_check_status_request_bulk(page:Page):
         page.wait_for_timeout(1000)
     # 승인 요청 내역 확인 (버튼 상태는 승인 요청 내역 테스트에서 )
     page.goto(URLS["bay_approval"])
-    page.wait_for_selector("data-testid=history", timeout=10000)
+    page.wait_for_selector("[data-testid=\'history\']", timeout=10000)
     for product in approve_time_products:
         check_approval_history(page, "승인 대기", product, auto=False, rule=order_rule[1], time=request_times[product])
         

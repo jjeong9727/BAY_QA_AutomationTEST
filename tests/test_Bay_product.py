@@ -166,7 +166,7 @@ def test_duplicate_product_name(page):
 
         # 구분 선택
         page.locator("data-testid=drop_type_trigger").last.click()
-        page.wait_for_selector("data-testid=drop_type_item", timeout=3000)
+        page.wait_for_selector("[data-testid=\'drop_type_item\']", timeout=3000)
         type_items = page.locator("data-testid=drop_type_item")
         type_index = random.randint(0, type_items.count() - 1)
         selected_type = type_items.nth(type_index).inner_text().strip()
@@ -175,7 +175,7 @@ def test_duplicate_product_name(page):
 
         # 종류 선택
         page.locator("data-testid=drop_group_trigger").last.click()
-        page.wait_for_selector("data-testid=drop_group_item", timeout=3000)
+        page.wait_for_selector("[data-testid=\'drop_group_item\']", timeout=3000)
         group_items = page.locator("data-testid=drop_group_item")
         group_index = random.randint(0, group_items.count() - 1)
         selected_group = group_items.nth(group_index).inner_text().strip()
@@ -190,7 +190,7 @@ def test_duplicate_product_name(page):
 
         # 제조사 선택
         page.locator("data-testid=drop_maker_trigger").last.click()
-        page.wait_for_selector("data-testid=drop_maker_item", timeout=3000)
+        page.wait_for_selector("[data-testid=\'drop_maker_item\']", timeout=3000)
         maker_items = page.locator("data-testid=drop_maker_item")
         maker_index = random.randint(0, maker_items.count() - 1)
         selected_maker = maker_items.nth(maker_index).inner_text().strip()

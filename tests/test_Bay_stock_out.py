@@ -22,7 +22,7 @@ ordered_product = []
 def test_stock_manual_order(page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
-    page.wait_for_selector("data-testid=input_search", timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_search\']", timeout=5000)
 
     products = ["수동 발주 제품 1", "수동 발주 제품 2", "수동 발주 제품 3"]
     expected_rules = ["승인규칙_1명", "승인규칙_n명", "자동 승인"]
@@ -63,10 +63,10 @@ def test_stock_manual_order(page):
 
     # 수동 발주 (수동 발주 제품_1, 2, 3)
     page.locator("data-testid=btn_order").click()
-    page.wait_for_selector("data-testid=drop_prdname_trigger", timeout=10000)
+    page.wait_for_selector("[data-testid=\'drop_prdname_trigger\']", timeout=10000)
     for idx, product in enumerate(products, start=1):
         page.locator("data-testid=drop_prdname_trigger").last.click()
-        page.wait_for_selector("data-testid=drop_prdname_search", timeout=3000)
+        page.wait_for_selector("[data-testid=\'drop_prdname_search\']", timeout=3000)
         page.locator("data-testid=drop_prdname_search").fill(product)
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_prdname_item", has_text=product).click()
@@ -155,7 +155,7 @@ def test_stock_outflow(page):
     try:
         bay_login(page, "admin")
         page.goto(URLS["bay_rules"])
-        page.wait_for_selector("data-testid=btn_edit", timeout=10000)
+        page.wait_for_selector("[data-testid=\'btn_edit\']", timeout=10000)
 
         # 출고 직전 가장 가까운 시간으로 발주 규칙 변경(자동화규칙_개별, 자동화규칙_묶음)
         for rule in order_rules:
@@ -352,7 +352,7 @@ def test_outflow_for_batch_order(page):
 
     # 발주 예정 내역 노출 확인 
     page.goto(URLS["bay_order_pending"])
-    page.wait_for_selector("data-testid=input_search", timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_search\']", timeout=5000)
 
     for idx, product in enumerate(product_list, start=1):
         if idx in (3, 6, 9): 

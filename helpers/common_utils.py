@@ -91,14 +91,14 @@ def clean_product_json(file_path="product_name.json"):
 
 def bay_login(page: Page, account: Optional[str] = None,):
     page.goto(URLS["bay_login"])
-    
-    max_attempts = 5 # 새로고침 시도 횟수 제한 
+
+    max_attempts = 5 # 새로고침 시도 횟수 제한
 
     # ✅ 로그인 페이지 로딩 확인: 최대 5초 대기
     for attempt in range(1, max_attempts + 1):
         try:
             page.wait_for_selector('[data-testid="input_id"]', timeout=5000)
-            return
+            break  # ✅ 로그인 페이지 확인되면 루프 탈출
         except Exception:
             if attempt < max_attempts:
                 print(f"⚠️ 로그인 페이지 확인 실패 (시도 {attempt}/{max_attempts}) → 새로고침")
@@ -108,10 +108,10 @@ def bay_login(page: Page, account: Optional[str] = None,):
                     f"❌ 로그인 페이지 로딩 실패: {max_attempts}회 새로고침 후에도 로그인 화면 미노출"
                 )
 
-    if account : 
+    if account :
         id = f"{account}@medisolveai.com"
     else:
-        id = Account["testid"]
+        id = Account["testid_admin"]  # ✅ 기본값을 명확히 지정
 
     # ✅ 로그인 입력
     page.fill('[data-testid="input_id"]', id)
@@ -119,5 +119,30 @@ def bay_login(page: Page, account: Optional[str] = None,):
     page.fill('[data-testid="input_pw"]', Account["testpw"])
     page.wait_for_timeout(1000)
     page.click('[data-testid="btn_login"]')
-    page.wait_for_timeout(3000)
+
+    # ✅ 로그인 성공 확인: Bay 시스템으로 이동했는지 확인
+    try:
+        # SSO 로그인 페이지를 벗어났는지 확인 (최대 15초 대기)
+        page.wait_for_function(
+            "() => !window.location.href.includes('sso.centurion.ai.kr')",
+            timeout=15000
+        )
+        # Bay 시스템 URL로 이동했는지 확인
+        page.wait_for_function(
+            "() => window.location.href.includes('bay.centurion.ai.kr')",
+            timeout=10000
+        )
+        page.wait_for_timeout(2000)  # 페이지 안정화 대기
+        print(f"✅ 로그인 성공: {id} → {page.url}")
+    except Exception as e:
+        current_url = page.url
+        print(f"❌ 로그인 실패: {id}")
+        print(f"   현재 URL: {current_url}")
+        print(f"   에러: {str(e)}")
+        # 스크린샷 저장 (디버깅용)
+        try:
+            page.screenshot(path=f"login_failure_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png")
+        except:
+            pass
+        raise TimeoutError(f"로그인 실패 - 현재 위치: {current_url}")
     

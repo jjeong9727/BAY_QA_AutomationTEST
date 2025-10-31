@@ -639,11 +639,11 @@ def test_order_status_complete_af(page: Page):
 def test_resend_alimtalk(page:Page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_orderList"])
-    page.wait_for_selector("data-testid=input_search", timeout=5000)
+    page.wait_for_selector("[data-testid=\'input_search\']", timeout=5000)
     search_order_history(page, alim_talk_product, "발주 요청")
 
     for i in range(1, 6):  # 1~5회 시도
-        page.wait_for_selector("data-testid=btn_resend", timeout=5000)
+        page.wait_for_selector("[data-testid=\'btn_resend\']", timeout=5000)
         page.locator("data-testid=btn_resend").first.click()
 
         expect(page.locator("data-testid=txt_resend")).to_have_text("재발송하시겠습니까?", timeout=5000)

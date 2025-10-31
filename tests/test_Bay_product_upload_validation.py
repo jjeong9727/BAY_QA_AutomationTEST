@@ -265,7 +265,7 @@ def test_upload_product_validation_second(page: Page):
     page.locator("data-testid=btn_excel").hover()
     page.locator("data-testid=btn_upload").click()
     page.set_input_files("input[type='file']", file_path)
-    page.wait_for_selector("data-testid=col_type", timeout=10000)
+    page.wait_for_selector("[data-testid=\'col_type\']", timeout=10000)
 
     errors, summary = [], []
     total_rows = 0

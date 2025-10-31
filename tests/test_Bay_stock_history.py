@@ -64,7 +64,7 @@ mmdd= today.strftime("%m%d")
 def test_inflow_past(page):
     bay_login(page, "jekwon")
     page.goto(URLS["bay_stock"])
-    page.wait_for_selector("data-testid=btn_edit", timeout=10000)
+    page.wait_for_selector("[data-testid=\'btn_edit\']", timeout=10000)
     
     search_name = get_manual_product()
 

@@ -16,12 +16,12 @@ def test_approval_rules_register(page:Page):
     txt_register = "승인 규칙 등록이 완료되었습니다."
 
     page.locator("data-testid=btn_register").click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']", timeout=3000)
     page.locator("data-testid=input_rule_name").fill(name)
     page.wait_for_timeout(1000)
     # 승인자 1 선택
     page.locator("data-testid=drop_approver_trigger").click()
-    page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(approval_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=approval_1).click()
@@ -30,7 +30,7 @@ def test_approval_rules_register(page:Page):
     page.locator("data-testid=btn_add_approver").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_trigger").last.click()
-    page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(approval_1)
         # 승인자 중복 선택 불가
     expect(page.locator("data-testid=drop_approver_item")).to_be_hidden(timeout=3000)
@@ -43,7 +43,7 @@ def test_approval_rules_register(page:Page):
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(referrer_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item", has_text=referrer_1).click()
@@ -52,7 +52,7 @@ def test_approval_rules_register(page:Page):
     page.locator("data-testid=btn_add_referrer").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").last.click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(referrer_1)
         # 참조자 중복 선택 불가
     expect(page.locator("data-testid=drop_referrer_item")).to_be_hidden(timeout=3000)
@@ -116,7 +116,7 @@ def test_approval_rules_edit(page:Page):
 
     edit_button = last_cell.locator('[data-testid="btn_edit"]')
     edit_button.click()
-    page.wait_for_selector("data-testid=input_rule_name", timeout=3000)
+    page.wait_for_selector("[data-testid=\'input_rule_name\']", timeout=3000)
 
     # 규칙명 수정
     page.locator("data-testid=input_rule_name").fill(edit_name)
@@ -124,14 +124,14 @@ def test_approval_rules_edit(page:Page):
 
     # 승인자 변경 (1: 권정의 > 투부장, 2: 황우디 > 권정의 3: 황우디)
     page.locator("data-testid=drop_approver_trigger").nth(0).click()
-    page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(edit_approval)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=edit_approval).click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_approver_trigger").nth(1).click()
-    page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(approval_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=approval_1).click()
@@ -140,7 +140,7 @@ def test_approval_rules_edit(page:Page):
     page.locator("data-testid=btn_add_approver").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_trigger").last.click()
-    page.wait_for_selector("data-testid=drop_approver_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_approver_search\']", timeout=3000)
     page.locator("data-testid=drop_approver_search").fill(referrer_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_approver_item", has_text=referrer_1).click()
@@ -150,14 +150,14 @@ def test_approval_rules_edit(page:Page):
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").first.click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(edit_referrer)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item", has_text=edit_referrer).click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_referrer_trigger").nth(1).click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(referrer_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item", has_text=referrer_1).click()
@@ -166,7 +166,7 @@ def test_approval_rules_edit(page:Page):
     page.locator("data-testid=btn_add_referrer").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_trigger").last.click()
-    page.wait_for_selector("data-testid=drop_referrer_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'drop_referrer_search\']", timeout=3000)
     page.locator("data-testid=drop_referrer_search").fill(approval_1)
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_referrer_item", has_text=approval_1).click()
@@ -207,7 +207,7 @@ def test_delete_approval_rule(page:Page):
 
     bay_login(page, "jekwon")
     page.goto(URLS["bay_approval_rule"])
-    page.wait_for_selector("data-testid=input_search", timeout=3000)
+    page.wait_for_selector("[data-testid=\'input_search\']", timeout=3000)
     page.locator("data-testid=input_search").fill(delete_name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
