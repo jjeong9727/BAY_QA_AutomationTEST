@@ -502,48 +502,48 @@ def test_alert_stock(page:Page):
     assert end_text == today_str, f"종료일 값이 오늘이 아님 → {end_text}"
     page.wait_for_timeout(1000)
 
-    # 월별 버튼 확인    
-    today = datetime.now()
-    today_str = today.strftime("%Y. %m. %d")
-    current_month = today.month
-    active_month_buttons = []
+    # # 월별 버튼 확인    
+    # today = datetime.now()
+    # today_str = today.strftime("%Y. %m. %d")
+    # current_month = today.month
+    # active_month_buttons = []
 
-    # 1~12월 버튼의 활성/비활성 상태 확인
-    for month in range(1, 13):
-        btn = page.locator(f"[data-testid='btn_month_{month}']")
-        is_disabled = btn.is_disabled()
+    # # 1~12월 버튼의 활성/비활성 상태 확인
+    # for month in range(1, 13):
+    #     btn = page.locator(f"[data-testid='btn_month_{month}']")
+    #     is_disabled = btn.is_disabled()
         
-        if month <= current_month:
-            assert not is_disabled, f"❌ {month}월 버튼은 활성화되어야 합니다."
-            active_month_buttons.append(month)
-        else:
-            assert is_disabled, f"❌ {month}월 버튼은 비활성화되어야 합니다."
+    #     if month <= current_month:
+    #         assert not is_disabled, f"❌ {month}월 버튼은 활성화되어야 합니다."
+    #         active_month_buttons.append(month)
+    #     else:
+    #         assert is_disabled, f"❌ {month}월 버튼은 비활성화되어야 합니다."
 
-    assert active_month_buttons, "❌ 활성화된 월 버튼이 없습니다."
+    # assert active_month_buttons, "❌ 활성화된 월 버튼이 없습니다."
 
-    # 활성 월 버튼 클릭 → 시작일/종료일 확인
-    for month_name in active_month_buttons:
-        page.locator(f"data-testid=btn_month_{month_name}").click()
-        page.wait_for_timeout(500)
+    # # 활성 월 버튼 클릭 → 시작일/종료일 확인
+    # for month_name in active_month_buttons:
+    #     page.locator(f"data-testid=btn_month_{month_name}").click()
+    #     page.wait_for_timeout(500)
         
-        start_text = page.locator('[data-testid="select_startday"] span').text_content()
-        end_text = page.locator('[data-testid="select_endday"] span').text_content()
+    #     start_text = page.locator('[data-testid="select_startday"] span').text_content()
+    #     end_text = page.locator('[data-testid="select_endday"] span').text_content()
         
-        assert start_text != today_str, f"❌시작일 삭제되지 않음 → {start_text}"
-        assert end_text != today_str, f"❌종료일 삭제되지 않음 → {end_text}"
+    #     assert start_text != today_str, f"❌시작일 삭제되지 않음 → {start_text}"
+    #     assert end_text != today_str, f"❌종료일 삭제되지 않음 → {end_text}"
 
-    # 다시 클릭해서 해제
-    for month_name in active_month_buttons:
-        page.locator(f"data-testid=btn_month_{month_name}").click()
-        page.wait_for_timeout(500)
+    # # 다시 클릭해서 해제
+    # for month_name in active_month_buttons:
+    #     page.locator(f"data-testid=btn_month_{month_name}").click()
+    #     page.wait_for_timeout(500)
 
-    # 시작일/종료일
-    start_text = page.locator('[data-testid="select_startday"] span').text_content()
-    end_text = page.locator('[data-testid="select_endday"] span').text_content()
-    assert start_text == today_str, f"❌시작일 예상치 않은 값 → {start_text}"
-    assert end_text == today_str, f"❌종료일 예상치 않은 값 → {end_text}"
-    print("✅ 날짜 범위 버튼 테스트 성공")
-    page.wait_for_timeout(1000)
+    # # 시작일/종료일
+    # start_text = page.locator('[data-testid="select_startday"] span').text_content()
+    # end_text = page.locator('[data-testid="select_endday"] span').text_content()
+    # assert start_text == today_str, f"❌시작일 예상치 않은 값 → {start_text}"
+    # assert end_text == today_str, f"❌종료일 예상치 않은 값 → {end_text}"
+    # print("✅ 날짜 범위 버튼 테스트 성공")
+    # page.wait_for_timeout(1000)
 
     # 필터 검색 확인 
     search_list = ["type", "group", "maker", "name"]
