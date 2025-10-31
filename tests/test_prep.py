@@ -12,93 +12,93 @@ def test_prep_category_and_supplier (page:Page):
     page.wait_for_timeout(1000)
 
     # 구분 등록
-    page.click("data-testid=tab_type")
+    page.locator("data-testid=tab_type").click()
     page.wait_for_timeout(1000)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("의약품")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("Medications")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("의료기기")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("Medical Devices")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("소모품")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("Consumables")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("중복테스트")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("DupOne")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_save")
+    page.locator("data-testid=btn_save").click()
     page.wait_for_timeout(2000)
 
     # 종류 등록 
-    page.click("data-testid=tab_category")
+    page.locator("data-testid=tab_category").click()
     page.wait_for_timeout(1000)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("주사제")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("injection")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("연고")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("ointment")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("보톡스")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("botox")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("중복테스트")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("DupOne")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_save")
+    page.locator("data-testid=btn_save").click()
     page.wait_for_timeout(2000)
 
     # 제조사 등록 
-    page.click("data-testid=tab_maker")
+    page.locator("data-testid=tab_maker").click()
     page.wait_for_timeout(1000)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("메디톡스")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("Medytox")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("루트로닉")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("Lutronic")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("휴메딕스")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("Humedix")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_add")
+    page.locator("data-testid=btn_add").click()
     page.wait_for_timeout(1000)
     page.locator("data-testid=input_kor").last.fill("중복테스트")
     page.wait_for_timeout(500)
     page.locator("data-testid=input_eng").last.fill("DupOne")
     page.wait_for_timeout(500)
-    page.click("data-testid=btn_save")
+    page.locator("data-testid=btn_save").click()
     page.wait_for_timeout(2000)
 
     # 업체 등록 
@@ -122,14 +122,14 @@ def test_prep_category_and_supplier (page:Page):
 
     # 업체 반복 등록
     for supplier in suppliers:
-        page.click("data-testid=btn_orderadd")  # 업체 등록 모달 열기
+        page.locator("data-testid=btn_orderadd").click()  # 업체 등록 모달 열기
         page.wait_for_timeout(500)
 
-        page.fill("data-testid=input_sup_name", supplier["name"])       # 업체명
-        page.fill("data-testid=input_sup_manager", supplier["manager"]) # 담당자
-        page.fill("data-testid=input_sup_contact", supplier["contact"]) # 연락처
+        page.locator("data-testid=input_sup_name").fill(supplier["name"])       # 업체명
+        page.locator("data-testid=input_sup_manager").fill(supplier["manager"]) # 담당자
+        page.locator("data-testid=input_sup_contact").fill(supplier["contact"]) # 연락처
 
-        page.click("data-testid=btn_confirm")  # 등록 완료
+        page.locator("data-testid=btn_confirm").click()  # 등록 완료
         page.wait_for_timeout(1000)
 
 
@@ -293,24 +293,24 @@ def test_prep_product (page:Page):
     for idx, name in enumerate(names, start=1):
         page.locator("data-testid=drop_type_trigger").last.click()
         page.wait_for_timeout(1000)
-        page.fill("data-testid=drop_type_search", "중복테스트")
+        page.locator("data-testid=drop_type_search").fill("중복테스트")
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_type_item", has_text="중복테스트").click()
         page.wait_for_timeout(1000)
 
         page.locator("data-testid=drop_group_trigger").last.click()
         page.wait_for_timeout(1000)
-        page.fill("data-testid=drop_group_search", "중복테스트")
+        page.locator("data-testid=drop_group_search").fill("중복테스트")
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_group_item", has_text="중복테스트").click()
         page.wait_for_timeout(1000)
 
-        page.fill("data-testid=input_prdname_kor", name)
+        page.locator("data-testid=input_prdname_kor").fill(name)
         page.wait_for_timeout(1000)
 
         page.locator("data-testid=drop_maker_trigger").last.click()
         page.wait_for_timeout(1000)
-        page.fill("data-testid=drop_maker_search", "중복테스트")
+        page.locator("data-testid=drop_maker_search").fill("중복테스트")
         page.wait_for_timeout(1000)
         page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
         page.wait_for_timeout(1000)
@@ -342,21 +342,21 @@ def test_prep_product (page:Page):
 
         if idx in (1, 3): #수동 발주 제품 1, 2, 3
             txt_manager = "권정의D 010-6275-4153"
-            page.fill("data-testid=drop_supplier_search", "자동화업체D")
+            page.locator("data-testid=drop_supplier_search").fill("자동화업체D")
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_supplier_item", has_text=supplier_1).click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
         elif idx in (4, 6): # 발주 거절 제품 1, 3
             txt_manager = "권정의G 010-6275-4153"
-            page.fill("data-testid=drop_supplier_search", "자동화업체G")
+            page.locator("data-testid=drop_supplier_search").fill("자동화업체G")
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_supplier_item", has_text=supplier_2).click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
             page.wait_for_timeout(1000)
         elif idx == 5: # 발주 거절 제품 2
             txt_manager = "권정의H 010-6275-4153"
-            page.fill("data-testid=drop_supplier_search", "자동화업체H")
+            page.locator("data-testid=drop_supplier_search").fill("자동화업체H")
             page.wait_for_timeout(1000)
             page.locator("data-testid=drop_supplier_item", has_text=supplier_3).click()
             expect(page.locator("data-testid=txt_supplier_contact")).to_have_text(txt_manager, timeout=3000)
@@ -398,36 +398,36 @@ def test_prep_product (page:Page):
     # 제품 등록 (중복테스트)
     page.goto(URLS["bay_prdList"])
     page.wait_for_timeout(1000)
-    page.click("data-testid=btn_addprd")
+    page.locator("data-testid=btn_addprd").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_type_trigger").click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_type_search", "중복테스트")
+    page.locator("data-testid=drop_type_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_type_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_group_trigger").click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_group_search", "중복테스트")
+    page.locator("data-testid=drop_group_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_group_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
-    page.fill("data-testid=input_prdname_kor", "중복테스트")
+    page.locator("data-testid=input_prdname_kor").fill("중복테스트")
     page.wait_for_timeout(1000)
-    page.fill("data-testid=input_prdname_eng", "Duplicate Test")
+    page.locator("data-testid=input_prdname_eng").fill("Duplicate Test")
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_maker_trigger").click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_maker_search", "중복테스트")
+    page.locator("data-testid=drop_maker_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
-    page.fill("data-testid=input_price", "100")
+    page.locator("data-testid=input_price").fill("100")
     page.wait_for_timeout(1000)
 
     safety = 5
@@ -445,7 +445,7 @@ def test_prep_product (page:Page):
 
     page.locator("data-testid=btn_addrow").scroll_into_view_if_needed()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_supplier_search", "중복테스트")
+    page.locator("data-testid=drop_supplier_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
@@ -464,7 +464,7 @@ def test_prep_product (page:Page):
             # 규칙 없음 선택 시 비활성화 및 0 입력 상태 확인
     page.locator("data-testid=drop_supplier_trigger").last.click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_supplier_search", "중복테스트")
+    page.locator("data-testid=drop_supplier_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
@@ -475,14 +475,14 @@ def test_prep_product (page:Page):
 
     page.locator("data-testid=drop_type_trigger").last.click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_type_search", "중복테스트")
+    page.locator("data-testid=drop_type_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_type_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
 
     page.locator("data-testid=drop_group_trigger").last.click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_group_search", "중복테스트")
+    page.locator("data-testid=drop_group_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_group_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
@@ -496,7 +496,7 @@ def test_prep_product (page:Page):
 
     page.locator("data-testid=drop_maker_trigger").last.click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_maker_search", "중복테스트")
+    page.locator("data-testid=drop_maker_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_maker_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
@@ -532,7 +532,7 @@ def test_prep_product (page:Page):
             # 규칙 없음 선택 시 비활성화 및 0 입력 상태 확인
     page.locator("data-testid=drop_supplier_trigger").last.click()
     page.wait_for_timeout(1000)
-    page.fill("data-testid=drop_supplier_search", "중복테스트")
+    page.locator("data-testid=drop_supplier_search").fill("중복테스트")
     page.wait_for_timeout(1000)
     page.locator("data-testid=drop_supplier_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
@@ -669,9 +669,9 @@ def test_prep_stock (page:Page):
     page.locator("data-testid=drop_prdname_item", has_text="중복테스트").click()
     page.wait_for_timeout(1000)
     
-    page.fill("data-testid=input_qty", str(3))
+    page.locator("data-testid=input_qty").fill(str(3))
     page.wait_for_timeout(1000)
-    page.fill("data-testid=input_memo", "테스트 메모")
+    page.locator("data-testid=input_memo").fill("테스트 메모")
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_save").click()
     page.wait_for_timeout(1000)

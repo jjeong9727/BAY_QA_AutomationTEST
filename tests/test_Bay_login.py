@@ -16,9 +16,9 @@ def test_login_wrong_password(page):
         login_button = page.locator("data-testid=btn_login")
 
         # 2. 아이디와 비밀번호를 입력
-        page.fill("data-testid=input_id", Account["testid_je"])
+        page.locator("data-testid=input_id").fill(Account["testid_je"])
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_pw", Account["wrongpw"])  # 잘못된 비밀번호 입력
+        page.locator("data-testid=input_pw").fill(Account["wrongpw"])  # 잘못된 비밀번호 입력
         page.wait_for_timeout(1000)
 
         # 3. 로그인 버튼 클릭
@@ -33,11 +33,11 @@ def test_login_wrong_password(page):
         print("[PASS] 비밀번호 불일치 테스트 성공")
 
         # 아이디, 비밀번호 입력 후 로그인 버튼 클릭
-        page.fill("data-testid=input_id", Account["testid_je"])  # 아이디 입력
+        page.locator("data-testid=input_id").fill(Account["testid_je"])  # 아이디 입력
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_pw", Account["testpw"])  # 비밀번호 입력
+        page.locator("data-testid=input_pw").fill(Account["testpw"])  # 비밀번호 입력
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_login")  # 로그인 버튼 클릭
+        page.locator("data-testid=btn_login").click()  # 로그인 버튼 클릭
         expect(page.locator("data-testid=btn_download")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
         print("[PASS] 로그인 테스트 성공")

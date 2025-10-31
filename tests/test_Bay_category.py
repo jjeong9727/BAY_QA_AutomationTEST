@@ -25,16 +25,16 @@ def try_duplicate_registration(page: Page, tab_testid: str, name_kr: str, name_e
         page.wait_for_timeout(4000)
 
         if page.locator("data-testid=btn_confirm").is_visible():
-            page.click("data-testid=btn_confirm")
+            page.locator("data-testid=btn_confirm").click()
             page.wait_for_timeout(3000)    
 
-        page.click("data-testid=btn_add")
+        page.locator("data-testid=btn_add").click()
         page.wait_for_timeout(2000)
         page.locator("data-testid=input_kor").last.fill(name_kr)
         page.wait_for_timeout(1000)
         page.locator("data-testid=input_eng").last.fill(name_en)
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_save")
+        page.locator("data-testid=btn_save").click()
         expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=5000)
         print(f"[PASS] 중복 등록 토스트 확인")
 
@@ -79,7 +79,7 @@ def test_register_category_each(page):
         try:
             page.click(f"data-testid={tab}")
             page.wait_for_timeout(3000)
-            page.click("data-testid=btn_add")
+            page.locator("data-testid=btn_add").click()
             page.wait_for_timeout(2000)
             name_kr = generate_name("자동화등록_한글")
             page.locator(f"data-testid={testid_kor}").last.fill(name_kr)
@@ -90,7 +90,7 @@ def test_register_category_each(page):
                 page.locator(f"data-testid={testid_eng}").last.fill(name_en)
                 page.wait_for_timeout(1000)
 
-            page.click("data-testid=btn_save")
+            page.locator("data-testid=btn_save").click()
             expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=5000)
             page.wait_for_timeout(3000)
 

@@ -20,17 +20,17 @@ def test_register_supplier(page):
         contact = "01012345678"
         memo = "자동화 테스트로 업체명 등록 확인 합니다. 바로 삭제"
         # 등록
-        page.click("data-testid=btn_orderadd")
+        page.locator("data-testid=btn_orderadd").click()
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_sup_name", supplier)
+        page.locator("data-testid=input_sup_name").fill(supplier)
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_sup_manager", manager)
+        page.locator("data-testid=input_sup_manager").fill(manager)
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_sup_contact", contact)
+        page.locator("data-testid=input_sup_contact").fill(contact)
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_memo", memo)
+        page.locator("data-testid=input_memo").fill(memo)
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_confirm")
+        page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=alert_register")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
 
@@ -46,7 +46,7 @@ def test_register_supplier(page):
         new_contact = "01067864545"
         new_memo = "자동화 테스트로 업체 정보 수정 확인"
 
-        page.fill("data-testid=input_search", supplier)
+        page.locator("data-testid=input_search").fill(supplier)
         page.wait_for_timeout(500)
         page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(1000)
@@ -58,23 +58,23 @@ def test_register_supplier(page):
         page.locator("data-testid=btn_edit").click()
         page.wait_for_timeout(1000)
         
-        page.fill("data-testid=input_sup_name", edit_supplier)
+        page.locator("data-testid=input_sup_name").fill(edit_supplier)
         page.wait_for_timeout(2000)
-        page.fill("data-testid=input_sup_manager", new_manager)
+        page.locator("data-testid=input_sup_manager").fill(new_manager)
         page.wait_for_timeout(2000)
-        page.fill("data-testid=input_sup_contact", new_contact)
+        page.locator("data-testid=input_sup_contact").fill(new_contact)
         page.wait_for_timeout(2000)
-        page.fill("data-testid=input_memo", new_memo)
+        page.locator("data-testid=input_memo").fill(new_memo)
         page.wait_for_timeout(2000)
-        page.click("data-testid=btn_confirm")
+        page.locator("data-testid=btn_confirm").click()
         expect(page.locator("data-testid=alert_edit")).to_be_visible(timeout=5000)
         page.wait_for_timeout(1000)
 
 
         # 삭제
-        page.fill("data-testid=input_search", edit_supplier)  # 제품명 검색
+        page.locator("data-testid=input_search").fill(edit_supplier)  # 제품명 검색
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_search")  # 검색 버튼 클릭
+        page.locator("data-testid=btn_search").click()  # 검색 버튼 클릭
         page.wait_for_timeout(1000)
 
         rows = page.locator("table tbody tr")
@@ -102,9 +102,9 @@ def test_register_supplier(page):
         # 5. 리스트에서 미노출 확인
         page.goto(URLS["bay_supplier"])  # 리스트를 새로고침
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_search", edit_supplier) 
+        page.locator("data-testid=input_search").fill(edit_supplier) 
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(1000)
 
         rows = page.locator("table tbody tr")
@@ -140,15 +140,15 @@ def test_register_supplier_duplicate(page):
         print(f"선택된 업체: {supplier_name}, 담당자: {manager_name}, 연락처: {contact_info}")
 
         # 2. 선택한 업체 정보로 중복 등록 시도
-        page.click("data-testid=btn_orderadd")  # 업체 등록 모달 열기
+        page.locator("data-testid=btn_orderadd").click()  # 업체 등록 모달 열기
         page.wait_for_timeout(500)
-        page.fill("data-testid=input_sup_name", supplier_name)  # 업체명 입력
+        page.locator("data-testid=input_sup_name").fill(supplier_name)  # 업체명 입력
         page.wait_for_timeout(500)
-        page.fill("data-testid=input_sup_manager", manager_name)  # 담당자 입력
+        page.locator("data-testid=input_sup_manager").fill(manager_name)  # 담당자 입력
         page.wait_for_timeout(500)
-        page.fill("data-testid=input_sup_contact", contact_info)  # 연락처 입력
+        page.locator("data-testid=input_sup_contact").fill(contact_info)  # 연락처 입력
         page.wait_for_timeout(500)
-        page.click("data-testid=btn_confirm")  # 완료 버튼 클릭
+        page.locator("data-testid=btn_confirm").click()  # 완료 버튼 클릭
         
         # 3. 중복 알림 확인
         expect(page.locator("data-testid=alert_duplicate")).to_be_visible(timeout=3000), "❌ 중복 알림 문구가 표시되지 않음"
@@ -158,7 +158,7 @@ def test_register_supplier_duplicate(page):
         page.wait_for_timeout(1000)
 
         # 사용 중인 업체 삭제 불가 확인
-        page.fill("data-testid=input_search", "중복테스트")  # 제품명 검색
+        page.locator("data-testid=input_search").fill("중복테스트")  # 제품명 검색
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_search").click()  # 검색 버튼 클릭
         page.wait_for_timeout(1000)

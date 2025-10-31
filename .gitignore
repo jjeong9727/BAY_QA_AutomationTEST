@@ -5,3 +5,24 @@ test.py
 update_jira_issue.py
 data/
 docs/
+
+# 테스트 결과 및 로그
+test_results.json
+scripts/result.json
+scripts/summary.json
+*.log
+*.png
+
+# Python 캐시
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# 스크립트 생성 파일
+fix_selectors.py
+fix_page_methods.py
+daily_count.json
+product_name.json
+login_failure_*.png

@@ -183,9 +183,9 @@ def test_duplicate_product_name(page):
         page.wait_for_timeout(1000)
         
         # 제품명 생성 및 입력
-        page.fill("data-testid=input_prdname_kor", prdname_kor)
+        page.locator("data-testid=input_prdname_kor").fill(prdname_kor)
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_prdname_eng", prdname_eng)
+        page.locator("data-testid=input_prdname_eng").fill(prdname_eng)
         page.wait_for_timeout(1000)
 
         # 제조사 선택

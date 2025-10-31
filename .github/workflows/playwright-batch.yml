@@ -12,13 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
-      # Actions secret 에 등록한 내용 
+      # Actions secret 에 등록한 내용
       # 스크립트에서 os.getenv로 읽는 건 secret에서 가져와서 별도 설정 필요 없음
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      JIRA_URL: ${{ secrets.JIRA_URL }}
+      JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+      JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+      JIRA_PROJECT_KEY: BAY
+      CONFLUENCE_URL: ${{ secrets.CONFLUENCE_URL }}
+      CONFLUENCE_EMAIL: ${{ secrets.CONFLUENCE_EMAIL }}
+      CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+      CONFLUENCE_SPACE_KEY: CENBAY
+      CONFLUENCE_PARENT_PAGE_ID: "123666536"
       PYTHONUNBUFFERED: "1"
       PYTHONPATH: ${{ github.workspace }} # 상대 경로 생성을 위한 추가 (루트 파일 지정)
       TZ: Asia/Seoul
-      # 현재 Jira 이슈 등록은 제외된 상태로 추후 필요시 추가 예정  
+      # CI 환경 플래그
+      CI: "true"  
     steps:
       - name: Checkout
         uses: actions/checkout@v4

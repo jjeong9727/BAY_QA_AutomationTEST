@@ -95,7 +95,7 @@ def test_inflow_past(page):
     register_stock_for_date(page, day_before, search_name, current_stock+100, day_before_memo)
 
     # 재고 상세 진입 
-    page.fill("data-testid=input_search", search_name)
+    page.locator("data-testid=input_search").fill(search_name)
     page.wait_for_timeout(1000)
     page.locator("data-testid=btn_search").click()
     page.wait_for_timeout(3000)

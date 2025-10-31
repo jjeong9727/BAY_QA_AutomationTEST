@@ -198,9 +198,9 @@ def test_order_acceptance(page: Page):
             page.goto(URLS["bay_orderList"])
             expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
             page.wait_for_timeout(1000)
-            page.fill("data-testid=input_search", product_name)
+            page.locator("data-testid=input_search").fill(product_name)
             page.wait_for_timeout(500)
-            page.click("data-testid=btn_search")
+            page.locator("data-testid=btn_search").click()
             expect(page.locator("data-testid=history").first).to_be_visible(timeout=8000)
             page.wait_for_timeout(1000)
 
@@ -284,9 +284,9 @@ def test_order_delivery(page: Page):
         # 상태 확인: 배송 진행
         page.goto(URLS["bay_orderList"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
-        page.fill("data-testid=input_search", product_name)
+        page.locator("data-testid=input_search").fill(product_name)
         page.wait_for_timeout(500)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
         page.wait_for_timeout(500)
 
@@ -307,9 +307,9 @@ def test_order_delivery(page: Page):
         page.goto(URLS["bay_orderList"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=7000)
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_search", product_name)
+        page.locator("data-testid=input_search").fill(product_name)
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(2000)
         page.locator("data-testid=btn_check_tracking").first.click()
         expect(page.locator("data-testid=txt_tracking")).to_have_text(carrier_name, timeout=3000)
@@ -348,9 +348,9 @@ def test_order_delivery(page: Page):
 
         page.goto(URLS["bay_orderList"])
         page.wait_for_timeout(3000)
-        page.fill("data-testid=input_search", product_name)
+        page.locator("data-testid=input_search").fill(product_name)
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         expect(page.locator("data-testid=history").first).to_be_visible(timeout=7000)
         page.wait_for_timeout(2000)
 
@@ -382,9 +382,9 @@ def test_order_receive_from_delivery(page: Page):
         page.goto(URLS["bay_stock"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_search", product_name)
+        page.locator("data-testid=input_search").fill(product_name)
         page.wait_for_timeout(2000)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(3000)
 
         # 재고 관리 화면에서 해당 제품의 현 재고량 확인
@@ -458,9 +458,9 @@ def test_order_receive_from_delivery(page: Page):
         page.goto(URLS["bay_stock"])
         expect(page.locator("data-testid=input_search")).to_be_visible(timeout=8000)
         page.wait_for_timeout(1000)
-        page.fill("data-testid=input_search", product_name)
+        page.locator("data-testid=input_search").fill(product_name)
         page.wait_for_timeout(2000)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(3000)
 
         # 재고 관리 화면에서 해당 제품의 현 재고량 확인
@@ -494,9 +494,9 @@ def test_order_receive_from_progress(page: Page):
         bay_login(page, "jekwon")
         page.goto(URLS["bay_stock"])
         page.wait_for_timeout(3000)
-        page.fill("data-testid=input_search", product_name)
+        page.locator("data-testid=input_search").fill(product_name)
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(3000)
 
         previous_stock = page.locator("table tbody tr td:nth-child(6)").inner_text()
@@ -568,9 +568,9 @@ def test_order_receive_from_progress(page: Page):
         # 재고 관리 → 재고 확인
         page.goto(URLS["bay_stock"])
         page.wait_for_timeout(3000)
-        page.fill("data-testid=input_search", product_name)
+        page.locator("data-testid=input_search").fill(product_name)
         page.wait_for_timeout(1000)
-        page.click("data-testid=btn_search")
+        page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(3000)
 
         current_stock_text = page.locator("table tbody tr td:nth-child(6)").inner_text()

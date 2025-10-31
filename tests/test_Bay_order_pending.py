@@ -117,7 +117,7 @@ def test_check_status_request_bulk(page:Page):
     # 자동화제품 승인 요청 처리 및 자동 승인 확인
     for product in target_products:
         # 제품 검색
-        page.fill("data-testid=input_search", product)
+        page.locator("data-testid=input_search").fill(product)
         page.wait_for_timeout(1000)
         page.locator("data-testid=btn_search").click()
         page.wait_for_timeout(2000)
